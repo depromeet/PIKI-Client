@@ -6,5 +6,6 @@ build
 out
 coverage
 pnpm-lock.yaml
+next-env.d.ts
 *.min.js
 *.min.css
