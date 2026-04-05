@@ -1,0 +1,29 @@
+name: Assign Random Reviewers
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - dev
+
+jobs:
+  assign-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign random reviewers
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const candidates = ['kanghaeun','iOdiO89', 'ychany', 'soyeong0115'];
+            const author = context.payload.pull_request.user.login;
+
+            const filtered = candidates.filter(id => id !== author);
+            const shuffled = filtered.sort(() => Math.random() - 0.5);
+            const reviewers = shuffled.slice(0, 2);
+
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers,
+            });
