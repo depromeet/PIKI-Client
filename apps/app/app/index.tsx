@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform } from 'react-native'
 import Webview from 'react-native-webview'
 
 export default function Page() {
@@ -18,7 +18,7 @@ export default function Page() {
         source={{ uri: 'https://www.naver.com/' }}
         allowsBackForwardNavigationGestures
         cacheEnabled
-        webviewDebuggingEnabled
+        webviewDebuggingEnabled={__DEV__}
         startInLoadingState
       />
     </KeyboardAvoidingView>
