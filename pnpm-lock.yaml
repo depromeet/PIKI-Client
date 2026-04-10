@@ -63,9 +63,9 @@ importers:
 
   apps/web:
     dependencies:
-      '@repo/ui':
+      '@repo/core':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/core
       '@tanstack/react-query':
         specifier: ^5.96.2
         version: 5.96.2(react@19.2.0)
@@ -136,6 +136,16 @@ importers:
       typescript-eslint:
         specifier: ^8.50.0
         version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
+
+  packages/core:
+    dependencies:
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.2
 
   packages/eslint-config:
     devDependencies:
