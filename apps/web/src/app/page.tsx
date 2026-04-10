@@ -1,4 +1,3 @@
-import { formatDate, UserT } from '@repo/core';
 import Image, { type ImageProps } from 'next/image';
 import styles from './page.module.css';
 
