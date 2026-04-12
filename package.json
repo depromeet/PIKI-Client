@@ -9,7 +9,9 @@
     "check-types": "turbo run check-types",
     "install:web": "pnpm --filter web install",
     "dev:web": "pnpm --filter web dev",
-    "build:web": "pnpm --filter web build"
+    "build:web": "pnpm --filter web build",
+    "install:app": "pnpm --filter app install",
+    "dev:app": "pnpm --filter app start"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
