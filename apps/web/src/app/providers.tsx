@@ -8,7 +8,7 @@ type ProvidersProps = {
   children: React.ReactNode;
 };
 
-function Providers({ children }: ProvidersProps) {
+function Providers({ children }: ProvidersProps): React.JSX.Element {
   const [queryClient] = useState(
     () =>
       new QueryClient({
