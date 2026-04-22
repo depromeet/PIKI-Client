@@ -4,6 +4,7 @@ import React from 'react';
 
 import Providers from '../components/Providers';
 import '../styles/globals.css';
+import { cn } from '@/utils/cn';
 
 const pretendard = localFont({
   src: '../assets/fonts/PretendardVariable.woff2',
@@ -34,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.className}>
-      <body>
+    <html lang="ko" className={cn(pretendard.className, 'h-full bg-gray-100')}>
+      <body className="mx-auto my-0 h-full max-w-120 bg-white antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
