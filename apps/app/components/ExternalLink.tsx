@@ -1,4 +1,4 @@
-import { Href, Link } from 'expo-router';
+import { type Href, Link } from 'expo-router';
 import { WebBrowserPresentationStyle, openBrowserAsync } from 'expo-web-browser';
 import { type ComponentProps } from 'react';
 
