@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
 
+import { cn } from '@/utils/cn';
+
 import Providers from '../components/Providers';
 import '../styles/globals.css';
-import { cn } from '@/utils/cn';
 
 const pretendard = localFont({
   src: '../assets/fonts/PretendardVariable.woff2',
