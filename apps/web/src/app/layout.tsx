@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -22,7 +23,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): React.JSX.Element {
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

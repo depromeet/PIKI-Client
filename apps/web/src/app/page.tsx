@@ -1,3 +1,4 @@
+import React from 'react';
 import Image, { type ImageProps } from 'next/image';
 import styles from './page.module.css';
 
@@ -17,7 +18,7 @@ const ThemeImage = (props: Props) => {
   );
 };
 
-export default function Home() {
+export default function Home(): React.JSX.Element {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
