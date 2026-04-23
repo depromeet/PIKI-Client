@@ -1,8 +1,27 @@
-import React from 'react';
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import React from 'react';
 
 import Providers from '../components/providers';
 import '../styles/globals.css';
+
+const pretendard = localFont({
+  src: '../assets/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  preload: true,
+  fallback: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Helvetica Neue',
+    'sans-serif',
+  ],
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
-    <html lang="ko">
+    <html lang="ko" className={pretendard.className}>
       <body>
         <Providers>{children}</Providers>
       </body>
