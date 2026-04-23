@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import turboPlugin from 'eslint-plugin-turbo';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
@@ -18,6 +19,14 @@ export default defineConfig([
       'no-nested-ternary': 'error',
       'no-unused-vars': 'off',
       'unused-imports/no-unused-imports': 'error',
+    },
+  },
+  {
+    plugins: {
+      turbo: turboPlugin,
+    },
+    rules: {
+      'turbo/no-undeclared-env-vars': 'warn',
     },
   },
 
