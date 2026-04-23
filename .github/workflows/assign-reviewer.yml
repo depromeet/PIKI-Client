@@ -21,6 +21,9 @@ jobs:
             const shuffled = filtered.sort(() => Math.random() - 0.5);
             const reviewers = shuffled.slice(0, 2);
 
+            console.log('author:', author);
+            console.log('reviewers:', reviewers);
+
             await github.rest.pulls.requestReviewers({
               owner: context.repo.owner,
               repo: context.repo.repo,
