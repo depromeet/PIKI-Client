@@ -227,6 +227,7 @@ jobs:
               }
               in_task == 1 && /^##/ { exit }
               in_task == 1 {
+                if ($0 ~ /^[[:space:]]+-/) next
                 s = $0
                 sub(/^[[:space:]]+/, "", s)
                 if (s ~ /^>/) next
@@ -432,6 +433,7 @@ jobs:
               }
               in_task == 1 && /^##/ { exit }
               in_task == 1 {
+                if ($0 ~ /^[[:space:]]+-/) next
                 s = $0
                 sub(/^[[:space:]]+/, "", s)
                 if (s ~ /^>/) next
