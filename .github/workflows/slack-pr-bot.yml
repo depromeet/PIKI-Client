@@ -4,6 +4,7 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
       - review_requested
       - review_request_removed
       - edited
