@@ -1,7 +1,9 @@
 import axios from 'axios';
-import type { AxiosError } from 'axios';
+import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-import type { ApiError } from './types';
+import type { ApiErrorT } from './types';
+
+type RetryableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -27,10 +29,10 @@ export const clientApi = axios.create({
 
 clientApi.interceptors.response.use(
   (response) => response.data.data,
-  async (error: AxiosError<ApiError>) => {
-    const originalRequest = error.config;
+  async (error: AxiosError<ApiErrorT>) => {
+    const originalRequest = error.config as RetryableRequest | undefined;
 
-    if (error.response?.status === 401 && originalRequest) {
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -39,6 +41,7 @@ clientApi.interceptors.response.use(
           .catch((err) => Promise.reject(err));
       }
 
+      originalRequest._retry = true;
       isRefreshing = true;
 
       try {
