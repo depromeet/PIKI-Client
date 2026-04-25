@@ -4,7 +4,7 @@ import EntryStartButton from '@/components/EntryStartButton';
 
 function EntryPage() {
   return (
-    <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+32px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+    <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <div className="relative aspect-[208/215] w-[70%] self-center">
         <Image
           src="/images/entry-gift-guide.png"

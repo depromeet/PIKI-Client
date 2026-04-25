@@ -78,7 +78,7 @@ function NewItemPage() {
   const canSubmit = name.trim().length > 0 && priceText.trim().length > 0;
 
   return (
-    <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+32px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+    <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <h1 className="text-[28px] leading-snug font-bold tracking-[-0.7084px] text-[#171719]">
         위시템 추가
       </h1>
