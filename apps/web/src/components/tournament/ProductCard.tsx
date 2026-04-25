@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Product } from '@/types/tournament';
+import type { Product } from '@/types/tournament';
 
 type ProductCardProps = Product & {
   onClick?: () => void;
@@ -16,7 +16,7 @@ export default function ProductCard({
   isPicked,
 }: ProductCardProps) {
   return (
-    <div className="relative w-[170px] cursor-pointer" onClick={onClick}>
+    <div className="relative w-full cursor-pointer" onClick={onClick}>
       {isPicked && (
         <div className="absolute top-0 left-1/2 z-10 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#47484C] shadow-lg">
           <span className="text-base font-bold text-white" style={{ transform: 'rotate(-15deg)' }}>
@@ -24,9 +24,16 @@ export default function ProductCard({
           </span>
         </div>
       )}
-      <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-        <div className="relative flex h-[160px] shrink-0 items-center justify-center bg-gray-100 p-4">
-          <Image src={image} alt={name} fill className="object-cover" />
+      <div className="flex h-[300px] w-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+        <div className="relative h-40 w-full shrink-0 bg-gray-100">
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="(max-width: 480px) 45vw, 200px"
+            priority
+            className="object-cover"
+          />
         </div>
         <div className="flex flex-1 flex-col items-center justify-center p-4 text-center">
           <p className="line-clamp-2 text-xl font-bold">{name}</p>

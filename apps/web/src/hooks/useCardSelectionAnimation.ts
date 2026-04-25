@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Product } from '@/types/tournament';
+import type { Product } from '@/types/tournament';
 
 const TILT_DEG = 12;
 const CARD_SHIFT = 24;
@@ -26,15 +26,24 @@ export function useCardSelectionAnimation(onSelect: (winner: Product) => void) {
     };
   };
 
+  const getHangerRotate = () => {
+    if (selectedSide === 'left') return -TILT_DEG;
+    if (selectedSide === 'right') return TILT_DEG;
+    return 0;
+  };
+
+  const getCardShift = (side: 'left' | 'right') => {
+    if (!selectedSide) return 0;
+    return selectedSide === side ? CARD_SHIFT : -CARD_SHIFT;
+  };
+
   return {
     handleClick,
     selectedSide,
     animationDuration: ANIMATION_DURATION,
-    hangerRotate: selectedSide === 'left' ? -TILT_DEG : selectedSide === 'right' ? TILT_DEG : 0,
-    leftCardShift:
-      selectedSide === 'left' ? CARD_SHIFT : selectedSide === 'right' ? -CARD_SHIFT : 0,
-    rightCardShift:
-      selectedSide === 'right' ? CARD_SHIFT : selectedSide === 'left' ? -CARD_SHIFT : 0,
+    hangerRotate: getHangerRotate(),
+    leftCardShift: getCardShift('left'),
+    rightCardShift: getCardShift('right'),
     leftCardStyle: getCardStyle('left'),
     rightCardStyle: getCardStyle('right'),
   };

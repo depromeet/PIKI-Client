@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import bronzeMedalImage from '@/assets/images/tournament/medal-bronze.svg';
 import silverMedalImage from '@/assets/images/tournament/medal-silver.svg';
+import { mockProducts } from '@/mocks/products';
 
 type RankingItemT = {
   medalImage: typeof silverMedalImage;
@@ -11,18 +12,20 @@ type RankingItemT = {
   price: string;
 };
 
+const formatPrice = (price: number) => `${price.toLocaleString('ko-KR')}원`;
+
 const rankingItems: RankingItemT[] = [
   {
     medalImage: silverMedalImage,
     medalLabel: '2등 메달',
-    name: '다이슨 온트랙 노이즈 캔슬링 헤드폰',
-    price: '699,000원',
+    name: mockProducts[1]!.name,
+    price: formatPrice(mockProducts[1]!.price),
   },
   {
     medalImage: bronzeMedalImage,
     medalLabel: '3등 메달',
-    name: '유닉스 미니 고데기',
-    price: '42,000원',
+    name: mockProducts[2]!.name,
+    price: formatPrice(mockProducts[2]!.price),
   },
 ];
 

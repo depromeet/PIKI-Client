@@ -165,6 +165,7 @@ function NewItemContent() {
                   alt={baseName || '상품 이미지'}
                   fill
                   sizes="(max-width: 480px) calc(100vw - 40px), 440px"
+                  priority
                   className="object-cover"
                 />
               </div>
@@ -181,8 +182,9 @@ function NewItemContent() {
           />
           <FieldInput
             label="가격"
-            value={priceText ? formatPrice(parsePriceInput(priceText)) : ''}
+            value={priceText}
             onChange={value => setPriceOverride(value.replace(/[^0-9]/g, ''))}
+            formatDisplay={value => (value ? formatPrice(Number(value)) : '')}
             placeholder="가격을 입력해주세요"
             inputMode="numeric"
             editableByDefault={isManual}
@@ -238,6 +240,7 @@ type FieldInputProps = {
   placeholder?: string;
   inputMode?: 'text' | 'numeric';
   editableByDefault?: boolean;
+  formatDisplay?: (value: string) => string;
   className?: string;
 };
 
@@ -248,6 +251,7 @@ function FieldInput({
   placeholder,
   inputMode = 'text',
   editableByDefault = false,
+  formatDisplay,
   className,
 }: FieldInputProps) {
   const [isEditing, setIsEditing] = useState(editableByDefault);
@@ -283,9 +287,12 @@ function FieldInput({
           ref={inputRef}
           type="text"
           inputMode={inputMode}
-          value={value}
+          value={isEditing || !formatDisplay ? value : formatDisplay(value)}
           placeholder={placeholder}
           readOnly={!isEditing}
+          spellCheck={false}
+          autoCorrect="off"
+          autoCapitalize="off"
           onChange={event => onChange(event.target.value)}
           onClick={enterEditMode}
           onFocus={enterEditMode}
