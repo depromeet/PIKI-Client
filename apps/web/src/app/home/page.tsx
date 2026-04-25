@@ -57,14 +57,13 @@ function HomePage() {
         )}
       </div>
 
-      {isComplete && (
-        <button
-          type="button"
-          className="mt-auto h-14 w-full shrink-0 rounded-[14px] bg-[#1B1C1E] text-base leading-[1.5] font-semibold tracking-[0.0912px] text-[#F7F7F8]"
-        >
-          토너먼트 시작하기
-        </button>
-      )}
+      <button
+        type="button"
+        disabled={!isComplete}
+        className="mt-auto h-14 w-full shrink-0 rounded-[14px] bg-[#1B1C1E] text-base leading-normal font-semibold tracking-[0.0912px] text-[#F7F7F8] disabled:bg-[#E5E7EB] disabled:text-[#A4A4A4]"
+      >
+        토너먼트 시작하기
+      </button>
 
       <AddItemSheet open={isSheetOpen} onClose={handleCloseSheet} />
     </main>
