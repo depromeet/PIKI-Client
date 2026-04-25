@@ -1,6 +1,7 @@
 'use client';
 
 import { gsap } from 'gsap';
+import Image from 'next/image';
 import { useLayoutEffect, useRef } from 'react';
 
 import { mockProducts } from '@/mocks/products';
@@ -10,6 +11,7 @@ const formatPrice = (price: number) => `${price.toLocaleString('ko-KR')}원`;
 const receiptItems = mockProducts.slice(0, 3).map(product => ({
   name: product.name,
   price: formatPrice(product.price),
+  imageUrl: product.imageUrl,
 }));
 
 function ReceiptDrawMachine() {
@@ -79,9 +81,9 @@ function ReceiptDrawMachine() {
         >
           <div className="space-y-[13px] border-b border-[#cfd6dd] pb-[12px]">
             {receiptItems.map(receiptItem => (
-              <div className="flex items-center justify-between" key={receiptItem.name}>
-                <div>
-                  <p className="text-[11px] leading-[15px] font-semibold tracking-[0.2px] text-[#2f3338]">
+              <div className="flex items-center justify-between gap-3" key={receiptItem.name}>
+                <div className="min-w-0 flex-1">
+                  <p className="line-clamp-1 text-[11px] leading-[15px] font-semibold tracking-[0.2px] text-[#2f3338]">
                     {receiptItem.name}
                   </p>
                   <p className="mt-[2px] text-[10px] leading-[13px] font-medium text-[#4c5259]">
@@ -89,7 +91,15 @@ function ReceiptDrawMachine() {
                   </p>
                   <p className="text-[10px] leading-[13px] font-bold text-[#2f3338]">DISCOUNT: 1/2 PRICE</p>
                 </div>
-                <div className="h-[48px] w-[62px] rounded-[6px] border border-dashed border-[#b7bec6] bg-[#eceff3]" />
+                <div className="relative h-12 w-[62px] shrink-0 overflow-hidden rounded-[6px] border border-[#b7bec6] bg-[#eceff3]">
+                  <Image
+                    src={receiptItem.imageUrl}
+                    alt={receiptItem.name}
+                    fill
+                    sizes="62px"
+                    className="object-cover"
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -100,7 +110,7 @@ function ReceiptDrawMachine() {
           </div>
         </div>
       </div>
-      <div aria-hidden className="mx-auto h-72 w-[94%] opacity-0" />
+      <div aria-hidden className="mx-auto h-80 w-[94%] opacity-0" />
     </div>
   );
 }
