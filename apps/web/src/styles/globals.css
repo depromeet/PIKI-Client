@@ -3,4 +3,6 @@
 
 /** 디자인 토큰 정의 */
 @theme {
+  --color-inverse-background: #1b1c1e;
+  --color-inverse-label: #f7f7f8;
 }
