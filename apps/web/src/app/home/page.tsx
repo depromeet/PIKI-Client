@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import AddItemSheet from '@/components/AddItemSheet';
@@ -10,6 +11,7 @@ import type { WishT } from '@/types/wish';
 const TARGET_COUNT = 8;
 
 function HomePage() {
+  const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const wishesQuery = useWishes();
 
@@ -24,6 +26,10 @@ function HomePage() {
 
   const handleCloseSheet = () => {
     setIsSheetOpen(false);
+  };
+
+  const handleStartTournament = () => {
+    router.push('/tournament/loading');
   };
 
   const renderHeader = () => {
@@ -60,6 +66,7 @@ function HomePage() {
       <button
         type="button"
         disabled={!isComplete}
+        onClick={handleStartTournament}
         className="mt-auto h-14 w-full shrink-0 rounded-[14px] bg-[#1B1C1E] text-base leading-normal font-semibold tracking-[0.0912px] text-[#F7F7F8] disabled:bg-[#E5E7EB] disabled:text-[#A4A4A4]"
       >
         토너먼트 시작하기

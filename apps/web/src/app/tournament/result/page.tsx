@@ -28,7 +28,7 @@ function TournamentResultPage() {
         </button>
         <Link
           className="flex h-[64px] w-full items-center justify-center rounded-[14px] bg-[#d7dbe0] px-[24px] py-[16px] text-[17px] leading-[24px] font-semibold tracking-[-0.1px] text-[#6c7783]"
-          href="/comming-soon"
+          href="/coming-soon"
         >
           위시리스트 저장하고 싶다면?
         </Link>

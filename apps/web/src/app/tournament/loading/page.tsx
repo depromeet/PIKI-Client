@@ -1,11 +1,26 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
 import { MOCK_PRODUCTS } from '@/consts/mockProducts';
 
 import FloatingProducts from './_components/FloatingProducts';
 import LoadingBar from './_components/LoadingBar';
 
 const MOCK_CANDIDATE_COUNT = MOCK_PRODUCTS.length;
+const LOADING_DURATION_MS = 6000;
 
 export default function TournamentLoadingPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/tournament');
+    }, LOADING_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
     <div className="flex h-full flex-col px-[21.33px] pt-[80px]">
       {/* 헤더 */}
