@@ -1,5 +1,5 @@
-import { Link } from 'expo-router'
-import { StyleSheet, Text, View } from 'react-native'
+import { Link } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function ModalScreen() {
   return (
@@ -9,7 +9,7 @@ export default function ModalScreen() {
         <Text>Go to home screen</Text>
       </Link>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingVertical: 15,
   },
-})
+});

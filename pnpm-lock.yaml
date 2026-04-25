@@ -8,9 +8,27 @@ importers:
 
   .:
     devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.1
+        version: 9.39.1
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(prettier@3.7.4)
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.6.1)
+      eslint-config-prettier:
+        specifier: ^10.1.1
+        version: 10.1.1(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-turbo:
+        specifier: ^2.8.3
+        version: 2.9.6(eslint@9.39.1(jiti@2.6.1))(turbo@2.8.21)
+      eslint-plugin-unused-imports:
+        specifier: ^4.4.1
+        version: 4.4.1(@typescript-eslint/eslint-plugin@8.50.0(@typescript-eslint/parser@8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.1(jiti@2.6.1))
+      globals:
+        specifier: ^16.5.0
+        version: 16.5.0
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -23,6 +41,9 @@ importers:
       typescript:
         specifier: 5.9.2
         version: 5.9.2
+      typescript-eslint:
+        specifier: ^8.50.0
+        version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
 
   apps/app:
     dependencies:
@@ -129,6 +150,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.96.2
         version: 5.96.2(@tanstack/react-query@5.96.2(react@19.2.0))(react@19.2.0)
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       next:
         specifier: 16.2.0
         version: 16.2.0(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -138,6 +162,9 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      tailwind-merge:
+        specifier: ^3.5.0
+        version: 3.5.0
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -145,12 +172,6 @@ importers:
         specifier: ^5.0.12
         version: 5.0.12(@types/react@19.2.2)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0))
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.39.1
-        version: 9.39.1
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -166,21 +187,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.2
         version: 19.2.2(@types/react@19.2.2)
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.6.1)
       eslint-config-next:
         specifier: ^16.2.2
         version: 16.2.2(@typescript-eslint/parser@8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
-      eslint-config-prettier:
-        specifier: ^10.1.1
-        version: 10.1.1(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-unused-imports:
-        specifier: ^4.4.1
-        version: 4.4.1(@typescript-eslint/eslint-plugin@8.50.0(@typescript-eslint/parser@8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.1(jiti@2.6.1))
-      globals:
-        specifier: ^16.5.0
-        version: 16.5.0
       postcss:
         specifier: ^8.5.8
         version: 8.5.8
@@ -190,9 +199,6 @@ importers:
       typescript:
         specifier: 5.9.2
         version: 5.9.2
-      typescript-eslint:
-        specifier: ^8.50.0
-        version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
 
   packages/core:
     dependencies:
@@ -200,78 +206,17 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0
     devDependencies:
-      '@types/react':
-        specifier: ^19.0.0
-        version: 19.2.2
-
-  packages/eslint-config:
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.39.1
-        version: 9.39.1
-      '@next/eslint-plugin-next':
-        specifier: ^16.2.0
-        version: 16.2.0
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.6.1)
-      eslint-config-prettier:
-        specifier: ^10.1.1
-        version: 10.1.1(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-only-warn:
-        specifier: ^1.1.0
-        version: 1.1.0
-      eslint-plugin-react:
-        specifier: ^7.37.5
-        version: 7.37.5(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-react-hooks:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-turbo:
-        specifier: ^2.7.1
-        version: 2.7.1(eslint@9.39.1(jiti@2.6.1))(turbo@2.8.21)
-      globals:
-        specifier: ^16.5.0
-        version: 16.5.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
-      typescript-eslint:
-        specifier: ^8.50.0
-        version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
-
-  packages/typescript-config: {}
-
-  packages/ui:
-    dependencies:
-      react:
-        specifier: ^19.2.0
-        version: 19.2.0
-      react-dom:
-        specifier: ^19.2.0
-        version: 19.2.0(react@19.2.0)
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
       '@types/react':
-        specifier: 19.2.2
+        specifier: ^19.0.0
         version: 19.2.2
-      '@types/react-dom':
-        specifier: 19.2.2
-        version: 19.2.2(@types/react@19.2.2)
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.6.1)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
+
+  packages/typescript-config: {}
 
 packages:
 
@@ -1182,9 +1127,6 @@ packages:
 
   '@next/env@16.2.0':
     resolution: {integrity: sha512-OZIbODWWAi0epQRCRjNe1VO45LOFBzgiyqmTLzIqWq6u1wrxKnAyz1HH6tgY/Mc81YzIjRPoYsPAEr4QV4l9TA==}
-
-  '@next/eslint-plugin-next@16.2.0':
-    resolution: {integrity: sha512-3D3pEMcGKfENC9Pzlkr67GOm+205+5hRdYPZvHuNIy5sr9k0ybSU8g+sxOO/R/RLEh/gWZ3UlY+5LmEyZ1xgXQ==}
 
   '@next/eslint-plugin-next@16.2.2':
     resolution: {integrity: sha512-IOPbWzDQ+76AtjZioaCjpIY72xNSDMnarZ2GMQ4wjNLvnJEJHqxQwGFhgnIWLV9klb4g/+amg88Tk5OXVpyLTw==}
@@ -2338,6 +2280,10 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
 
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
+
   color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
 
@@ -2673,10 +2619,6 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
 
-  eslint-plugin-only-warn@1.1.0:
-    resolution: {integrity: sha512-2tktqUAT+Q3hCAU0iSf4xAN1k9zOpjK5WO8104mB0rT/dGhOa09582HN5HlbxNbPRZ0THV7nLGvzugcNOSjzfA==}
-    engines: {node: '>=6'}
-
   eslint-plugin-react-hooks@5.2.0:
     resolution: {integrity: sha512-+f15FfK64YQwZdJNELETdn5ibXEUQmW1DZL6KXhNnc2heoy/sg9VJJeT7n8TlMWouzWqSWavFkIhHyIbIAEapg==}
     engines: {node: '>=10'}
@@ -2695,8 +2637,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
 
-  eslint-plugin-turbo@2.7.1:
-    resolution: {integrity: sha512-ZC7dTOdw6tGuvx1CeC1WQ0pMkgT/Jmj69QW93d63nysiLbbKRLiDKKA9s/TvwJHq8Uvbou2+hnU8if1L0jHsVQ==}
+  eslint-plugin-turbo@2.9.6:
+    resolution: {integrity: sha512-mntEkRe71izva2mJHZGxH2ccOdySqXiNJf5tdzRabaxhudLCeonPUdTE6aNGOhgVeL1lclxg5/ibp3C/cpe+kQ==}
     peerDependencies:
       eslint: '>6.6.0'
       turbo: '>2.0.0'
@@ -4676,6 +4618,9 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  tailwind-merge@3.5.0:
+    resolution: {integrity: sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A==}
+
   tailwindcss@4.2.2:
     resolution: {integrity: sha512-KWBIxs1Xb6NoLdMVqhbhgwZf2PGBpPEiwOqgI4pFIYbNTfBXiKYyWoTsXgBQ9WFg/OlhnvHaY+AEpW7wSmFo2Q==}
 
@@ -6266,10 +6211,6 @@ snapshots:
 
   '@next/env@16.2.0': {}
 
-  '@next/eslint-plugin-next@16.2.0':
-    dependencies:
-      fast-glob: 3.3.1
-
   '@next/eslint-plugin-next@16.2.2':
     dependencies:
       fast-glob: 3.3.1
@@ -7498,6 +7439,8 @@ snapshots:
 
   clone@1.0.4: {}
 
+  clsx@2.1.1: {}
+
   color-convert@1.9.3:
     dependencies:
       color-name: 1.1.3
@@ -7929,8 +7872,6 @@ snapshots:
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
 
-  eslint-plugin-only-warn@1.1.0: {}
-
   eslint-plugin-react-hooks@5.2.0(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.1(jiti@2.6.1)
@@ -7968,7 +7909,7 @@ snapshots:
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-turbo@2.7.1(eslint@9.39.1(jiti@2.6.1))(turbo@2.8.21):
+  eslint-plugin-turbo@2.9.6(eslint@9.39.1(jiti@2.6.1))(turbo@2.8.21):
     dependencies:
       dotenv: 16.0.3
       eslint: 9.39.1(jiti@2.6.1)
@@ -10280,6 +10221,8 @@ snapshots:
       supports-color: 7.2.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  tailwind-merge@3.5.0: {}
 
   tailwindcss@4.2.2: {}
 

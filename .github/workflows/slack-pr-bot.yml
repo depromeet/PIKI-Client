@@ -427,7 +427,7 @@ jobs:
                 if (in_task == 1) exit
                 r = $0
                 sub(/^##[[:space:]]+/, "", r)
-                ok = (match(r, /^작업 내용([^A-Za-z]|$)/) || match(r, /[[:space:]]작업 내용([^A-Za-z]|$)/))
+                ok = (match(r, /^작업 요약([^A-Za-z]|$)/) || match(r, /[[:space:]]작업 요약([^A-Za-z]|$)/))
                 if (ok) { in_task=1; next }
                 next
               }
