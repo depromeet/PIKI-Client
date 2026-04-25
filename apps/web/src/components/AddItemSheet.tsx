@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/utils/cn';
@@ -10,6 +11,7 @@ type AddItemSheetProps = {
 };
 
 function AddItemSheet({ open, onClose }: AddItemSheetProps) {
+  const router = useRouter();
   const [url, setUrl] = useState('');
 
   useEffect(() => {
@@ -21,15 +23,28 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
     };
   }, [open]);
 
-  const isValid = url.startsWith('https://') && !/\s/.test(url);
-
-  const handleBackdropClick = () => {
+  const handleClose = () => {
     setUrl('');
     onClose();
   };
 
   const handleSheetClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
+  };
+
+  const isValidUrl = url.startsWith('https://') && !/\s/.test(url);
+
+  const handleSubmit = () => {
+    if (!isValidUrl) return;
+    router.push(`/items/new?url=${encodeURIComponent(url)}`);
+    setUrl('');
+    onClose();
+  };
+
+  const handleManualEntry = () => {
+    router.push('/items/new?manual=1');
+    setUrl('');
+    onClose();
   };
 
   return (
@@ -45,7 +60,7 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
       <button
         type="button"
         aria-label="닫기"
-        onClick={handleBackdropClick}
+        onClick={handleClose}
         className={cn(
           'absolute inset-0 bg-black/50 transition-opacity duration-200',
           open ? 'opacity-100' : 'opacity-0'
@@ -61,7 +76,7 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
       >
         <h2
           id="add-item-sheet-title"
-          className="text-center text-xl leading-[1.375] font-bold tracking-[-0.506px] text-[#171719]"
+          className="text-center text-xl leading-snug font-bold tracking-[-0.506px] text-[#171719]"
         >
           위시템 추가
         </h2>
@@ -72,7 +87,7 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
               상품 URL
             </span>
             <div className="mt-3 flex h-14 items-center gap-3 rounded-[14px] bg-[#F9FAFB] px-5">
-              <span className="flex size-[19px] shrink-0 items-center justify-center text-[#3478F6]">
+              <span className="flex size-4.75 shrink-0 items-center justify-center text-[#3478F6]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -81,7 +96,7 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
                   strokeWidth={2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="size-[19px]"
+                  className="size-4.75"
                 >
                   <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
                   <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
@@ -100,10 +115,11 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
 
           <button
             type="button"
-            disabled={!isValid}
+            disabled={!isValidUrl}
+            onClick={handleSubmit}
             className={cn(
-              'flex h-[52px] w-full items-center justify-center rounded-xl text-base leading-[1.5] font-semibold tracking-[0.1048px] text-white transition-colors',
-              isValid ? 'bg-[#171719]' : 'bg-black/10'
+              'flex h-13 w-full items-center justify-center rounded-xl text-base leading-snug font-semibold tracking-[0.1048px] text-white transition-colors',
+              isValidUrl ? 'bg-[#171719]' : 'bg-black/10'
             )}
           >
             상품 정보 불러오기
@@ -112,6 +128,7 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
 
         <button
           type="button"
+          onClick={handleManualEntry}
           className="mt-6 block w-full text-center text-[15px] leading-7 text-[#989BA2] underline"
         >
           직접 입력할게요
