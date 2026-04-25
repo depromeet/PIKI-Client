@@ -16,7 +16,7 @@ export default function ProductCard({
   isPicked,
 }: ProductCardProps) {
   return (
-    <div className="relative w-[170px] cursor-pointer" onClick={onClick}>
+    <div className="relative w-full cursor-pointer" onClick={onClick}>
       {isPicked && (
         <div className="absolute top-0 left-1/2 z-10 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#47484C] shadow-lg">
           <span className="text-base font-bold text-white" style={{ transform: 'rotate(-15deg)' }}>
@@ -30,7 +30,7 @@ export default function ProductCard({
             src={image}
             alt={name}
             fill
-            sizes="170px"
+            sizes="(max-width: 480px) 45vw, 200px"
             priority
             className="object-cover"
           />

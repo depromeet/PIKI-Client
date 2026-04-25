@@ -97,7 +97,7 @@ function ReceiptDrawMachine() {
           </div>
         </div>
       </div>
-      <div aria-hidden className="mx-auto -mt-[8px] h-[496px] w-[94%] opacity-0" />
+      <div aria-hidden className="mx-auto h-72 w-[94%] opacity-0" />
     </div>
   );
 }

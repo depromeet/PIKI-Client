@@ -5,7 +5,7 @@ import TournamentRankingSection from './_components/TournamentRankingSection';
 
 function TournamentResultPage() {
   return (
-    <main className="flex h-screen flex-col bg-[#eef1f3] px-[22px] pt-[67px] pb-[28px]">
+    <main className="flex h-full flex-col px-5.5 pt-16.75 pb-7">
       <section>
         <h1 className="text-center text-[36px] leading-snug font-bold tracking-[-0.9108px] text-[#171719]">
           이번에 구매할 상품은
