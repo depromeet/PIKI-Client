@@ -1,4 +1,4 @@
-import { Product } from '@/types/tournament';
+import { Match, Product } from '@/types/tournament';
 
 const p = (image: string, name: string, price: number, reason: string): Product => ({
   image: `/assets/tournament/${image}`,
@@ -6,8 +6,6 @@ const p = (image: string, name: string, price: number, reason: string): Product 
   price,
   reason,
 });
-
-type Match = { left: Product; right: Product; label: string };
 
 export const MOCK_MATCHES: Match[] = [
   {

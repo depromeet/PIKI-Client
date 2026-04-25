@@ -4,3 +4,9 @@ export type Product = {
   price: number;
   reason: string;
 };
+
+export type Match = {
+  left: Product;
+  right: Product;
+  label: string;
+};
