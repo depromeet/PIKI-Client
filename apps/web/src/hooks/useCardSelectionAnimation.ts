@@ -4,7 +4,7 @@ import { Product } from '@/types/tournament';
 
 const TILT_DEG = 12;
 const CARD_SHIFT = 24;
-const ANIMATION_DURATION = 500;
+const ANIMATION_DURATION = 800;
 const SCALE_SELECTED = 1.08;
 const SCALE_UNSELECTED = 0.88;
 
@@ -31,8 +31,10 @@ export function useCardSelectionAnimation(onSelect: (winner: Product) => void) {
     selectedSide,
     animationDuration: ANIMATION_DURATION,
     hangerRotate: selectedSide === 'left' ? -TILT_DEG : selectedSide === 'right' ? TILT_DEG : 0,
-    leftCardShift: selectedSide === 'left' ? CARD_SHIFT : selectedSide === 'right' ? -CARD_SHIFT : 0,
-    rightCardShift: selectedSide === 'right' ? CARD_SHIFT : selectedSide === 'left' ? -CARD_SHIFT : 0,
+    leftCardShift:
+      selectedSide === 'left' ? CARD_SHIFT : selectedSide === 'right' ? -CARD_SHIFT : 0,
+    rightCardShift:
+      selectedSide === 'right' ? CARD_SHIFT : selectedSide === 'left' ? -CARD_SHIFT : 0,
     leftCardStyle: getCardStyle('left'),
     rightCardStyle: getCardStyle('right'),
   };
