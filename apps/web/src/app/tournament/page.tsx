@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 
+import { MOCK_MATCHES } from '@/app/mocks/tournament';
 import RoundBadge from '@/components/tournament/RoundBadge';
 import TournamentQuestion from '@/components/tournament/TournamentQuestion';
 import VsSection from '@/components/tournament/VsSection';
-import { MOCK_MATCHES } from '@/consts/tournament';
 import { Product } from '@/types/tournament';
 
 export default function TournamentPage() {
@@ -23,7 +23,14 @@ export default function TournamentPage() {
       <RoundBadge label={match?.label ?? ''} />
       <TournamentQuestion />
       <div className="mt-8 w-full">
-        {match ? <VsSection left={match.left} right={match.right} onSelect={handleSelect} /> : null}
+        {match ? (
+          <VsSection
+            key={matchIndex}
+            left={match.left}
+            right={match.right}
+            onSelect={handleSelect}
+          />
+        ) : null}
       </div>
     </div>
   );
