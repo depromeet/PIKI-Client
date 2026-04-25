@@ -1,12 +1,12 @@
-export interface ApiResponse<T> {
+export type ApiResponseT<T> = {
   status: number;
   data: T;
   detail: string;
-}
+};
 
-export interface ApiError {
+export type ApiErrorT = {
   status: number;
   data: null;
   detail: string;
   code: string;
-}
+};
