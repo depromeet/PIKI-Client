@@ -26,7 +26,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: '위시밋',
+  title: 'piki',
   description: '쌓인 위시리스트에서 먼저 살 것을 골라주는 소비 결정 서비스',
 };
 

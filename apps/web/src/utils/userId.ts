@@ -1,4 +1,4 @@
-const USER_ID_KEY = 'wishmeet:userId';
+const USER_ID_KEY = 'piki:userId';
 
 export const getUserId = (): string => {
   if (typeof window === 'undefined') return '';

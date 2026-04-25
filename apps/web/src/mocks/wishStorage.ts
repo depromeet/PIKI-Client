@@ -1,6 +1,6 @@
 import type { WishT } from '@/types/wish';
 
-const STORAGE_KEY = 'wishmeet:wishes';
+const STORAGE_KEY = 'piki:wishes';
 
 const isClient = () => typeof window !== 'undefined';
 
