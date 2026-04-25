@@ -2,7 +2,7 @@ import type { ProductT } from '@/types/wish';
 
 export const mockProducts: ProductT[] = [
   {
-    url: 'https://29cm.onelink.me/1080201211/vitofeg8',
+    url: 'https://www.29cm.co.kr/products/3896753',
     shopName: '29CM',
     shopHost: '29cm.onelink.me',
     imageUrl: '/images/mock-1-knit.png',
