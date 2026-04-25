@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { parsedProductQueryKey, useAddWish, useParsedProduct } from '@/hooks/useWishes';
+import { useWishStore } from '@/stores/wishStore';
 import type { ProductT } from '@/types/wish';
 import { cn } from '@/utils/cn';
 import { fileToDataUrl } from '@/utils/fileToDataUrl';
@@ -22,8 +23,9 @@ function NewItemPage() {
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
 
-  const url = searchParams.get('url') ?? '';
   const isManual = searchParams.get('manual') === '1';
+  const url = useWishStore(state => state.pendingUrl);
+  const clearPendingUrl = useWishStore(state => state.clearPendingUrl);
 
   const parsedQuery = useParsedProduct(isManual ? '' : url);
   const addWishMutation = useAddWish();
@@ -70,6 +72,7 @@ function NewItemPage() {
         };
 
     await addWishMutation.mutateAsync(product);
+    clearPendingUrl();
     router.replace('/home');
   };
 

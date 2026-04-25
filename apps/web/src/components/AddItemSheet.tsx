@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { useWishStore } from '@/stores/wishStore';
 import { cn } from '@/utils/cn';
 
 type AddItemSheetProps = {
@@ -12,6 +13,7 @@ type AddItemSheetProps = {
 
 function AddItemSheet({ open, onClose }: AddItemSheetProps) {
   const router = useRouter();
+  const setPendingUrl = useWishStore(state => state.setPendingUrl);
   const [url, setUrl] = useState('');
 
   useEffect(() => {
@@ -36,7 +38,8 @@ function AddItemSheet({ open, onClose }: AddItemSheetProps) {
 
   const handleSubmit = () => {
     if (!isValidUrl) return;
-    router.push(`/items/new?url=${encodeURIComponent(url)}`);
+    setPendingUrl(url);
+    router.push('/items/new');
     setUrl('');
     onClose();
   };
