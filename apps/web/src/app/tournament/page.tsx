@@ -1,21 +1,24 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { MOCK_MATCHES } from '@/app/mocks/tournament';
 import RoundBadge from '@/components/tournament/RoundBadge';
 import TournamentQuestion from '@/components/tournament/TournamentQuestion';
 import VsSection from '@/components/tournament/VsSection';
+import { MOCK_MATCHES } from '@/mocks/tournament';
 import { Product } from '@/types/tournament';
 
 export default function TournamentPage() {
+  const router = useRouter();
   const [matchIndex, setMatchIndex] = useState(0);
 
   const match = MOCK_MATCHES[matchIndex] ?? MOCK_MATCHES[0];
   const isLastMatch = matchIndex === MOCK_MATCHES.length - 1;
 
   const handleSelect = (_winner: Product) => {
-    if (!isLastMatch) setMatchIndex(matchIndex + 1);
+    if (isLastMatch) router.push(`/tournament/result`);
+    else setMatchIndex(matchIndex + 1);
   };
 
   return (
