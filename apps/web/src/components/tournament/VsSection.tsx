@@ -43,10 +43,10 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
       </div>
 
       {/* 카드 영역 */}
-      <div className="relative flex gap-3 px-4">
+      <div className="relative flex gap-3">
         {/* 왼쪽 */}
         <div
-          className={`flex flex-1 flex-col items-center ${transition}`}
+          className={`flex min-w-0 flex-1 flex-col items-center ${transition}`}
           style={{
             transform: `translateY(${leftCardShift}px) scale(${leftCardStyle.scale})`,
             filter: `blur(${leftCardStyle.blur}px)`,
@@ -63,7 +63,7 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
 
         {/* 오른쪽 */}
         <div
-          className={`flex flex-1 flex-col items-center ${transition}`}
+          className={`flex min-w-0 flex-1 flex-col items-center ${transition}`}
           style={{
             transform: `translateY(${rightCardShift}px) scale(${rightCardStyle.scale})`,
             filter: `blur(${rightCardStyle.blur}px)`,

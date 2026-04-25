@@ -24,8 +24,8 @@ export default function ProductCard({
           </span>
         </div>
       )}
-      <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
-        <div className="relative flex h-[160px] shrink-0 items-center justify-center bg-gray-100 p-4">
+      <div className="flex h-[300px] w-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+        <div className="relative h-40 w-full shrink-0 bg-gray-100">
           <Image
             src={image}
             alt={name}
