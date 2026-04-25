@@ -1,16 +1,20 @@
 import axios from 'axios';
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-import type { ApiErrorT } from './types';
+import type { ApiErrorResponseT } from '@/types/api';
 
+// 재시도 여부 플래그를 포함한 요청 타입
 type RetryableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
 
+// refresh 진행 중 여부
 let isRefreshing = false;
+// refresh 완료를 기다리는 요청 큐
 let failedQueue: Array<{
-  resolve: (value: unknown) => void;
+  resolve: (value: undefined) => void;
   reject: (reason?: unknown) => void;
 }> = [];
 
+// 큐에 쌓인 요청들을 일괄 처리
 const processQueue = (error: unknown) => {
   failedQueue.forEach((prom) => {
     if (error) {
@@ -28,11 +32,13 @@ export const clientApi = axios.create({
 });
 
 clientApi.interceptors.response.use(
+  // 응답 언래핑: { status, data, detail, code } → data
   (response) => response.data.data,
-  async (error: AxiosError<ApiErrorT>) => {
+  async (error: AxiosError<ApiErrorResponseT>) => {
     const originalRequest = error.config as RetryableRequest | undefined;
 
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+      // refresh 진행 중이면 큐에 대기
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
