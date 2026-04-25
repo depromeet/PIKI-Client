@@ -4,13 +4,13 @@ import EntryStartButton from '@/components/EntryStartButton';
 
 function EntryPage() {
   return (
-    <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
-      <div className="relative aspect-[208/215] w-[70%] self-center">
+    <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+100px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      <div className="relative aspect-368/362 w-[55%] self-center">
         <Image
-          src="/images/entry-gift-guide.png"
+          src="/images/entry-gift-guide-v4.png"
           alt="기프트 가이드"
           fill
-          sizes="(max-width: 480px) 70vw, 336px"
+          sizes="(max-width: 480px) 80vw, 384px"
           priority
           className="object-contain"
         />
