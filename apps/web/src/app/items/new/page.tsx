@@ -3,7 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 
 import { parsedProductQueryKey, useAddWish, useParsedProduct } from '@/hooks/useWishes';
 import { useWishStore } from '@/stores/wishStore';
@@ -19,6 +19,14 @@ const parsePriceInput = (raw: string) => {
 };
 
 function NewItemPage() {
+  return (
+    <Suspense fallback={<ParsingState />}>
+      <NewItemContent />
+    </Suspense>
+  );
+}
+
+function NewItemContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
