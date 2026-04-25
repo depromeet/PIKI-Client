@@ -1,11 +1,6 @@
-type ProductCardProps = {
-  image: string;
-  name: string;
-  price: number;
-  reason: string;
-};
+import { Product } from '@/types/tournament';
 
-export default function ProductCard({ image, name, price, reason }: ProductCardProps) {
+export default function ProductCard({ image, name, price, reason }: Product) {
   return (
     <div className="flex h-[300px] w-[170px] cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
       <div className="flex h-[160px] shrink-0 items-center justify-center bg-gray-100 p-4">
