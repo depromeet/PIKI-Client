@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import type { AxiosError } from 'axios';
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -19,8 +20,10 @@ api.interceptors.response.use(
         );
         return api(originalRequest);
       } catch {
-        window.location.href = '/login';
-        return;
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+        return Promise.reject(error);
       }
     }
 
