@@ -1,4 +1,4 @@
-import { Match, Product } from '@/types/tournament';
+import type { Match, Product } from '@/types/tournament';
 
 const p = (image: string, name: string, price: number, reason: string): Product => ({
   image: `/assets/tournament/${image}`,

@@ -7,7 +7,7 @@ import RoundBadge from '@/components/tournament/RoundBadge';
 import TournamentQuestion from '@/components/tournament/TournamentQuestion';
 import VsSection from '@/components/tournament/VsSection';
 import { MOCK_MATCHES } from '@/mocks/tournament';
-import { Product } from '@/types/tournament';
+import type { Product } from '@/types/tournament';
 
 export default function TournamentPage() {
   const router = useRouter();

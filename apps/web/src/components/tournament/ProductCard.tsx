@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Product } from '@/types/tournament';
+import type { Product } from '@/types/tournament';
 
 type ProductCardProps = Product & {
   onClick?: () => void;

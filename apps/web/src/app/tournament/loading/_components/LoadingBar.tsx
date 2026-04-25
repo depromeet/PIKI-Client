@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type IconProps = { active?: boolean };
 
@@ -86,13 +86,13 @@ const ICONS = [TagIcon, StackTagIcon, BookmarkCheckIcon] as const;
 const getThresholds = (W: number) => [0, (W / 2 - R) / W, (W - 2 * R) / W];
 
 export default function LoadingBar() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const fillClipRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [nodeActive, setNodeActive] = useState([true, false, false]);
 
-  useLayoutEffect(() => {
-    setContainerWidth(containerRef.current?.clientWidth ?? 0);
+  const containerRef = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    setContainerWidth(node.clientWidth);
   }, []);
 
   useEffect(() => {

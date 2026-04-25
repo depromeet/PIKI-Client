@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from '@/types/tournament';
+import type { Product } from '@/types/tournament';
 import { useCardSelectionAnimation } from '@/hooks/useCardSelectionAnimation';
 
 import ProductCard from './ProductCard';
