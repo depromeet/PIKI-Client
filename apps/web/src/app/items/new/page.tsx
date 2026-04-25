@@ -79,14 +79,14 @@ function NewItemPage() {
 
   return (
     <main className="relative flex h-full flex-col overflow-x-hidden px-5 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
-      <h1 className="text-[28px] leading-snug font-bold tracking-[-0.7084px] text-[#171719]">
-        위시템 추가
-      </h1>
-
       {!showProductView ? (
         <ParsingState />
       ) : (
         <>
+          <h1 className="text-[28px] leading-snug font-bold tracking-[-0.7084px] text-[#171719]">
+            위시템 추가
+          </h1>
+
           {!isManual && parsedQuery.data && (
             <a
               href={parsedQuery.data.url}
@@ -188,9 +188,16 @@ function NewItemPage() {
 
 function ParsingState() {
   return (
-    <div className="mt-10 flex flex-1 flex-col items-center justify-center gap-3 text-center text-[#A4A4A4]">
+    <div className="mt-10 flex flex-1 flex-col items-center justify-center gap-6 text-center">
       <div className="size-10 animate-spin rounded-full border-2 border-[#E5E7EB] border-t-[#1B1C1E]" />
-      <p className="text-base font-medium">상품 정보를 불러오는 중...</p>
+      <div className="flex flex-col gap-2">
+        <p className="text-lg font-bold text-[#171719]">상품 정보를 가져오고 있어요 👀</p>
+        <p className="text-sm leading-snug font-medium text-[#787878]">
+          입력한 링크에서 이미지와 가격을 확인 중이에요.
+          <br />
+          잠시만 기다려주세요.
+        </p>
+      </div>
     </div>
   );
 }
