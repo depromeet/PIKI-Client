@@ -1,17 +1,26 @@
-import React from 'react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import React from 'react';
 
+import Providers from '../components/Providers';
 import '../styles/globals.css';
-import Providers from './providers';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
+const pretendard = localFont({
+  src: '../assets/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  preload: true,
+  fallback: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Helvetica Neue',
+    'sans-serif',
+  ],
 });
 
 export const metadata: Metadata = {
@@ -23,10 +32,10 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>): React.JSX.Element {
+}>) {
   return (
-    <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="ko" className={pretendard.className}>
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>

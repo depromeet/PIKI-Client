@@ -1,5 +1,5 @@
-import { KeyboardAvoidingView, Platform } from 'react-native'
-import Webview from 'react-native-webview'
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import Webview from 'react-native-webview';
 
 export default function Page() {
   return (
@@ -22,5 +22,5 @@ export default function Page() {
         startInLoadingState
       />
     </KeyboardAvoidingView>
-  )
+  );
 }
