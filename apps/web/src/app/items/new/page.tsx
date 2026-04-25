@@ -40,10 +40,17 @@ function NewItemPage() {
   }, [isManual, url, router]);
 
   const baseName = parsedQuery.data?.name ?? '';
-  const basePrice = parsedQuery.data ? String(parsedQuery.data.price) : '';
+  const basePrice = parsedQuery.data?.price != null ? String(parsedQuery.data.price) : '';
+  const baseImageUrl = parsedQuery.data?.imageUrl ?? '';
 
   const name = nameOverride ?? baseName;
   const priceText = priceOverride ?? basePrice;
+
+  const isPartial =
+    !isManual &&
+    Boolean(parsedQuery.data) &&
+    (parsedQuery.data?.name == null || parsedQuery.data?.price == null);
+  const hasNoImage = !isManual && Boolean(parsedQuery.data) && !baseImageUrl;
 
   const handleRetry = () => {
     if (isManual) return;
@@ -56,17 +63,22 @@ function NewItemPage() {
     if (addWishMutation.isPending) return;
     if (!name.trim() || !priceText.trim()) return;
 
+    const finalImageUrl = isManual ? manualImageUrl : (manualImageUrl || baseImageUrl);
+
     const product: ProductT = isManual
       ? {
           url: '',
           shopName: '직접 입력',
           shopHost: '',
-          imageUrl: manualImageUrl,
+          imageUrl: finalImageUrl,
           name: name.trim(),
           price: parsePriceInput(priceText),
         }
       : {
-          ...(parsedQuery.data as ProductT),
+          url: parsedQuery.data?.url ?? '',
+          shopName: parsedQuery.data?.shopName ?? '',
+          shopHost: parsedQuery.data?.shopHost ?? '',
+          imageUrl: finalImageUrl,
           name: name.trim(),
           price: parsePriceInput(priceText),
         };
@@ -90,31 +102,37 @@ function NewItemPage() {
             위시템 추가
           </h1>
 
-          {!isManual && parsedQuery.data && (
-            <a
-              href={parsedQuery.data.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 flex items-center gap-3 rounded-2xl bg-[#F2F6FB] px-4.5 py-5 transition-colors active:bg-[#E5ECF5]"
-            >
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-[#1A1A1A]">
-                {parsedQuery.data.shopName}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-base leading-5 font-bold text-[#1A1A1A]">
-                  상품 정보를 가져왔어요
-                </p>
-                <p className="mt-1 truncate text-xs leading-5 font-medium text-[#787878B3]">
-                  {parsedQuery.data.url.replace(/^https?:\/\//, '')}에서 확인하기
-                </p>
-              </div>
-              <ChevronRightIcon />
-            </a>
-          )}
+          {!isManual &&
+            parsedQuery.data &&
+            (isPartial ? (
+              <PartialNotice className="mt-3" />
+            ) : (
+              <a
+                href={parsedQuery.data.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center gap-3 rounded-2xl bg-[#F2F6FB] px-4.5 py-5 transition-colors active:bg-[#E5ECF5]"
+              >
+                <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-[#1A1A1A]">
+                  {parsedQuery.data.shopName}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-base leading-5 font-bold text-[#1A1A1A]">
+                    상품 정보를 가져왔어요
+                  </p>
+                  <p className="mt-1 truncate text-xs leading-5 font-medium text-[#787878B3]">
+                    {parsedQuery.data.url.replace(/^https?:\/\//, '')}에서 확인하기
+                  </p>
+                </div>
+                <ChevronRightIcon />
+              </a>
+            ))}
 
-          {isManual ? (
+          {isManual || hasNoImage ? (
             <ImageUploadField
               imageUrl={manualImageUrl}
+              emptyLabel={hasNoImage ? '이미지가 비어 있어요' : '상품 이미지 추가하기'}
+              uploadActionLabel={hasNoImage ? '직접 가져오기' : undefined}
               error={imageError}
               onChange={async file => {
                 setImageError('');
@@ -132,11 +150,11 @@ function NewItemPage() {
               className="mt-3"
             />
           ) : (
-            parsedQuery.data && (
+            baseImageUrl && (
               <div className="relative mt-3 aspect-square w-full overflow-hidden rounded-2xl border border-black/4 bg-[#F9FAFB]">
                 <Image
-                  src={parsedQuery.data.imageUrl}
-                  alt={parsedQuery.data.name}
+                  src={baseImageUrl}
+                  alt={baseName || '상품 이미지'}
                   fill
                   sizes="(max-width: 480px) calc(100vw - 40px), 440px"
                   className="object-cover"
@@ -296,6 +314,8 @@ type ImageUploadFieldProps = {
   error: string;
   onChange: (file: File) => void;
   onRemove: () => void;
+  emptyLabel?: string;
+  uploadActionLabel?: string;
   className?: string;
 };
 
@@ -304,6 +324,8 @@ function ImageUploadField({
   error,
   onChange,
   onRemove,
+  emptyLabel = '상품 이미지 추가하기',
+  uploadActionLabel,
   className,
 }: ImageUploadFieldProps) {
   const inputId = 'manual-product-image';
@@ -328,7 +350,7 @@ function ImageUploadField({
         <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-black/4 bg-[#F9FAFB]">
           {/* dataURL은 Next.js 옵티마이저가 처리하지 않으므로 native img 사용 */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageUrl} alt="업로드한 상품 이미지" className="size-full object-cover" />
+          <img src={imageUrl} alt="업로드한 상품 이미지" className="size-full object-contain" />
           <button
             type="button"
             onClick={onRemove}
@@ -369,10 +391,42 @@ function ImageUploadField({
             <circle cx="8.5" cy="8.5" r="1.5" />
             <polyline points="21 15 16 10 5 21" />
           </svg>
-          <span className="text-sm font-medium">상품 이미지 추가하기</span>
+          <span className="text-sm font-medium">{emptyLabel}</span>
+          {uploadActionLabel && (
+            <span className="text-sm font-medium text-[#787878] underline underline-offset-2">
+              {uploadActionLabel}
+            </span>
+          )}
         </label>
       )}
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+    </div>
+  );
+}
+
+type PartialNoticeProps = {
+  className?: string;
+};
+
+function PartialNotice({ className }: PartialNoticeProps) {
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-3 rounded-2xl bg-[#F4F5F7] px-4.5 py-5',
+        className
+      )}
+    >
+      <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white text-2xl">
+        🧐
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-base leading-5 font-bold text-[#1A1A1A]">
+          일부 정보를 가져오지 못했어요
+        </p>
+        <p className="mt-1 text-xs leading-5 font-medium text-[#787878]">
+          상품명과 가격을 직접 입력해주세요
+        </p>
+      </div>
     </div>
   );
 }
