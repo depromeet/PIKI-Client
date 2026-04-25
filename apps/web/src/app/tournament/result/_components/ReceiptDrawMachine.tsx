@@ -3,11 +3,14 @@
 import { gsap } from 'gsap';
 import { useLayoutEffect, useRef } from 'react';
 
-const receiptItems = [
-  { name: 'NOISY MAY TOP', price: '£11.49' },
-  { name: 'DR MARTEN SANDAL', price: '£74.99' },
-  { name: 'JJXX JERSEY TOP', price: '£13.99' },
-];
+import { mockProducts } from '@/mocks/products';
+
+const formatPrice = (price: number) => `${price.toLocaleString('ko-KR')}원`;
+
+const receiptItems = mockProducts.slice(0, 3).map(product => ({
+  name: product.name,
+  price: formatPrice(product.price),
+}));
 
 function ReceiptDrawMachine() {
   const animationScopeRef = useRef<HTMLDivElement | null>(null);

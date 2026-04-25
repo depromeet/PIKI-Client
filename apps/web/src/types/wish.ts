@@ -5,6 +5,7 @@ export type ProductT = {
   imageUrl: string;
   name: string;
   price: number;
+  reason?: string;
 };
 
 export type ParseResultT = {
