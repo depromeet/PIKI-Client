@@ -26,7 +26,14 @@ export default function ProductCard({
       )}
       <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
         <div className="relative flex h-[160px] shrink-0 items-center justify-center bg-gray-100 p-4">
-          <Image src={image} alt={name} fill className="object-cover" />
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="170px"
+            priority
+            className="object-cover"
+          />
         </div>
         <div className="flex flex-1 flex-col items-center justify-center p-4 text-center">
           <p className="line-clamp-2 text-xl font-bold">{name}</p>
