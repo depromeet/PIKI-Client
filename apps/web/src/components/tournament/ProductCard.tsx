@@ -22,7 +22,7 @@ export default function ProductCard({
           </span>
         </div>
       )}
-      <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
+      <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
         <div className="flex h-[160px] shrink-0 items-center justify-center bg-gray-100 p-4">
           <img src={image} alt={name} className="h-full w-full object-cover" />
         </div>
