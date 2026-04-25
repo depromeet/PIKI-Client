@@ -12,8 +12,8 @@ function TournamentResultPage() {
         </h1>
       </section>
 
-      <section className="min-h-0 flex-1 overflow-y-auto pt-[24px] pb-[20px]">
-        <div className="mx-auto flex w-full max-w-[420px] flex-col gap-[24px]">
+      <section className="min-h-0 flex-1 overflow-y-auto pb-5">
+        <div className="mx-auto flex w-full max-w-[420px] flex-col gap-1">
           <ReceiptDrawMachine />
           <TournamentRankingSection />
         </div>
