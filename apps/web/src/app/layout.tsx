@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
 
+import { cn } from '@/utils/cn';
+
 import Providers from '../components/Providers';
 import '../styles/globals.css';
 
@@ -34,8 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.className}>
-      <body>
+    /** TEMP: 임시 배경색 추가 */
+    <html lang="ko" className={cn(pretendard.className, 'h-full bg-gray-100 antialiased')}>
+      {/** TEMP: max width 임시 값 */}
+      <body className="mx-auto my-0 h-full max-w-120 bg-white">
         <Providers>{children}</Providers>
       </body>
     </html>
