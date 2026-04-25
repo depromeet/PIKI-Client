@@ -217,15 +217,19 @@ function FieldInput({
   const [isEditing, setIsEditing] = useState(editableByDefault);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const enterEditMode = () => {
+    if (editableByDefault || isEditing) return;
+    setIsEditing(true);
+    requestAnimationFrame(() => inputRef.current?.focus());
+  };
+
   const handleToggleEdit = () => {
     if (editableByDefault) return;
-    setIsEditing(prev => {
-      const next = !prev;
-      if (next) {
-        requestAnimationFrame(() => inputRef.current?.focus());
-      }
-      return next;
-    });
+    if (isEditing) {
+      setIsEditing(false);
+      return;
+    }
+    enterEditMode();
   };
 
   const handleBlur = () => {
@@ -247,9 +251,11 @@ function FieldInput({
           placeholder={placeholder}
           readOnly={!isEditing}
           onChange={event => onChange(event.target.value)}
+          onClick={enterEditMode}
+          onFocus={enterEditMode}
           onBlur={handleBlur}
           className={cn(
-            'min-w-0 flex-1 bg-transparent text-base leading-6 font-medium tracking-[-0.3125px] placeholder:text-[#CBCDD1] read-only:cursor-default focus:outline-none',
+            'min-w-0 flex-1 bg-transparent text-base leading-6 font-medium tracking-[-0.3125px] placeholder:text-[#CBCDD1] read-only:cursor-text focus:outline-none',
             isEditing ? 'text-[#1A1A1A]' : 'text-[#787878]'
           )}
         />
