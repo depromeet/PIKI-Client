@@ -7,7 +7,7 @@ type RNWebViewWindowT = {
 };
 
 /** RN WebView window인지 타입 가드 */
-function isRNWebViewWindow(window: unknown): window is RNWebViewWindowT {
+const isRNWebViewWindow = (window: unknown): window is RNWebViewWindowT => {
   if (typeof window !== 'object' || window === null) return false;
   if (!('ReactNativeWebView' in window)) return false;
 
@@ -15,7 +15,7 @@ function isRNWebViewWindow(window: unknown): window is RNWebViewWindowT {
   if (typeof rnWebview !== 'object' || rnWebview === null) return false;
   if (!('postMessage' in rnWebview)) return false;
   return typeof rnWebview['postMessage'] === 'function';
-}
+};
 
 /** 현재 환경이 RN WebView인지 여부 */
 export const isWebview = () => {
