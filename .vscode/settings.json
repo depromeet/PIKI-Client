@@ -2,7 +2,6 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.requireConfig": true,
-  "prettier.configPath": "prettier.config.mjs",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
