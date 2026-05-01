@@ -1,0 +1,78 @@
+filters:
+  - label: feature
+    regexs:
+      - /feat/i
+    events: [pull_request]
+    targets: [title, branch]
+  - label: feature
+    regexs:
+      - /feat/i
+    events: [issues]
+    targets: [title]
+
+  - label: fix
+    regexs:
+      - /fix/i
+    events: [pull_request]
+    targets: [title, branch]
+  - label: fix
+    regexs:
+      - /fix/i
+    events: [issues]
+    targets: [title]
+
+  - label: refactor
+    regexs:
+      - /refactor/i
+    events: [pull_request]
+    targets: [title, branch]
+  - label: refactor
+    regexs:
+      - /refactor/i
+    events: [issues]
+    targets: [title]
+
+  - label: chore
+    regexs:
+      - /chore/i
+    events: [pull_request]
+    targets: [title, branch]
+  - label: chore
+    regexs:
+      - /chore/i
+    events: [issues]
+    targets: [title]
+
+  - label: docs
+    regexs:
+      - /docs/i
+    events: [pull_request]
+    targets: [title, branch]
+  - label: docs
+    regexs:
+      - /docs/i
+    events: [issues]
+    targets: [title]
+
+  - label: style
+    regexs:
+      - /style/i
+    events: [pull_request]
+    targets: [title, branch]
+  - label: style
+    regexs:
+      - /style/i
+    events: [issues]
+    targets: [title]
+
+  - label: APP
+    regexs:
+      - /apps\/app/i
+    events: [pull_request]
+    targets: [file]
+
+  - label: WEB
+    regexs:
+      - /apps\/web/i
+    events: [pull_request]
+    targets: [file]
