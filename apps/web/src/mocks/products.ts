@@ -1,8 +1,17 @@
 import TargetIcon from '@/assets/images/icon-target.svg';
 import type { ProductT } from '@/types/product';
-import type { ProductT as WishProductT } from '@/types/wish';
 
-export const mockProducts: WishProductT[] = [
+type LegacyProductT = {
+  url: string;
+  shopName: string;
+  shopHost: string;
+  imageUrl: string;
+  name: string;
+  price: number;
+  reason?: string;
+};
+
+export const mockProducts: LegacyProductT[] = [
   {
     url: 'https://www.29cm.co.kr/products/3896753',
     shopName: '29CM',
@@ -70,7 +79,7 @@ export const mockProducts: WishProductT[] = [
 
 export const mockProduct = mockProducts[0]!;
 
-export const getMockProductByIndex = (index: number): WishProductT => {
+export const getMockProductByIndex = (index: number): LegacyProductT => {
   return mockProducts[index % mockProducts.length]!;
 };
 
