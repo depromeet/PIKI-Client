@@ -1,6 +1,8 @@
-import type { ProductT } from '@/types/wish';
+import TargetIcon from '@/assets/images/icon-target.svg';
+import type { ProductT } from '@/types/product';
+import type { ProductT as WishProductT } from '@/types/wish';
 
-export const mockProducts: ProductT[] = [
+export const mockProducts: WishProductT[] = [
   {
     url: 'https://www.29cm.co.kr/products/3896753',
     shopName: '29CM',
@@ -38,15 +40,6 @@ export const mockProducts: ProductT[] = [
     reason: '오래 신어도 질리지 않을 것 같음',
   },
   {
-    url: 'https://kream.co.kr/products/12345',
-    shopName: '크림',
-    shopHost: 'kream.co.kr',
-    imageUrl: '/images/mock-5-sneakers.png',
-    name: '나이키 에어맥스 95 그레이',
-    price: 159000,
-    reason: '한정판이라 놓치면 후회할 것 같음',
-  },
-  {
     url: 'https://oliveyoung.co.kr/store/goods/A000000176090',
     shopName: '올리브영',
     shopHost: 'oliveyoung.co.kr',
@@ -77,6 +70,125 @@ export const mockProducts: ProductT[] = [
 
 export const mockProduct = mockProducts[0]!;
 
-export const getMockProductByIndex = (index: number): ProductT => {
+export const getMockProductByIndex = (index: number): WishProductT => {
   return mockProducts[index % mockProducts.length]!;
 };
+
+/**
+ * ------------------------------------------------------------
+ * dummyProducts
+ *
+ * - 프리런칭 때 사용할 더미 데이터
+ * ------------------------------------------------------------
+ */
+
+export const dummyProducts: ProductT[] = [
+  {
+    url: 'https://kream.co.kr/products/338430',
+    thumbnail: '👟',
+    name: '푸마 스피드캣 OG 블랙 모브 미스트',
+    imagePath: '/images/mock-1-shoes.webp',
+    price: 159000,
+    tags: [
+      {
+        name: '한정판',
+        icon: TargetIcon,
+        iconColor: '#8AD9BB',
+        backgroundColor: '#F0FAF6',
+        textColor: '#2A805F',
+      },
+    ],
+    platform: 'kream',
+    platformLogoPath: '/images/logo-kream.png',
+  },
+  {
+    url: 'https://www.29cm.co.kr/products/3845149',
+    thumbnail: '🧥',
+    name: 'Raglan Hidden Trench(Charcoal)',
+    imagePath: '/images/mock-2-coat.webp',
+    price: 275000,
+    platform: '29cm',
+    platformLogoPath: '/images/logo-29cm.jpeg',
+  },
+  {
+    url: 'https://kream.co.kr/products/869177',
+    thumbnail: '👕',
+    name: '데우스 엑스 마키나 도쿄 컬리지 어드레스 티셔츠 블랙',
+    imagePath: '/images/mock-3-tshirt.webp',
+    price: 123000,
+    tags: [
+      {
+        name: '크림 급상승 상의 4위',
+        icon: TargetIcon,
+        iconColor: '#FAE488',
+        backgroundColor: '#FEFAEC',
+        textColor: '#B49109',
+      },
+    ],
+    platform: 'kream',
+    platformLogoPath: '/images/logo-kream.png',
+  },
+  {
+    url: 'https://www.musinsa.com/products/5646320',
+    thumbnail: '🧢',
+    name: '집가고싶당 모자',
+    imagePath: '/images/mock-4-cap.webp',
+    price: 36000,
+    tags: [
+      {
+        name: '오늘 출발',
+        icon: TargetIcon,
+        iconColor: '#8AD9BB',
+        backgroundColor: '#F0FAF6',
+        textColor: '#2A805F',
+      },
+    ],
+    platform: 'musinsa',
+    platformLogoPath: '/images/logo-musinsa.png',
+  },
+  {
+    url: 'https://www.coupang.com/vp/products/7662468776?itemId=20417875304&vendorItemId=95103167596&q=%EB%B3%B4%EC%8A%A4%20%ED%97%A4%EB%93%9C%ED%8F%B0&searchId=f16438589323374&sourceType=search&itemsCount=60&searchRank=3&rank=3&traceId=moo2syr0',
+    thumbnail: '🎧',
+    name: '보스 QC 울트라 헤드폰',
+    imagePath: '/images/mock-5-headphone.avif',
+    price: 377100,
+    tags: [
+      {
+        name: '2000명 이상 만족',
+        icon: TargetIcon,
+        iconColor: '#8AD9BB',
+        backgroundColor: '#F0FAF6',
+        textColor: '#2A805F',
+      },
+    ],
+    platform: 'coupang',
+    platformLogoPath: '/images/logo-coupang.png',
+  },
+  {
+    url: 'https://www.29cm.co.kr/products/3947119',
+    thumbnail: '👜',
+    name: '[단독] IUGA Big Shopper Bag (Purple)',
+    imagePath: '/images/mock-6-bag.webp',
+    price: 89000,
+    platform: '29cm',
+    platformLogoPath: '/images/logo-29cm.jpeg',
+  },
+  {
+    url: 'https://kream.co.kr/products/119182',
+    thumbnail: '🕶',
+    name: '젠틀 몬스터 로코코 01 블랙',
+    imagePath: '/images/mock-7-sunglasses.webp',
+    price: 380000,
+    platform: 'kream',
+    platformLogoPath: '/images/logo-kream.png',
+  },
+  {
+    url: 'https://www.musinsa.com/products/6241667',
+    thumbnail: '👖',
+    name: '[이렇게입어 동훈아] MAXIMIZING DENIM PANTS',
+    imagePath: '/images/mock-8-pants.webp',
+    price: 1063000,
+    platform: 'musinsa',
+    platformLogoPath: '/images/logo-musinsa.png',
+  },
+];
