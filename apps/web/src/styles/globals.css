@@ -5,4 +5,15 @@
 @theme {
   --color-inverse-background: #1b1c1e;
   --color-inverse-label: #f7f7f8;
+
+  --animate-piki-fade-in: piki-fade-in 1600ms ease-out both;
+
+  @keyframes piki-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }

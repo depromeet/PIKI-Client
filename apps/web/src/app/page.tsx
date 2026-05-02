@@ -1,33 +1,29 @@
 import Image from 'next/image';
 
+import PikiLogo from '@/assets/images/piki-logo.svg';
 import EntryStartButton from '@/components/EntryStartButton';
 
 function EntryPage() {
   return (
-    <main className="relative flex h-full flex-col overflow-x-hidden px-3 pt-[calc(env(safe-area-inset-top)+90px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
-      <div className="relative aspect-368/362 w-[60%] self-center">
-        <Image
-          src="/images/entry-gift-guide-v4.png"
-          alt="기프트 가이드"
-          fill
-          sizes="(max-width: 480px) 60vw, 288px"
-          priority
-          className="object-contain"
-        />
+    <main className="relative flex h-full flex-col overflow-x-hidden pt-[calc(env(safe-area-inset-top)+90px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      <div className="relative aspect-200/114 w-50 self-center">
+        <Image src={PikiLogo} alt="Piki" priority className="object-contain" />
       </div>
 
-      <div className="relative mt-4 mb-6 aspect-356/402 w-full overflow-hidden rounded-xl shadow-[0_2px_16px_rgba(0,0,0,0.08)]">
+      <div className="relative mx-6 mt-10.25 mb-6 aspect-356/402 overflow-hidden rounded-xl motion-safe:animate-piki-fade-in">
         <Image
           src="/images/entry-chat-card.png"
-          alt="AI 소비 메이트 채팅 카드"
+          alt="고민 중인 아이템 채팅 스플래쉬"
           fill
-          sizes="(max-width: 480px) calc(100vw - 24px), 456px"
+          sizes="(max-width: 480px) calc(100vw - 48px), 432px"
           priority
           className="object-contain"
         />
       </div>
 
-      <EntryStartButton />
+      <div className="mt-auto px-5">
+        <EntryStartButton />
+      </div>
     </main>
   );
 }
