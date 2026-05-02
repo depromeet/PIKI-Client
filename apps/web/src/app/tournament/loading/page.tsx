@@ -1,18 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
-import { MOCK_PRODUCTS } from '@/consts/mockProducts';
+import { useWishes } from '@/hooks/useWishes';
+import { DUMMY_POSITIONS } from '@/mocks/dummyWishes';
 
-import FloatingProducts from './_components/FloatingProducts';
+import FloatingProducts, { type FloatingItemT } from './_components/FloatingProducts';
 import LoadingBar from './_components/LoadingBar';
 
-const MOCK_CANDIDATE_COUNT = MOCK_PRODUCTS.length;
-const LOADING_DURATION_MS = 6000;
+const LOADING_DURATION_MS = 4500;
+const DUMMY_PREFIX = 'dummy-';
 
 export default function TournamentLoadingPage() {
   const router = useRouter();
+  const wishesQuery = useWishes();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -21,27 +23,42 @@ export default function TournamentLoadingPage() {
     return () => clearTimeout(timer);
   }, [router]);
 
-  return (
-    <div className="flex h-full flex-col px-[21.33px] pt-[80px]">
-      {/* 헤더 */}
-      <div className="flex flex-col gap-[10px]">
-        <p className="text-[25px] font-bold leading-[137.5%] tracking-[-0.632px] text-[#171719]">
-          대진표 만드는 중...
-        </p>
-        <p className="text-[18px] font-medium leading-5 tracking-[-0.15px] text-[#737373]">
-          {MOCK_CANDIDATE_COUNT}개 후보를 빠르게 정리할게요
-        </p>
-      </div>
+  const items = useMemo<FloatingItemT[]>(() => {
+    const wishes = wishesQuery.data ?? [];
+    return wishes.map(wish => {
+      const isDummy = wish.wishId.startsWith(DUMMY_PREFIX);
+      if (isDummy) {
+        const dummyIndex = Number(wish.wishId.replace(DUMMY_PREFIX, '')) - 1;
+        return {
+          id: wish.wishId,
+          emoji: DUMMY_POSITIONS[dummyIndex]?.emoji ?? '🛒',
+        };
+      }
+      return {
+        id: wish.wishId,
+        imageUrl: wish.imageUrl,
+      };
+    });
+  }, [wishesQuery.data]);
 
-      {/* 로딩바 */}
-      <div className="mt-[81px]">
+  return (
+    <main className="flex h-full flex-col bg-[#F4F4F6] px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      <header className="flex flex-col gap-2 tracking-[-0.6px]">
+        <h1 className="text-[28px] leading-10 font-bold text-[#2D3037]">
+          대진표를 만드는 중이에요
+        </h1>
+        <p className="text-lg leading-6.5 font-medium text-[#ADB1BB]">
+          8개 후보를 빠르게 정리할게요
+        </p>
+      </header>
+
+      <div className="mt-15">
         <LoadingBar />
       </div>
 
-      {/* 상품 물리 애니메이션 */}
       <div className="mt-5 flex flex-1 flex-col pb-4">
-        <FloatingProducts products={MOCK_PRODUCTS} />
+        {items.length > 0 && <FloatingProducts items={items} />}
       </div>
-    </div>
+    </main>
   );
 }
