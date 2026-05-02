@@ -2,7 +2,7 @@ import { getMockProductByIndex } from '@/mocks/products';
 import { readWishes } from '@/mocks/wishStorage';
 import type { ParseResultT } from '@/types/wish';
 
-const PARSE_DELAY_MS = 1500;
+const PARSE_DELAY_MS = 4000;
 
 export const postParseUrl = async (url: string): Promise<ParseResultT> => {
   await new Promise(resolve => setTimeout(resolve, PARSE_DELAY_MS));

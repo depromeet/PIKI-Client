@@ -71,7 +71,7 @@ function NewItemContent() {
     if (addWishMutation.isPending) return;
     if (!name.trim() || !priceText.trim()) return;
 
-    const finalImageUrl = isManual ? manualImageUrl : (manualImageUrl || baseImageUrl);
+    const finalImageUrl = isManual ? manualImageUrl : manualImageUrl || baseImageUrl;
 
     const product: ProductT = isManual
       ? {
@@ -217,18 +217,75 @@ function NewItemContent() {
   );
 }
 
+const PARSING_PHRASES = [
+  '링크 확인 중...',
+  '상품 정보를 불러오는 중...',
+  '가격을 확인하는 중...',
+  '이미지를 가져오는 중...',
+] as const;
+
+const PHRASE_INTERVAL_MS = 1000;
+
 function ParsingState() {
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    if (phraseIndex >= PARSING_PHRASES.length - 1) return;
+    const timer = window.setTimeout(() => {
+      setPhraseIndex(prev => prev + 1);
+    }, PHRASE_INTERVAL_MS);
+    return () => window.clearTimeout(timer);
+  }, [phraseIndex]);
+
   return (
-    <div className="mt-10 flex flex-1 flex-col items-center justify-center gap-6 text-center">
-      <div className="size-10 animate-spin rounded-full border-2 border-[#E5E7EB] border-t-[#1B1C1E]" />
-      <div className="flex flex-col gap-2">
-        <p className="text-lg font-bold text-[#171719]">상품 정보를 가져오고 있어요 👀</p>
-        <p className="text-sm leading-snug font-medium text-[#787878]">
-          입력한 링크에서 이미지와 가격을 확인 중이에요.
-          <br />
-          잠시만 기다려주세요.
-        </p>
+    <div className="absolute inset-0 flex flex-col items-center px-5 pt-[calc(env(safe-area-inset-top)+85px)]">
+      <div className="flex w-full flex-col items-center gap-2 text-center tracking-[-0.6px]">
+        <h1 className="text-[28px] leading-10 font-bold text-[#2D3037]">상품 불러오는 중</h1>
+        <div className="relative h-6.5 w-full">
+          {PARSING_PHRASES.map((phrase, index) => (
+            <p
+              key={phrase}
+              className={cn(
+                'absolute inset-0 text-lg leading-6.5 font-medium text-[#ADB1BB] transition-opacity duration-500',
+                index === phraseIndex ? 'opacity-100' : 'opacity-0'
+              )}
+            >
+              {phrase}
+            </p>
+          ))}
+        </div>
       </div>
+
+      <ProductSkeleton className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+    </div>
+  );
+}
+
+type ProductSkeletonProps = {
+  className?: string;
+};
+
+function ProductSkeleton({ className }: ProductSkeletonProps) {
+  return (
+    <div className={cn('flex w-80 flex-col gap-7', className)}>
+      <SkeletonBox className="aspect-square w-full rounded-[14px]" />
+      <div className="flex flex-col gap-2.5">
+        <SkeletonBox className="h-5.5 w-full rounded-[14px] opacity-70" />
+        <SkeletonBox className="h-5.5 w-[66%] rounded-[14px] opacity-70" />
+        <SkeletonBox className="h-5.5 w-[86%] rounded-[14px] opacity-70" />
+      </div>
+    </div>
+  );
+}
+
+type SkeletonBoxProps = {
+  className?: string;
+};
+
+function SkeletonBox({ className }: SkeletonBoxProps) {
+  return (
+    <div className={cn('relative overflow-hidden bg-[#DCDEE2]/50', className)}>
+      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 to-transparent motion-safe:animate-piki-skeleton-shimmer" />
     </div>
   );
 }
@@ -425,12 +482,7 @@ type PartialNoticeProps = {
 
 function PartialNotice({ className }: PartialNoticeProps) {
   return (
-    <div
-      className={cn(
-        'flex items-center gap-3 rounded-2xl bg-[#F4F5F7] px-4.5 py-5',
-        className
-      )}
-    >
+    <div className={cn('flex items-center gap-3 rounded-2xl bg-[#F4F5F7] px-4.5 py-5', className)}>
       <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white text-2xl">
         🧐
       </div>

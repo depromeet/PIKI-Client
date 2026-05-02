@@ -7,6 +7,7 @@
   --color-inverse-label: #f7f7f8;
 
   --animate-piki-fade-in: piki-fade-in 1600ms ease-out both;
+  --animate-piki-skeleton-shimmer: piki-skeleton-shimmer 1400ms ease-in-out infinite;
 
   @keyframes piki-fade-in {
     from {
@@ -14,6 +15,15 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes piki-skeleton-shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(200%);
     }
   }
 }
