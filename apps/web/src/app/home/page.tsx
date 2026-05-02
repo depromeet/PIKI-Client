@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import AddItemSheet from '@/components/AddItemSheet';
+import AddItemModal from '@/components/AddItemModal';
 import { useWishes } from '@/hooks/useWishes';
 import { DUMMY_POSITIONS } from '@/mocks/dummyWishes';
 import type { WishT } from '@/types/wish';
@@ -82,7 +82,7 @@ function HomePage() {
         </button>
       </div>
 
-      <AddItemSheet open={isSheetOpen} onClose={handleCloseSheet} />
+      <AddItemModal open={isSheetOpen} onClose={handleCloseSheet} />
     </main>
   );
 }
