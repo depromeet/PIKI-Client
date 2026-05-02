@@ -1,8 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import LinkIcon from '@/assets/icons/link.svg';
 import { useWishStore } from '@/stores/wishStore';
 import { cn } from '@/utils/cn';
 
@@ -104,7 +106,7 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
                 isFocused ? 'border-[#1F7AF9]' : 'border-[#E5E7EB]'
               )}
             >
-              <LinkIcon />
+              <Image src={LinkIcon} alt="" aria-hidden className="size-5 shrink-0 object-contain" />
               <input
                 id="add-item-url-input"
                 type="url"
@@ -130,25 +132,6 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
         </div>
       </div>
     </div>
-  );
-}
-
-function LinkIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="#ADB1BB"
-      strokeWidth={1.6}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-5 shrink-0"
-      aria-hidden="true"
-    >
-      <path d="M8.33 10.83a4.17 4.17 0 0 0 6.29.45l2.5-2.5a4.17 4.17 0 0 0-5.89-5.89l-1.43 1.43" />
-      <path d="M11.67 9.17a4.17 4.17 0 0 0-6.29-.45l-2.5 2.5a4.17 4.17 0 0 0 5.89 5.89l1.43-1.43" />
-    </svg>
   );
 }
 
