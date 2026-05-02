@@ -20,6 +20,9 @@ jobs:
       pull-requests: write # 풀 리퀘스트에 레이블을 추가하기 위한 쓰기 권한
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Run Issue PR Labeler
         uses: hoho4190/issue-pr-labeler@v2.0.0
         with:
