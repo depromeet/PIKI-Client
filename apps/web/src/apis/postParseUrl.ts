@@ -4,14 +4,6 @@ import type { ParseResultT } from '@/types/wish';
 
 const PARSE_DELAY_MS = 4000;
 
-const extractHost = (url: string): string => {
-  try {
-    return new URL(url).host;
-  } catch {
-    return '';
-  }
-};
-
 export const postParseUrl = async (url: string): Promise<ParseResultT> => {
   await new Promise(resolve => setTimeout(resolve, PARSE_DELAY_MS));
 
@@ -24,10 +16,12 @@ export const postParseUrl = async (url: string): Promise<ParseResultT> => {
 
   return {
     url,
-    shopName: baseProduct.platform,
-    shopHost: extractHost(baseProduct.url),
-    imageUrl: isNoImage || isPartial ? '' : baseProduct.imagePath,
+    thumbnail: baseProduct.thumbnail,
+    imagePath: isNoImage || isPartial ? '' : baseProduct.imagePath,
     name: isPartial ? null : baseProduct.name,
     price: isPartial ? null : baseProduct.price,
+    tags: baseProduct.tags,
+    platform: baseProduct.platform,
+    platformLogoPath: baseProduct.platformLogoPath,
   };
 };

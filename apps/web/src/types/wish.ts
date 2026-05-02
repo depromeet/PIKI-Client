@@ -1,23 +1,6 @@
-export type ProductT = {
-  url: string;
-  shopName: string;
-  shopHost: string;
-  imageUrl: string;
-  name: string;
-  price: number;
-  reason?: string;
-};
+import type { ProductT } from '@/types/product';
 
-export type ParseResultT = {
-  url: string;
-  shopName: string;
-  shopHost: string;
-  imageUrl: string;
+export type ParseResultT = Omit<ProductT, 'name' | 'price'> & {
   name: string | null;
   price: number | null;
-};
-
-export type WishT = ProductT & {
-  wishId: string;
-  createdAt: string;
 };

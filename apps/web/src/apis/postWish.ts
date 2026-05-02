@@ -1,13 +1,8 @@
 import { readWishes, writeWishes } from '@/mocks/wishStorage';
-import type { ProductT, WishT } from '@/types/wish';
+import type { ProductT } from '@/types/product';
 
-export const postWish = async (product: ProductT): Promise<WishT> => {
-  const next: WishT = {
-    ...product,
-    wishId: window.crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-  };
+export const postWish = async (product: ProductT): Promise<ProductT> => {
   const current = readWishes();
-  writeWishes([...current, next]);
-  return next;
+  writeWishes([...current, product]);
+  return product;
 };

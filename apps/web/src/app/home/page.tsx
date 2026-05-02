@@ -6,12 +6,8 @@ import { useState } from 'react';
 
 import AddItemModal from '@/components/AddItemModal';
 import { useWishes } from '@/hooks/useWishes';
-import { DUMMY_POSITIONS } from '@/mocks/dummyWishes';
-import type { WishT } from '@/types/wish';
-
-const DUMMY_PREFIX = 'dummy-';
-
-const isDummyWish = (wish: WishT) => wish.wishId.startsWith(DUMMY_PREFIX);
+import { DUMMY_POSITIONS, isDummyProduct } from '@/mocks/dummyWishes';
+import type { ProductT } from '@/types/product';
 
 function HomePage() {
   const router = useRouter();
@@ -19,7 +15,7 @@ function HomePage() {
   const wishesQuery = useWishes();
 
   const wishes = wishesQuery.data ?? [];
-  const userWish = wishes.find(wish => !isDummyWish(wish));
+  const userWish = wishes.find(wish => !isDummyProduct(wish));
   const hasUserWish = Boolean(userWish);
 
   const handleOpenSheet = () => {
@@ -105,16 +101,16 @@ function DummyEmojiCard({ emoji, top, left }: DummyEmojiCardProps) {
 }
 
 type UserWishCardProps = {
-  wish: WishT;
+  wish: ProductT;
 };
 
 function UserWishCard({ wish }: UserWishCardProps) {
   return (
     <div className="absolute top-1/2 left-1/2 size-20.5 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]">
-      {wish.imageUrl ? (
+      {wish.imagePath ? (
         // dataURL과 일반 URL 모두 native img로 처리
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={wish.imageUrl} alt={wish.name} className="size-full object-cover" />
+        <img src={wish.imagePath} alt={wish.name} className="size-full object-cover" />
       ) : null}
     </div>
   );

@@ -9,7 +9,7 @@ import EditIcon from '@/assets/icons/edit.svg';
 import ImagePlaceholderIcon from '@/assets/icons/image.svg';
 import { parsedProductQueryKey, useAddWish, useParsedProduct } from '@/hooks/useWishes';
 import { useWishStore } from '@/stores/wishStore';
-import type { ProductT } from '@/types/wish';
+import type { ProductT } from '@/types/product';
 import { cn } from '@/utils/cn';
 import { fileToDataUrl } from '@/utils/fileToDataUrl';
 
@@ -54,7 +54,7 @@ function NewItemContent() {
 
   const baseName = parsedQuery.data?.name ?? '';
   const basePrice = parsedQuery.data?.price != null ? String(parsedQuery.data.price) : '';
-  const baseImageUrl = parsedQuery.data?.imageUrl ?? '';
+  const baseImageUrl = parsedQuery.data?.imagePath ?? '';
 
   const name = nameOverride ?? baseName;
   const priceText = priceOverride ?? basePrice;
@@ -64,7 +64,7 @@ function NewItemContent() {
     Boolean(parsedQuery.data) &&
     (parsedQuery.data?.name == null ||
       parsedQuery.data?.price == null ||
-      !parsedQuery.data?.imageUrl);
+      !parsedQuery.data?.imagePath);
   const isFailedState = isManual || isPartial;
   const showImageEmpty = isFailedState && !manualImageUrl && !baseImageUrl;
   const finalImageUrl = manualImageUrl || baseImageUrl;
@@ -84,19 +84,22 @@ function NewItemContent() {
     const product: ProductT = isManual
       ? {
           url: '',
-          shopName: '직접 입력',
-          shopHost: '',
-          imageUrl: finalImageUrl,
+          thumbnail: '',
+          imagePath: finalImageUrl,
           name: name.trim(),
           price: parsePriceInput(priceText),
+          platform: '',
+          platformLogoPath: '',
         }
       : {
           url: parsedQuery.data?.url ?? '',
-          shopName: parsedQuery.data?.shopName ?? '',
-          shopHost: parsedQuery.data?.shopHost ?? '',
-          imageUrl: finalImageUrl,
+          thumbnail: parsedQuery.data?.thumbnail ?? '',
+          imagePath: finalImageUrl,
           name: name.trim(),
           price: parsePriceInput(priceText),
+          tags: parsedQuery.data?.tags,
+          platform: parsedQuery.data?.platform ?? '',
+          platformLogoPath: parsedQuery.data?.platformLogoPath ?? '',
         };
 
     await addWishMutation.mutateAsync(product);
@@ -141,8 +144,8 @@ function NewItemContent() {
         ) : (
           parsedQuery.data && (
             <SuccessBanner
-              shopName={parsedQuery.data.shopName}
-              shopHost={parsedQuery.data.shopHost}
+              platform={parsedQuery.data.platform}
+              platformLogoPath={parsedQuery.data.platformLogoPath}
               originalUrl={parsedQuery.data.url}
               className="mt-3"
             />
@@ -324,13 +327,21 @@ function ProductImage({ imageUrl, alt, isUploaded }: ProductImageProps) {
 }
 
 type SuccessBannerProps = {
-  shopName: string;
-  shopHost: string;
+  platform: string;
+  platformLogoPath: string;
   originalUrl: string;
   className?: string;
 };
 
-function SuccessBanner({ shopName, shopHost, originalUrl, className }: SuccessBannerProps) {
+function SuccessBanner({ platform, platformLogoPath, originalUrl, className }: SuccessBannerProps) {
+  const host = (() => {
+    try {
+      return new URL(originalUrl).host;
+    } catch {
+      return '';
+    }
+  })();
+
   return (
     <a
       href={originalUrl}
@@ -341,13 +352,13 @@ function SuccessBanner({ shopName, shopHost, originalUrl, className }: SuccessBa
         className
       )}
     >
-      <ShopIcon shopName={shopName} />
+      <ShopIcon platform={platform} platformLogoPath={platformLogoPath} />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <p className="text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#1A1A1A]">
           상품 정보를 가져왔어요
         </p>
         <p className="truncate text-xs leading-[18px] font-semibold tracking-[-0.4px] text-[#686F7E]">
-          {shopHost}에서 확인하기
+          {host || platform}에서 확인하기
         </p>
       </div>
       <ChevronRightIcon />
@@ -379,13 +390,19 @@ function FailureBanner({ className }: FailureBannerProps) {
 }
 
 type ShopIconProps = {
-  shopName: string;
+  platform: string;
+  platformLogoPath: string;
 };
 
-function ShopIcon({ shopName }: ShopIconProps) {
+function ShopIcon({ platform, platformLogoPath }: ShopIconProps) {
   return (
     <div className="relative flex size-[57px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
-      <span className="text-[10px] font-bold tracking-tight text-[#1A1A1A]">{shopName}</span>
+      {platformLogoPath ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={platformLogoPath} alt={platform} className="size-full object-cover" />
+      ) : (
+        <span className="text-[10px] font-bold tracking-tight text-[#1A1A1A]">{platform}</span>
+      )}
     </div>
   );
 }
