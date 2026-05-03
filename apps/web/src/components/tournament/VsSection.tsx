@@ -1,7 +1,7 @@
 'use client';
 
-import type { ProductT } from '@/types/product';
 import { useCardSelectionAnimation } from '@/hooks/useCardSelectionAnimation';
+import type { ProductT } from '@/types/product';
 
 import ProductCard from './ProductCard';
 
@@ -35,10 +35,14 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
     <div className="w-full">
       {/* 헹거 영역 */}
       <div className="relative" style={{ height: HANGER_HEIGHT }}>
-        <div className="absolute left-1/2 top-0 h-full w-0 -translate-x-1/2 border-l-2 border-dashed border-gray-300" />
+        <div className="absolute top-0 left-1/2 h-full w-0 -translate-x-1/2 border-l-2 border-dashed border-gray-300" />
         <div
           className={`absolute bottom-0 left-1/2 -translate-x-1/2 border-t border-dashed border-gray-300 ${transition}`}
-          style={{ width: HORIZONTAL_LINE_WIDTH, transform: `rotate(${hangerRotate}deg)`, ...duration }}
+          style={{
+            width: HORIZONTAL_LINE_WIDTH,
+            transform: `rotate(${hangerRotate}deg)`,
+            ...duration,
+          }}
         />
       </div>
 
@@ -53,7 +57,10 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
             ...duration,
           }}
         >
-          <div className="border-l-2 border-dashed border-gray-300" style={{ height: HOOK_HEIGHT }} />
+          <div
+            className="border-l-2 border-dashed border-gray-300"
+            style={{ height: HOOK_HEIGHT }}
+          />
           <ProductCard
             {...left}
             isPicked={selectedSide === 'left'}
@@ -70,7 +77,10 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
             ...duration,
           }}
         >
-          <div className="w-0 border-l-2 border-dashed border-gray-300" style={{ height: HOOK_HEIGHT }} />
+          <div
+            className="w-0 border-l-2 border-dashed border-gray-300"
+            style={{ height: HOOK_HEIGHT }}
+          />
           <ProductCard
             {...right}
             isPicked={selectedSide === 'right'}
@@ -80,8 +90,8 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
 
         {/* VS 뱃지 */}
         <div
-          className="absolute left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#454545] px-3 py-3 text-base font-bold text-white"
-          style={{ top: HOOK_HEIGHT + IMAGE_HEIGHT / 2 }}
+          className="absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white"
+          style={{ padding: '7.705px 7.41px 6.295px 8.59px', top: HOOK_HEIGHT + IMAGE_HEIGHT / 2 }}
         >
           VS
         </div>
