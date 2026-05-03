@@ -32,11 +32,11 @@ type MatchPair = [ProductT, ProductT];
 
 export function useTournament() {
   const router = useRouter();
-  const productsRef = useRef<ProductT[]>(readWishes().slice(0, 8));
+  const [products] = useState<ProductT[]>(() => readWishes().slice(0, 8));
 
   const [matchIndex, setMatchIndex] = useState(0);
   const [matches, setMatches] = useState<Array<MatchPair | null>>(() => {
-    const p = productsRef.current;
+    const p = readWishes().slice(0, 8);
     return [
       [p[0]!, p[1]!],
       [p[2]!, p[3]!],
@@ -91,7 +91,7 @@ export function useTournament() {
   };
 
   return {
-    products: productsRef.current,
+    products,
     currentMatch,
     roundLabel,
     handleSelect,
