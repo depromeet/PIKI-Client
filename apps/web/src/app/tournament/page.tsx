@@ -1,46 +1,32 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import RoundBadge from '@/components/tournament/RoundBadge';
 import TournamentQuestion from '@/components/tournament/TournamentQuestion';
 import VsSection from '@/components/tournament/VsSection';
-import { MOCK_MATCHES } from '@/mocks/tournament';
-import type { Product } from '@/types/tournament';
+import { useTournament } from '@/hooks/useTournament';
 
 export default function TournamentPage() {
-  const router = useRouter();
-  const [matchIndex, setMatchIndex] = useState(0);
-
-  const match = MOCK_MATCHES[matchIndex] ?? MOCK_MATCHES[0];
-  const isLastMatch = matchIndex === MOCK_MATCHES.length - 1;
+  const { products, currentMatch, roundLabel, handleSelect } = useTournament();
 
   useEffect(() => {
-    const uniqueImages = Array.from(
-      new Set(MOCK_MATCHES.flatMap(m => [m.left.image, m.right.image]))
-    );
-    uniqueImages.forEach(src => {
+    products.forEach(p => {
       const img = new window.Image();
-      img.src = src;
+      img.src = p.imagePath;
     });
-  }, []);
-
-  const handleSelect = (_winner: Product) => {
-    if (isLastMatch) router.push(`/tournament/result`);
-    else setMatchIndex(matchIndex + 1);
-  };
+  }, [products]);
 
   return (
     <div className="flex flex-col items-center gap-6 px-4 py-[81px]">
-      <RoundBadge label={match?.label ?? ''} />
+      <RoundBadge label={roundLabel} />
       <TournamentQuestion />
       <div className="mt-8 w-full">
-        {match ? (
+        {currentMatch ? (
           <VsSection
-            key={matchIndex}
-            left={match.left}
-            right={match.right}
+            key={roundLabel}
+            left={currentMatch[0]}
+            right={currentMatch[1]}
             onSelect={handleSelect}
           />
         ) : null}
