@@ -17,7 +17,7 @@ export default function ProductCard({
   return (
     <div className="relative w-[148px] cursor-pointer" onClick={onClick}>
       {isPicked && (
-        <div className="jtustify-center absolute top-0 left-1/2 z-10 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center rounded-full bg-[#1F7AF9] shadow-lg">
+        <div className="justify-center absolute top-0 left-1/2 z-10 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center rounded-full bg-[#1F7AF9] shadow-lg">
           <span className="text-base font-bold text-white" style={{ transform: 'rotate(-15deg)' }}>
             Pick!
           </span>
