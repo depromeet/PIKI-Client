@@ -1,6 +1,6 @@
 'use client';
 
-import type { Product } from '@/types/tournament';
+import type { ProductT } from '@/types/product';
 import { useCardSelectionAnimation } from '@/hooks/useCardSelectionAnimation';
 
 import ProductCard from './ProductCard';
@@ -11,9 +11,9 @@ const IMAGE_HEIGHT = 320;
 const HORIZONTAL_LINE_WIDTH = 350;
 
 type VsSectionProps = {
-  left: Product;
-  right: Product;
-  onSelect: (winner: Product) => void;
+  left: ProductT;
+  right: ProductT;
+  onSelect: (winner: ProductT) => void;
 };
 
 export default function VsSection({ left, right, onSelect }: VsSectionProps) {

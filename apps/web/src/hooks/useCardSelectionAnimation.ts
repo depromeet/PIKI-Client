@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { Product } from '@/types/tournament';
+import type { ProductT } from '@/types/product';
 
 const TILT_DEG = 12;
 const CARD_SHIFT = 24;
@@ -8,10 +8,10 @@ const ANIMATION_DURATION = 800;
 const SCALE_SELECTED = 1.08;
 const SCALE_UNSELECTED = 0.88;
 
-export function useCardSelectionAnimation(onSelect: (winner: Product) => void) {
+export function useCardSelectionAnimation(onSelect: (winner: ProductT) => void) {
   const [selectedSide, setSelectedSide] = useState<'left' | 'right' | null>(null);
 
-  const handleClick = (side: 'left' | 'right', product: Product) => {
+  const handleClick = (side: 'left' | 'right', product: ProductT) => {
     if (selectedSide) return;
     setSelectedSide(side);
     setTimeout(() => onSelect(product), ANIMATION_DURATION);
