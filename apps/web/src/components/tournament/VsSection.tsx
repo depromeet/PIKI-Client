@@ -90,8 +90,13 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
 
         {/* VS 뱃지 */}
         <div
-          className="absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white"
-          style={{ padding: '7.705px 7.41px 6.295px 8.59px', top: HOOK_HEIGHT + IMAGE_HEIGHT / 2 }}
+          className={`absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white ${transition}`}
+          style={{
+            padding: '7.705px 7.41px 6.295px 8.59px',
+            top: HOOK_HEIGHT + IMAGE_HEIGHT / 2,
+            filter: selectedSide ? 'blur(2px)' : 'none',
+            ...duration,
+          }}
         >
           VS
         </div>
