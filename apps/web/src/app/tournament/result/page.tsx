@@ -14,7 +14,7 @@ function TournamentResultPage() {
   const orderedResult = result.sort((a, b) => a.rank - b.rank);
 
   return (
-    <main className="flex h-full flex-col overflow-x-hidden pt-[calc(env(safe-area-inset-top)+24px)]">
+    <main className="flex h-full flex-col overflow-x-hidden pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <section className="flex min-h-0 flex-1 flex-col space-y-[22px] overflow-x-hidden px-5 pb-10">
         <h1 className="shrink-0 text-center text-[28px] font-bold tracking-[-0.6px] text-[#2D3037]">
           이번에 구매할 상품은
