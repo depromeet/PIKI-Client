@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { StaticImageData } from 'next/image';
 
 export type ProductT = {
   /** 상품 url */
@@ -27,7 +27,7 @@ export type TagT = {
   /** 태그 이름 */
   name: string;
   /** 태그 아이콘 */
-  icon: ReactNode;
+  icon: StaticImageData;
   /** 태그 아이콘 색상 */
   iconColor: string;
   /** 태그 배경 색상 */
