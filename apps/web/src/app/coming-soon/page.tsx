@@ -33,9 +33,15 @@ function ComingSoonPage() {
             <div className="text-center text-[32px] font-semibold tracking-[-0.96px]">26-06-26</div>
           </div>
 
-          <div className="mt-12 flex size-20 items-center justify-center rounded-full bg-[#1F7af9] text-center text-[44px] font-bold">
+          <a
+            href="https://forms.gle/qcnMcNX6gkW68vcQ8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-12 flex size-20 cursor-pointer items-center justify-center rounded-full bg-[#1F7af9] text-center text-[44px] font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            aria-label="의견 남기기 폼으로 이동 (새 탭)"
+          >
             🔗
-          </div>
+          </a>
 
           <div className="mt-5 rounded-full bg-white/70 px-5 py-4 text-[18px] font-semibold tracking-[-0.36px] whitespace-nowrap backdrop-blur-[2px]">
             딱 30초! 의견 남기러 가기
