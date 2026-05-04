@@ -1,11 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { writeResult } from '@/utils/resultStorage';
 import { readWishes } from '@/mocks/wishStorage';
 import type { ProductT, RankedProductT } from '@/types/product';
+import { writeResult } from '@/utils/resultStorage';
 
 const ROUND_LABELS = [
   '8강 라운드 1',
@@ -30,26 +30,32 @@ const NEXT_SLOT: Record<number, { matchIdx: number; side: 'left' | 'right' }> = 
 
 type MatchPair = [ProductT, ProductT];
 
+const EMPTY_MATCHES: Array<MatchPair | null> = [null, null, null, null, null, null, null];
+
 export function useTournament() {
   const router = useRouter();
-  const [products] = useState<ProductT[]>(() => readWishes().slice(0, 8));
-
+  const [products, setProducts] = useState<ProductT[]>([]);
   const [matchIndex, setMatchIndex] = useState(0);
-  const [matches, setMatches] = useState<Array<MatchPair | null>>(() => {
-    const p = readWishes().slice(0, 8);
-    return [
-      [p[0]!, p[1]!],
-      [p[2]!, p[3]!],
-      [p[4]!, p[5]!],
-      [p[6]!, p[7]!],
-      null,
-      null,
-      null,
-    ];
-  });
+  const [matches, setMatches] = useState<Array<MatchPair | null>>(EMPTY_MATCHES);
 
   const rankedRef = useRef<RankedProductT[]>([]);
   const pendingRef = useRef<Partial<Record<number, { left?: ProductT; right?: ProductT }>>>({});
+
+  useEffect(() => {
+    const p = readWishes().slice(0, 8);
+    setProducts(p);
+    if (p.length >= 8) {
+      setMatches([
+        [p[0]!, p[1]!],
+        [p[2]!, p[3]!],
+        [p[4]!, p[5]!],
+        [p[6]!, p[7]!],
+        null,
+        null,
+        null,
+      ]);
+    }
+  }, []);
 
   const currentMatch = matches[matchIndex];
   const roundLabel = ROUND_LABELS[matchIndex] ?? '';
