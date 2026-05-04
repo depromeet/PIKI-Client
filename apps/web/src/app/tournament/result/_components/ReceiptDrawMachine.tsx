@@ -1,12 +1,22 @@
 'use client';
 
 import { gsap } from 'gsap';
+import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
+import type { ReactNode } from 'react';
 import { useLayoutEffect, useRef } from 'react';
 
 import GoldMedalIcon from '@/assets/images/tournament/result/medal-1.svg';
 import SilverMedalIcon from '@/assets/images/tournament/result/medal-2.svg';
 import type { RankedProductT } from '@/types/product';
+
+const renderIcon = (icon: ReactNode) => {
+  const raw = icon as unknown;
+  if (raw !== null && typeof raw === 'object' && !Array.isArray(raw) && 'src' in raw) {
+    return <Image src={raw as StaticImageData} alt="" width={12} height={12} />;
+  }
+  return <>{icon}</>;
+};
 
 const formatPrice = (price: number) => `${price.toLocaleString('ko-KR')}원`;
 
@@ -155,13 +165,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
                       style={{ backgroundColor: tag.backgroundColor }}
                       key={tag.name}
                     >
-                      <Image
-                        src={tag.icon}
-                        alt="1위 메달"
-                        width={14}
-                        height={14}
-                        style={{ color: tag.iconColor }}
-                      />
+                      <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
                       <span
                         className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
                         style={{ color: tag.textColor }}
@@ -212,13 +216,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
                       style={{ backgroundColor: tag.backgroundColor }}
                       key={tag.name}
                     >
-                      <Image
-                        src={tag.icon}
-                        alt="1위 메달"
-                        width={14}
-                        height={14}
-                        style={{ color: tag.iconColor }}
-                      />
+                      <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
                       <span
                         className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
                         style={{ color: tag.textColor }}
