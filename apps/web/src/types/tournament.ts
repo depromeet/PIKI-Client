@@ -1,12 +1,7 @@
-export type Product = {
-  image: string;
-  name: string;
-  price: number;
-  reason: string;
-};
+import type { ProductT } from '@/types/product';
 
 export type Match = {
-  left: Product;
-  right: Product;
+  left: ProductT;
+  right: ProductT;
   label: string;
 };

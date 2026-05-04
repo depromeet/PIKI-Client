@@ -1,8 +1,10 @@
 'use client';
 
-import type { Product } from '@/types/tournament';
 import { useCardSelectionAnimation } from '@/hooks/useCardSelectionAnimation';
+import { FINAL_LEFT_TAGS, FINAL_RIGHT_TAGS } from '@/consts/tournament';
+import type { ProductT } from '@/types/product';
 
+import FinalProductCard from './FinalProductCard';
 import ProductCard from './ProductCard';
 
 const HANGER_HEIGHT = 54;
@@ -11,12 +13,13 @@ const IMAGE_HEIGHT = 320;
 const HORIZONTAL_LINE_WIDTH = 350;
 
 type VsSectionProps = {
-  left: Product;
-  right: Product;
-  onSelect: (winner: Product) => void;
+  left: ProductT;
+  right: ProductT;
+  onSelect: (winner: ProductT) => void;
+  isFinal?: boolean;
 };
 
-export default function VsSection({ left, right, onSelect }: VsSectionProps) {
+export default function VsSection({ left, right, onSelect, isFinal = false }: VsSectionProps) {
   const {
     handleClick,
     selectedSide,
@@ -30,6 +33,10 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
 
   const transition = `transition-all ease-in-out`;
   const duration = { transitionDuration: `${animationDuration}ms` };
+
+  const CardComponent = isFinal ? FinalProductCard : ProductCard;
+  const leftProduct = isFinal ? { ...left, tags: FINAL_LEFT_TAGS } : left;
+  const rightProduct = isFinal ? { ...right, tags: FINAL_RIGHT_TAGS } : right;
 
   return (
     <div className="w-full">
@@ -54,8 +61,8 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
           }}
         >
           <div className="border-l-2 border-dashed border-gray-300" style={{ height: HOOK_HEIGHT }} />
-          <ProductCard
-            {...left}
+          <CardComponent
+            {...leftProduct}
             isPicked={selectedSide === 'left'}
             onClick={() => handleClick('left', left)}
           />
@@ -71,8 +78,8 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
           }}
         >
           <div className="w-0 border-l-2 border-dashed border-gray-300" style={{ height: HOOK_HEIGHT }} />
-          <ProductCard
-            {...right}
+          <CardComponent
+            {...rightProduct}
             isPicked={selectedSide === 'right'}
             onClick={() => handleClick('right', right)}
           />
@@ -80,8 +87,13 @@ export default function VsSection({ left, right, onSelect }: VsSectionProps) {
 
         {/* VS 뱃지 */}
         <div
-          className="absolute left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#454545] px-3 py-3 text-base font-bold text-white"
-          style={{ top: HOOK_HEIGHT + IMAGE_HEIGHT / 2 }}
+          className={`absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] font-semibold leading-[17.18px] tracking-[-0.515px] text-white ${transition}`}
+          style={{
+            padding: '7.705px 7.41px 6.295px 8.59px',
+            top: HOOK_HEIGHT + IMAGE_HEIGHT / 2,
+            filter: selectedSide ? 'blur(2px)' : 'none',
+            ...duration,
+          }}
         >
           VS
         </div>

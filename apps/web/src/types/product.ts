@@ -19,6 +19,10 @@ export type ProductT = {
   platformLogoPath: string;
 };
 
+export type RankedProductT = ProductT & {
+  rank: number;
+};
+
 export type TagT = {
   /** 태그 이름 */
   name: string;
