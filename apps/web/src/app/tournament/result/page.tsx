@@ -1,42 +1,44 @@
+'use client';
 import Link from 'next/link';
 
-import { mockProducts } from '@/mocks/products';
+import { dummyProducts } from '@/mocks/products';
 
 import ReceiptDrawMachine from './_components/ReceiptDrawMachine';
-import TournamentRankingSection from './_components/TournamentRankingSection';
-
-const winnerProduct = mockProducts[0]!;
 
 function TournamentResultPage() {
+  // const _result = localStorage.getItem('piki:result');
+  // if (!_result) return <div>no result</div>;
+
+  // const result = JSON.parse(_result) as RankedProductT[];
+  const result = dummyProducts.map((product, i) => ({ ...product, rank: i + 1 }));
+  const orderedResult = result.sort((a, b) => a.rank - b.rank);
+
   return (
-    <main className="flex h-full flex-col px-5.5 pt-16.75 pb-7">
-      <section>
-        <h1 className="text-center text-[36px] leading-snug font-bold tracking-[-0.9108px] text-[#171719]">
+    <main className="flex h-full flex-col overflow-x-hidden pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      <section className="flex min-h-0 flex-1 flex-col space-y-[22px] overflow-x-hidden px-5 pb-10">
+        <h1 className="shrink-0 text-center text-[28px] font-bold tracking-[-0.6px] text-[#2D3037]">
           이번에 구매할 상품은
         </h1>
-      </section>
 
-      <section className="min-h-0 flex-1 overflow-y-auto pb-5">
-        <div className="mx-auto flex w-full max-w-[420px] flex-col">
-          <ReceiptDrawMachine />
-          <TournamentRankingSection />
+        <div className="mx-auto flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
+          <ReceiptDrawMachine result={orderedResult} />
         </div>
       </section>
 
-      <section className="shrink-0 space-y-[12px]">
+      <section className="shrink-0 space-y-[12px] border-t border-[#F4F4F6] px-5 pt-0 pb-[calc(34px+env(safe-area-inset-bottom))]">
         <a
-          href={winnerProduct.url}
+          href={orderedResult[0]!.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-[64px] w-full items-center justify-center rounded-[12px] bg-black px-[30.016px] py-[12.864px] text-[18.39px] leading-normal font-semibold tracking-[0.1048px] text-white"
+          className="flex h-[54px] w-full items-center justify-center rounded-[12px] bg-black text-[16px] leading-normal font-semibold -tracking-[0.6px] text-white"
         >
-          우승템 구매하기
+          1위 바로 구매하기
         </a>
         <Link
-          className="flex h-[64px] w-full items-center justify-center rounded-[14px] bg-[#d7dbe0] px-[24px] py-[16px] text-[17px] leading-[24px] font-semibold tracking-[-0.1px] text-[#6c7783]"
+          className="flex h-[54px] w-full items-center justify-center rounded-[12px] border border-[#C5C8CE] bg-white text-[16px] leading-normal font-semibold -tracking-[0.6px] text-[#2D3037]"
           href="/coming-soon"
         >
-          위시리스트 저장하고 싶다면?
+          일단 저장해두기
         </Link>
       </section>
     </main>
