@@ -134,7 +134,7 @@ function NewItemContent() {
 
   return (
     <main className="relative flex h-full flex-col overflow-x-hidden">
-      <div className="flex-1 overflow-y-auto px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(120px+env(safe-area-inset-bottom))]">
+      <div className="scrollbar-hide flex-1 overflow-y-auto px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(120px+env(safe-area-inset-bottom))]">
         <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#2D3037]">
           위시템 추가
         </h1>
