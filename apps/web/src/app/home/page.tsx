@@ -41,33 +41,35 @@ function HomePage() {
         </p>
       </header>
 
-      <div className="relative mx-auto mt-7 aspect-358/502 w-89.5 max-w-[calc(100%-44px)]">
-        <Image
-          src="/images/home-empty-basket-v2.png"
-          alt="장바구니"
-          fill
-          sizes="(max-width: 480px) calc(100vw - 44px), 358px"
-          priority
-          className="object-contain"
-        />
-
-        {DUMMY_POSITIONS.map(position => (
-          <DummyEmojiCard
-            key={position.emoji}
-            emoji={position.emoji}
-            top={position.top}
-            left={position.left}
+      <section className="relative mt-7 flex flex-1 items-center justify-center px-5">
+        <div className="@container relative aspect-358/502 h-full max-h-125.5 w-full max-w-89.5">
+          <Image
+            src="/images/home-empty-basket-v2.png"
+            alt="장바구니"
+            fill
+            sizes="(max-width: 480px) calc(100vw - 40px), 358px"
+            priority
+            className="object-contain"
           />
-        ))}
 
-        {hasUserWish && userWish ? (
-          <UserWishCard wish={userWish} />
-        ) : (
-          <CenterAddButton onClick={handleOpenSheet} />
-        )}
-      </div>
+          {DUMMY_POSITIONS.map(position => (
+            <DummyEmojiCard
+              key={position.emoji}
+              emoji={position.emoji}
+              top={position.top}
+              left={position.left}
+            />
+          ))}
 
-      <div className="mt-auto px-5">
+          {hasUserWish && userWish ? (
+            <UserWishCard wish={userWish} />
+          ) : (
+            <CenterAddButton onClick={handleOpenSheet} />
+          )}
+        </div>
+      </section>
+
+      <div className="mt-6 px-5">
         <button
           type="button"
           disabled={!hasUserWish}
@@ -92,10 +94,10 @@ type DummyEmojiCardProps = {
 function DummyEmojiCard({ emoji, top, left }: DummyEmojiCardProps) {
   return (
     <div
-      className="absolute flex size-20.5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]"
+      className="absolute flex aspect-square w-[27%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]"
       style={{ top: `${top}%`, left: `${left}%` }}
     >
-      <span className="text-[58px] leading-none">{emoji}</span>
+      <span className="text-[19cqw] leading-none">{emoji}</span>
     </div>
   );
 }
@@ -106,7 +108,7 @@ type UserWishCardProps = {
 
 function UserWishCard({ wish }: UserWishCardProps) {
   return (
-    <div className="absolute top-1/2 left-1/2 size-20.5 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]">
+    <div className="absolute top-1/2 left-1/2 aspect-square w-[27%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]">
       {wish.imagePath ? (
         // dataURL과 일반 URL 모두 native img로 처리
         // eslint-disable-next-line @next/next/no-img-element
@@ -126,7 +128,7 @@ function CenterAddButton({ onClick }: CenterAddButtonProps) {
       type="button"
       aria-label="아이템 추가"
       onClick={onClick}
-      className="absolute top-1/2 left-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#191B1F]"
+      className="absolute top-1/2 left-1/2 flex aspect-square w-[18%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#191B1F]"
     >
       <PlusIcon />
     </button>
@@ -143,7 +145,7 @@ function PlusIcon() {
       strokeWidth={2.5}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-7.5"
+      className="size-[9.5cqw]"
     >
       <line x1="15" y1="6" x2="15" y2="24" />
       <line x1="6" y1="15" x2="24" y2="15" />

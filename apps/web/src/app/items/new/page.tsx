@@ -249,7 +249,7 @@ function ParsingState() {
   }, [phraseIndex]);
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center px-5 pt-[calc(env(safe-area-inset-top)+85px)]">
+    <div className="absolute inset-0 flex flex-col items-center px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <div className="flex w-full flex-col items-center gap-2 text-center tracking-[-0.6px]">
         <h1 className="text-[28px] leading-10 font-bold text-[#2D3037]">상품 불러오는 중</h1>
         <div className="relative h-6.5 w-full">
@@ -267,7 +267,9 @@ function ParsingState() {
         </div>
       </div>
 
-      <ProductSkeleton className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      <section className="mt-7 flex w-full flex-1 items-center justify-center">
+        <ProductSkeleton />
+      </section>
     </div>
   );
 }
@@ -278,7 +280,7 @@ type ProductSkeletonProps = {
 
 function ProductSkeleton({ className }: ProductSkeletonProps) {
   return (
-    <div className={cn('flex w-80 flex-col gap-7', className)}>
+    <div className={cn('flex w-full max-w-80 flex-col gap-7', className)}>
       <SkeletonBox className="aspect-square w-full rounded-[14px]" />
       <div className="flex flex-col gap-2.5">
         <SkeletonBox className="h-5.5 w-full rounded-[14px] opacity-70" />
