@@ -194,8 +194,8 @@ function NewItemContent() {
         />
       </div>
 
-      <footer className="absolute right-0 bottom-0 left-0 border-t border-[#F4F4F6] bg-white px-2.5 pt-6 pb-[calc(env(safe-area-inset-bottom)+24px)]">
-        <div className="mx-auto flex w-full max-w-[362px] gap-3">
+      <footer className="absolute right-0 bottom-0 left-0 border-t border-[#F4F4F6] bg-white px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+24px)]">
+        <div className="flex w-full gap-3">
           {!isManual && (
             <button
               type="button"
