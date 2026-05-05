@@ -196,7 +196,7 @@ export const dummyProducts: ProductT[] = [
     thumbnail: '👖',
     name: '[이렇게입어 동훈아] MAXIMIZING DENIM PANTS',
     imagePath: '/images/mock-8-pants.webp',
-    price: 1063000,
+    price: 106300,
     platform: 'musinsa',
     platformLogoPath: '/images/logo-musinsa.png',
   },

@@ -1,14 +1,13 @@
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from 'react';
 
 import EditIcon from '@/assets/icons/edit.svg';
 import ImagePlaceholderIcon from '@/assets/icons/image.svg';
-import { parsedProductQueryKey, useAddWish, useParsedProduct } from '@/hooks/useWishes';
-import { useWishStore } from '@/stores/wishStore';
+import { useAddWish } from '@/hooks/useWishes';
+import { dummyProducts } from '@/mocks/products';
 import type { ProductT } from '@/types/product';
 import { cn } from '@/utils/cn';
 import { fileToDataUrl } from '@/utils/fileToDataUrl';
@@ -17,6 +16,8 @@ const parsePriceInput = (raw: string) => {
   const digits = raw.replace(/[^0-9]/g, '');
   return digits ? Number(digits) : 0;
 };
+
+const PARSE_DELAY_MS = 4000;
 
 function NewItemPage() {
   return (
@@ -29,19 +30,16 @@ function NewItemPage() {
 function NewItemContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
 
   const isManual = searchParams.get('manual') === '1';
-  const url = useWishStore(state => state.pendingUrl);
-  const clearPendingUrl = useWishStore(state => state.clearPendingUrl);
-
-  const parsedQuery = useParsedProduct(isManual ? '' : url);
+  const lastDummyProduct = dummyProducts[dummyProducts.length - 1]!;
   const addWishMutation = useAddWish();
 
   const [nameOverride, setNameOverride] = useState<string | null>(null);
   const [priceOverride, setPriceOverride] = useState<string | null>(null);
   const [manualImageUrl, setManualImageUrl] = useState<string>('');
   const [imageError, setImageError] = useState<string>('');
+  const [isParsing, setIsParsing] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const openFilePicker = () => {
@@ -49,23 +47,22 @@ function NewItemContent() {
   };
 
   useEffect(() => {
-    if (!isManual && !url) router.replace('/home');
-  }, [isManual, url, router]);
+    const timer = window.setTimeout(() => {
+      setIsParsing(false);
+    }, PARSE_DELAY_MS);
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, []);
 
-  const baseName = parsedQuery.data?.name ?? '';
-  const basePrice = parsedQuery.data?.price != null ? String(parsedQuery.data.price) : '';
-  const baseImageUrl = parsedQuery.data?.imagePath ?? '';
+  const baseName = lastDummyProduct.name;
+  const basePrice = String(lastDummyProduct.price);
+  const baseImageUrl = lastDummyProduct.imagePath;
 
   const name = nameOverride ?? baseName;
   const priceText = priceOverride ?? basePrice;
 
-  const isPartial =
-    !isManual &&
-    Boolean(parsedQuery.data) &&
-    (parsedQuery.data?.name == null ||
-      parsedQuery.data?.price == null ||
-      !parsedQuery.data?.imagePath);
-  const isFailedState = isManual || isPartial;
+  const isFailedState = isManual;
   const showImageEmpty = isFailedState && !manualImageUrl && !baseImageUrl;
   const finalImageUrl = manualImageUrl || baseImageUrl;
 
@@ -74,7 +71,11 @@ function NewItemContent() {
     setNameOverride(null);
     setPriceOverride(null);
     setManualImageUrl('');
-    queryClient.invalidateQueries({ queryKey: parsedProductQueryKey(url) });
+    setIsParsing(true);
+
+    window.setTimeout(() => {
+      setIsParsing(false);
+    }, PARSE_DELAY_MS);
   };
 
   const handleAddWish = async () => {
@@ -92,18 +93,17 @@ function NewItemContent() {
           platformLogoPath: '',
         }
       : {
-          url: parsedQuery.data?.url ?? '',
-          thumbnail: parsedQuery.data?.thumbnail ?? '',
+          url: lastDummyProduct.url,
+          thumbnail: lastDummyProduct.thumbnail,
           imagePath: finalImageUrl,
           name: name.trim(),
           price: parsePriceInput(priceText),
-          tags: parsedQuery.data?.tags,
-          platform: parsedQuery.data?.platform ?? '',
-          platformLogoPath: parsedQuery.data?.platformLogoPath ?? '',
+          tags: lastDummyProduct.tags,
+          platform: lastDummyProduct.platform,
+          platformLogoPath: lastDummyProduct.platformLogoPath,
         };
 
     await addWishMutation.mutateAsync(product);
-    clearPendingUrl();
     router.replace('/home');
   };
 
@@ -120,8 +120,7 @@ function NewItemContent() {
     }
   };
 
-  const isParsing = !isManual && (parsedQuery.isPending || parsedQuery.isFetching);
-  const showProductView = isManual || Boolean(parsedQuery.data);
+  const showProductView = !isParsing;
   const canSubmit = name.trim().length > 0 && priceText.trim().length > 0;
 
   if (!showProductView) {
@@ -142,14 +141,12 @@ function NewItemContent() {
         {isFailedState ? (
           <FailureBanner className="mt-3" />
         ) : (
-          parsedQuery.data && (
-            <SuccessBanner
-              platform={parsedQuery.data.platform}
-              platformLogoPath={parsedQuery.data.platformLogoPath}
-              originalUrl={parsedQuery.data.url}
-              className="mt-3"
-            />
-          )
+          <SuccessBanner
+            platform={lastDummyProduct.platform}
+            platformLogoPath={lastDummyProduct.platformLogoPath}
+            originalUrl={lastDummyProduct.url}
+            className="mt-3"
+          />
         )}
 
         {showImageEmpty ? (
@@ -201,7 +198,7 @@ function NewItemContent() {
               type="button"
               onClick={handleRetry}
               disabled={isParsing || addWishMutation.isPending}
-              className="flex h-13.5 flex-1 items-center justify-center rounded-xl border-[1.2px] border-[#C5C8CE] bg-white px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#2D3037] disabled:opacity-50"
+              className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl border-[1.2px] border-[#C5C8CE] bg-white px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#2D3037] disabled:opacity-50"
             >
               {isParsing ? '가져오는 중...' : '다시 가져오기'}
             </button>
@@ -210,7 +207,7 @@ function NewItemContent() {
             type="button"
             onClick={handleAddWish}
             disabled={!canSubmit || addWishMutation.isPending || isParsing}
-            className="flex h-13.5 flex-1 items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#F7F7F8] disabled:bg-[#C5C8CE]"
+            className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#F7F7F8] disabled:bg-[#C5C8CE]"
           >
             {addWishMutation.isPending ? '담는 중...' : '위시에 담기'}
           </button>
@@ -298,7 +295,7 @@ type SkeletonBoxProps = {
 function SkeletonBox({ className }: SkeletonBoxProps) {
   return (
     <div className={cn('relative overflow-hidden bg-[#DCDEE2]/50', className)}>
-      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 to-transparent motion-safe:animate-piki-skeleton-shimmer" />
+      <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/60 to-transparent motion-safe:animate-piki-skeleton-shimmer" />
     </div>
   );
 }
@@ -336,13 +333,9 @@ type SuccessBannerProps = {
 };
 
 function SuccessBanner({ platform, platformLogoPath, originalUrl, className }: SuccessBannerProps) {
-  const host = (() => {
-    try {
-      return new URL(originalUrl).host;
-    } catch {
-      return '';
-    }
-  })();
+  const regex = /^https?:\/\/(?:www\.)?([^/?#]+)/i;
+  const match = originalUrl.match(regex);
+  const domain = match?.[1] ?? '';
 
   return (
     <a
@@ -356,11 +349,11 @@ function SuccessBanner({ platform, platformLogoPath, originalUrl, className }: S
     >
       <ShopIcon platform={platform} platformLogoPath={platformLogoPath} />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <p className="text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#1A1A1A]">
+        <p className="line-clamp-1 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#1A1A1A]">
           상품 정보를 가져왔어요
         </p>
-        <p className="truncate text-xs leading-[18px] font-semibold tracking-[-0.4px] text-[#686F7E]">
-          {host || platform}에서 확인하기
+        <p className="line-clamp-1 truncate text-xs leading-[18px] font-semibold tracking-[-0.4px] text-[#686F7E]">
+          {domain}에서 확인하기
         </p>
       </div>
       <ChevronRightIcon />
@@ -376,7 +369,7 @@ function FailureBanner({ className }: FailureBannerProps) {
   return (
     <div className={cn('flex h-20 items-center gap-4 rounded-xl bg-[#FEFAEC] px-5', className)}>
       <div className="relative flex size-[57px] shrink-0 items-center justify-center">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#FBE8B0] via-[#F8D77D] to-[#F4C74A]" />
+        <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#FBE8B0] via-[#F8D77D] to-[#F4C74A]" />
         <span className="relative text-[32px] leading-10">🧐</span>
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -400,8 +393,13 @@ function ShopIcon({ platform, platformLogoPath }: ShopIconProps) {
   return (
     <div className="relative flex size-[57px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
       {platformLogoPath ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={platformLogoPath} alt={platform} className="size-full object-cover" />
+        <Image
+          src={platformLogoPath}
+          width={57}
+          height={57}
+          alt={platform}
+          className="size-full object-cover"
+        />
       ) : (
         <span className="text-[10px] font-bold tracking-tight text-[#1A1A1A]">{platform}</span>
       )}

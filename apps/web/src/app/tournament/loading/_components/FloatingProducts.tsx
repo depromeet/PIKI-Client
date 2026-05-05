@@ -133,13 +133,7 @@ export default function FloatingProducts({ items }: FloatingProductsProps) {
             top: positions[i]?.y ?? 0,
           }}
         >
-          {item.imageUrl ? (
-            // dataURL과 일반 URL 모두 native img로 처리
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={item.imageUrl} alt="" className="size-full object-cover" />
-          ) : (
-            <span className="text-[58px] leading-none">{item.emoji}</span>
-          )}
+          <span className="text-[58px] leading-none">{item.emoji}</span>
         </div>
       ))}
     </div>

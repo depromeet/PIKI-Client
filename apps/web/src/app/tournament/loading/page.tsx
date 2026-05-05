@@ -4,12 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 
 import { useWishes } from '@/hooks/useWishes';
-import { isDummyProduct } from '@/mocks/dummyWishes';
 
 import FloatingProducts, { type FloatingItemT } from './_components/FloatingProducts';
 import LoadingBar from './_components/LoadingBar';
 
-const LOADING_DURATION_MS = 4500;
+const LOADING_DURATION_MS = 4000;
 
 export default function TournamentLoadingPage() {
   const router = useRouter();
@@ -25,15 +24,9 @@ export default function TournamentLoadingPage() {
   const items = useMemo<FloatingItemT[]>(() => {
     const wishes = wishesQuery.data ?? [];
     return wishes.map((wish, index) => {
-      if (isDummyProduct(wish)) {
-        return {
-          id: `dummy-${index}`,
-          emoji: wish.thumbnail,
-        };
-      }
       return {
-        id: `user-${index}`,
-        imageUrl: wish.imagePath,
+        id: `dummy-${index}`,
+        emoji: wish.thumbnail,
       };
     });
   }, [wishesQuery.data]);

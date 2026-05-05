@@ -1,7 +1,7 @@
 'use client';
 
-import { useCardSelectionAnimation } from '@/hooks/useCardSelectionAnimation';
 import { FINAL_LEFT_TAGS, FINAL_RIGHT_TAGS } from '@/consts/tournament';
+import { useCardSelectionAnimation } from '@/hooks/useCardSelectionAnimation';
 import type { ProductT } from '@/types/product';
 
 import FinalProductCard from './FinalProductCard';
@@ -42,10 +42,14 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
     <div className="w-full">
       {/* 헹거 영역 */}
       <div className="relative" style={{ height: HANGER_HEIGHT }}>
-        <div className="absolute left-1/2 top-0 h-full w-0 -translate-x-1/2 border-l-2 border-dashed border-gray-300" />
+        <div className="absolute top-0 left-1/2 h-full w-0 -translate-x-1/2 border-l-2 border-dashed border-gray-300" />
         <div
           className={`absolute bottom-0 left-1/2 -translate-x-1/2 border-t border-dashed border-gray-300 ${transition}`}
-          style={{ width: HORIZONTAL_LINE_WIDTH, transform: `rotate(${hangerRotate}deg)`, ...duration }}
+          style={{
+            width: HORIZONTAL_LINE_WIDTH,
+            transform: `rotate(${hangerRotate}deg)`,
+            ...duration,
+          }}
         />
       </div>
 
@@ -60,7 +64,10 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
             ...duration,
           }}
         >
-          <div className="border-l-2 border-dashed border-gray-300" style={{ height: HOOK_HEIGHT }} />
+          <div
+            className="border-l-2 border-dashed border-gray-300"
+            style={{ height: HOOK_HEIGHT }}
+          />
           <CardComponent
             {...leftProduct}
             isPicked={selectedSide === 'left'}
@@ -77,7 +84,10 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
             ...duration,
           }}
         >
-          <div className="w-0 border-l-2 border-dashed border-gray-300" style={{ height: HOOK_HEIGHT }} />
+          <div
+            className="w-0 border-l-2 border-dashed border-gray-300"
+            style={{ height: HOOK_HEIGHT }}
+          />
           <CardComponent
             {...rightProduct}
             isPicked={selectedSide === 'right'}
@@ -87,9 +97,8 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
 
         {/* VS 뱃지 */}
         <div
-          className={`absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] font-semibold leading-[17.18px] tracking-[-0.515px] text-white ${transition}`}
+          className={`absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white ${transition}`}
           style={{
-            padding: '7.705px 7.41px 6.295px 8.59px',
             top: HOOK_HEIGHT + IMAGE_HEIGHT / 2,
             filter: selectedSide ? 'blur(2px)' : 'none',
             ...duration,

@@ -74,7 +74,7 @@ function HomePage() {
           type="button"
           disabled={!hasUserWish}
           onClick={handleStartTournament}
-          className="flex h-13.5 w-full shrink-0 items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white disabled:bg-[#C5C8CE] disabled:text-white"
+          className="flex h-13.5 w-full shrink-0 cursor-pointer items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white disabled:bg-[#C5C8CE] disabled:text-white"
         >
           토너먼트 시작하기
         </button>
@@ -108,12 +108,8 @@ type UserWishCardProps = {
 
 function UserWishCard({ wish }: UserWishCardProps) {
   return (
-    <div className="absolute top-1/2 left-1/2 aspect-square w-[27%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]">
-      {wish.imagePath ? (
-        // dataURL과 일반 URL 모두 native img로 처리
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={wish.imagePath} alt={wish.name} className="size-full object-cover" />
-      ) : null}
+    <div className="absolute top-1/2 left-1/2 flex aspect-square w-[27%] -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]">
+      {wish.thumbnail ? <span className="text-[19cqw] leading-none">{wish.thumbnail}</span> : null}
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 import LinkIcon from '@/assets/icons/link.svg';
-import { useWishStore } from '@/stores/wishStore';
 import { cn } from '@/utils/cn';
 
 type AddItemModalProps = {
@@ -15,7 +14,6 @@ type AddItemModalProps = {
 
 function AddItemModal({ open, onClose }: AddItemModalProps) {
   const router = useRouter();
-  const setPendingUrl = useWishStore(state => state.setPendingUrl);
 
   const [url, setUrl] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -54,7 +52,7 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, onClose]);
+  }, [open, onClose, router]);
 
   const handleClose = () => {
     setUrl('');
@@ -72,7 +70,6 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
       return;
     }
     setIsError(false);
-    setPendingUrl(url);
     router.push('/items/new');
     setUrl('');
     onClose();
