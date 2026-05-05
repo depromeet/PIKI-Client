@@ -27,7 +27,7 @@ export default function TournamentResultPageClient() {
         </div>
       </section>
 
-      <section className="shrink-0 space-y-[12px] border-t border-[#F4F4F6] px-5 pt-0 pb-[calc(34px+env(safe-area-inset-bottom))]">
+      <section className="shrink-0 space-y-[12px] border-t border-[#F4F4F6] px-5 pt-6 pb-[calc(34px+env(safe-area-inset-bottom))]">
         <a
           href={orderedResult[0]!.url}
           target="_blank"

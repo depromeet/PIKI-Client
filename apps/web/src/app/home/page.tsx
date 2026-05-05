@@ -31,7 +31,7 @@ function HomePage() {
   };
 
   return (
-    <main className="relative flex h-full flex-col overflow-x-hidden pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+    <main className="relative flex h-full w-full flex-col pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <header className="px-6 text-center">
         <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#171719]">
           고민 중인 것들, 여기 모아봐요

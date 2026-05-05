@@ -21,7 +21,7 @@ export default function TournamentPage() {
   }, [products]);
 
   return (
-    <div className="flex flex-col items-center gap-6 px-4 py-[81px]">
+    <div className="scrollbar-hide flex h-full flex-col items-center gap-6 overflow-y-auto px-4 pt-[calc(env(safe-area-inset-top)+48px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <RoundBadge label={roundLabel} />
       <TournamentQuestion />
       <div className="mt-8 w-full">
