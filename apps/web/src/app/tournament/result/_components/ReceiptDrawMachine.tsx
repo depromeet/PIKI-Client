@@ -125,9 +125,9 @@ export default function ReceiptDrawMachine({ result }: Props) {
           className="pointer-events-auto mx-auto flex h-full min-h-0 w-[78%] flex-col will-change-transform"
         >
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-b-[6px] border border-[#d8dde2] bg-[#f8f9fb] shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
-            <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-3 pt-[18px]">
+            <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain pt-[18px]">
               {/** 1등 */}
-              <section className="flex flex-col items-center border-b border-dashed border-[#DCDEE2] pb-6">
+              <section className="flex flex-col items-center px-3">
                 <p className="text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
                   1위 - 지금 사도 후회 없을 선택 🔥
                 </p>
@@ -158,32 +158,38 @@ export default function ReceiptDrawMachine({ result }: Props) {
                   </p>
                 </div>
 
-                <div className="mt-3 flex w-full flex-col items-center gap-[6px]">
-                  {result[0]!.tags?.map(tag => (
-                    <div
-                      className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
-                      style={{ backgroundColor: tag.backgroundColor }}
-                      key={tag.name}
-                    >
-                      <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
-                      <span
-                        className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
-                        style={{ color: tag.textColor }}
+                {result[0]!.tags?.length && (
+                  <div className="mt-3 flex w-full flex-col items-center gap-[6px]">
+                    {result[0]!.tags?.map(tag => (
+                      <div
+                        className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
+                        style={{ backgroundColor: tag.backgroundColor }}
+                        key={tag.name}
                       >
-                        {tag.name}
-                      </span>
-                    </div>
-                  ))}
+                        <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
+                        <span
+                          className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
+                          style={{ color: tag.textColor }}
+                        >
+                          {tag.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-6 w-full px-2">
+                  <div className="h-px border-t border-dashed border-[#DCDEE2]" />
                 </div>
               </section>
 
               {/** 2등 */}
-              <section className="flex flex-col items-center border-b border-dashed border-[#DCDEE2] pt-9 pb-6">
+              <section className="flex flex-col items-center px-3 pt-9">
                 <p className="text-center text-[16px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
                   2위 - 끝까지 고민했던 선택 👀
                 </p>
 
-                <div className="relative mt-4 h-20 w-20 overflow-hidden rounded-xl bg-black/5">
+                <div className="relative mt-6 h-20 w-20 overflow-hidden rounded-xl bg-black/5">
                   <Image
                     src={result[1]!.imagePath}
                     width={80}
@@ -200,7 +206,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
                   />
                 </div>
 
-                <div className="mt-[18px] text-center tracking-[-0.6px]">
+                <div className="mt-3.5 text-center tracking-[-0.6px]">
                   <p className="text-[14px] leading-5 font-medium text-[#686F7E]">
                     {result[1]!.name}
                   </p>
@@ -209,35 +215,41 @@ export default function ReceiptDrawMachine({ result }: Props) {
                   </p>
                 </div>
 
-                <div className="mt-3 flex w-full flex-col items-center gap-[6px]">
-                  {result[1]!.tags?.map(tag => (
-                    <div
-                      className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
-                      style={{ backgroundColor: tag.backgroundColor }}
-                      key={tag.name}
-                    >
-                      <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
-                      <span
-                        className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
-                        style={{ color: tag.textColor }}
+                {result[1]!.tags?.length && (
+                  <div className="mt-3 flex w-full flex-col items-center gap-[6px]">
+                    {result[1]!.tags?.map(tag => (
+                      <div
+                        className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
+                        style={{ backgroundColor: tag.backgroundColor }}
+                        key={tag.name}
                       >
-                        {tag.name}
-                      </span>
-                    </div>
-                  ))}
+                        <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
+                        <span
+                          className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
+                          style={{ color: tag.textColor }}
+                        >
+                          {tag.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-6 w-full px-2">
+                  <div className="h-px border-t border-dashed border-[#DCDEE2]" />
                 </div>
               </section>
 
               {/** 3-4등 */}
-              <section className="flex flex-col items-center border-b border-dashed border-[#DCDEE2] pt-9 pb-9">
+              <section className="flex flex-col items-center px-3 pt-9">
                 <p className="text-center text-[16px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
                   3-4위 준결승 탈락
                 </p>
 
-                <div className="mt-8 flex w-full items-start">
+                <div className="mt-8 flex w-full items-start justify-center gap-15">
                   {result.slice(2, 4).map((product, productIndex) => (
                     <div
-                      className="flex min-w-0 flex-1 items-center justify-center py-[10px]"
+                      className="flex w-20 min-w-0 items-center justify-center pt-3"
                       key={product.name}
                     >
                       <div className="flex flex-col items-center gap-2">
@@ -249,15 +261,15 @@ export default function ReceiptDrawMachine({ result }: Props) {
                             height={80}
                             className="h-full w-full rounded-2xl bg-black/5 object-cover"
                           />
-                          <div className="absolute top-[-10px] left-[-10px] flex h-5 w-5 items-center justify-center rounded-full bg-[#414B5A]">
-                            <span className="text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-white">
+                          <div className="absolute top-1 left-1 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#414B5A]">
+                            <span className="text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-white">
                               {productIndex + 3}
                             </span>
                           </div>
                         </div>
 
-                        <div className="flex w-[120px] flex-col items-center gap-1">
-                          <p className="line-clamp-2 text-center text-[12px] leading-[18px] font-normal tracking-[-0.4px] text-[#686F7E]">
+                        <div className="flex w-20 flex-col items-center gap-1">
+                          <p className="line-clamp-2 text-[12px] leading-[18px] font-normal tracking-[-0.4px] break-all text-[#686F7E]">
                             {product.name}
                           </p>
                           <p className="text-center text-[14px] leading-5 font-semibold tracking-[-0.6px] text-[#2D3037]">
@@ -268,20 +280,24 @@ export default function ReceiptDrawMachine({ result }: Props) {
                     </div>
                   ))}
                 </div>
+
+                <div className="mt-9 w-full px-2">
+                  <div className="h-px border-t border-dashed border-[#DCDEE2]" />
+                </div>
               </section>
 
               {/** 5-8등 */}
-              <section className="flex w-full flex-col items-center">
-                <div className="flex w-full flex-col items-center py-6">
+              <section className="flex w-full flex-col items-center px-3">
+                <div className="flex w-full flex-col items-center py-9">
                   <p className="text-center text-[16px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
                     5~8위 이번엔 여기까지
                   </p>
                 </div>
 
-                <div className="flex w-full flex-col items-center justify-start divide-y divide-dashed divide-[#DCDEE2] pt-5">
+                <div className="flex w-full flex-col items-center justify-start">
                   {result.slice(4, 8).map((product, rankIndex) => (
-                    <div className="w-full py-3" key={product.name}>
-                      <div className="flex w-full items-center gap-4 py-0">
+                    <div className="w-full" key={product.name}>
+                      <div className="flex w-full items-center gap-4 py-3">
                         <div className="flex shrink-0 items-center gap-2">
                           <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#414B5A]">
                             <span className="text-[10px] leading-[12px] font-semibold tracking-[-0.2px] text-white">
@@ -307,6 +323,13 @@ export default function ReceiptDrawMachine({ result }: Props) {
                           </p>
                         </div>
                       </div>
+                      {rankIndex < 3 && (
+                        <div className="flex">
+                          <div className="w-5" />
+                          <div className="h-px flex-1 border-b border-dashed border-[#DCDEE2]" />
+                          <div className="w-5" />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -314,10 +337,18 @@ export default function ReceiptDrawMachine({ result }: Props) {
             </div>
 
             {/** 하단 고정: 안내 + 찢어진 무늬 (스크롤 영역 밖) */}
-            <div className="flex shrink-0 flex-col border-t border-dashed border-[#DCDEE2] bg-[#f8f9fb]">
+            <div className="flex shrink-0 flex-col bg-[#f8f9fb]">
+              <div className="px-5">
+                <div className="h-px border-t border-dashed border-[#DCDEE2]" />
+              </div>
               <div className="flex w-full items-center justify-center px-[19.2px] py-5">
                 <p className="text-center font-mono text-[10px] leading-normal font-medium whitespace-nowrap text-[#ADB1BB]">
-                  2026.04.30 기준으로 정리했어요
+                  {new Date().toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  })}
+                  기준으로 정리했어요
                 </p>
               </div>
               <div
