@@ -5,7 +5,7 @@ function ComingSoonPage() {
   return (
     <main className="flex h-full flex-col px-5.5 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <section className="text-center">
-        <h1 className="text-[36px] leading-snug font-extrabold tracking-[-0.6px] text-[#171719]">
+        <h1 className="text-[28px] leading-snug font-extrabold tracking-[-0.6px] text-[#171719]">
           아직 준비 중이에요
         </h1>
         <p className="mt-2 text-[18px] font-medium tracking-[-0.6px] text-[#ADB1BB]">
@@ -52,7 +52,7 @@ function ComingSoonPage() {
       <section className="mt-auto w-full border-t border-[#F4F4F6] pt-6">
         <Link
           href="/"
-          className="flex h-[54px] w-full items-center justify-center rounded-[12px] bg-black px-[30.016px] py-[12.864px] text-[18.39px] leading-normal font-semibold tracking-[0.1048px] text-white"
+          className="flex h-[54px] w-full items-center justify-center rounded-[12px] bg-black px-[30.016px] py-[12.864px] text-[16px] leading-normal font-semibold tracking-[0.1048px] text-white"
           type="button"
         >
           홈으로 돌아가기
