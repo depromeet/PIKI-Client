@@ -128,7 +128,7 @@ function CenterAddButton({ onClick }: CenterAddButtonProps) {
       type="button"
       aria-label="아이템 추가"
       onClick={onClick}
-      className="absolute top-1/2 left-1/2 flex aspect-square w-[18%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#191B1F]"
+      className="absolute top-1/2 left-1/2 flex aspect-square w-[18%] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[#191B1F]"
     >
       <PlusIcon />
     </button>

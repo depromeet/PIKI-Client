@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import PikiLogo from '@/assets/images/piki-logo.svg';
-import EntryStartButton from '@/components/EntryStartButton';
 
 function EntryPage() {
   return (
@@ -22,7 +22,12 @@ function EntryPage() {
       </div>
 
       <div className="mt-auto px-5">
-        <EntryStartButton />
+        <Link
+          href="/home"
+          className="flex h-13.5 w-full shrink-0 items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#F7F7F8]"
+        >
+          시작하기
+        </Link>
       </div>
     </main>
   );
