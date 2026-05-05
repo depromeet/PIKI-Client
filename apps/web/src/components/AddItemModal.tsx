@@ -45,6 +45,8 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
 
   useEffect(() => {
     if (!open) return;
+    router.prefetch('/items/new');
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
@@ -152,7 +154,7 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
             type="button"
             disabled={!url}
             onClick={handleSubmit}
-            className="flex h-13.5 w-full items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white disabled:bg-[#C5C8CE]"
+            className="flex h-13.5 w-full cursor-pointer items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white disabled:bg-[#C5C8CE]"
           >
             장바구니에 담기
           </button>
