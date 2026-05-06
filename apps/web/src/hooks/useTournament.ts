@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { readWishes } from '@/mocks/wishStorage';
+import { dummyProducts } from '@/mocks/products';
 import type { ProductT, RankedProductT } from '@/types/product';
 import { writeResult } from '@/utils/resultStorage';
 
@@ -42,7 +42,7 @@ export function useTournament() {
   const pendingRef = useRef<Partial<Record<number, { left?: ProductT; right?: ProductT }>>>({});
 
   useEffect(() => {
-    const p = readWishes().slice(0, 8);
+    const p = dummyProducts.slice(0, 8);
     setProducts(p);
     if (p.length >= 8) {
       setMatches([
