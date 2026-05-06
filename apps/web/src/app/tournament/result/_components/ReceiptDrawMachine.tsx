@@ -8,6 +8,7 @@ import { useLayoutEffect, useRef } from 'react';
 
 import GoldMedalIcon from '@/assets/images/tournament/result/medal-1.svg';
 import SilverMedalIcon from '@/assets/images/tournament/result/medal-2.svg';
+import ReceiptPrinterImg from '@/assets/images/tournament/result/receipt-printer.png';
 import type { RankedProductT } from '@/types/product';
 
 const renderIcon = (icon: ReactNode) => {
@@ -107,19 +108,15 @@ export default function ReceiptDrawMachine({ result }: Props) {
 
   return (
     <div className="relative isolate flex min-h-0 w-full flex-1 flex-col" ref={animationScopeRef}>
-      <div className="relative z-30 h-[66px] shrink-0 rounded-[14px] bg-[linear-gradient(180deg,#b8c0c8_0%,#7f8892_52%,#b8c0c8_100%)] p-[6px] shadow-[inset_0_2px_8px_rgba(255,255,255,0.55),inset_0_-2px_8px_rgba(0,0,0,0.18)]">
-        <div className="relative flex h-full items-center justify-center rounded-[10px] bg-[linear-gradient(180deg,#dfe4e8_0%,#9ca4ad_100%)]">
-          <div
-            className="relative z-40 h-[5px] w-[88%] rounded-full bg-[#2a2f35]/75"
-            ref={slotBarRef}
-          />
-        </div>
+      <div className="relative z-30 shrink-0">
+        <Image src={ReceiptPrinterImg} alt="영수증 기계" className="h-auto w-full object-contain" priority />
+        <div className="absolute inset-x-0 bottom-0 h-[5px]" ref={slotBarRef} />
       </div>
       {/** absolute 영수증이 레이아웃 높이를 갖도록 플로우 영역 확보 */}
       <div className="invisible -mt-8 min-h-0 flex-1 shrink-0" aria-hidden />
 
       {/** 슬롯에서 내려오는 영수증 — transform은 overflow:hidden 밖에서 적용 */}
-      <div className="pointer-events-none absolute inset-x-0 top-[34px] bottom-0 z-40 overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-[54px] bottom-0 z-40 overflow-hidden">
         <div
           ref={receiptPaperRef}
           className="pointer-events-auto mx-auto flex h-full min-h-0 w-[78%] flex-col will-change-transform"
