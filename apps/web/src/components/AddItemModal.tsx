@@ -2,10 +2,12 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 
 import LinkIcon from '@/assets/icons/link.svg';
 import { cn } from '@/utils/cn';
+
+const DEMO_URL = 'https://piki.demo/item1';
 
 type AddItemModalProps = {
   open: boolean;
@@ -15,29 +17,11 @@ type AddItemModalProps = {
 function AddItemModal({ open, onClose }: AddItemModalProps) {
   const router = useRouter();
 
-  const [url, setUrl] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  const isValidUrl = useMemo(() => url.startsWith('https://') && !/\s/.test(url), [url]);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setUrl('');
-      setIsFocused(false);
-      setIsError(false);
-    }, 0);
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [open]);
-
   useEffect(() => {
     if (!open) return;
-    const original = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = original;
+      document.body.style.overflow = '';
     };
   }, [open]);
 
@@ -54,30 +38,14 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
     };
   }, [open, onClose, router]);
 
-  const handleClose = () => {
-    setUrl('');
-    setIsError(false);
-    onClose();
-  };
-
   const handleStop = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
   };
 
   const handleSubmit = () => {
-    if (!isValidUrl) {
-      setIsError(true);
-      return;
-    }
-    setIsError(false);
     router.push('/items/new');
-    setUrl('');
     onClose();
   };
-
-  let inputBorderClass = 'border-[#E5E7EB]';
-  if (isFocused) inputBorderClass = 'border-[#1F7AF9]';
-  if (isError) inputBorderClass = 'border-[#E91008]';
 
   return (
     <div
@@ -92,7 +60,7 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
       <button
         type="button"
         aria-label="닫기"
-        onClick={handleClose}
+        onClick={onClose}
         className={cn(
           'absolute inset-0 bg-black/40 transition-opacity duration-200',
           open ? 'opacity-100' : 'opacity-0'
@@ -110,7 +78,7 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
           id="add-item-modal-title"
           className="text-xl leading-7 font-bold tracking-[-0.6px] text-[#2D3037]"
         >
-          위시템 추가
+          위시템 담기
         </h2>
 
         <div className="flex w-full flex-col gap-4">
@@ -121,39 +89,27 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
             >
               상품 URL
             </label>
-            <div
-              className={cn(
-                'flex h-13.5 items-center gap-2 overflow-hidden rounded-xl border-[1.4px] bg-white px-4 transition-colors',
-                inputBorderClass
-              )}
-            >
+            <div className="flex h-13.5 items-center gap-2 overflow-hidden rounded-xl border-[1.4px] border-[#1F7AF9] bg-white px-4">
               <Image src={LinkIcon} alt="" aria-hidden className="size-5 shrink-0 object-contain" />
               <input
                 id="add-item-url-input"
                 type="url"
-                inputMode="url"
-                value={url}
-                onChange={event => {
-                  setUrl(event.target.value);
-                  if (isError) setIsError(false);
-                }}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                className="min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] text-[#2D3037] placeholder:text-[#ADB1BB] focus:outline-none"
+                readOnly
+                value={DEMO_URL}
+                className="min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] text-[#2D3037] focus:outline-none"
               />
             </div>
-            <div className="mt-1.5 h-5 text-[14px] leading-5 font-normal tracking-[-0.6px] text-[#e91008]">
-              {isError ? 'https://로 시작하는 상품 링크를 입력해 주세요' : ''}
-            </div>
+            <p className="mt-1.5 w-full text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
+              ※ 데모용 상품을 자동으로 불러와요
+            </p>
           </div>
 
           <button
             type="button"
-            disabled={!url}
             onClick={handleSubmit}
-            className="flex h-13.5 w-full cursor-pointer items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white disabled:bg-[#C5C8CE]"
+            className="flex h-13.5 w-full cursor-pointer items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white"
           >
-            장바구니에 담기
+            후보 바구니에 담기
           </button>
         </div>
       </div>
