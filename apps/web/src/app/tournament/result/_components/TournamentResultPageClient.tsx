@@ -16,7 +16,7 @@ export default function TournamentResultPageClient() {
   if (orderedResult === null) return <div>no result</div>;
 
   return (
-    <main className="flex h-full flex-col overflow-x-hidden bg-[#F4F4F6] pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+    <main className="flex h-full flex-col overflow-x-hidden bg-[#F4F4F6] pt-[calc(env(safe-area-inset-top)+60px)]">
       <section className="flex min-h-0 flex-1 flex-col space-y-[22px] overflow-x-hidden pb-[40.5px]">
         <h1 className="shrink-0 px-5 text-center text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#2D3037]">
           이번에 구매할 상품은

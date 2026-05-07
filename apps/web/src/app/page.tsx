@@ -43,14 +43,8 @@ function EntryPage() {
         <SlideTwo />
       </div>
 
-      <div
-        className="pointer-events-auto absolute right-0 left-0 z-50 flex justify-center"
-        style={{ bottom: '30%' }}
-      >
+      <div className="flex flex-col gap-6 pt-2 px-2.5 pb-[calc(env(safe-area-inset-bottom)+12px)]">
         <PageIndicator activeIndex={activeIndex} total={2} onClick={handleIndicatorClick} />
-      </div>
-
-      <div className="px-2.5 pb-[calc(env(safe-area-inset-bottom)+12px)]">
         <button
           type="button"
           onClick={handleStart}
