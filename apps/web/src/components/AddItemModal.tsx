@@ -85,7 +85,7 @@ function AddItemModal({ open, onClose }: AddItemModalProps) {
           <div className="flex flex-col">
             <label
               htmlFor="add-item-url-input"
-              className="mb-3 text-lg leading-6.5 font-semibold tracking-[-0.6px] text-[#262626]"
+              className="mb-2 text-sm leading-5.5 font-semibold tracking-[-0.6px] text-[#262626]"
             >
               상품 URL
             </label>
