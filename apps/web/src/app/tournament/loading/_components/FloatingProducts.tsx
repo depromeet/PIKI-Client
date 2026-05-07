@@ -1,6 +1,7 @@
 'use client';
 
 import Matter from 'matter-js';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 const ITEM_SIZE = 81.421;
@@ -133,7 +134,11 @@ export default function FloatingProducts({ items }: FloatingProductsProps) {
             top: positions[i]?.y ?? 0,
           }}
         >
-          <span className="text-[58px] leading-none">{item.emoji}</span>
+          {item.imageUrl ? (
+            <Image src={item.imageUrl} alt="" fill className="object-cover" />
+          ) : (
+            <span className="text-[58px] leading-none">{item.emoji}</span>
+          )}
         </div>
       ))}
     </div>

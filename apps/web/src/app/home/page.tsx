@@ -4,10 +4,62 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import mockImg1 from '@/assets/images/home/mock-1-tshirt.png';
+import mockImg2 from '@/assets/images/home/mock-2-pants.png';
+import mockImg3 from '@/assets/images/home/mock-3-shoes.png';
+import mockImg4 from '@/assets/images/home/mock-4-bag.png';
+import mockImg5 from '@/assets/images/home/mock-5-cap.png';
+import mockImg6 from '@/assets/images/home/mock-6-hoodie.png';
 import AddItemModal from '@/components/AddItemModal';
 import { useWishes } from '@/hooks/useWishes';
 import { DUMMY_POSITIONS, isDummyProduct } from '@/mocks/dummyWishes';
-import type { ProductT } from '@/types/product';
+import { dummyProducts } from '@/mocks/products';
+
+const DUMMY_IMAGES = [mockImg1, mockImg2, mockImg3, mockImg4, mockImg5, mockImg6];
+
+// 카드 크기 80.319px 기준, 각 이미지 패딩을 % 로 변환
+const DUMMY_CARD_PADDING = [
+  { top: 22.45, right: 18.46, bottom: 17.79, left: 16.8  }, // tshirt
+  { top: 11.87, right: 22.72, bottom: 11.87, left: 22.72 }, // pants
+  { top: 22.72, right: 12.9,  bottom: 22.72, left: 12.41 }, // shoes
+  { top: 15.2,  right: 19.85, bottom: 15.19, left: 19.85 }, // bag
+  { top: 19.81, right: 17.68, bottom: 20.44, left: 17.68 }, // cap
+  { top: 14.52, right: 21.75, bottom: 14.52, left: 20.98 }, // hoodie
+];
+
+// 카드 내 번호 위치 (카드 기준 %)
+const DUMMY_NUMBER_POSITIONS = [
+  { x: 50, y: 45 }, // tshirt
+  { x: 50, y: 26 }, // pants
+  { x: 65, y: 57 }, // shoes
+  { x: 50, y: 67 }, // bag
+  { x: 50, y: 50 }, // cap
+  { x: 50, y: 50 }, // hoodie
+];
+
+
+// 피그마 측정값 기준 (basket 402×524px 좌표계, 카드 center %)
+// 카드 1~4, 7~8: 실측값 / 카드 5~6: x 실측, y 보간
+const FILLED_POSITIONS = [
+  { top: 20.0, left: 38.3 }, // card 1 — top=64.85, left=113.69
+  { top: 21.3, left: 66.4 }, // card 2 — top=71.65, left=226.86
+  { top: 37.4, left: 26.8 }, // card 3 — top=155.86, left=67.53
+  { top: 39.9, left: 71.6 }, // card 4 — top=168.86, left=247.71
+  { top: 58.6, left: 28.7 }, // card 5 — left=75.11, top=260.78/534px
+  { top: 58.8, left: 71.9 }, // card 6 — left=248.77 (y 보간)
+  { top: 78.9, left: 35.0 }, // card 7 — bottom=70.45, left=100.7
+  { top: 78.3, left: 65.6 }, // card 8 — bottom=73.39, left=223.49
+];
+
+// 친구 참여 이모지 인디케이터 위치 (basket container 기준 %, 피그마 실측)
+// emoji-1: left=292, right=46(362px기준), bottom=350
+// emoji-2: left=139.69, right=238.31 (402px기준), y추정
+// emoji-3: left=288.69, right=89.31, bottom=138.6 (402px기준)
+const FRIEND_EMOJI_POSITIONS = [
+  { top: 32.9, left: 80.6 }, // card 4 우상단
+  { top: 51.5, left: 37.7 }, // card 5 우상단
+  { top: 71.3, left: 74.8 }, // card 8 좌상단
+];
 
 function HomePage() {
   const router = useRouter();
@@ -15,8 +67,9 @@ function HomePage() {
   const wishesQuery = useWishes();
 
   const wishes = wishesQuery.data ?? [];
-  const userWish = wishes.find(wish => !isDummyProduct(wish));
-  const hasUserWish = Boolean(userWish);
+  const realWishes = wishes.filter(wish => !isDummyProduct(wish));
+  const isFilledState = realWishes.length >= 1;
+  const canStartTournament = isFilledState;
 
   const handleOpenSheet = () => {
     setIsSheetOpen(true);
@@ -31,52 +84,88 @@ function HomePage() {
   };
 
   return (
-    <main className="relative flex h-full w-full flex-col pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+    <main className="relative flex h-full w-full flex-col pt-[calc(env(safe-area-inset-top)+24px)]">
       <header className="px-6 text-center">
-        <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#171719]">
-          고민 중인 것들, 여기 모아봐요
-        </h1>
-        <p className="mt-2 text-lg leading-6.5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
-          8개가 모이면 하나를 골라드릴게요
-        </p>
+        {isFilledState ? (
+          <>
+            <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#171719]">
+              총 <span className="text-[#1F7AF9]">8</span>개의 상품이 모였어요!
+            </h1>
+            <p className="mt-2 text-lg leading-6.5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
+              이제 하나씩 골라볼까요?
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#171719]">
+              고민 중인 위시템을 모아볼까요?
+            </h1>
+            <p className="mt-2 text-lg leading-6.5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
+              혼자 담아도 좋고, 같이 채우면 더 재밌어요
+            </p>
+          </>
+        )}
       </header>
 
       <section className="relative mt-7 flex flex-1 items-center justify-center px-5">
-        <div className="@container relative aspect-358/502 h-full max-h-125.5 w-full max-w-89.5">
+        <div className="@container relative aspect-[56/73] h-full max-h-[524px] w-full max-w-[402px]">
           <Image
-            src="/images/home-empty-basket-v2.png"
+            src="/images/home-empty-basket-gray.png"
             alt="장바구니"
             fill
-            sizes="(max-width: 480px) calc(100vw - 40px), 358px"
+            sizes="(max-width: 480px) calc(100vw - 40px), 402px"
             priority
             className="object-contain"
           />
 
-          {DUMMY_POSITIONS.map(position => (
-            <DummyEmojiCard
-              key={position.emoji}
-              emoji={position.emoji}
-              top={position.top}
-              left={position.left}
-            />
-          ))}
-
-          {hasUserWish && userWish ? (
-            <UserWishCard wish={userWish} />
+          {isFilledState ? (
+            <>
+              {FILLED_POSITIONS.map((position, i) => (
+                <FilledProductCard
+                  key={i}
+                  imagePath={dummyProducts[i % dummyProducts.length]!.imagePath}
+                  top={position.top}
+                  left={position.left}
+                />
+              ))}
+              {FRIEND_EMOJI_POSITIONS.map((pos, i) => (
+                <div
+                  key={i}
+                  className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+                  style={{ top: `${pos.top}%`, left: `${pos.left}%` }}
+                >
+                  <FriendEmojiIcon />
+                </div>
+              ))}
+            </>
           ) : (
-            <CenterAddButton onClick={handleOpenSheet} />
+            <>
+              {DUMMY_POSITIONS.map((position, i) => (
+                <DummyEmojiCard
+                  key={i}
+                  imageSrc={DUMMY_IMAGES[i % DUMMY_IMAGES.length]!}
+                  padding={DUMMY_CARD_PADDING[i % DUMMY_CARD_PADDING.length]!}
+                  numberPos={DUMMY_NUMBER_POSITIONS[i % DUMMY_NUMBER_POSITIONS.length]!}
+                  index={i}
+                  top={position.top}
+                  left={position.left}
+                />
+              ))}
+            </>
           )}
+
+          <CenterAddButton onClick={handleOpenSheet} />
         </div>
       </section>
 
-      <div className="mt-6 px-5">
+      <div className="px-5 pb-[calc(env(safe-area-inset-bottom)+34px)] pt-[10.4px]">
         <button
           type="button"
-          disabled={!hasUserWish}
+          disabled={!canStartTournament}
           onClick={handleStartTournament}
           className="flex h-13.5 w-full shrink-0 cursor-pointer items-center justify-center rounded-xl bg-[#191B1F] px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-white disabled:bg-[#C5C8CE] disabled:text-white"
         >
-          토너먼트 시작하기
+          {canStartTournament ? '토너먼트 시작하기' : '2개부터 시작 가능'}
         </button>
       </div>
 
@@ -85,31 +174,65 @@ function HomePage() {
   );
 }
 
-type DummyEmojiCardProps = {
-  emoji: string;
+type FilledProductCardProps = {
+  imagePath: string;
   top: number;
   left: number;
 };
 
-function DummyEmojiCard({ emoji, top, left }: DummyEmojiCardProps) {
+function FilledProductCard({ imagePath, top, left }: FilledProductCardProps) {
   return (
     <div
-      className="absolute flex aspect-square w-[27%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]"
+      className="absolute aspect-square w-[20%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[15.672px] border-[2.939px] border-white bg-[#F4F4F6] shadow-[0_0_7.836px_0_rgba(0,0,0,0.16)]"
       style={{ top: `${top}%`, left: `${left}%` }}
     >
-      <span className="text-[19cqw] leading-none">{emoji}</span>
+      <Image src={imagePath} alt="" fill className="object-cover" />
     </div>
   );
 }
 
-type UserWishCardProps = {
-  wish: ProductT;
+type PaddingT = { top: number; right: number; bottom: number; left: number };
+
+type DummyEmojiCardProps = {
+  imageSrc: Parameters<typeof Image>[0]['src'];
+  padding: PaddingT;
+  numberPos: { x: number; y: number };
+  index: number;
+  top: number;
+  left: number;
 };
 
-function UserWishCard({ wish }: UserWishCardProps) {
+function DummyEmojiCard({ imageSrc, padding, numberPos, index, top, left }: DummyEmojiCardProps) {
   return (
-    <div className="absolute top-1/2 left-1/2 flex aspect-square w-[27%] -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-2xl border-[3px] border-white bg-white shadow-[0_0_8px_rgba(0,0,0,0.16)]">
-      {wish.thumbnail ? <span className="text-[19cqw] leading-none">{wish.thumbnail}</span> : null}
+    <div
+      className="absolute aspect-square w-[20%] -translate-x-1/2 -translate-y-1/2 rounded-[15.672px] border-[2.939px] border-white bg-[#F4F4F6] shadow-[0_0_7.836px_0_rgba(0,0,0,0.16)]"
+      style={{ top: `${top}%`, left: `${left}%` }}
+    >
+      <div
+        className="absolute"
+        style={{
+          top: `${padding.top}%`,
+          right: `${padding.right}%`,
+          bottom: `${padding.bottom}%`,
+          left: `${padding.left}%`,
+        }}
+      >
+        <Image src={imageSrc} alt="" fill className="object-contain" />
+      </div>
+      <span
+        className="absolute -translate-x-1/2 -translate-y-1/2 text-center text-black"
+        style={{
+          top: `${numberPos.y}%`,
+          left: `${numberPos.x}%`,
+          fontFamily: '"Carmen Sans", sans-serif',
+          fontSize: '10.775px',
+          fontWeight: 700,
+          lineHeight: '100%',
+          letterSpacing: '-0.323px',
+        }}
+      >
+        ({index + 1})
+      </span>
     </div>
   );
 }
@@ -124,7 +247,7 @@ function CenterAddButton({ onClick }: CenterAddButtonProps) {
       type="button"
       aria-label="아이템 추가"
       onClick={onClick}
-      className="absolute top-1/2 left-1/2 flex aspect-square w-[18%] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[#191B1F]"
+      className="absolute top-1/2 left-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center gap-2 rounded-full border border-[#191B1F] bg-[#191B1F] p-3.5"
     >
       <PlusIcon />
     </button>
@@ -145,6 +268,19 @@ function PlusIcon() {
     >
       <line x1="15" y1="6" x2="15" y2="24" />
       <line x1="6" y1="15" x2="24" y2="15" />
+    </svg>
+  );
+}
+
+function FriendEmojiIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 18C8.56057 18 6.67593 16.1447 6.14946 14.0324C6.01172 13.4798 6.47543 13 7.04495 13H16.9551C17.5246 13 17.9883 13.4798 17.8506 14.0324C17.3242 16.1447 15.4395 18 12 18ZM9 9C9 9.55228 8.55228 10 8 10C7.44772 10 7 9.55228 7 9C7 8.44772 7.44772 8 8 8C8.55228 8 9 8.44772 9 9ZM16 10C16.5523 10 17 9.55228 17 9C17 8.44772 16.5523 8 16 8C15.4477 8 15 8.44772 15 9C15 9.55228 15.4477 10 16 10Z"
+        fill="#1F7AF9"
+      />
     </svg>
   );
 }
