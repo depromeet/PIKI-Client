@@ -26,7 +26,7 @@ export default function TournamentLoadingPage() {
     return wishes.map((wish, index) => {
       return {
         id: `dummy-${index}`,
-        emoji: wish.thumbnail,
+        imageUrl: wish.imagePath,
       };
     });
   }, [wishesQuery.data]);
