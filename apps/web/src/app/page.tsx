@@ -43,9 +43,14 @@ function EntryPage() {
         <SlideTwo />
       </div>
 
-      <PageIndicator activeIndex={activeIndex} total={2} onClick={handleIndicatorClick} />
+      <div
+        className="pointer-events-auto absolute right-0 left-0 z-50 flex justify-center"
+        style={{ bottom: '30%' }}
+      >
+        <PageIndicator activeIndex={activeIndex} total={2} onClick={handleIndicatorClick} />
+      </div>
 
-      <div className="px-2.5 pt-3 pb-[calc(env(safe-area-inset-bottom)+12px)]">
+      <div className="px-2.5 pb-[calc(env(safe-area-inset-bottom)+12px)]">
         <button
           type="button"
           onClick={handleStart}
@@ -61,7 +66,7 @@ function EntryPage() {
 
 function SlideOne() {
   return (
-    <section className="relative flex h-full w-full shrink-0 snap-start snap-always flex-col items-center pt-[calc(env(safe-area-inset-top)+10%)]">
+    <section className="relative flex h-full w-full shrink-0 snap-start snap-always flex-col items-center pt-[calc(env(safe-area-inset-top)+10%)] pb-32">
       <Logo />
 
       <h1 className="mt-7 text-center text-2xl leading-10 font-bold tracking-[-0.6px] text-[#171719]">
@@ -88,7 +93,7 @@ function SlideOne() {
 
 function SlideTwo() {
   return (
-    <section className="relative flex h-full w-full shrink-0 snap-start snap-always flex-col items-center pt-[calc(env(safe-area-inset-top)+10%)]">
+    <section className="relative flex h-full w-full shrink-0 snap-start snap-always flex-col items-center pt-[calc(env(safe-area-inset-top)+10%)] pb-32">
       <Logo />
 
       <h1 className="mt-7 text-center text-2xl leading-10 font-bold tracking-[-0.6px] text-[#171719]">
@@ -138,11 +143,12 @@ type PageIndicatorProps = {
   activeIndex: number;
   total: number;
   onClick: (index: number) => void;
+  className?: string;
 };
 
-function PageIndicator({ activeIndex, total, onClick }: PageIndicatorProps) {
+function PageIndicator({ activeIndex, total, onClick, className }: PageIndicatorProps) {
   return (
-    <div className="flex items-center justify-center gap-2 py-4">
+    <div className={`flex items-center justify-center gap-2 ${className ?? ''}`}>
       {Array.from({ length: total }).map((_, index) => {
         const isActive = index === activeIndex;
         return (
