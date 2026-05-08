@@ -26,10 +26,7 @@ export default function FinalProductCard({
   isPicked,
 }: FinalProductCardProps) {
   return (
-    <div
-      className={`relative cursor-pointer transition-all duration-[800ms] ease-in-out ${isPicked ? 'w-[178px]' : 'w-[148px]'}`}
-      onClick={onClick}
-    >
+    <div className="relative w-[148px] cursor-pointer" onClick={onClick}>
       {isPicked && (
         <div className="absolute top-0 left-1/2 z-10 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#1F7AF9] shadow-lg">
           <span className="text-base font-bold text-white" style={{ transform: 'rotate(-15deg)' }}>
@@ -37,10 +34,8 @@ export default function FinalProductCard({
           </span>
         </div>
       )}
-      <div
-        className={`flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all duration-[800ms] ease-in-out ${isPicked ? 'w-[178px]' : 'w-[148px]'}`}
-      >
-        <div className="relative h-40 w-full shrink-0 bg-gray-100">
+      <div className="flex w-[148px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_8px_0_rgba(0,0,0,0.10)]">
+        <div className="relative h-[123px] w-[148px] shrink-0 bg-gray-100">
           <Image
             src={imagePath}
             alt={name}
