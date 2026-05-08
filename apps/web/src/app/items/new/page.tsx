@@ -465,33 +465,43 @@ function FieldInput({
     return value;
   };
 
+  const handleBoxClick = () => {
+    if (editableByDefault || isEditing) return;
+    enterEditMode();
+  };
+
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <label className="text-sm leading-5.5 font-semibold tracking-[-0.6px] text-[#262626]">
         {label}
       </label>
-      <div className="flex items-center gap-2 rounded-xl border border-[#DCDEE2] bg-white p-4">
+      <div
+        className="flex items-center gap-2 rounded-xl border border-[#DCDEE2] bg-white p-4"
+        onClick={handleBoxClick}
+      >
         <input
           ref={inputRef}
           type="text"
           inputMode={inputMode}
           value={getDisplayValue()}
           placeholder={placeholder}
-          readOnly={!isEditing}
+          readOnly={!isEditing && !editableByDefault}
           spellCheck={false}
           autoCorrect="off"
           autoCapitalize="off"
           onChange={event => onChange(event.target.value)}
-          onClick={enterEditMode}
           onFocus={enterEditMode}
           onBlur={handleBlur}
-          className="min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] text-[#686F7E] placeholder:text-[#ADB1BB] read-only:cursor-text focus:outline-none"
+          className="min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] text-[#686F7E] placeholder:text-[#ADB1BB] focus:outline-none"
         />
         {showEditIcon && (
           <button
             type="button"
             aria-label={`${label} 수정`}
-            onClick={handleToggleEdit}
+            onClick={event => {
+              event.stopPropagation();
+              handleToggleEdit();
+            }}
             className="flex size-5 shrink-0 items-center justify-center"
           >
             <Image src={EditIcon} alt="" aria-hidden className="size-4 object-contain" />
