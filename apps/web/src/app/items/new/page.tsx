@@ -196,7 +196,7 @@ function NewItemContent() {
         )}
       </div>
 
-      <footer className="absolute right-0 bottom-0 left-0 border-t border-[#F4F4F6] bg-white px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      <footer className="absolute right-0 bottom-0 left-0 border-t border-[#F4F4F6] bg-white px-5 py-3">
         <div className="flex w-full gap-3">
           <button
             type="button"
@@ -251,7 +251,9 @@ function ParsingState() {
   return (
     <div className="absolute inset-0 flex flex-col items-center px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <div className="flex w-full flex-col items-center gap-2 text-center tracking-[-0.6px]">
-        <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-[#171719]">상품 불러오는 중</h1>
+        <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-[#171719]">
+          상품 불러오는 중
+        </h1>
         <div className="relative h-6.5 w-full">
           {PARSING_PHRASES.map((phrase, index) => (
             <p
@@ -315,16 +317,7 @@ function ProductImage({ imageUrl, alt, isUploaded }: ProductImageProps) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={imageUrl} alt={alt} className="size-full object-cover" />;
   }
-  return (
-    <Image
-      src={imageUrl}
-      alt={alt}
-      fill
-      sizes="200px"
-      priority
-      className="object-cover"
-    />
-  );
+  return <Image src={imageUrl} alt={alt} fill sizes="200px" priority className="object-cover" />;
 }
 
 type SourceLinkCardProps = {
