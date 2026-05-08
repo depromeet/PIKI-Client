@@ -28,6 +28,9 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: 'piki',
   description: '쌓인 위시리스트에서 먼저 살 것을 골라주는 소비 결정 서비스',
+  icons: {
+    icon: '/images/favicon.ico',
+  },
 };
 
 export const viewport: Viewport = {
