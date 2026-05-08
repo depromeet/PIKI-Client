@@ -1,7 +1,7 @@
 'use client';
 
-import { Geist_Mono, Poppins } from 'next/font/google';
 import { gsap } from 'gsap';
+import { Geist_Mono, Poppins } from 'next/font/google';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
@@ -16,9 +16,23 @@ const geistMono = Geist_Mono({ subsets: ['latin'], weight: ['600'] });
 
 function RankBadge({ rank }: { rank: number }) {
   return (
-    <div className="absolute -bottom-2 -right-3">
-      <svg xmlns="http://www.w3.org/2000/svg" width="23.568" height="23.568" viewBox="0 0 24 24" fill="none" className="block">
-        <circle cx="11.7842" cy="11.7842" r="10.7842" fill="#A2DEFF" stroke="black" strokeWidth="2" />
+    <div className="absolute -right-3 -bottom-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="23.568"
+        height="23.568"
+        viewBox="0 0 24 24"
+        fill="none"
+        className="block"
+      >
+        <circle
+          cx="11.7842"
+          cy="11.7842"
+          r="10.7842"
+          fill="#A2DEFF"
+          stroke="black"
+          strokeWidth="2"
+        />
       </svg>
       <span
         className="absolute inset-0 flex items-center justify-center"
@@ -75,7 +89,13 @@ export default function ReceiptDrawMachine({ result }: Props) {
       const receiptHeight = receiptPaperElement.getBoundingClientRect().height;
       const startY = receiptHeight;
 
-      gsap.set(slotBarElement, { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: 'center center' });
+      gsap.set(slotBarElement, {
+        x: 0,
+        y: 0,
+        scaleX: 1,
+        scaleY: 1,
+        transformOrigin: 'center center',
+      });
       gsap.set(receiptPaperElement, {
         x: 0,
         y: -startY,
@@ -97,13 +117,31 @@ export default function ReceiptDrawMachine({ result }: Props) {
           yoyo: true,
           repeat: 2,
         })
-        .to(receiptPaperElement, { duration: 1.45, x: 0, y: 0, rotation: 0, ease: 'power3.out' }, '-=0.08')
+        .to(
+          receiptPaperElement,
+          { duration: 1.45, x: 0, y: 0, rotation: 0, ease: 'power3.out' },
+          '-=0.08'
+        )
         .to(
           slotBarElement,
-          { duration: 0.22, scaleX: 1, scaleY: 1, transformOrigin: 'center center', ease: 'power1.out' },
+          {
+            duration: 0.22,
+            scaleX: 1,
+            scaleY: 1,
+            transformOrigin: 'center center',
+            ease: 'power1.out',
+          },
           '<0.35'
         )
-        .set(receiptPaperElement, { x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1, skewX: 0, skewY: 0 })
+        .set(receiptPaperElement, {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          skewX: 0,
+          skewY: 0,
+        })
         .set(slotBarElement, { x: 0, y: 0, scaleX: 1, scaleY: 1 });
     }, animationScopeElement);
 
@@ -113,7 +151,12 @@ export default function ReceiptDrawMachine({ result }: Props) {
   return (
     <div className="relative isolate flex min-h-0 w-full flex-1 flex-col" ref={animationScopeRef}>
       <div className="relative z-30 w-full shrink-0" style={{ aspectRatio: '267/62' }}>
-        <Image src={ReceiptPrinterImg} alt="영수증 기계" className="h-full w-full object-contain" priority />
+        <Image
+          src={ReceiptPrinterImg}
+          alt="영수증 기계"
+          className="h-full w-full object-contain"
+          priority
+        />
         <div className="absolute inset-x-0 bottom-0 h-[5px]" ref={slotBarRef} />
       </div>
       <div className="invisible -mt-8 min-h-0 flex-1 shrink-0" aria-hidden />
@@ -126,28 +169,27 @@ export default function ReceiptDrawMachine({ result }: Props) {
         >
           <div className="flex min-h-0 flex-1 flex-col">
             <div
-              className="scrollbar-hide relative min-h-0 flex-1 overflow-y-auto overscroll-y-contain mask-[linear-gradient(to_bottom,black_0%,black_calc(100%-2px),transparent_100%)]"
+              className="relative scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain mask-[linear-gradient(to_bottom,black_0%,black_calc(100%-2px),transparent_100%)]"
               style={{
                 WebkitMaskImage:
                   'linear-gradient(to bottom, black 0%, black calc(100% - 2px), transparent 100%)',
               }}
             >
-
               {/* MY PICK! 헤더 */}
               <div className="flex flex-col items-start gap-5 bg-white pt-5 pb-[25px]">
                 <p
                   className={cn(
                     poppins.className,
-                    'w-full text-center text-[48px] leading-[100%] font-bold uppercase tracking-[-0.96px] text-black'
+                    'w-full text-center text-[48px] leading-[100%] font-bold tracking-[-0.96px] text-black uppercase'
                   )}
                 >
                   MY PICK!
                 </p>
-                <div className="self-stretch mx-5 border-t border-dashed border-[#DCDEE2]" />
+                <div className="mx-5 self-stretch border-t border-dashed border-[#DCDEE2]" />
                 <div
                   className={cn(
                     geistMono.className,
-                    'flex w-full flex-col px-[25px] text-[12px] font-semibold leading-[18px] tracking-[-0.4px] text-[#2D3037]'
+                    'flex w-full flex-col px-[25px] text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]'
                   )}
                 >
                   <div className="flex gap-[37px]">
@@ -172,9 +214,9 @@ export default function ReceiptDrawMachine({ result }: Props) {
                   <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
                     ****** 1위 - 지금 사도 후회 없을 선택 ******
                   </p>
-                  <div className="mt-[12px] flex items-start gap-[21px] pl-[25px] pr-[45px]">
+                  <div className="mt-[12px] flex items-start gap-[21px] pr-[45px] pl-[25px]">
                     <div className="relative shrink-0">
-                      <div className="h-20 w-20 overflow-hidden rounded-xl bg-black/5">
+                      <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
                         <Image
                           src={result[0]!.imagePath}
                           width={80}
@@ -186,10 +228,10 @@ export default function ReceiptDrawMachine({ result }: Props) {
                       <RankBadge rank={1} />
                     </div>
                     <div className="flex flex-col gap-1 pt-1">
-                      <p className="text-[14px] font-medium leading-5 tracking-[-0.6px] text-[#686F7E]">
+                      <p className="text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#686F7E]">
                         {result[0]!.name}
                       </p>
-                      <p className="text-[16px] font-bold leading-[22px] tracking-[-0.6px] text-[#2D3037]">
+                      <p className="text-[16px] leading-[22px] font-bold tracking-[-0.6px] text-[#2D3037]">
                         {formatPrice(result[0]!.price)}
                       </p>
                       {!!result[0]!.tags?.length && (
@@ -218,11 +260,11 @@ export default function ReceiptDrawMachine({ result }: Props) {
                 {/* 2위 */}
                 <section className="mt-8 flex flex-col">
                   <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
-                    ******  2위 - 끝까지 고민했던 선택   ******
+                    ****** 2위 - 끝까지 고민했던 선택 ******
                   </p>
-                  <div className="mt-[18px] flex items-start gap-[21px] pl-[25px] pr-[45px]">
+                  <div className="mt-[18px] flex items-start gap-[21px] pr-[45px] pl-[25px]">
                     <div className="relative shrink-0">
-                      <div className="h-20 w-20 overflow-hidden rounded-xl bg-black/5">
+                      <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
                         <Image
                           src={result[1]!.imagePath}
                           width={80}
@@ -234,10 +276,10 @@ export default function ReceiptDrawMachine({ result }: Props) {
                       <RankBadge rank={2} />
                     </div>
                     <div className="flex flex-col gap-1 pt-1">
-                      <p className="text-[14px] font-medium leading-5 tracking-[-0.6px] text-[#686F7E]">
+                      <p className="text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#686F7E]">
                         {result[1]!.name}
                       </p>
-                      <p className="text-[16px] font-bold leading-[22px] tracking-[-0.6px] text-[#2D3037]">
+                      <p className="text-[16px] leading-[22px] font-bold tracking-[-0.6px] text-[#2D3037]">
                         {formatPrice(result[1]!.price)}
                       </p>
                       {!!result[1]!.tags?.length && (
@@ -266,12 +308,12 @@ export default function ReceiptDrawMachine({ result }: Props) {
                 {/* 3-4위 */}
                 <section className="mt-8 flex flex-col items-center px-[30px] pb-5">
                   <p className="text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
-                    ******  3-4위 - 준결승 탈락템   ******
+                    ****** 3-4위 - 준결승 탈락템 ******
                   </p>
                   <div className="mt-5 flex w-full items-start justify-center gap-10">
                     {result.slice(2, 4).map(product => (
                       <div key={product.name} className="flex w-20 flex-col items-center">
-                        <div className="h-20 w-20 overflow-hidden rounded-xl bg-black/5">
+                        <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
                           <Image
                             src={product.imagePath}
                             alt={product.name}
@@ -281,10 +323,10 @@ export default function ReceiptDrawMachine({ result }: Props) {
                           />
                         </div>
                         <div className="mt-4 flex flex-col items-center gap-1">
-                          <p className="line-clamp-2 text-center text-[12px] font-normal leading-[18px] tracking-[-0.4px] text-[#686F7E]">
+                          <p className="line-clamp-2 text-center text-[12px] leading-[18px] font-normal tracking-[-0.4px] text-[#686F7E]">
                             {product.name}
                           </p>
-                          <p className="text-center text-[14px] font-semibold leading-5 tracking-[-0.6px] text-[#2D3037]">
+                          <p className="text-center text-[14px] leading-5 font-semibold tracking-[-0.6px] text-[#2D3037]">
                             {formatPrice(product.price)}
                           </p>
                         </div>
@@ -292,7 +334,6 @@ export default function ReceiptDrawMachine({ result }: Props) {
                     ))}
                   </div>
                 </section>
-
               </div>
 
               {/* 스크롤 끝: 점선 + Have a nice @piki.day + 물결 */}
@@ -302,7 +343,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
                   <p
                     className={cn(
                       geistMono.className,
-                      'text-center text-[14px] font-semibold leading-4.5 tracking-[-0.4px] text-[#2D3037]'
+                      'text-center text-[14px] leading-4.5 font-semibold tracking-[-0.4px] text-[#2D3037]'
                     )}
                   >
                     •Have a nice @piki.day•
