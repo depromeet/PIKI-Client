@@ -11,7 +11,7 @@ import { useTournament } from '@/hooks/useTournament';
 const IS_FINAL_LABEL = '🏆 결승전';
 
 export default function TournamentPage() {
-  useThemeColor('#FFFFFF');
+  useThemeColor('#F4F4F6');
   const { products, currentMatch, roundLabel, handleSelect } = useTournament();
   const isFinal = roundLabel === IS_FINAL_LABEL;
 
