@@ -167,8 +167,8 @@ export default function ReceiptDrawMachine({ result }: Props) {
       <div className="pointer-events-none absolute inset-x-0 top-[53px] bottom-0 z-40 flex justify-center overflow-hidden">
         <div
           ref={receiptPaperRef}
-          className="pointer-events-auto flex h-full min-h-0 shrink-0 flex-col drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)] will-change-transform"
-          style={{ width: '299px' }}
+          className="pointer-events-auto scrollbar-hide flex h-full min-h-0 shrink-0 flex-col overflow-x-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)] will-change-transform"
+          style={{ width: 'min(299px, calc(100% * 299 / 420))' }}
         >
           <div className="flex min-h-0 flex-1 flex-col">
             <div className="relative scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
