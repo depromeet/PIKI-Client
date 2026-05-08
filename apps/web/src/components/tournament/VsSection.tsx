@@ -9,7 +9,7 @@ import ProductCard from './ProductCard';
 
 const HANGER_HEIGHT = 54;
 const HOOK_HEIGHT = 33;
-const IMAGE_HEIGHT = 148;
+const IMAGE_HEIGHT = 123;
 const HORIZONTAL_LINE_WIDTH = 304.524;
 const DASH_V = 'repeating-linear-gradient(to bottom, rgba(77,77,77,0.60) 0, rgba(77,77,77,0.60) 3px, transparent 3px, transparent 6px)';
 const DASH_H = 'repeating-linear-gradient(to right, rgba(77,77,77,0.60) 0, rgba(77,77,77,0.60) 3px, transparent 3px, transparent 6px)';
@@ -118,7 +118,7 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
         <div
           className={`absolute left-1/2 z-10 flex h-[32px] w-[32px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#454545] text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white ${transition}`}
           style={{
-            top: '50%',
+            top: HOOK_HEIGHT + IMAGE_HEIGHT,
             filter: selectedSide ? 'blur(2px)' : 'none',
             ...duration,
           }}
