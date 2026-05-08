@@ -66,7 +66,10 @@ const formatReceiptDate = (date: Date) => {
   const day = date.getDate();
   const month = date.toLocaleString('en-US', { month: 'short' });
   const year = date.getFullYear();
-  return `${day}-${month}-${year} 00:00:00`;
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 };
 
 type Props = {
@@ -168,9 +171,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
           style={{ width: '299px' }}
         >
           <div className="flex min-h-0 flex-1 flex-col">
-            <div
-              className="relative scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain"
-            >
+            <div className="relative scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
               {/* MY PICK! 헤더 */}
               <div className="flex flex-col items-start gap-5 bg-white pt-5 pb-[25px]">
                 <p
@@ -346,7 +347,6 @@ export default function ReceiptDrawMachine({ result }: Props) {
                   </p>
                 </div>
               </div>
-
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
