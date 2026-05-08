@@ -135,7 +135,7 @@ export default function FloatingProducts({ items }: FloatingProductsProps) {
           }}
         >
           {item.imageUrl ? (
-            <Image src={item.imageUrl} alt="" fill className="object-cover" />
+            <Image src={item.imageUrl} alt="" fill sizes="81px" className="object-cover" />
           ) : (
             <span className="text-[58px] leading-none">{item.emoji}</span>
           )}

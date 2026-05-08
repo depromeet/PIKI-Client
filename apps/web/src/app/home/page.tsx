@@ -200,7 +200,13 @@ function FilledProductCard({ imagePath, top, left }: FilledProductCardProps) {
       className="absolute aspect-square w-[17.9%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[15.672px] border-[2.939px] border-white bg-[#F4F4F6] shadow-[0_0_7.836px_0_rgba(0,0,0,0.16)]"
       style={{ top: `${top}%`, left: `${left}%` }}
     >
-      <Image src={imagePath} alt="" fill className="object-cover" />
+      <Image
+        src={imagePath}
+        alt=""
+        fill
+        sizes="(max-width: 480px) 20vw, 80px"
+        className="object-cover"
+      />
     </div>
   );
 }
@@ -231,7 +237,13 @@ function DummyEmojiCard({ imageSrc, padding, numberPos, index, top, left }: Dumm
           left: `${padding.left}%`,
         }}
       >
-        <Image src={imageSrc} alt="" fill className="object-contain" />
+        <Image
+          src={imageSrc}
+          alt=""
+          fill
+          sizes="(max-width: 480px) 20vw, 80px"
+          className="object-contain"
+        />
       </div>
       <span
         className="absolute -translate-x-1/2 -translate-y-1/2 text-center text-black"
