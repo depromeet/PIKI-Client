@@ -19,10 +19,10 @@ const DUMMY_IMAGES = [mockImg1, mockImg2, mockImg3, mockImg4, mockImg5, mockImg6
 
 // 카드 크기 80.319px 기준, 각 이미지 패딩을 % 로 변환
 const DUMMY_CARD_PADDING = [
-  { top: 22.45, right: 18.46, bottom: 17.79, left: 16.8  }, // tshirt
+  { top: 22.45, right: 18.46, bottom: 17.79, left: 16.8 }, // tshirt
   { top: 11.87, right: 22.72, bottom: 11.87, left: 22.72 }, // pants
-  { top: 22.72, right: 12.9,  bottom: 22.72, left: 12.41 }, // shoes
-  { top: 15.2,  right: 19.85, bottom: 15.19, left: 19.85 }, // bag
+  { top: 22.72, right: 12.9, bottom: 22.72, left: 12.41 }, // shoes
+  { top: 15.2, right: 19.85, bottom: 15.19, left: 19.85 }, // bag
   { top: 19.81, right: 17.68, bottom: 20.44, left: 17.68 }, // cap
   { top: 14.52, right: 21.75, bottom: 14.52, left: 20.98 }, // hoodie
 ];
@@ -36,7 +36,6 @@ const DUMMY_NUMBER_POSITIONS = [
   { x: 50, y: 50 }, // cap
   { x: 50, y: 50 }, // hoodie
 ];
-
 
 // 피그마 측정값 기준 (basket 402×524px 좌표계, 카드 72px, center %)
 // 좌열 left=111.31, 우열 left=218.69 / row1 top=78.86, row4 bottom margin=85.17
@@ -107,7 +106,7 @@ function HomePage() {
           </>
         ) : (
           <>
-            <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#171719]">
+            <h1 className="text-[24px] leading-[32px] font-bold tracking-[-0.6px] text-[#171719]">
               고민 중인 위시템을 모아볼까요?
             </h1>
             <p className="mt-2 text-lg leading-6.5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
@@ -121,7 +120,9 @@ function HomePage() {
         {isLoading ? (
           <div className="flex h-[280px] w-[280px] animate-pulse rounded-2xl bg-[#E8E9EC]" />
         ) : null}
-        <div className={`@container relative aspect-[56/73] h-full max-h-[524px] w-full max-w-[402px] ${isLoading ? 'hidden' : ''}`}>
+        <div
+          className={`@container relative aspect-[56/73] h-full max-h-[524px] w-full max-w-[402px] ${isLoading ? 'hidden' : ''}`}
+        >
           <Image
             src="/images/home-empty-basket-gray.png"
             alt="장바구니"
@@ -171,7 +172,7 @@ function HomePage() {
         </div>
       </section>
 
-      <div className="px-5 pb-[calc(env(safe-area-inset-bottom)+34px)] pt-[10.4px]">
+      <div className="px-5 pt-[10.4px] pb-[calc(env(safe-area-inset-bottom)+34px)]">
         <button
           type="button"
           disabled={!canStartTournament}
@@ -199,7 +200,13 @@ function FilledProductCard({ imagePath, top, left }: FilledProductCardProps) {
       className="absolute aspect-square w-[17.9%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[15.672px] border-[2.939px] border-white bg-[#F4F4F6] shadow-[0_0_7.836px_0_rgba(0,0,0,0.16)]"
       style={{ top: `${top}%`, left: `${left}%` }}
     >
-      <Image src={imagePath} alt="" fill className="object-cover" />
+      <Image
+        src={imagePath}
+        alt=""
+        fill
+        sizes="(max-width: 480px) 20vw, 80px"
+        className="object-cover"
+      />
     </div>
   );
 }
@@ -230,7 +237,13 @@ function DummyEmojiCard({ imageSrc, padding, numberPos, index, top, left }: Dumm
           left: `${padding.left}%`,
         }}
       >
-        <Image src={imageSrc} alt="" fill className="object-contain" />
+        <Image
+          src={imageSrc}
+          alt=""
+          fill
+          sizes="(max-width: 480px) 20vw, 80px"
+          className="object-contain"
+        />
       </div>
       <span
         className="absolute -translate-x-1/2 -translate-y-1/2 text-center text-black"
@@ -260,7 +273,7 @@ function CenterAddButton({ onClick }: CenterAddButtonProps) {
       type="button"
       aria-label="아이템 추가"
       onClick={onClick}
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[#191B1F] bg-[#191B1F] p-3.5"
+      className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center gap-2 rounded-full border border-[#191B1F] bg-[#191B1F] p-3.5"
       style={{ width: '61.6px', height: '61.6px' }}
     >
       <PlusIcon />
