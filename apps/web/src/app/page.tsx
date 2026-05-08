@@ -4,10 +4,28 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+const HOME_PRODUCT_IMAGE_PATHS = [
+  '/images/mock-1-shoes.webp',
+  '/images/mock-2-coat.webp',
+  '/images/mock-3-tshirt.webp',
+  '/images/mock-4-cap.webp',
+  '/images/mock-5-headphone.avif',
+  '/images/mock-6-bag.webp',
+  '/images/mock-7-sunglasses.webp',
+  '/images/mock-8-pants.webp',
+];
+
 function EntryPage() {
   const router = useRouter();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    HOME_PRODUCT_IMAGE_PATHS.forEach(imagePath => {
+      const preloadImage = new window.Image();
+      preloadImage.src = imagePath;
+    });
+  }, []);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
