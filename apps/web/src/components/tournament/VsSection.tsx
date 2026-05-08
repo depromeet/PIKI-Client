@@ -73,7 +73,7 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
           className={`flex min-w-0 flex-1 flex-col items-center ${transition}`}
           style={{
             transform: `translateY(${leftCardShift}px) scale(${leftCardStyle.scale})`,
-            filter: `blur(${leftCardStyle.blur}px)`,
+            ...(leftCardStyle.blur > 0 && { filter: `blur(${leftCardStyle.blur}px)` }),
             ...duration,
           }}
         >
@@ -96,7 +96,7 @@ export default function VsSection({ left, right, onSelect, isFinal = false }: Vs
           className={`flex min-w-0 flex-1 flex-col items-center ${transition}`}
           style={{
             transform: `translateY(${rightCardShift}px) scale(${rightCardStyle.scale})`,
-            filter: `blur(${rightCardStyle.blur}px)`,
+            ...(rightCardStyle.blur > 0 && { filter: `blur(${rightCardStyle.blur}px)` }),
             ...duration,
           }}
         >
