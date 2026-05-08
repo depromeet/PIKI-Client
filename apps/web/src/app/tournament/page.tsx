@@ -21,10 +21,12 @@ export default function TournamentPage() {
   }, [products]);
 
   return (
-    <div className="scrollbar-hide flex h-full flex-col items-center gap-6 overflow-y-auto px-4 pt-[calc(env(safe-area-inset-top)+48px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
-      <RoundBadge label={roundLabel} />
+    <div className="scrollbar-hide flex h-full flex-col items-center overflow-y-auto bg-[#F5F7F8] px-4 pt-[calc(env(safe-area-inset-top)+48px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+      <div className="mb-6">
+        <RoundBadge label={roundLabel} />
+      </div>
       <TournamentQuestion />
-      <div className="mt-8 w-full">
+      <div className="mt-3 w-full">
         {currentMatch && (
           <VsSection
             key={roundLabel}
