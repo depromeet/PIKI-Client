@@ -38,17 +38,17 @@ const DUMMY_NUMBER_POSITIONS = [
 ];
 
 
-// 피그마 측정값 기준 (basket 402×524px 좌표계, 카드 center %)
-// 카드 1~4, 7~8: 실측값 / 카드 5~6: x 실측, y 보간
+// 피그마 측정값 기준 (basket 402×524px 좌표계, 카드 72px, center %)
+// 좌열 left=111.31, 우열 left=218.69 / row1 top=78.86, row4 bottom margin=85.17
 const FILLED_POSITIONS = [
-  { top: 20.0, left: 38.3 }, // card 1 — top=64.85, left=113.69
-  { top: 21.3, left: 66.4 }, // card 2 — top=71.65, left=226.86
-  { top: 37.4, left: 26.8 }, // card 3 — top=155.86, left=67.53
-  { top: 39.9, left: 71.6 }, // card 4 — top=168.86, left=247.71
-  { top: 58.6, left: 28.7 }, // card 5 — left=75.11, top=260.78/534px
-  { top: 58.8, left: 71.9 }, // card 6 — left=248.77 (y 보간)
-  { top: 78.9, left: 35.0 }, // card 7 — bottom=70.45, left=100.7
-  { top: 78.3, left: 65.6 }, // card 8 — bottom=73.39, left=223.49
+  { top: 21.9, left: 33.7 }, // card 1 — row1 left
+  { top: 21.9, left: 63.4 }, // card 2 — row1 right
+  { top: 40.3, left: 33.7 }, // card 3 — row2 left
+  { top: 40.3, left: 63.4 }, // card 4 — row2 right
+  { top: 58.6, left: 33.7 }, // card 5 — row3 left
+  { top: 58.6, left: 63.4 }, // card 6 — row3 right
+  { top: 76.9, left: 33.7 }, // card 7 — row4 left
+  { top: 76.9, left: 63.4 }, // card 8 — row4 right
 ];
 
 // 친구 참여 이모지 인디케이터 위치 (basket container 기준 %, 피그마 실측)
@@ -56,9 +56,9 @@ const FILLED_POSITIONS = [
 // emoji-2: left=139.69, right=238.31 (402px기준), y추정
 // emoji-3: left=288.69, right=89.31, bottom=138.6 (402px기준)
 const FRIEND_EMOJI_POSITIONS = [
-  { top: 32.9, left: 80.6 }, // card 4 우상단
-  { top: 51.5, left: 37.7 }, // card 5 우상단
-  { top: 71.3, left: 74.8 }, // card 8 좌상단
+  { top: 34.1, left: 72.4 }, // row1-2 사이 우열 우상단
+  { top: 52.5, left: 42.7 }, // row2-3 사이 좌열 우상단
+  { top: 71.1, left: 72.4 }, // row3-4 사이 우열 우상단
 ];
 
 function HomePage() {
@@ -66,6 +66,7 @@ function HomePage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const wishesQuery = useWishes();
 
+  const isLoading = wishesQuery.isLoading;
   const wishes = wishesQuery.data ?? [];
   const realWishes = wishes.filter(wish => !isDummyProduct(wish));
   const isFilledState = realWishes.length >= 1;
@@ -86,9 +87,18 @@ function HomePage() {
   return (
     <main className="relative flex h-full w-full flex-col pt-[calc(env(safe-area-inset-top)+24px)]">
       <header className="px-6 text-center">
-        {isFilledState ? (
+        {isLoading ? (
           <>
-            <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#171719]">
+            <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-[#171719]">
+              상품 불러오는 중
+            </h1>
+            <p className="mt-2 text-lg leading-6.5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
+              가격 확인 완료...
+            </p>
+          </>
+        ) : isFilledState ? (
+          <>
+            <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-[#171719]">
               총 <span className="text-[#1F7AF9]">8</span>개의 상품이 모였어요!
             </h1>
             <p className="mt-2 text-lg leading-6.5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
@@ -107,8 +117,11 @@ function HomePage() {
         )}
       </header>
 
-      <section className="relative mt-7 flex flex-1 items-center justify-center px-5">
-        <div className="@container relative aspect-[56/73] h-full max-h-[524px] w-full max-w-[402px]">
+      <section className="relative flex flex-1 items-center justify-center">
+        {isLoading ? (
+          <div className="flex h-[280px] w-[280px] animate-pulse rounded-2xl bg-[#E8E9EC]" />
+        ) : null}
+        <div className={`@container relative aspect-[56/73] h-full max-h-[524px] w-full max-w-[402px] ${isLoading ? 'hidden' : ''}`}>
           <Image
             src="/images/home-empty-basket-gray.png"
             alt="장바구니"
@@ -154,7 +167,7 @@ function HomePage() {
             </>
           )}
 
-          <CenterAddButton onClick={handleOpenSheet} />
+          {!isFilledState && <CenterAddButton onClick={handleOpenSheet} />}
         </div>
       </section>
 
@@ -183,7 +196,7 @@ type FilledProductCardProps = {
 function FilledProductCard({ imagePath, top, left }: FilledProductCardProps) {
   return (
     <div
-      className="absolute aspect-square w-[20%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[15.672px] border-[2.939px] border-white bg-[#F4F4F6] shadow-[0_0_7.836px_0_rgba(0,0,0,0.16)]"
+      className="absolute aspect-square w-[17.9%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[15.672px] border-[2.939px] border-white bg-[#F4F4F6] shadow-[0_0_7.836px_0_rgba(0,0,0,0.16)]"
       style={{ top: `${top}%`, left: `${left}%` }}
     >
       <Image src={imagePath} alt="" fill className="object-cover" />
@@ -247,7 +260,8 @@ function CenterAddButton({ onClick }: CenterAddButtonProps) {
       type="button"
       aria-label="아이템 추가"
       onClick={onClick}
-      className="absolute top-1/2 left-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center gap-2 rounded-full border border-[#191B1F] bg-[#191B1F] p-3.5"
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-[#191B1F] bg-[#191B1F] p-3.5"
+      style={{ width: '61.6px', height: '61.6px' }}
     >
       <PlusIcon />
     </button>
