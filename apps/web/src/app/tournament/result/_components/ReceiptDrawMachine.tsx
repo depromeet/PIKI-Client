@@ -199,192 +199,192 @@ export default function ReceiptDrawMachine({ result }: Props) {
       <div className="invisible -mt-8 min-h-0 flex-1 shrink-0" aria-hidden />
 
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex justify-center overflow-hidden"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex items-start justify-center overflow-hidden"
         style={{ top: `${receiptTopPx}px` }}
       >
         <div
           ref={receiptPaperRef}
-          className="pointer-events-auto scrollbar-hide flex h-full min-h-0 shrink-0 flex-col overflow-x-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)] will-change-transform"
+          className="pointer-events-auto scrollbar-hide flex h-fit max-h-full min-h-0 shrink-0 flex-col overflow-hidden overflow-x-auto will-change-transform"
           style={{ width: 'min(299px, calc(100% * 299 / 420))' }}
         >
-          <div className="flex min-h-0 flex-1 flex-col">
-            <div className="relative scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
-              {/* MY PICK! 헤더 */}
-              <div className="flex flex-col items-start gap-5 bg-white pt-5 pb-[25px]">
-                <p
-                  className={cn(
-                    poppins.className,
-                    'w-full text-center text-[48px] leading-[100%] font-bold tracking-[-0.96px] text-black uppercase'
-                  )}
-                >
-                  MY PICK!
-                </p>
-                <div className="mx-5 self-stretch border-t border-dashed border-[#DCDEE2]" />
-                <div
-                  className={cn(
-                    geistMono.className,
-                    'flex w-full flex-col px-[25px] text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]'
-                  )}
-                >
-                  <div className="flex gap-[37px]">
-                    <span className="w-[69px] shrink-0">Date :</span>
-                    <span>{formatReceiptDate(new Date())}</span>
-                  </div>
-                  <div className="flex gap-[37px]">
-                    <span className="w-[69px] shrink-0">Terminal:</span>
-                    <span>Picky</span>
-                  </div>
-                  <div className="flex gap-[37px]">
-                    <span className="w-[69px] shrink-0">Served by:</span>
-                    <span>piki.day</span>
-                  </div>
+          <div className="scrollbar-hide relative max-h-[calc(100%-22px)] min-h-0 shrink grow-0 overflow-y-auto overscroll-y-contain bg-white">
+            {/* MY PICK! 헤더 */}
+            <div className="flex flex-col items-start gap-5 bg-white pt-5 pb-[25px]">
+              <p
+                className={cn(
+                  poppins.className,
+                  'w-full text-center text-[48px] leading-[100%] font-bold tracking-[-0.96px] text-black uppercase'
+                )}
+              >
+                MY PICK!
+              </p>
+              <div className="mx-5 self-stretch border-t border-dashed border-[#DCDEE2]" />
+              <div
+                className={cn(
+                  geistMono.className,
+                  'flex w-full flex-col px-[25px] text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]'
+                )}
+              >
+                <div className="flex gap-[37px]">
+                  <span className="w-[69px] shrink-0">Date :</span>
+                  <span>{formatReceiptDate(new Date())}</span>
                 </div>
-              </div>
-
-              {/* 상품 섹션 */}
-              <div className="flex flex-col bg-white">
-                {/* 1위 */}
-                <section className="flex flex-col">
-                  <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
-                    ****** 1위 - 지금 사도 후회 없을 선택 ******
-                  </p>
-                  <div className="mt-[12px] flex items-start gap-[21px] pr-[45px] pl-[25px]">
-                    <div className="relative shrink-0">
-                      <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
-                        <Image
-                          src={result[0]!.imagePath}
-                          width={80}
-                          height={80}
-                          alt={result[0]!.name}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <RankBadge rank={1} />
-                    </div>
-                    <div className="flex flex-col gap-1 pt-1">
-                      <p className="text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#686F7E]">
-                        {result[0]!.name}
-                      </p>
-                      <p className="text-[16px] leading-[22px] font-bold tracking-[-0.6px] text-[#2D3037]">
-                        {formatPrice(result[0]!.price)}
-                      </p>
-                      {!!result[0]!.tags?.length && (
-                        <div className="mt-1 flex flex-col gap-[6px]">
-                          {result[0]!.tags.map(tag => (
-                            <div
-                              key={tag.name}
-                              className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
-                              style={{ backgroundColor: tag.backgroundColor }}
-                            >
-                              <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
-                              <span
-                                className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
-                                style={{ color: tag.textColor }}
-                              >
-                                {tag.name}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </section>
-
-                {/* 2위 */}
-                <section className="mt-8 flex flex-col">
-                  <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
-                    ****** 2위 - 끝까지 고민했던 선택 ******
-                  </p>
-                  <div className="mt-[18px] flex items-start gap-[21px] pr-[45px] pl-[25px]">
-                    <div className="relative shrink-0">
-                      <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
-                        <Image
-                          src={result[1]!.imagePath}
-                          width={80}
-                          height={80}
-                          alt={result[1]!.name}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <RankBadge rank={2} />
-                    </div>
-                    <div className="flex flex-col gap-1 pt-1">
-                      <p className="text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#686F7E]">
-                        {result[1]!.name}
-                      </p>
-                      <p className="text-[16px] leading-[22px] font-bold tracking-[-0.6px] text-[#2D3037]">
-                        {formatPrice(result[1]!.price)}
-                      </p>
-                      {!!result[1]!.tags?.length && (
-                        <div className="mt-1 flex flex-col gap-[6px]">
-                          {result[1]!.tags.map(tag => (
-                            <div
-                              key={tag.name}
-                              className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
-                              style={{ backgroundColor: tag.backgroundColor }}
-                            >
-                              <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
-                              <span
-                                className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
-                                style={{ color: tag.textColor }}
-                              >
-                                {tag.name}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </section>
-
-                {/* 3-4위 */}
-                <section className="mt-8 flex flex-col items-center px-[30px] pb-5">
-                  <p className="text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
-                    ****** 3-4위 - 준결승 탈락템 ******
-                  </p>
-                  <div className="mt-5 flex w-full items-start justify-center gap-10">
-                    {result.slice(2, 4).map(product => (
-                      <div key={product.name} className="flex w-20 flex-col items-center">
-                        <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
-                          <Image
-                            src={product.imagePath}
-                            alt={product.name}
-                            width={80}
-                            height={80}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="mt-4 flex flex-col items-center gap-1">
-                          <p className="line-clamp-2 text-center text-[12px] leading-[18px] font-normal tracking-[-0.4px] text-[#686F7E]">
-                            {product.name}
-                          </p>
-                          <p className="text-center text-[14px] leading-5 font-semibold tracking-[-0.6px] text-[#2D3037]">
-                            {formatPrice(product.price)}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </div>
-
-              {/* 스크롤 끝: 점선 + Have a nice @piki.day + 물결 */}
-              <div className="bg-white pt-8">
-                <div className="h-px border-t border-dashed border-[#DCDEE2]" />
-                <div className="flex w-full items-center justify-center py-2">
-                  <p
-                    className={cn(
-                      geistMono.className,
-                      'text-center text-[14px] leading-4.5 font-semibold tracking-[-0.4px] text-[#2D3037]'
-                    )}
-                  >
-                    •Have a nice @piki.day•
-                  </p>
+                <div className="flex gap-[37px]">
+                  <span className="w-[69px] shrink-0">Terminal:</span>
+                  <span>Picky</span>
+                </div>
+                <div className="flex gap-[37px]">
+                  <span className="w-[69px] shrink-0">Served by:</span>
+                  <span>piki.day</span>
                 </div>
               </div>
             </div>
+
+            {/* 상품 섹션 */}
+            <div className="flex flex-col bg-white">
+              {/* 1위 */}
+              <section className="flex flex-col">
+                <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
+                  ****** 1위 - 지금 사도 후회 없을 선택 ******
+                </p>
+                <div className="mt-[12px] flex items-start gap-[21px] pr-[45px] pl-[25px]">
+                  <div className="relative shrink-0">
+                    <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
+                      <Image
+                        src={result[0]!.imagePath}
+                        width={80}
+                        height={80}
+                        alt={result[0]!.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <RankBadge rank={1} />
+                  </div>
+                  <div className="flex flex-col gap-1 pt-1">
+                    <p className="text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#686F7E]">
+                      {result[0]!.name}
+                    </p>
+                    <p className="text-[16px] leading-[22px] font-bold tracking-[-0.6px] text-[#2D3037]">
+                      {formatPrice(result[0]!.price)}
+                    </p>
+                    {!!result[0]!.tags?.length && (
+                      <div className="mt-1 flex flex-col gap-[6px]">
+                        {result[0]!.tags.map(tag => (
+                          <div
+                            key={tag.name}
+                            className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
+                            style={{ backgroundColor: tag.backgroundColor }}
+                          >
+                            <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
+                            <span
+                              className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
+                              style={{ color: tag.textColor }}
+                            >
+                              {tag.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+
+              {/* 2위 */}
+              <section className="mt-8 flex flex-col">
+                <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
+                  ****** 2위 - 끝까지 고민했던 선택 ******
+                </p>
+                <div className="mt-[18px] flex items-start gap-[21px] pr-[45px] pl-[25px]">
+                  <div className="relative shrink-0">
+                    <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
+                      <Image
+                        src={result[1]!.imagePath}
+                        width={80}
+                        height={80}
+                        alt={result[1]!.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <RankBadge rank={2} />
+                  </div>
+                  <div className="flex flex-col gap-1 pt-1">
+                    <p className="text-[14px] leading-5 font-medium tracking-[-0.6px] text-[#686F7E]">
+                      {result[1]!.name}
+                    </p>
+                    <p className="text-[16px] leading-[22px] font-bold tracking-[-0.6px] text-[#2D3037]">
+                      {formatPrice(result[1]!.price)}
+                    </p>
+                    {!!result[1]!.tags?.length && (
+                      <div className="mt-1 flex flex-col gap-[6px]">
+                        {result[1]!.tags.map(tag => (
+                          <div
+                            key={tag.name}
+                            className="inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1"
+                            style={{ backgroundColor: tag.backgroundColor }}
+                          >
+                            <span style={{ color: tag.iconColor }}>{renderIcon(tag.icon)}</span>
+                            <span
+                              className="text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px]"
+                              style={{ color: tag.textColor }}
+                            >
+                              {tag.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+
+              {/* 3-4위 */}
+              <section className="mt-8 flex flex-col items-center px-[30px] pb-5">
+                <p className="text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
+                  ****** 3-4위 - 준결승 탈락템 ******
+                </p>
+                <div className="mt-5 flex w-full items-start justify-center gap-10">
+                  {result.slice(2, 4).map(product => (
+                    <div key={product.name} className="flex w-20 flex-col items-center">
+                      <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#DCDEE2] bg-black/5">
+                        <Image
+                          src={product.imagePath}
+                          alt={product.name}
+                          width={80}
+                          height={80}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="mt-4 flex flex-col items-center gap-1">
+                        <p className="line-clamp-2 text-center text-[12px] leading-[18px] font-normal tracking-[-0.4px] text-[#686F7E]">
+                          {product.name}
+                        </p>
+                        <p className="text-center text-[14px] leading-5 font-semibold tracking-[-0.6px] text-[#2D3037]">
+                          {formatPrice(product.price)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+
+            {/* 스크롤 끝: 점선 + Have a nice @piki.day + 물결 (물결 톱니는 페이지 배경 위에 올려 비주얼 분리) */}
+            <div className="bg-white pt-8 pb-0">
+              <div className="h-px border-t border-dashed border-[#DCDEE2]" />
+              <div className="flex w-full items-center justify-center py-2 pb-3">
+                <p
+                  className={cn(
+                    geistMono.className,
+                    'text-center text-[14px] leading-4.5 font-semibold tracking-[-0.4px] text-[#2D3037]'
+                  )}
+                >
+                  •Have a nice @piki.day•
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="isolate w-full shrink-0 bg-[#F4F4F6] leading-none">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="299"
@@ -392,7 +392,8 @@ export default function ReceiptDrawMachine({ result }: Props) {
               viewBox="0 0 299 22"
               fill="none"
               preserveAspectRatio="none"
-              className="-mt-px block w-full shrink-0"
+              shapeRendering="geometricPrecision"
+              className="block w-full shrink-0 bg-transparent align-top"
               aria-hidden
             >
               <path
