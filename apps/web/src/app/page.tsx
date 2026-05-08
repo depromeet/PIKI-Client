@@ -4,7 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { useThemeColor } from '@/hooks/useThemeColor';
+
 function EntryPage() {
+  useThemeColor('#F4F4F6');
   const router = useRouter();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
