@@ -25,9 +25,36 @@ const pretendard = localFont({
   ],
 });
 
+const metadataBaseUrl = process.env.NEXT_PUBLIC_WEB_URL ?? 'https://piki.day';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(metadataBaseUrl),
   title: 'piki',
-  description: '쌓인 위시리스트에서 먼저 살 것을 골라주는 소비 결정 서비스',
+  description: '흩어진 위시를 한곳에, 결정은 1:1로!',
+  openGraph: {
+    title: 'piki',
+    description: '흩어진 위시를 한곳에, 결정은 1:1로!',
+    siteName: 'piki',
+    type: 'website',
+    locale: 'ko_KR',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'piki',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'piki',
+    description: '흩어진 위시를 한곳에, 결정은 1:1로!',
+    images: ['/opengraph-image.png'],
+  },
+  icons: {
+    icon: '/images/favicon.ico',
+  },
 };
 
 export const viewport: Viewport = {
