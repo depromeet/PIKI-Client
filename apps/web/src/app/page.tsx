@@ -34,7 +34,7 @@ function EntryPage() {
   };
 
   return (
-    <main className="relative flex h-full flex-col overflow-hidden bg-[#F1F1F1]">
+    <main className="relative flex h-full flex-col overflow-hidden bg-[#F4F4F6]">
       <div
         ref={scrollerRef}
         className="flex flex-1 snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
