@@ -45,9 +45,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    /** TEMP: 임시 배경색 추가 */
-    <html lang="ko" className={cn(pretendard.className, 'h-full bg-gray-100 antialiased')}>
-      <body className="mx-auto my-0 h-full max-w-120 bg-white">
+    <html lang="ko" className={cn(pretendard.className, 'h-full antialiased')}>
+      <body className="mx-auto my-0 h-full max-w-120">
         <Providers>{children}</Providers>
       </body>
     </html>

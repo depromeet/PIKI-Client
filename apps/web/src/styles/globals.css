@@ -1,6 +1,16 @@
 @import 'tailwindcss';
 @import './reset.css';
 
+/**
+ * iOS Safari 노치/하단 safe-area 영역 색상.
+ * iOS 26부터 themeColor를 무시하므로, html/body 배경색이 노치 영역에 노출됨.
+ * 페이지에서 useThemeColor 훅을 사용해 동적으로 갱신할 수 있음.
+ */
+html,
+body {
+  background-color: #f4f4f6;
+}
+
 /** 디자인 토큰 정의 */
 @theme {
   --color-inverse-background: #1b1c1e;

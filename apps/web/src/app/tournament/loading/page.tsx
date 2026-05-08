@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { useWishes } from '@/hooks/useWishes';
 
 import FloatingProducts, { type FloatingItemT } from './_components/FloatingProducts';
@@ -11,6 +12,7 @@ import LoadingBar from './_components/LoadingBar';
 const LOADING_DURATION_MS = 4000;
 
 export default function TournamentLoadingPage() {
+  useThemeColor('#F4F4F6');
   const router = useRouter();
   const wishesQuery = useWishes();
 

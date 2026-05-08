@@ -1,12 +1,17 @@
+'use client';
+
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import comingSoonBasket from '@/assets/images/coming-soon-basket.png';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['700'] });
 
 function ComingSoonPage() {
+  useThemeColor('#FFFFFF');
+
   return (
     <main className="flex h-full flex-col px-5.5 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <section className="text-center">

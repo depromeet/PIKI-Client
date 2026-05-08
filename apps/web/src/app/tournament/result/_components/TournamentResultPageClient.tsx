@@ -2,12 +2,15 @@
 
 import Link from 'next/link';
 
+import { useThemeColor } from '@/hooks/useThemeColor';
 import type { RankedProductT } from '@/types/product';
 import { readPikiResultAsRankedProducts } from '@/utils/pikiResultStorage';
 
 import ReceiptDrawMachine from './ReceiptDrawMachine';
 
 export default function TournamentResultPageClient() {
+  useThemeColor('#F4F4F6');
+
   /** 토너먼트 결과 페이지는 `page.tsx`에서 dynamic(ssr:false)로만 불러와 서버에서 실행되지 않음 */
   const unsorted = readPikiResultAsRankedProducts();
   const orderedResult: RankedProductT[] | null =

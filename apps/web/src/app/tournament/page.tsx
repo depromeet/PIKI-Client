@@ -5,11 +5,13 @@ import { useEffect } from 'react';
 import RoundBadge from '@/components/tournament/RoundBadge';
 import TournamentQuestion from '@/components/tournament/TournamentQuestion';
 import VsSection from '@/components/tournament/VsSection';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { useTournament } from '@/hooks/useTournament';
 
 const IS_FINAL_LABEL = '🏆 결승전';
 
 export default function TournamentPage() {
+  useThemeColor('#FFFFFF');
   const { products, currentMatch, roundLabel, handleSelect } = useTournament();
   const isFinal = roundLabel === IS_FINAL_LABEL;
 

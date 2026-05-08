@@ -11,6 +11,7 @@ import mockImg4 from '@/assets/images/home/mock-4-bag.png';
 import mockImg5 from '@/assets/images/home/mock-5-cap.png';
 import mockImg6 from '@/assets/images/home/mock-6-hoodie.png';
 import AddItemModal from '@/components/AddItemModal';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { useWishes } from '@/hooks/useWishes';
 import { DUMMY_POSITIONS, isDummyProduct } from '@/mocks/dummyWishes';
 import { dummyProducts } from '@/mocks/products';
@@ -61,6 +62,7 @@ const FRIEND_EMOJI_POSITIONS = [
 ];
 
 function HomePage() {
+  useThemeColor('#FFFFFF');
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const wishesQuery = useWishes();

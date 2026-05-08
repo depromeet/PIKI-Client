@@ -6,6 +6,7 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 
 import EditIcon from '@/assets/icons/edit.svg';
 import ImagePlaceholderIcon from '@/assets/icons/image.svg';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { useAddWish } from '@/hooks/useWishes';
 import { dummyProducts } from '@/mocks/products';
 import type { ProductT } from '@/types/product';
@@ -28,6 +29,7 @@ function NewItemPage() {
 }
 
 function NewItemContent() {
+  useThemeColor('#FFFFFF');
   const router = useRouter();
   const searchParams = useSearchParams();
 
