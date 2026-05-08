@@ -5,7 +5,7 @@ import { Geist_Mono, Poppins } from 'next/font/google';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 import ReceiptPrinterImg from '@/assets/images/tournament/result/receipt-printer.png';
 import type { RankedProductT } from '@/types/product';
@@ -13,6 +13,21 @@ import { cn } from '@/utils/cn';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['700'] });
 const geistMono = Geist_Mono({ subsets: ['latin'], weight: ['600'] });
+
+/** 프린터 래퍼 aspect ratio (디자인 박스) */
+const PRINTER_ASPECT_NUMERATOR = 267;
+const PRINTER_ASPECT_DENOMINATOR = 62;
+
+/**
+ * 디자인 기준: 컨테이너가 최대 420px 너비일 때 영수증 오버레이 top이 53px로 맞춰져 있음.
+ * 너비가 줄면 프린터 박스 높이도 비례해 줄므로, 동일 시각 비율을 유지하기 위해 높이에 선형 스케일 적용.
+ */
+const RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX = 53;
+const MAX_PRINTER_CONTAINER_WIDTH_PX = 420;
+const REFERENCE_PRINTER_FRAME_HEIGHT_PX =
+  (MAX_PRINTER_CONTAINER_WIDTH_PX * PRINTER_ASPECT_DENOMINATOR) / PRINTER_ASPECT_NUMERATOR;
+const RECEIPT_TOP_PER_PRINTER_HEIGHT =
+  RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX / REFERENCE_PRINTER_FRAME_HEIGHT_PX;
 
 function RankBadge({ rank }: { rank: number }) {
   return (
@@ -78,8 +93,23 @@ type Props = {
 
 export default function ReceiptDrawMachine({ result }: Props) {
   const animationScopeRef = useRef<HTMLDivElement | null>(null);
+  const printerFrameRef = useRef<HTMLDivElement | null>(null);
   const receiptPaperRef = useRef<HTMLDivElement | null>(null);
   const slotBarRef = useRef<HTMLDivElement | null>(null);
+  const [receiptTopPx, setReceiptTopPx] = useState(RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX);
+
+  useLayoutEffect(() => {
+    const frame = printerFrameRef.current;
+    if (!frame) return;
+
+    const updateReceiptTop = () =>
+      setReceiptTopPx(frame.getBoundingClientRect().height * RECEIPT_TOP_PER_PRINTER_HEIGHT);
+
+    updateReceiptTop();
+    const resizeObserver = new ResizeObserver(updateReceiptTop);
+    resizeObserver.observe(frame);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const animationScopeElement = animationScopeRef.current;
@@ -153,7 +183,11 @@ export default function ReceiptDrawMachine({ result }: Props) {
 
   return (
     <div className="relative isolate flex min-h-0 w-full flex-1 flex-col" ref={animationScopeRef}>
-      <div className="relative z-30 w-full shrink-0" style={{ aspectRatio: '267/62' }}>
+      <div
+        className="relative z-30 w-full shrink-0"
+        ref={printerFrameRef}
+        style={{ aspectRatio: `${PRINTER_ASPECT_NUMERATOR}/${PRINTER_ASPECT_DENOMINATOR}` }}
+      >
         <Image
           src={ReceiptPrinterImg}
           alt="영수증 기계"
@@ -164,7 +198,10 @@ export default function ReceiptDrawMachine({ result }: Props) {
       </div>
       <div className="invisible -mt-8 min-h-0 flex-1 shrink-0" aria-hidden />
 
-      <div className="pointer-events-none absolute inset-x-0 top-[53px] bottom-0 z-40 flex justify-center overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex justify-center overflow-hidden"
+        style={{ top: `${receiptTopPx}px` }}
+      >
         <div
           ref={receiptPaperRef}
           className="pointer-events-auto scrollbar-hide flex h-full min-h-0 shrink-0 flex-col overflow-x-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)] will-change-transform"
