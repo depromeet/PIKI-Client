@@ -73,7 +73,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
 
     const context = gsap.context(() => {
       const receiptHeight = receiptPaperElement.getBoundingClientRect().height;
-      const startY = Math.max(receiptHeight + 96, 720);
+      const startY = receiptHeight;
 
       gsap.set(slotBarElement, { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: 'center center' });
       gsap.set(receiptPaperElement, {
@@ -121,14 +121,20 @@ export default function ReceiptDrawMachine({ result }: Props) {
       <div className="pointer-events-none absolute inset-x-0 top-[53px] bottom-0 z-40 flex justify-center overflow-hidden">
         <div
           ref={receiptPaperRef}
-          className="pointer-events-auto flex h-full min-h-0 shrink-0 flex-col will-change-transform"
+          className="pointer-events-auto flex h-full min-h-0 shrink-0 flex-col drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)] will-change-transform"
           style={{ width: '299px' }}
         >
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden border border-b-0 border-[#d8dde2] bg-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
-            <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
+          <div className="flex min-h-0 flex-1 flex-col">
+            <div
+              className="scrollbar-hide relative min-h-0 flex-1 overflow-y-auto overscroll-y-contain mask-[linear-gradient(to_bottom,black_0%,black_calc(100%-2px),transparent_100%)]"
+              style={{
+                WebkitMaskImage:
+                  'linear-gradient(to bottom, black 0%, black calc(100% - 2px), transparent 100%)',
+              }}
+            >
 
               {/* MY PICK! 헤더 */}
-              <div className="flex flex-col items-start gap-5 pt-5 pb-[25px]">
+              <div className="flex flex-col items-start gap-5 bg-white pt-5 pb-[25px]">
                 <p
                   className={cn(
                     poppins.className,
@@ -160,7 +166,7 @@ export default function ReceiptDrawMachine({ result }: Props) {
               </div>
 
               {/* 상품 섹션 */}
-              <div className="flex flex-col">
+              <div className="flex flex-col bg-white">
                 {/* 1위 */}
                 <section className="flex flex-col">
                   <p className="px-[25px] text-center text-[14px] leading-[18px] font-semibold tracking-[-0.4px] text-[#2D3037]">
@@ -286,42 +292,41 @@ export default function ReceiptDrawMachine({ result }: Props) {
                     ))}
                   </div>
                 </section>
-              </div>
-            </div>
 
-            {/* 하단 고정: Have a nice */}
-            <div className="flex shrink-0 flex-col bg-white">
-              <div className="px-5 pt-3">
+              </div>
+
+              {/* 스크롤 끝: 점선 + Have a nice @piki.day + 물결 */}
+              <div className="bg-white pt-8">
                 <div className="h-px border-t border-dashed border-[#DCDEE2]" />
+                <div className="flex w-full items-center justify-center py-2">
+                  <p
+                    className={cn(
+                      geistMono.className,
+                      'text-center text-[14px] font-semibold leading-4.5 tracking-[-0.4px] text-[#2D3037]'
+                    )}
+                  >
+                    •Have a nice @piki.day•
+                  </p>
+                </div>
               </div>
-              <div className="flex w-full items-center justify-center py-2 mt-[12px]">
-                <p
-                  className={cn(
-                    geistMono.className,
-                    'text-center text-[14px] font-semibold leading-[18px] tracking-[-0.4px] text-[#2D3037]'
-                  )}
-                >
-                  •Have a nice @piki.day•
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* 물결 SVG — overflow:hidden 바깥에 배치해야 잘리지 않음 */}
-          <div className="shrink-0 border-l border-r border-[#d8dde2]">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="299"
-              height="22"
-              viewBox="0 0 299 22"
-              fill="none"
-              className="w-full"
-            >
-              <path
-                d="M0 0V22H5.34136C8.78615 20.3464 10.4118 16.1393 14.3694 16.1393C18.898 16.1393 19.7688 20.3707 22.8943 22H28.255C31.3805 20.3788 32.2514 16.1393 36.7799 16.1393C41.3084 16.1393 42.1793 20.3707 45.3048 22H50.6655C53.791 20.3788 54.6618 16.1393 59.1904 16.1393C63.7189 16.1393 64.5898 20.3707 67.7153 22H73.076C76.2015 20.3788 77.0723 16.1393 81.6009 16.1393C86.1294 16.1393 87.0003 20.3707 90.1258 22H95.4865C98.6119 20.3788 99.4828 16.1393 104.011 16.1393C108.54 16.1393 109.411 20.3707 112.536 22H117.897C121.022 20.3788 121.893 16.1393 126.422 16.1393C130.95 16.1393 131.821 20.3707 134.947 22H140.307C143.433 20.3788 144.304 16.1393 148.832 16.1393C153.361 16.1393 154.232 20.3707 157.357 22H162.718C165.843 20.3788 166.714 16.1393 171.243 16.1393C175.771 16.1393 176.642 20.3707 179.768 22H185.128C188.254 20.3788 189.125 16.1393 193.653 16.1393C198.182 16.1393 199.053 20.3707 202.178 22H207.539C210.664 20.3788 211.535 16.1393 216.064 16.1393C220.592 16.1393 221.463 20.3707 224.589 22H229.949C233.075 20.3788 233.946 16.1393 238.474 16.1393C243.003 16.1393 243.874 20.3707 246.999 22H252.36C255.485 20.3788 256.356 16.1393 260.885 16.1393C265.413 16.1393 266.284 20.3707 269.41 22H274.77C277.896 20.3788 278.767 16.1393 283.295 16.1393C287.824 16.1393 288.695 20.3707 291.82 22H297.181C297.878 21.6352 298.468 21.1489 299 20.6057V0"
-                fill="white"
-              />
-            </svg>
+              {/* 물결 SVG — 영수증 끝 톱니 모양 (스크롤 끝까지 내려야 보임) */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="299"
+                height="22"
+                viewBox="0 0 299 22"
+                fill="none"
+                preserveAspectRatio="none"
+                className="-mt-px block w-full shrink-0"
+                aria-hidden
+              >
+                <path
+                  d="M0 0V22H5.34136C8.78615 20.3464 10.4118 16.1393 14.3694 16.1393C18.898 16.1393 19.7688 20.3707 22.8943 22H28.255C31.3805 20.3788 32.2514 16.1393 36.7799 16.1393C41.3084 16.1393 42.1793 20.3707 45.3048 22H50.6655C53.791 20.3788 54.6618 16.1393 59.1904 16.1393C63.7189 16.1393 64.5898 20.3707 67.7153 22H73.076C76.2015 20.3788 77.0723 16.1393 81.6009 16.1393C86.1294 16.1393 87.0003 20.3707 90.1258 22H95.4865C98.6119 20.3788 99.4828 16.1393 104.011 16.1393C108.54 16.1393 109.411 20.3707 112.536 22H117.897C121.022 20.3788 121.893 16.1393 126.422 16.1393C130.95 16.1393 131.821 20.3707 134.947 22H140.307C143.433 20.3788 144.304 16.1393 148.832 16.1393C153.361 16.1393 154.232 20.3707 157.357 22H162.718C165.843 20.3788 166.714 16.1393 171.243 16.1393C175.771 16.1393 176.642 20.3707 179.768 22H185.128C188.254 20.3788 189.125 16.1393 193.653 16.1393C198.182 16.1393 199.053 20.3707 202.178 22H207.539C210.664 20.3788 211.535 16.1393 216.064 16.1393C220.592 16.1393 221.463 20.3707 224.589 22H229.949C233.075 20.3788 233.946 16.1393 238.474 16.1393C243.003 16.1393 243.874 20.3707 246.999 22H252.36C255.485 20.3788 256.356 16.1393 260.885 16.1393C265.413 16.1393 266.284 20.3707 269.41 22H274.77C277.896 20.3788 278.767 16.1393 283.295 16.1393C287.824 16.1393 288.695 20.3707 291.82 22H297.181C297.878 21.6352 298.468 21.1489 299 20.6057V0"
+                  fill="white"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>

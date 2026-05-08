@@ -59,15 +59,14 @@ function NewItemContent() {
   const basePrice = String(lastDummyProduct.price);
   const baseImageUrl = lastDummyProduct.imagePath;
 
-  const name = nameOverride ?? baseName;
-  const priceText = priceOverride ?? basePrice;
+  const name = nameOverride ?? (isManual ? '' : baseName);
+  const priceText = priceOverride ?? (isManual ? '' : basePrice);
 
   const isFailedState = isManual;
   const showImageEmpty = isFailedState && !manualImageUrl && !baseImageUrl;
-  const finalImageUrl = manualImageUrl || baseImageUrl;
+  const finalImageUrl = manualImageUrl || (isFailedState ? '' : baseImageUrl);
 
   const handleRetry = () => {
-    if (isManual) return;
     setNameOverride(null);
     setPriceOverride(null);
     setManualImageUrl('');
@@ -131,78 +130,82 @@ function NewItemContent() {
     );
   }
 
+  const title = isFailedState ? '상품 정보를 가져오지 못했어요' : '상품 정보를 가져왔어요';
+  const subtitle = isFailedState
+    ? '상품명과 가격을 직접 입력해주세요'
+    : '상품명과 가격은 직접 수정할 수 있어요';
+
   return (
     <main className="relative flex h-full flex-col overflow-x-hidden">
-      <div className="scrollbar-hide flex-1 overflow-y-auto px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(120px+env(safe-area-inset-bottom))]">
-        <h1 className="text-[28px] leading-10 font-bold tracking-[-0.6px] text-[#2D3037]">
-          위시템 추가
-        </h1>
+      <div className="scrollbar-hide flex-1 overflow-y-auto px-4.75 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(120px+env(safe-area-inset-bottom))]">
+        <header className="flex flex-col items-center gap-2 text-center tracking-[-0.6px]">
+          <h1 className="text-2xl leading-8 font-bold text-[#171719]">{title}</h1>
+          <p className="text-lg leading-6.5 font-medium text-[#ADB1BB]">{subtitle}</p>
+        </header>
 
-        {isFailedState ? (
-          <FailureBanner className="mt-3" />
-        ) : (
-          <SuccessBanner
+        <div className="mt-6 flex justify-center">
+          {showImageEmpty ? (
+            <ImagePlaceholderCard onClick={openFilePicker} error={imageError} />
+          ) : (
+            <div className="relative size-50 overflow-hidden rounded-[11.268px] bg-[#F4F4F6]">
+              <ProductImage
+                imageUrl={finalImageUrl}
+                alt={name || '상품 이미지'}
+                isUploaded={Boolean(manualImageUrl)}
+              />
+              {isFailedState && (
+                <button
+                  type="button"
+                  onClick={openFilePicker}
+                  className="absolute right-3 bottom-3 rounded-full bg-black/60 px-4 py-2 text-sm font-medium text-white backdrop-blur"
+                >
+                  이미지 변경
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6 flex flex-col gap-5">
+          <FieldInput
+            label="상품명"
+            value={name}
+            onChange={setNameOverride}
+            placeholder="상품명을 입력해주세요."
+            editableByDefault={isFailedState}
+          />
+          <FieldInput
+            label="가격"
+            value={priceText}
+            onChange={value => setPriceOverride(value.replace(/[^0-9]/g, ''))}
+            formatDisplay={value => (value ? `${Number(value).toLocaleString('ko-KR')}원` : '')}
+            formatLive={value => (value ? Number(value).toLocaleString('ko-KR') : '')}
+            placeholder="가격을 입력해주세요."
+            inputMode="numeric"
+            editableByDefault={isFailedState}
+          />
+        </div>
+
+        {!isFailedState && (
+          <SourceLinkCard
             platform={lastDummyProduct.platform}
             platformLogoPath={lastDummyProduct.platformLogoPath}
             originalUrl={lastDummyProduct.url}
-            className="mt-3"
+            className="mt-5"
           />
         )}
-
-        {showImageEmpty ? (
-          <ImagePlaceholderCard onClick={openFilePicker} error={imageError} className="mt-3" />
-        ) : (
-          <div className="relative mt-3 aspect-square w-full overflow-hidden rounded-xl bg-[#F4F4F6]">
-            <ProductImage
-              imageUrl={finalImageUrl}
-              alt={name || '상품 이미지'}
-              isUploaded={Boolean(manualImageUrl)}
-            />
-            {isFailedState && (
-              <button
-                type="button"
-                onClick={openFilePicker}
-                className="absolute right-3 bottom-3 rounded-full bg-black/60 px-4 py-2 text-sm font-medium text-white backdrop-blur"
-              >
-                이미지 변경
-              </button>
-            )}
-          </div>
-        )}
-
-        <FieldInput
-          label="상품명"
-          value={name}
-          onChange={setNameOverride}
-          placeholder="상품명을 입력해주세요."
-          editableByDefault={isFailedState}
-          className="mt-6"
-        />
-        <FieldInput
-          label="가격"
-          value={priceText}
-          onChange={value => setPriceOverride(value.replace(/[^0-9]/g, ''))}
-          formatDisplay={value => (value ? `${Number(value).toLocaleString('ko-KR')}원` : '')}
-          formatLive={value => (value ? Number(value).toLocaleString('ko-KR') : '')}
-          placeholder="가격을 입력해주세요."
-          inputMode="numeric"
-          editableByDefault={isFailedState}
-          className="mt-5"
-        />
       </div>
 
       <footer className="absolute right-0 bottom-0 left-0 border-t border-[#F4F4F6] bg-white px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+24px)]">
         <div className="flex w-full gap-3">
-          {!isManual && (
-            <button
-              type="button"
-              onClick={handleRetry}
-              disabled={isParsing || addWishMutation.isPending}
-              className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl border-[1.2px] border-[#C5C8CE] bg-white px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#2D3037] disabled:opacity-50"
-            >
-              {isParsing ? '가져오는 중...' : '다시 가져오기'}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={handleRetry}
+            disabled={isParsing || addWishMutation.isPending}
+            className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl border-[1.2px] border-[#C5C8CE] bg-white px-5 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#2D3037] disabled:opacity-50"
+          >
+            {isParsing ? '가져오는 중...' : '다시 가져오기'}
+          </button>
           <button
             type="button"
             onClick={handleAddWish}
@@ -309,7 +312,6 @@ type ProductImageProps = {
 function ProductImage({ imageUrl, alt, isUploaded }: ProductImageProps) {
   if (!imageUrl) return null;
   if (isUploaded) {
-    // dataURL은 native img로 처리
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={imageUrl} alt={alt} className="size-full object-cover" />;
   }
@@ -318,21 +320,26 @@ function ProductImage({ imageUrl, alt, isUploaded }: ProductImageProps) {
       src={imageUrl}
       alt={alt}
       fill
-      sizes="(max-width: 480px) calc(100vw - 40px), 440px"
+      sizes="200px"
       priority
       className="object-cover"
     />
   );
 }
 
-type SuccessBannerProps = {
+type SourceLinkCardProps = {
   platform: string;
   platformLogoPath: string;
   originalUrl: string;
   className?: string;
 };
 
-function SuccessBanner({ platform, platformLogoPath, originalUrl, className }: SuccessBannerProps) {
+function SourceLinkCard({
+  platform,
+  platformLogoPath,
+  originalUrl,
+  className,
+}: SourceLinkCardProps) {
   const regex = /^https?:\/\/(?:www\.)?([^/?#]+)/i;
   const match = originalUrl.match(regex);
   const domain = match?.[1] ?? '';
@@ -343,44 +350,16 @@ function SuccessBanner({ platform, platformLogoPath, originalUrl, className }: S
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'flex h-20 items-center gap-4 rounded-xl bg-[#ECF3FE] px-5 transition-colors active:bg-[#DDE7FA]',
+        'flex items-center justify-center gap-4 rounded-xl bg-[#F4F4F6] px-4 py-3 transition-colors active:bg-[#ECECEE]',
         className
       )}
     >
       <ShopIcon platform={platform} platformLogoPath={platformLogoPath} />
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <p className="line-clamp-1 text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#1A1A1A]">
-          상품 정보를 가져왔어요
-        </p>
-        <p className="line-clamp-1 truncate text-xs leading-[18px] font-semibold tracking-[-0.4px] text-[#686F7E]">
-          {domain}에서 확인하기
-        </p>
-      </div>
+      <p className="line-clamp-1 flex-1 truncate text-sm leading-5 font-semibold tracking-[-0.6px] text-[#686F7E]">
+        {domain}에서 확인하기
+      </p>
       <ChevronRightIcon />
     </a>
-  );
-}
-
-type FailureBannerProps = {
-  className?: string;
-};
-
-function FailureBanner({ className }: FailureBannerProps) {
-  return (
-    <div className={cn('flex h-20 items-center gap-4 rounded-xl bg-[#FEFAEC] px-5', className)}>
-      <div className="relative flex size-[57px] shrink-0 items-center justify-center">
-        <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#FBE8B0] via-[#F8D77D] to-[#F4C74A]" />
-        <span className="relative text-[32px] leading-10">🧐</span>
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <p className="text-base leading-5.5 font-semibold tracking-[-0.6px] text-[#1A1A1A]">
-          상품 정보를 가져오지 못했어요
-        </p>
-        <p className="truncate text-xs leading-[18px] font-semibold tracking-[-0.4px] text-[#686F7E]">
-          상품명과 가격을 직접 입력해주세요
-        </p>
-      </div>
-    </div>
   );
 }
 
@@ -391,12 +370,12 @@ type ShopIconProps = {
 
 function ShopIcon({ platform, platformLogoPath }: ShopIconProps) {
   return (
-    <div className="relative flex size-[57px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+    <div className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
       {platformLogoPath ? (
         <Image
           src={platformLogoPath}
-          width={57}
-          height={57}
+          width={48}
+          height={48}
           alt={platform}
           className="size-full object-cover"
         />
@@ -410,22 +389,21 @@ function ShopIcon({ platform, platformLogoPath }: ShopIconProps) {
 type ImagePlaceholderCardProps = {
   onClick: () => void;
   error?: string;
-  className?: string;
 };
 
-function ImagePlaceholderCard({ onClick, error, className }: ImagePlaceholderCardProps) {
+function ImagePlaceholderCard({ onClick, error }: ImagePlaceholderCardProps) {
   return (
-    <div className={className}>
+    <div className="flex flex-col">
       <button
         type="button"
         onClick={onClick}
-        className="relative flex aspect-square w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-[#F4F4F6]"
+        className="relative flex size-50 flex-col items-center justify-center gap-2 overflow-hidden rounded-[11.268px] bg-[#F4F4F6]"
       >
-        <Image src={ImagePlaceholderIcon} alt="" aria-hidden className="size-9.5 object-contain" />
-        <p className="text-lg leading-6.5 font-semibold tracking-[-0.6px] text-[#ADB1BB]">
+        <Image src={ImagePlaceholderIcon} alt="" aria-hidden className="size-9 object-contain" />
+        <p className="text-sm leading-5 font-medium tracking-[-0.6px] text-[#ADB1BB]">
           이미지가 비어 있어요
         </p>
-        <span className="text-sm leading-5 font-medium tracking-[-0.6px] text-[#686F7E] underline underline-offset-2">
+        <span className="text-sm leading-5 font-semibold tracking-[-0.6px] text-[#2D3037] underline underline-offset-2">
           직접 가져오기
         </span>
       </button>
@@ -488,11 +466,11 @@ function FieldInput({
   };
 
   return (
-    <div className={cn('flex flex-col gap-3', className)}>
-      <label className="text-lg leading-6.5 font-semibold tracking-[-0.6px] text-[#262626]">
+    <div className={cn('flex flex-col gap-2', className)}>
+      <label className="text-sm leading-5.5 font-semibold tracking-[-0.6px] text-[#262626]">
         {label}
       </label>
-      <div className="flex h-13.5 items-center gap-2 rounded-xl border border-[#DCDEE2] bg-white px-4">
+      <div className="flex items-center gap-2 rounded-xl border border-[#DCDEE2] bg-white p-4">
         <input
           ref={inputRef}
           type="text"
@@ -507,10 +485,7 @@ function FieldInput({
           onClick={enterEditMode}
           onFocus={enterEditMode}
           onBlur={handleBlur}
-          className={cn(
-            'min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] placeholder:text-[#ADB1BB] read-only:cursor-text focus:outline-none',
-            value ? 'text-[#686F7E]' : 'text-[#ADB1BB]'
-          )}
+          className="min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] text-[#686F7E] placeholder:text-[#ADB1BB] read-only:cursor-text focus:outline-none"
         />
         {showEditIcon && (
           <button
