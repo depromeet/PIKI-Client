@@ -174,7 +174,6 @@ function NewItemContent() {
             value={name}
             onChange={setNameOverride}
             placeholder="상품명을 입력해주세요."
-            editableByDefault={isFailedState}
           />
           <FieldInput
             label="가격"
@@ -184,7 +183,6 @@ function NewItemContent() {
             formatLive={value => (value ? Number(value).toLocaleString('ko-KR') : '')}
             placeholder="가격을 입력해주세요."
             inputMode="numeric"
-            editableByDefault={isFailedState}
           />
         </div>
 
@@ -413,7 +411,6 @@ type FieldInputProps = {
   onChange: (value: string) => void;
   placeholder?: string;
   inputMode?: 'text' | 'numeric';
-  editableByDefault?: boolean;
   formatDisplay?: (value: string) => string;
   formatLive?: (value: string) => string;
   className?: string;
@@ -425,83 +422,56 @@ function FieldInput({
   onChange,
   placeholder,
   inputMode = 'text',
-  editableByDefault = false,
   formatDisplay,
   formatLive,
   className,
 }: FieldInputProps) {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const enterEditMode = () => {
-    if (isEditing) return;
-    setIsEditing(true);
-    requestAnimationFrame(() => inputRef.current?.focus());
-  };
-
-  const handleToggleEdit = () => {
-    if (editableByDefault) return;
-    if (isEditing) {
-      setIsEditing(false);
-      return;
-    }
-    enterEditMode();
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
-
-  const showEditIcon = !editableByDefault;
+  const focusInput = () => requestAnimationFrame(() => inputRef.current?.focus());
 
   const getDisplayValue = () => {
-    if (isEditing) return formatLive ? formatLive(value) : value;
+    if (isFocused) return formatLive ? formatLive(value) : value;
     if (formatDisplay) return formatDisplay(value);
     return value;
   };
 
-  const handleBoxClick = () => {
-    if (editableByDefault || isEditing) return;
-    enterEditMode();
-  };
-
   return (
     <div className={cn('flex flex-col gap-2', className)}>
-      <label className="text-sm leading-5.5 font-semibold tracking-[-0.6px] text-[#262626]">
+      <label
+        htmlFor={`field-${label}`}
+        className="text-sm leading-5.5 font-semibold tracking-[-0.6px] text-[#262626]"
+      >
         {label}
       </label>
-      <div
-        className="flex items-center gap-2 rounded-xl border border-[#DCDEE2] bg-white p-4"
-        onClick={handleBoxClick}
-      >
+      <div className="flex items-center gap-2 rounded-xl border border-[#DCDEE2] bg-white p-4">
         <input
+          id={`field-${label}`}
           ref={inputRef}
           type="text"
           inputMode={inputMode}
           value={getDisplayValue()}
           placeholder={placeholder}
-          readOnly={!isEditing && !editableByDefault}
           spellCheck={false}
           autoCorrect="off"
           autoCapitalize="off"
           onChange={event => onChange(event.target.value)}
-          onFocus={enterEditMode}
-          onBlur={handleBlur}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           className="min-w-0 flex-1 bg-transparent text-base leading-5.5 font-medium tracking-[-0.6px] text-[#686F7E] placeholder:text-[#ADB1BB] focus:outline-none"
         />
-        {showEditIcon && (
-          <button
-            type="button"
-            aria-label={`${label} 수정`}
-            onClick={event => {
-              event.stopPropagation();
-              handleToggleEdit();
-            }}
-            className="flex size-5 shrink-0 items-center justify-center"
-          >
-            <Image src={EditIcon} alt="" aria-hidden className="size-4 object-contain" />
-          </button>
-        )}
+        <button
+          type="button"
+          aria-label={`${label} 입력란 포커스`}
+          onClick={event => {
+            event.preventDefault();
+            focusInput();
+          }}
+          className="flex size-5 shrink-0 items-center justify-center"
+        >
+          <Image src={EditIcon} alt="" aria-hidden className="size-4 object-contain" />
+        </button>
       </div>
     </div>
   );
