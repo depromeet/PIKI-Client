@@ -174,7 +174,7 @@ function HomePage() {
         </div>
       </section>
 
-      <div className="px-5 pt-[10.4px] pb-[calc(env(safe-area-inset-bottom)+34px)]">
+      <div className="px-5 py-3">
         <button
           type="button"
           disabled={!canStartTournament}
