@@ -34,44 +34,44 @@ function ComingSoonPage() {
         </section>
 
         <section className="flex flex-col items-center gap-2">
-        <a
-          href="https://forms.gle/qcnMcNX6gkW68vcQ8"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col items-center gap-2"
-          aria-label="의견 남기기 폼으로 이동 (새 탭)"
-        >
-          <span
-            className={poppins.className}
-            style={{
-              color: '#000',
-              textAlign: 'center',
-              fontSize: '18px',
-              fontWeight: 700,
-              lineHeight: '100%',
-              letterSpacing: '-0.36px',
-            }}
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfE42Ecj6UYhpCnZgGFJHUj0F0lH98E-CNX0UMPIO5W9obUPg/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-2"
+            aria-label="의견 남기기 폼으로 이동 (새 탭)"
           >
-            Click me!
-          </span>
-          <span
-            style={{
-              color: '#171719',
-              fontSize: '16px',
-              fontWeight: 600,
-              lineHeight: '22px',
-              letterSpacing: '-0.6px',
-              textDecorationLine: 'underline',
-              textDecorationStyle: 'solid',
-              textUnderlineOffset: 'auto',
-              width: '156px',
-              textAlign: 'center',
-            }}
-          >
-            딱 30초! 의견 남기러 가기
-          </span>
-        </a>
-      </section>
+            <span
+              className={poppins.className}
+              style={{
+                color: '#000',
+                textAlign: 'center',
+                fontSize: '18px',
+                fontWeight: 700,
+                lineHeight: '100%',
+                letterSpacing: '-0.36px',
+              }}
+            >
+              Click me!
+            </span>
+            <span
+              style={{
+                color: '#171719',
+                fontSize: '16px',
+                fontWeight: 600,
+                lineHeight: '22px',
+                letterSpacing: '-0.6px',
+                textDecorationLine: 'underline',
+                textDecorationStyle: 'solid',
+                textUnderlineOffset: 'auto',
+                width: '156px',
+                textAlign: 'center',
+              }}
+            >
+              딱 30초! 의견 남기러 가기
+            </span>
+          </a>
+        </section>
       </div>
 
       <section className="mt-6 w-full border-t border-[#F4F4F6] pt-6">
