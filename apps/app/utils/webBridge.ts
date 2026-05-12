@@ -5,9 +5,14 @@ import type { WebView } from 'react-native-webview';
 let webviewRef: RefObject<WebView | null> | null = null;
 
 export const WebBridge = {
-  /** 최초 1회 WebView 등록 */
+  /** WebView 마운트 시 등록 */
   setRef(ref: RefObject<WebView | null>) {
     webviewRef = ref;
+  },
+
+  /** 등록 해제 */
+  clearRef(ref: RefObject<WebView | null>) {
+    if (webviewRef === ref) webviewRef = null;
   },
 
   /** RN에서 웹으로 메시지 전송 */

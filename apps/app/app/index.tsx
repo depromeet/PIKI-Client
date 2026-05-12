@@ -18,6 +18,7 @@ export default function Page() {
 
   useEffect(() => {
     WebBridge.setRef(webviewRef);
+    return () => WebBridge.clearRef(webviewRef);
   }, []);
 
   return (
