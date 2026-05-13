@@ -1,0 +1,83 @@
+@utility title-1 {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.6px;
+  font-weight: 700;
+}
+
+@utility heading-1 {
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.6px;
+  font-weight: 700;
+}
+
+@utility heading-2 {
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.6px;
+  font-weight: 600;
+}
+
+@utility heading-2-medium {
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.6px;
+  font-weight: 500;
+}
+
+@utility body-1-bold {
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.6px;
+  font-weight: 700;
+}
+
+@utility body-1-semibold {
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.6px;
+  font-weight: 600;
+}
+
+@utility body-1-medium {
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.6px;
+  font-weight: 500;
+}
+
+@utility body-2-semibold {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.6px;
+  font-weight: 600;
+}
+
+@utility body-2-medium {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.6px;
+  font-weight: 500;
+}
+
+@utility body-2-regular {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.6px;
+  font-weight: 400;
+}
+
+@utility caption-1-semibold {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: -0.4px;
+  font-weight: 600;
+}
+
+@utility caption-1-regular {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: -0.4px;
+  font-weight: 400;
+}
