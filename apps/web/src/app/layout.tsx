@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import React from 'react';
 
 import { cn } from '@/utils/cn';
@@ -38,6 +39,21 @@ export default function RootLayout({
   return (
     /** TEMP: 임시 배경색 추가 */
     <html lang="ko" className={cn(pretendard.className, 'h-full bg-gray-100 antialiased')}>
+      <head>
+        {process.env.NODE_ENV === 'development' && (
+          <>
+            <Script
+              src="//unpkg.com/react-grab@0.1.29/dist/index.global.js"
+              crossOrigin="anonymous"
+              strategy="beforeInteractive"
+            />
+            <Script
+              src="//unpkg.com/@react-grab/claude-code/dist/client.global.js"
+              strategy="lazyOnload"
+            />
+          </>
+        )}
+      </head>
       {/** TEMP: max width 임시 값 */}
       <body className="mx-auto my-0 h-full max-w-120 bg-white">
         <Providers>{children}</Providers>
