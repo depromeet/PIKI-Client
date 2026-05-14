@@ -139,3 +139,11 @@
   --color-icon-neutral-secondary: var(--color-gray-300);
   --color-icon-neutral-inverse: var(--color-base-50);
 }
+
+@utility hide-scrollbar {
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge, Opera */
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
