@@ -2,7 +2,7 @@ import Button from '@/components/Button';
 
 const SIZES = ['sm', 'md', 'lg'] as const;
 const VARIANTS = ['primary', 'secondary'] as const;
-const STATES = ['default', 'pressed', 'disabled'] as const;
+const STATES = ['default', 'disabled', 'pressed'] as const;
 
 type SizeT = (typeof SIZES)[number];
 type VariantT = (typeof VARIANTS)[number];
@@ -115,7 +115,7 @@ function ButtonMatrix({ title, icon }: SectionProps) {
         {VARIANTS.map(variant => (
           <div key={variant} className="flex flex-col gap-3">
             <h3 className="body-2-semibold text-text-neutral-secondary capitalize">{variant}</h3>
-            <div className="grid grid-cols-[80px_1fr_1fr_1fr] items-center gap-3">
+            <div className="grid grid-cols-[80px_auto_auto_minmax(0,1fr)] items-center gap-x-3 gap-y-4">
               <span className="caption-1-regular text-text-neutral-secondary">state ↓ size →</span>
               {SIZES.map(size => (
                 <span
@@ -129,7 +129,7 @@ function ButtonMatrix({ title, icon }: SectionProps) {
                 <div key={state} className="contents">
                   <span className="caption-1-regular text-text-neutral-secondary">{state}</span>
                   {SIZES.map(size => (
-                    <div key={size} className="flex justify-center">
+                    <div key={size} className="flex justify-start">
                       <ButtonCell size={size} variant={variant} state={state} icon={icon} />
                     </div>
                   ))}
