@@ -57,7 +57,7 @@ function ColorSwatchRow({ entry, tokenGroup }: Props) {
           </span>
         </div>
         {tokenGroup === 'semantic' ? (
-          <div className="min-w-0 flex-1 flex-col gap-1">
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
             <span className="caption-1-semibold text-[rgba(55,56,60,0.61)]">참조</span>
             <p className="font-mono body-1-semibold wrap-break-word text-[#171719]">
               {semanticAtomicRefLabel(entry.raw)}
