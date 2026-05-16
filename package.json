@@ -1,5 +1,5 @@
 {
-  "name": "dep-client",
+  "name": "piki",
   "private": true,
   "scripts": {
     "build": "turbo run build",
