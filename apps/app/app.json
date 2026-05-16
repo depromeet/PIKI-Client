@@ -10,10 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.piki.piki"
+      "bundleIdentifier": "day.no30s.piki"
     },
     "android": {
-      "package": "com.piki.piki",
+      "package": "day.no30s.piki",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
