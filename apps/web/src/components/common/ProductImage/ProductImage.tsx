@@ -5,6 +5,8 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
+import { cn } from '@/utils/cn';
+
 import Spinner from '@/components/common/Spinner/Spinner';
 
 type SizeVariant = 'sm' | 'lg';
@@ -64,6 +66,11 @@ function ProductImage({
         alt={imageProps.alt}
         onLoad={handleLoad}
         onError={handleError}
+        className={cn(
+          'transition-opacity duration-200',
+          state === 'success' ? 'opacity-100' : 'opacity-0',
+          imageProps.className,
+        )}
       />
 
       {state === 'loading' && (
