@@ -5,9 +5,9 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
-import { cn } from '@/utils/cn';
 import Skeleton from '@/components/common/Skeleton/Skeleton';
 import Spinner from '@/components/common/Spinner/Spinner';
+import { cn } from '@/utils/cn';
 
 type SizeVariant = 'sm' | 'lg';
 type ImageState = 'loading' | 'success' | 'error';
@@ -68,7 +68,7 @@ function ProductImage({
   return (
     <div
       style={{ width: dimension, height: dimension }}
-      className={`relative overflow-hidden ${radius} ${decoration}`}
+      className={`relative overflow-hidden bg-gray-50 ${radius} ${decoration}`}
     >
       <Image
         {...imageProps}
@@ -80,12 +80,12 @@ function ProductImage({
         className={cn(
           'transition-opacity duration-200',
           state === 'success' ? 'opacity-100' : 'opacity-0',
-          imageProps.className,
+          imageProps.className
         )}
       />
 
       {state === 'loading' && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
           {loadingUI}
         </div>
       )}
