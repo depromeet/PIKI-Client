@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 
 import { cn } from '@/utils/cn';
-
+import Skeleton from '@/components/common/Skeleton/Skeleton';
 import Spinner from '@/components/common/Spinner/Spinner';
 
 type SizeVariant = 'sm' | 'lg';
@@ -21,16 +21,27 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height'> & {
   errorFallback?: ReactNode;
 };
 
-const SIZE_STYLE: Record<SizeVariant, { dimension: number; radius: string; decoration: string }> = {
-  lg: { dimension: 200, radius: 'rounded-[12px]', decoration: '' },
-  sm: { dimension: 72, radius: 'rounded-[16px]', decoration: 'border-[3px] border-white shadow-[0_0_8px_rgba(0,0,0,0.16)]' },
-};
-
-const DEFAULT_LOADING_FALLBACK = <Spinner />;
-
 const DEFAULT_ERROR_FALLBACK = (
   <p className="caption-1-regular text-text-neutral-secondary">이미지가 비어 있어요</p>
 );
+
+const SIZE_STYLE: Record<
+  SizeVariant,
+  { dimension: number; radius: string; decoration: string; defaultLoadingFallback: ReactNode }
+> = {
+  lg: {
+    dimension: 200,
+    radius: 'rounded-[12px]',
+    decoration: '',
+    defaultLoadingFallback: <Skeleton width="200px" height="200px" />,
+  },
+  sm: {
+    dimension: 72,
+    radius: 'rounded-[16px]',
+    decoration: 'border-[3px] border-white shadow-[0_0_8px_rgba(0,0,0,0.16)]',
+    defaultLoadingFallback: <Spinner />,
+  },
+};
 
 function ProductImage({
   size = 'lg',
@@ -38,7 +49,7 @@ function ProductImage({
   errorFallback,
   ...imageProps
 }: ProductImageProps) {
-  const { dimension, radius, decoration } = SIZE_STYLE[size];
+  const { dimension, radius, decoration, defaultLoadingFallback } = SIZE_STYLE[size];
   const [state, setState] = useState<ImageState>('loading');
 
   const handleLoad: ImageProps['onLoad'] = e => {
@@ -51,7 +62,7 @@ function ProductImage({
     imageProps.onError?.(e);
   };
 
-  const loadingUI = loadingFallback ?? DEFAULT_LOADING_FALLBACK;
+  const loadingUI = loadingFallback ?? defaultLoadingFallback;
   const errorUI = errorFallback ?? DEFAULT_ERROR_FALLBACK;
 
   return (
