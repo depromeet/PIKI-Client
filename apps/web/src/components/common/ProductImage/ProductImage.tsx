@@ -24,7 +24,7 @@ const SIZE_STYLE: Record<SizeVariant, { dimension: number; radius: string }> = {
   sm: { dimension: 72, radius: 'rounded-[16px]' },
 };
 
-const DEFAULT_LOADING_FALLBACK = <Spinner size={20} width={3} />;
+const DEFAULT_LOADING_FALLBACK = <Spinner />;
 
 const DEFAULT_ERROR_FALLBACK = (
   <p className="caption-1-regular text-text-neutral-secondary">이미지가 비어 있어요</p>
