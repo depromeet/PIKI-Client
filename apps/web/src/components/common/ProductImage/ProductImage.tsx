@@ -5,6 +5,8 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
+import Spinner from '@/components/common/Spinner/Spinner';
+
 type SizeVariant = 'sm' | 'lg';
 type ImageState = 'loading' | 'success' | 'error';
 
@@ -21,6 +23,12 @@ const SIZE_STYLE: Record<SizeVariant, { dimension: number; radius: string }> = {
   lg: { dimension: 200, radius: 'rounded-[12px]' },
   sm: { dimension: 72, radius: 'rounded-[16px]' },
 };
+
+const DEFAULT_LOADING_FALLBACK = <Spinner size={20} width={3} />;
+
+const DEFAULT_ERROR_FALLBACK = (
+  <p className="caption-1-regular text-text-neutral-secondary">이미지가 비어 있어요</p>
+);
 
 function ProductImage({
   size = 'lg',
@@ -41,6 +49,9 @@ function ProductImage({
     imageProps.onError?.(e);
   };
 
+  const loadingUI = loadingFallback ?? DEFAULT_LOADING_FALLBACK;
+  const errorUI = errorFallback ?? DEFAULT_ERROR_FALLBACK;
+
   return (
     <div
       style={{ width: dimension, height: dimension }}
@@ -54,6 +65,18 @@ function ProductImage({
         onLoad={handleLoad}
         onError={handleError}
       />
+
+      {state === 'loading' && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white">
+          {loadingUI}
+        </div>
+      )}
+
+      {state === 'error' && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+          {errorUI}
+        </div>
+      )}
     </div>
   );
 }
