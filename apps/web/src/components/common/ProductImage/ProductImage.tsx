@@ -12,7 +12,8 @@ import { cn } from '@/utils/cn';
 type SizeVariant = 'sm' | 'lg';
 type ImageState = 'loading' | 'success' | 'error';
 
-type ProductImageProps = Omit<ImageProps, 'width' | 'height'> & {
+type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
+  src?: ImageProps['src'];
   /** 이미지 크기. lg: 200×200 / sm: 72×72 */
   size?: SizeVariant;
   /** 로딩 중 표시할 커스텀 UI */
@@ -65,6 +66,15 @@ function ProductImage({
   const loadingUI = loadingFallback ?? defaultLoadingFallback;
   const errorUI = errorFallback ?? DEFAULT_ERROR_FALLBACK;
 
+  if (!imageProps.src) {
+    return (
+      <div
+        style={{ width: dimension, height: dimension }}
+        className={`bg-gray-50 ${radius} ${decoration}`}
+      />
+    );
+  }
+
   return (
     <div
       style={{ width: dimension, height: dimension }}
@@ -72,6 +82,7 @@ function ProductImage({
     >
       <Image
         {...imageProps}
+        src={imageProps.src!}
         width={dimension}
         height={dimension}
         alt={imageProps.alt}
