@@ -38,8 +38,8 @@ const buttonStyles = cva(
       { icon: ['none', 'leading'], size: 'sm', className: 'px-4 py-[10px]' },
       { icon: ['none', 'leading'], size: 'md', className: 'px-[18px] py-[10px]' },
       { icon: ['none', 'leading'], size: 'lg', className: 'px-5 py-3' },
-      { icon: 'only', size: 'sm', className: 'p-[10px]' },
-      { icon: 'only', size: 'md', className: 'p-3' },
+      { icon: 'only', size: 'sm', className: 'size-10 p-[10px]' },
+      { icon: 'only', size: 'md', className: 'size-12 p-3' },
       { icon: 'only', size: 'lg', className: 'size-14 p-[14px]' },
     ],
     defaultVariants: {
