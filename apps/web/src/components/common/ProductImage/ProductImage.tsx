@@ -21,9 +21,9 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height'> & {
   errorFallback?: ReactNode;
 };
 
-const SIZE_STYLE: Record<SizeVariant, { dimension: number; radius: string }> = {
-  lg: { dimension: 200, radius: 'rounded-[12px]' },
-  sm: { dimension: 72, radius: 'rounded-[16px]' },
+const SIZE_STYLE: Record<SizeVariant, { dimension: number; radius: string; decoration: string }> = {
+  lg: { dimension: 200, radius: 'rounded-[12px]', decoration: '' },
+  sm: { dimension: 72, radius: 'rounded-[16px]', decoration: 'border-[3px] border-white shadow-[0_0_8px_rgba(0,0,0,0.16)]' },
 };
 
 const DEFAULT_LOADING_FALLBACK = <Spinner />;
@@ -38,7 +38,7 @@ function ProductImage({
   errorFallback,
   ...imageProps
 }: ProductImageProps) {
-  const { dimension, radius } = SIZE_STYLE[size];
+  const { dimension, radius, decoration } = SIZE_STYLE[size];
   const [state, setState] = useState<ImageState>('loading');
 
   const handleLoad: ImageProps['onLoad'] = e => {
@@ -57,7 +57,7 @@ function ProductImage({
   return (
     <div
       style={{ width: dimension, height: dimension }}
-      className={`relative overflow-hidden ${radius}`}
+      className={`relative overflow-hidden ${radius} ${decoration}`}
     >
       <Image
         {...imageProps}
