@@ -60,7 +60,7 @@ function ProductImageSection() {
                 </td>
                 <td className="py-4 pr-6 align-top">
                   <span className="rounded-md bg-purple-50 px-2 py-0.5 caption-1-semibold text-purple-500">
-                    'sm' | 'lg'
+                    {`'sm' | 'lg'`}
                   </span>
                 </td>
                 <td className="py-4 pr-6 align-top font-mono caption-1-regular text-[rgba(55,56,60,0.61)]">
