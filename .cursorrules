@@ -82,7 +82,8 @@ apps/web/src/
 │   ├── page.tsx
 │   ├── providers.tsx   # TanStack Query Provider
 │   └── fonts/
-├── components/   # 재사용 가능한 공통 UI 컴포넌트
+├── components/
+│   └── common/   # 페이지 무관 재사용 공통 컴포넌트 (Button, Input 등)
 ├── apis/         # API 호출 함수 (HTTP 메서드 prefix 컨벤션)
 ├── hooks/        # 커스텀 훅
 ├── utils/        # 공통 유틸리티 함수
