@@ -16,6 +16,8 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
   /** 이미지 크기. lg: 200×200 / sm: 72×72 */
   size?: SizeVariant;
+  /** 상품 미등록 상태. true면 src 없이 회색 빈 박스만 표시 (에러 UI 없음) */
+  isEmpty?: boolean;
   /** 로딩 중 표시할 커스텀 UI */
   loadingFallback?: ReactNode;
   /** 에러 시 표시할 커스텀 UI */
@@ -24,6 +26,7 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
 
 function ProductImage({
   size = 'lg',
+  isEmpty = false,
   loadingFallback,
   errorFallback,
   ...imageProps
@@ -58,7 +61,7 @@ function ProductImage({
   const containerStyle = { width: dimension, height: dimension };
   const baseClass = cn('bg-gray-50', radius, decoration);
 
-  if (!src) return <div style={containerStyle} className={baseClass} />;
+  if (isEmpty || !src) return <div style={containerStyle} className={baseClass} />;
 
   return (
     <div style={containerStyle} className="relative overflow-visible">
