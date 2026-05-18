@@ -84,6 +84,10 @@ apps/web/src/
 │   └── fonts/
 ├── components/
 │   └── common/   # 페이지 무관 재사용 공통 컴포넌트 (Button, Input 등)
+│       └── {ComponentName}/
+│           ├── {ComponentName}.tsx        # 컴포넌트 본체
+│           ├── {ComponentName}.style.ts   # cva variants (스타일 분리 시)
+│           └── {componentName}Constants.ts # 상수/타입 (필요 시)
 ├── apis/         # API 호출 함수 (HTTP 메서드 prefix 컨벤션)
 ├── hooks/        # 커스텀 훅
 ├── utils/        # 공통 유틸리티 함수
