@@ -1,29 +1,38 @@
+import { type VariantProps, cva } from 'class-variance-authority';
 import type { ComponentPropsWithoutRef } from 'react';
 
 import { cn } from '@/utils/cn';
 
 import './Skeleton.css';
 
-type SkeletonProps = ComponentPropsWithoutRef<'div'> & {
-  width?: string;
-  height?: string;
-  /**
-   * 애니메이션 상태. default: 정적 회색 블록 / highlight: shimmer 애니메이션
-   * @default 'highlight'
-   */
-  variant?: 'default' | 'highlight';
-  /**
-   * 모양. square: 둥근 사각형 / circle: 원형
-   * @default 'square'
-   */
-  shape?: 'square' | 'circle';
-};
+const skeletonStyles = cva('shrink-0', {
+  variants: {
+    variant: {
+      highlight: 'skeleton-shimmer',
+      default: 'bg-gray-100',
+    },
+    shape: {
+      square: 'rounded-md',
+      circle: 'rounded-full',
+    },
+  },
+  defaultVariants: {
+    variant: 'highlight',
+    shape: 'square',
+  },
+});
+
+type SkeletonProps = ComponentPropsWithoutRef<'div'> &
+  VariantProps<typeof skeletonStyles> & {
+    width?: string;
+    height?: string;
+  };
 
 function Skeleton({
   width = '100%',
   height = '24px',
-  variant = 'highlight',
-  shape = 'square',
+  variant,
+  shape,
   className,
   style,
   ...props
@@ -32,11 +41,7 @@ function Skeleton({
 
   return (
     <div
-      className={cn(
-        isCircle ? 'rounded-full' : 'rounded-md',
-        variant === 'highlight' ? 'skeleton-shimmer' : 'bg-gray-100',
-        className,
-      )}
+      className={cn(skeletonStyles({ variant, shape }), className)}
       style={{
         width,
         height: isCircle ? width : height,
