@@ -31,4 +31,6 @@ export function ProductImageOverlay({
   }
 
   if (state === 'error' && size === 'sm') return <SmErrorFallback />;
+
+  return null;
 }
