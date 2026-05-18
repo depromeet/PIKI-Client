@@ -22,4 +22,4 @@ function DemoRow({ size, label, description, children }: DemoRowProps) {
   );
 }
 
-export default DemoRow  
+export default DemoRow;
