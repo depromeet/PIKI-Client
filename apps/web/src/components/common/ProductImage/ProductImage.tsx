@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -31,6 +31,10 @@ function ProductImage({
   const { src, onLoad, onError, className: imagePropClassName, ...restImageProps } = imageProps;
   const [state, setState] = useState<ImageState>('loading');
 
+  useEffect(() => {
+    setState('loading');
+  }, [src]);
+
   const handleLoad: ImageProps['onLoad'] = e => {
     setState('success');
     onLoad?.(e);
@@ -45,9 +49,7 @@ function ProductImage({
   const containerStyle = { width: dimension, height: dimension };
   const baseClass = cn('bg-gray-50', radius, decoration);
 
-  if (!src) {
-    return <div style={containerStyle} className={baseClass} />;
-  }
+  if (!src) return <div style={containerStyle} className={baseClass} />;
 
   return (
     <div style={containerStyle} className="relative">
