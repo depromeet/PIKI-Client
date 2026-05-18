@@ -8,6 +8,6 @@
 }
 
 .spinner-segment {
-  fill: var(--color-gray-600);
+  fill: var(--spinner-color, var(--color-gray-600));
   animation: spinner-fade var(--spinner-timing, 1s) linear infinite;
 }

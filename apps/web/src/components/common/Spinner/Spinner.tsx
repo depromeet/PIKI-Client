@@ -5,6 +5,7 @@ import './Spinner.css';
 type SpinnerProps = {
   size?: number;
   timing?: number;
+  color?: string;
 };
 
 const VIEWBOX_SIZE = 24;
@@ -24,7 +25,7 @@ const SEGMENTS = Array.from({ length: SEGMENT_COUNT }, (_, i) => ({
   delayFactor: SEGMENT_COUNT - i,
 }));
 
-function Spinner({ size = 30, timing = 1 }: SpinnerProps) {
+function Spinner({ size = 30, timing = 1, color }: SpinnerProps) {
   const delayStep = timing / SEGMENT_COUNT;
 
   return (
@@ -32,7 +33,7 @@ function Spinner({ size = 30, timing = 1 }: SpinnerProps) {
       width={size}
       height={size}
       viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
-      style={{ '--spinner-timing': `${timing}s` } as CSSProperties}
+      style={{ '--spinner-timing': `${timing}s`, '--spinner-color': color } as CSSProperties}
     >
       {SEGMENTS.map(({ rotation, delayFactor }, i) => (
         <rect
