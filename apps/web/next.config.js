@@ -7,14 +7,14 @@ const nextConfig = {
         as: '*.js',
       },
     },
-    images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'images.unsplash.com',
-        },
-      ],
-    },
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
   },
 };
 
