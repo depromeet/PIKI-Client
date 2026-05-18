@@ -5,11 +5,18 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
+import Skeleton from '@/components/common/Skeleton/Skeleton';
+import Spinner from '@/components/common/Spinner/Spinner';
 import { cn } from '@/utils/cn';
 
 import { ProductImageOverlay } from './fallback/ProductImageOverlay';
 import type { ImageState, SizeVariant } from './productImageConstants';
 import { SIZE_STYLE } from './productImageConstants';
+
+const DEFAULT_LOADING_FALLBACK: Record<SizeVariant, ReactNode> = {
+  lg: <Skeleton width="200px" height="200px" />,
+  sm: <Spinner />,
+};
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
@@ -27,7 +34,7 @@ function ProductImage({
   errorFallback,
   ...imageProps
 }: ProductImageProps) {
-  const { dimension, radius, decoration, defaultLoadingFallback } = SIZE_STYLE[size];
+  const { dimension, radius, decoration } = SIZE_STYLE[size];
   const { src, onLoad, onError, className: imagePropClassName, ...restImageProps } = imageProps;
   const [state, setState] = useState<ImageState>('loading');
 
@@ -45,7 +52,7 @@ function ProductImage({
     onError?.(e);
   };
 
-  const loadingUI = loadingFallback ?? defaultLoadingFallback;
+  const loadingUI = loadingFallback ?? DEFAULT_LOADING_FALLBACK[size];
   const containerStyle = { width: dimension, height: dimension };
   const baseClass = cn('bg-gray-50', radius, decoration);
 
