@@ -59,7 +59,7 @@ function ProductImage({
   if (!src) return <div style={containerStyle} className={baseClass} />;
 
   return (
-    <div style={containerStyle} className="relative">
+    <div style={containerStyle} className="relative overflow-visible">
       <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
         <Image
           {...restImageProps}
