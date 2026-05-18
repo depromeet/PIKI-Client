@@ -8,6 +8,7 @@ import { SmErrorFallback } from './SmErrorFallback';
 type ProductImageOverlayProps = {
   state: ImageState;
   size: SizeVariant;
+  radius: string;
   loadingUI: ReactNode;
   errorFallback?: ReactNode;
 };
@@ -15,6 +16,7 @@ type ProductImageOverlayProps = {
 export function ProductImageOverlay({
   state,
   size,
+  radius,
   loadingUI,
   errorFallback,
 }: ProductImageOverlayProps) {
@@ -24,7 +26,7 @@ export function ProductImageOverlay({
 
   if (state === 'error' && size === 'lg') {
     return (
-      <div className="absolute inset-0 flex items-center justify-center rounded-[12px] bg-gray-50">
+      <div className={`absolute inset-0 flex items-center justify-center bg-gray-50 ${radius}`}>
         {errorFallback ?? <LgErrorFallback />}
       </div>
     );

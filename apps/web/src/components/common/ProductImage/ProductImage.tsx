@@ -79,6 +79,7 @@ function ProductImage({
       <ProductImageOverlay
         state={state}
         size={size}
+        radius={radius}
         loadingUI={loadingUI}
         errorFallback={errorFallback}
       />
