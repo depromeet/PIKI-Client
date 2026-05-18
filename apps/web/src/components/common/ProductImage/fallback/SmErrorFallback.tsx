@@ -1,11 +1,9 @@
-import Image from 'next/image';
-
-import warningImage from '@/assets/icons/warning.png';
+import WarningIconFill from '@/assets/icons/fill/warning.svg';
 
 export function SmErrorFallback() {
   return (
     <div className="absolute -top-2 -right-2">
-      <Image src={warningImage} width={20} height={20} alt="경고" />
+      <WarningIconFill width={20} height={20} aria-hidden />
     </div>
   );
 }
