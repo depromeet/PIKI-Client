@@ -5,12 +5,11 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
-import Skeleton from '@/components/common/Skeleton/Skeleton';
-import Spinner from '@/components/common/Spinner/Spinner';
 import { cn } from '@/utils/cn';
 
-type SizeVariant = 'sm' | 'lg';
-type ImageState = 'loading' | 'success' | 'error';
+import { ProductImageOverlay } from './fallback/ProductImageOverlay';
+import type { ImageState, SizeVariant } from './productImageConstants';
+import { SIZE_STYLE } from './productImageConstants';
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
@@ -22,28 +21,6 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   errorFallback?: ReactNode;
 };
 
-const DEFAULT_ERROR_FALLBACK = (
-  <p className="caption-1-regular text-text-neutral-secondary">이미지가 비어 있어요</p>
-);
-
-const SIZE_STYLE: Record<
-  SizeVariant,
-  { dimension: number; radius: string; decoration: string; defaultLoadingFallback: ReactNode }
-> = {
-  lg: {
-    dimension: 200,
-    radius: 'rounded-[12px]',
-    decoration: '',
-    defaultLoadingFallback: <Skeleton width="200px" height="200px" />,
-  },
-  sm: {
-    dimension: 72,
-    radius: 'rounded-[16px]',
-    decoration: 'border-[3px] border-white shadow-[0_0_8px_rgba(0,0,0,0.16)]',
-    defaultLoadingFallback: <Spinner />,
-  },
-};
-
 function ProductImage({
   size = 'lg',
   loadingFallback,
@@ -51,61 +28,51 @@ function ProductImage({
   ...imageProps
 }: ProductImageProps) {
   const { dimension, radius, decoration, defaultLoadingFallback } = SIZE_STYLE[size];
+  const { src, onLoad, onError, className: imagePropClassName, ...restImageProps } = imageProps;
   const [state, setState] = useState<ImageState>('loading');
 
   const handleLoad: ImageProps['onLoad'] = e => {
     setState('success');
-    imageProps.onLoad?.(e);
+    onLoad?.(e);
   };
 
   const handleError: ImageProps['onError'] = e => {
     setState('error');
-    imageProps.onError?.(e);
+    onError?.(e);
   };
 
   const loadingUI = loadingFallback ?? defaultLoadingFallback;
-  const errorUI = errorFallback ?? DEFAULT_ERROR_FALLBACK;
+  const containerStyle = { width: dimension, height: dimension };
+  const baseClass = cn('bg-gray-50', radius, decoration);
 
-  if (!imageProps.src) {
-    return (
-      <div
-        style={{ width: dimension, height: dimension }}
-        className={`bg-gray-50 ${radius} ${decoration}`}
-      />
-    );
+  if (!src) {
+    return <div style={containerStyle} className={baseClass} />;
   }
 
   return (
-    <div
-      style={{ width: dimension, height: dimension }}
-      className={`relative overflow-hidden bg-gray-50 ${radius} ${decoration}`}
-    >
-      <Image
-        {...imageProps}
-        src={imageProps.src!}
-        width={dimension}
-        height={dimension}
-        alt={imageProps.alt}
-        onLoad={handleLoad}
-        onError={handleError}
-        className={cn(
-          'transition-opacity duration-200',
-          state === 'success' ? 'opacity-100' : 'opacity-0',
-          imageProps.className
-        )}
+    <div style={containerStyle} className="relative">
+      <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
+        <Image
+          {...restImageProps}
+          src={src}
+          width={dimension}
+          height={dimension}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={cn(
+            'transition-opacity duration-200',
+            state === 'success' ? 'opacity-100' : 'opacity-0',
+            imagePropClassName
+          )}
+        />
+      </div>
+
+      <ProductImageOverlay
+        state={state}
+        size={size}
+        loadingUI={loadingUI}
+        errorFallback={errorFallback}
       />
-
-      {state === 'loading' && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-          {loadingUI}
-        </div>
-      )}
-
-      {state === 'error' && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-          {errorUI}
-        </div>
-      )}
     </div>
   );
 }
