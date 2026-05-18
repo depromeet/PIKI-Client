@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Spinner from '@/components/common/Spinner/Spinner';
 import { cn } from '@/utils/cn';
@@ -29,12 +29,20 @@ function ProductImage({
   ...imageProps
 }: ProductImageProps) {
   const { dimension, radius, decoration } = SIZE_STYLE[size];
-  const { src, onLoad, onError, className: imagePropClassName, ...restImageProps } = imageProps;
+  const {
+    src,
+    alt,
+    onLoad,
+    onError,
+    className: imagePropClassName,
+    ...restImageProps
+  } = imageProps;
   const [state, setState] = useState<ImageState>('loading');
-
-  useEffect(() => {
+  const [prevSrc, setPrevSrc] = useState(src);
+  if (prevSrc !== src) {
+    setPrevSrc(src);
     setState('loading');
-  }, [src]);
+  }
 
   const handleLoad: ImageProps['onLoad'] = e => {
     setState('success');
@@ -58,6 +66,7 @@ function ProductImage({
         <Image
           {...restImageProps}
           src={src}
+          alt={alt}
           width={dimension}
           height={dimension}
           onLoad={handleLoad}
