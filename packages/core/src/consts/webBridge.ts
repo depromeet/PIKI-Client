@@ -3,4 +3,8 @@ export const WEBBRIDGE_MESSAGE_TYPE = {
   IMAGE_PICKER_SUCCESS: 'IMAGE_PICKER_SUCCESS',
   IMAGE_PICKER_CANCEL: 'IMAGE_PICKER_CANCEL',
   IMAGE_PICKER_ERROR: 'IMAGE_PICKER_ERROR',
+  /** RN → 웹: 공유 인텐트 payload 전달 */
+  SHARE_INTENT: 'SHARE_INTENT',
+  /** 웹 → RN: 페이지 hydrate 완료, 메시지 수신 준비됨 (ACK 용도) */
+  WEB_READY: 'WEB_READY',
 } as const;

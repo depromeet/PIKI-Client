@@ -1,28 +1,57 @@
 import { WEBBRIDGE_MESSAGE_TYPE, WEBVIEW_UA_TOKEN, type WebBridgeMessageT } from '@piki/core';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
+import { useShareIntent } from '@/hooks/useShareIntent';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { WebBridge } from '@/utils/webBridge';
 
+/** TODO: 추후 env로 분리 */
+const WEBVIEW_URI = 'http://192.168.5.120:3000';
+
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
-
-  const onWebviewMessage = useCallback(async (message: WebBridgeMessageT) => {
-    if (message.type === WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER) {
-      await handleOpenImagePicker(message.payload);
-    }
-  }, []);
-
-  const { onMessage } = useWebBridgeMessage(onWebviewMessage);
+  /**
+   * - ios simulator 사용 시: `http://localhost:3000`
+   * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
+   */
+  const [webviewUri, setWebviewUri] = useState(WEBVIEW_URI);
 
   useEffect(() => {
     WebBridge.setRef(webviewRef);
     return () => WebBridge.clearRef(webviewRef);
   }, []);
+
+  const handleWebviewUriChange = useCallback((uri: string) => setWebviewUri(uri), []);
+
+  const { sendShareIntent } = useShareIntent({
+    onChangeWebviewUri: handleWebviewUriChange,
+    webviewUri,
+  });
+
+  /** 웹 → 앱 메시지 처리 */
+  const handleWebMessage = useCallback(
+    (message: WebBridgeMessageT) => {
+      switch (message.type) {
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_READY:
+          sendShareIntent();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER:
+          await handleOpenImagePicker(message.payload);
+          return;
+
+        default:
+          return;
+      }
+    },
+    [sendShareIntent]
+  );
+
+  const { onMessage } = useWebBridgeMessage(handleWebMessage);
 
   return (
     // REF: https://github.com/react-native-webview/react-native-webview/blob/5bc526fce5b9d6225df183bdf3d8cf542007d90a/docs/Reference.md
@@ -34,12 +63,7 @@ function Page() {
         ref={webviewRef}
         style={{ flex: 1 }}
         applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
-        /**
-         * - ios simulator 사용 시: `http://localhost:3000`
-         * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
-         */
-        // TEMP: URI env에 등록하여 사용 예정
-        source={{ uri: 'http://localhost:3000' }}
+        source={{ uri: webviewUri }}
         onMessage={onMessage}
         allowsBackForwardNavigationGestures
         cacheEnabled
