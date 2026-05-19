@@ -2,7 +2,7 @@
 
 import { EditIconFill, LinkIconFill } from '@/assets/icons';
 
-import Input from '@/components/common/input/Input';
+import Input from '@/components/common/Input/Input';
 
 function InputDocsPage() {
   return (
