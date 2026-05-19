@@ -1,5 +1,4 @@
 export type SizeVariant = 'sm' | 'lg';
-export type ImageState = 'loading' | 'success' | 'error';
 
 export const SIZE_STYLE: Record<
   SizeVariant,

@@ -1,15 +1,18 @@
 'use client';
 
 import type { ImageProps } from 'next/image';
-import Image from 'next/image';
-import type { ReactNode } from 'react';
+import type { ReactNode, SyntheticEvent } from 'react';
 import { useState } from 'react';
 
-import Spinner from '@/components/common/Spinner/Spinner';
+type ImgEvent = SyntheticEvent<HTMLImageElement>;
+
+import BaseImage from '@/components/common/BaseImage/BaseImage';
 import { cn } from '@/utils/cn';
 
-import { ProductImageOverlay } from './fallback/ProductImageOverlay';
-import type { ImageState, SizeVariant } from './productImageConstants';
+import { LgErrorFallback } from './fallback/LgErrorFallback';
+import { LoadingFallback } from './fallback/LoadingFallback';
+import { SmErrorFallback } from './fallback/SmErrorFallback';
+import type { SizeVariant } from './productImageConstants';
 import { SIZE_STYLE } from './productImageConstants';
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
@@ -29,66 +32,45 @@ function ProductImage({
   isEmpty = false,
   loadingFallback,
   errorFallback,
+  className,
+  onLoad,
+  onError,
   ...imageProps
 }: ProductImageProps) {
   const { dimension, radius, decoration } = SIZE_STYLE[size];
-  const {
-    src,
-    alt,
-    onLoad,
-    onError,
-    className: imagePropClassName,
-    ...restImageProps
-  } = imageProps;
-  const [state, setState] = useState<ImageState>('loading');
-  const [prevSrc, setPrevSrc] = useState(src);
-  if (prevSrc !== src) {
-    setPrevSrc(src);
-    setState('loading');
+  const baseClass = cn('bg-gray-50', radius, decoration);
+  const [isError, setIsError] = useState(false);
+
+  if (isEmpty || !imageProps.src) {
+    return <div style={{ width: dimension, height: dimension }} className={baseClass} />;
   }
 
-  const handleLoad: ImageProps['onLoad'] = e => {
-    setState('success');
+  const handleLoad = (e: ImgEvent) => {
+    setIsError(false);
     onLoad?.(e);
   };
 
-  const handleError: ImageProps['onError'] = e => {
-    setState('error');
+  const handleError = (e: ImgEvent) => {
+    setIsError(true);
     onError?.(e);
   };
 
-  const loadingUI = loadingFallback ?? <Spinner />;
-  const containerStyle = { width: dimension, height: dimension };
-  const baseClass = cn('bg-gray-50', radius, decoration);
-
-  if (isEmpty || !src) return <div style={containerStyle} className={baseClass} />;
-
   return (
-    <div style={containerStyle} className="relative overflow-visible">
+    <div style={{ width: dimension, height: dimension }} className="relative overflow-visible">
       <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
-        <Image
-          {...restImageProps}
-          src={src}
-          alt={alt}
+        <BaseImage
+          {...imageProps}
+          src={imageProps.src}
           width={dimension}
           height={dimension}
+          className={className}
+          loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
+          errorFallback={size === 'lg' ? <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback> : null}
           onLoad={handleLoad}
           onError={handleError}
-          className={cn(
-            'transition-opacity duration-200',
-            state === 'success' ? 'opacity-100' : 'opacity-0',
-            imagePropClassName
-          )}
         />
       </div>
-
-      <ProductImageOverlay
-        state={state}
-        size={size}
-        radius={radius}
-        loadingUI={loadingUI}
-        errorFallback={errorFallback}
-      />
+      {isError && size === 'sm' && <SmErrorFallback />}
     </div>
   );
 }
