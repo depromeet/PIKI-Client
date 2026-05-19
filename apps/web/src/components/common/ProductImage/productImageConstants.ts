@@ -1,7 +1,7 @@
-export type SizeVariant = 'sm' | 'lg';
+export type SizeVariantT = 'sm' | 'lg';
 
 export const SIZE_STYLE: Record<
-  SizeVariant,
+  SizeVariantT,
   { dimension: number; radius: string; decoration: string }
 > = {
   lg: {
