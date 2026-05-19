@@ -1,26 +1,10 @@
-import { type VariantProps, cva } from 'class-variance-authority';
+import { type VariantProps } from 'class-variance-authority';
 import type { ComponentPropsWithoutRef } from 'react';
 
 import { cn } from '@/utils/cn';
 
 import './Skeleton.css';
-
-const skeletonStyles = cva('shrink-0', {
-  variants: {
-    variant: {
-      highlight: 'skeleton-shimmer',
-      default: 'bg-gray-100',
-    },
-    shape: {
-      square: 'rounded-md',
-      circle: 'rounded-full',
-    },
-  },
-  defaultVariants: {
-    variant: 'highlight',
-    shape: 'square',
-  },
-});
+import { skeletonStyles } from './Skeleton.style';
 
 type SkeletonProps = ComponentPropsWithoutRef<'div'> &
   VariantProps<typeof skeletonStyles> & {
