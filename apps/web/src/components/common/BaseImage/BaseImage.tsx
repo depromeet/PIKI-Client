@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type ImgEvent = SyntheticEvent<HTMLImageElement>;
 
@@ -32,10 +32,12 @@ function BaseImage({
   ...imageProps
 }: BaseImageProps) {
   const [state, setState] = useState<ImageState>('loading');
+  const [prevSrc, setPrevSrc] = useState(src);
 
-  useEffect(() => {
+  if (prevSrc !== src) {
+    setPrevSrc(src);
     setState('loading');
-  }, [src]);
+  }
 
   const handleLoad = (e: ImgEvent) => {
     setState('success');
