@@ -38,19 +38,19 @@ function InputDocsPage() {
         <Input
           label="상품명"
           placeholder="텍스트를 입력해주세요."
-          status="error"
+          aria-invalid
           helperText="상품명을 입력해주세요."
         />
         <Input
           label="가격"
           defaultValue="0"
-          status="error"
+          aria-invalid
           helperText="1원 이상 입력해주세요."
         />
         <Input
           label="링크 URL"
           defaultValue="https://29cm.onelink.me/108020121..."
-          status="error"
+          aria-invalid
           left={<LinkIconFill />}
           helperText="올바른 URL 형식으로 입력해주세요."
         />
@@ -58,11 +58,11 @@ function InputDocsPage() {
 
       <section className="mb-8 flex flex-col gap-4">
         <h2 className="text-lg font-semibold">Disabled</h2>
-        <Input label="상품명" placeholder="텍스트를 입력해주세요." status="disabled" />
+        <Input label="상품명" placeholder="텍스트를 입력해주세요." disabled />
         <Input
           label="상품명"
           defaultValue="[3rd] Loose-fit paper knit [KNSS07KN01]_Crea..."
-          status="disabled"
+          disabled
         />
       </section>
     </div>

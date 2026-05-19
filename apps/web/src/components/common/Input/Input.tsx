@@ -10,15 +10,26 @@ type InputStatusT = 'default' | 'error' | 'disabled';
 type InputProps = {
   label?: string;
   helperText?: string;
-  status?: InputStatusT;
   left?: ReactNode;
   right?: ReactNode;
-} & Omit<ComponentPropsWithoutRef<'input'>, 'disabled'>;
+} & ComponentPropsWithoutRef<'input'>;
 
-function Input({ label, helperText, status = 'default', left, right, id, className, ...props }: InputProps) {
+function Input({
+  label,
+  helperText,
+  left,
+  right,
+  id,
+  disabled,
+  'aria-invalid': ariaInvalid,
+  className,
+  ...props
+}: InputProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const helperTextId = `${inputId}-helper`;
+
+  const status: InputStatusT = disabled ? 'disabled' : ariaInvalid ? 'error' : 'default';
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -31,8 +42,8 @@ function Input({ label, helperText, status = 'default', left, right, id, classNa
         {left && <span className="shrink-0 text-gray-300">{left}</span>}
         <input
           id={inputId}
-          disabled={status === 'disabled'}
-          aria-invalid={status === 'error'}
+          disabled={disabled}
+          aria-invalid={ariaInvalid}
           aria-describedby={helperText ? helperTextId : undefined}
           className={cn(
             'body-1-medium w-full overflow-hidden text-ellipsis whitespace-nowrap bg-transparent text-gray-600 outline-none placeholder:text-gray-300 focus:text-gray-900 disabled:text-gray-300',
