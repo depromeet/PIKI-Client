@@ -1,12 +1,12 @@
 'use client';
 
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
 import { type ButtonStyleProps, buttonStyles } from './Button.style';
 
-type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> &
+type ButtonProps = Omit<ComponentProps<'button'>, 'children'> &
   ButtonStyleProps & {
     leadingIcon?: ReactNode;
     children?: ReactNode;
