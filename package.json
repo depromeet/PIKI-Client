@@ -28,6 +28,14 @@
     "typescript-eslint": "^8.50.0"
   },
   "packageManager": "pnpm@10.17.0",
+  "pnpm": {
+    "overrides": {
+      "react": "19.2.0",
+      "react-dom": "19.2.0",
+      "@types/react": "19.2.2",
+      "@types/react-dom": "19.2.2"
+    }
+  },
   "engines": {
     "node": ">=18"
   }

@@ -6,11 +6,11 @@
     ".": "./src/index.ts"
   },
   "peerDependencies": {
-    "react": "^19.2.0"
+    "react": "19.2.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/react": "^19.0.0",
+    "@types/react": "19.2.2",
     "typescript": "5.9.2"
   }
 }
