@@ -21,6 +21,7 @@ type BaseImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
 
 function BaseImage({
   src,
+  alt,
   width,
   height,
   loadingFallback,
@@ -53,6 +54,7 @@ function BaseImage({
       <Image
         {...imageProps}
         src={src}
+        alt={alt}
         width={width}
         height={height}
         onLoad={handleLoad}
