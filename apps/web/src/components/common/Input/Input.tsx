@@ -1,9 +1,9 @@
 import { useId } from 'react';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-import { cva } from 'class-variance-authority';
-
 import { cn } from '@/utils/cn';
+
+import { inputStyles } from './Input.style';
 
 type InputStatusT = 'default' | 'error' | 'disabled';
 
@@ -14,22 +14,6 @@ type InputProps = {
   left?: ReactNode;
   right?: ReactNode;
 } & Omit<ComponentPropsWithoutRef<'input'>, 'disabled'>;
-
-const inputContainerVariants = cva(
-  'flex items-center gap-2 rounded-xl px-4 py-4 transition-colors',
-  {
-    variants: {
-      status: {
-        default: 'border border-gray-100 bg-white focus-within:border-[1.4px] focus-within:border-blue-500',
-        error: 'border-[1.4px] border-red-400 bg-white',
-        disabled: 'border border-gray-100 bg-gray-50',
-      },
-    },
-    defaultVariants: {
-      status: 'default',
-    },
-  }
-);
 
 function Input({ label, helperText, status = 'default', left, right, id, className, ...props }: InputProps) {
   const generatedId = useId();
@@ -43,7 +27,7 @@ function Input({ label, helperText, status = 'default', left, right, id, classNa
           {label}
         </label>
       )}
-      <div className={cn(inputContainerVariants({ status }))}>
+      <div className={cn(inputStyles({ status }))}>
         {left && <span className="shrink-0 text-gray-300">{left}</span>}
         <input
           id={inputId}
