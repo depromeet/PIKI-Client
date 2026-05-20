@@ -4,21 +4,21 @@ import type { ImageProps } from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
 import { useState } from 'react';
 
-type ImgEvent = SyntheticEvent<HTMLImageElement>;
-
 import BaseImage from '@/components/common/BaseImage/BaseImage';
 import { cn } from '@/utils/cn';
 
 import { LgErrorFallback } from './fallback/LgErrorFallback';
 import { LoadingFallback } from './fallback/LoadingFallback';
 import { SmErrorFallback } from './fallback/SmErrorFallback';
-import type { SizeVariant } from './productImageConstants';
+import type { SizeVariantT } from './productImageConstants';
 import { SIZE_STYLE } from './productImageConstants';
+
+type ImgEvent = SyntheticEvent<HTMLImageElement>;
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
   /** 이미지 크기. lg: 200×200 / sm: 72×72 */
-  size?: SizeVariant;
+  size?: SizeVariantT;
   /** 상품 미등록 상태. true면 src 없이 회색 빈 박스만 표시 (에러 UI 없음) */
   isEmpty?: boolean;
   /** 로딩 중 표시할 커스텀 UI */
@@ -65,7 +65,11 @@ function ProductImage({
           height={dimension}
           className={className}
           loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
-          errorFallback={size === 'lg' ? <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback> : null}
+          errorFallback={
+            size === 'lg' ? (
+              <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback>
+            ) : null
+          }
           onLoad={handleLoad}
           onError={handleError}
         />
