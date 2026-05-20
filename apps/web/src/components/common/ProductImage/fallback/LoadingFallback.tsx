@@ -6,7 +6,7 @@ type LoadingFallbackProps = {
   children?: ReactNode;
 };
 
-export function LoadingFallback({ children }: LoadingFallbackProps) {
+export default function LoadingFallback({ children }: LoadingFallbackProps) {
   return (
     <div className="absolute inset-[3px] flex items-center justify-center">
       {children ?? <Spinner />}

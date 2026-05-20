@@ -7,9 +7,9 @@ import { useState } from 'react';
 import BaseImage from '@/components/common/BaseImage/BaseImage';
 import { cn } from '@/utils/cn';
 
-import { LgErrorFallback } from './fallback/LgErrorFallback';
-import { LoadingFallback } from './fallback/LoadingFallback';
-import { SmErrorFallback } from './fallback/SmErrorFallback';
+import LgErrorFallback from './fallback/LgErrorFallback';
+import LoadingFallback from './fallback/LoadingFallback';
+import SmErrorFallback from './fallback/SmErrorFallback';
 import type { SizeVariantT } from './productImageConstants';
 import { SIZE_STYLE } from './productImageConstants';
 
