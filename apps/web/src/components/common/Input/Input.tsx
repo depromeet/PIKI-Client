@@ -29,7 +29,9 @@ function Input({
   const inputId = id ?? generatedId;
   const helperTextId = `${inputId}-helper`;
 
-  const status: InputStatusT = disabled ? 'disabled' : ariaInvalid ? 'error' : 'default';
+  let status: InputStatusT = 'default';
+  if (disabled) status = 'disabled';
+  else if (ariaInvalid) status = 'error';
 
   return (
     <div className="flex flex-col gap-1.5">
