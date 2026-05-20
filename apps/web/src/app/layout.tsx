@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import React from 'react';
 
 import { cn } from '@/utils/cn';
@@ -42,15 +41,9 @@ export default function RootLayout({
       <head>
         {process.env.NODE_ENV === 'development' && (
           <>
-            <Script
-              src="https://unpkg.com/react-grab@0.1.29/dist/index.global.js"
-              crossOrigin="anonymous"
-              strategy="beforeInteractive"
-            />
-            <Script
-              src="https://unpkg.com/@react-grab/claude-code@0.1.29/dist/client.global.js"
-              strategy="lazyOnload"
-            />
+            {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+            <script src="https://unpkg.com/react-grab@0.1.29/dist/index.global.js" crossOrigin="anonymous" />
+            <script src="https://unpkg.com/@react-grab/claude-code@0.1.29/dist/client.global.js" defer />
           </>
         )}
       </head>
