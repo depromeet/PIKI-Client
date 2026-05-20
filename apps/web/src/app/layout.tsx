@@ -38,6 +38,15 @@ export default function RootLayout({
   return (
     /** TEMP: 임시 배경색 추가 */
     <html lang="ko" className={cn(pretendard.className, 'h-full bg-gray-100 antialiased')}>
+      <head>
+        {process.env.NODE_ENV === 'development' && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+            <script src="https://unpkg.com/react-grab@0.1.29/dist/index.global.js" crossOrigin="anonymous" />
+            <script src="https://unpkg.com/@react-grab/claude-code@0.1.29/dist/client.global.js" defer />
+          </>
+        )}
+      </head>
       {/** TEMP: max width 임시 값 */}
       <body className="mx-auto my-0 h-full max-w-120 bg-white">
         <Providers>{children}</Providers>

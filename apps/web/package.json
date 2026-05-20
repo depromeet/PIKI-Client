@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "npx @react-grab/claude-code@latest && next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
@@ -33,6 +33,7 @@
     "@types/react-dom": "19.2.2",
     "eslint-config-next": "^16.2.2",
     "postcss": "^8.5.8",
+    "react-grab": "0.1.29",
     "tailwindcss": "^4.2.2",
     "typescript": "5.9.2"
   }
