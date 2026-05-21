@@ -6,34 +6,10 @@ import { cn } from '@/utils/cn';
 import './Skeleton.css';
 import { skeletonStyles } from './Skeleton.style';
 
-type SkeletonProps = ComponentPropsWithoutRef<'div'> &
-  VariantProps<typeof skeletonStyles> & {
-    width?: string;
-    height?: string;
-  };
+type SkeletonProps = ComponentPropsWithoutRef<'div'> & VariantProps<typeof skeletonStyles>;
 
-function Skeleton({
-  width = '100%',
-  height = '24px',
-  variant,
-  shape,
-  className,
-  style,
-  ...props
-}: SkeletonProps) {
-  const isCircle = shape === 'circle';
-
-  return (
-    <div
-      className={cn(skeletonStyles({ variant, shape }), className)}
-      style={{
-        width,
-        height: isCircle ? width : height,
-        ...style,
-      }}
-      {...props}
-    />
-  );
+function Skeleton({ variant, shape, className, ...props }: SkeletonProps) {
+  return <div className={cn(skeletonStyles({ variant, shape }), className)} {...props} />;
 }
 
 export default Skeleton;

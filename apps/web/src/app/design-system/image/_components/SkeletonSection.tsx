@@ -32,8 +32,7 @@ function SkeletonSection() {
               <Skeleton
                 variant={variant}
                 shape={shape}
-                width={shape === 'circle' ? '64px' : '100%'}
-                height="64px"
+                className={shape === 'circle' ? 'size-16' : 'h-16 w-full'}
               />
             </DemoCard>
           ))}
@@ -46,16 +45,16 @@ function SkeletonSection() {
         </h3>
         <div className="rounded-2xl border border-[rgba(112,115,124,0.22)] p-6">
           <div className="flex items-center gap-4">
-            <Skeleton shape="circle" width="48px" />
+            <Skeleton shape="circle" className="size-12" />
             <div className="flex flex-1 flex-col gap-2">
-              <Skeleton height="16px" width="60%" />
-              <Skeleton height="14px" width="40%" />
+              <Skeleton className="h-4 w-[60%]" />
+              <Skeleton className="h-[14px] w-[40%]" />
             </div>
           </div>
           <div className="mt-4 grid grid-cols-3 gap-3">
-            <Skeleton height="120px" />
-            <Skeleton height="120px" />
-            <Skeleton height="120px" />
+            <Skeleton className="h-[120px]" />
+            <Skeleton className="h-[120px]" />
+            <Skeleton className="h-[120px]" />
           </div>
         </div>
       </div>
