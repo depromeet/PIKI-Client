@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -12,7 +12,7 @@ type InputProps = {
   helperText?: string;
   left?: ReactNode;
   right?: ReactNode;
-} & ComponentPropsWithoutRef<'input'>;
+} & ComponentProps<'input'>;
 
 function Input({
   label,
@@ -59,7 +59,7 @@ function Input({
         id={helperText ? helperTextId : undefined}
         className={cn('body-2-regular', status === 'error' ? 'text-red-600' : 'text-gray-300', !helperText && 'invisible')}
       >
-        {helperText ?? ' '}
+        {helperText ?? ' '}
       </p>
     </div>
   );
