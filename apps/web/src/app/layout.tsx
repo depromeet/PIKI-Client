@@ -47,9 +47,11 @@ export default function RootLayout({
           </>
         )}
       </head>
-      {/** TEMP: max width 임시 값 */}
-      <body className="mx-auto my-0 h-full max-w-120 bg-white">
-        <Providers>{children}</Providers>
+      <body className="h-full">
+        <Providers>
+          {/** TEMP: max width 임시 값 */}
+          <div className="mx-auto min-h-full max-w-120 bg-white">{children}</div>
+        </Providers>
       </body>
     </html>
   );
