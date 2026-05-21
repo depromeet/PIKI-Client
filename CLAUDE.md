@@ -82,15 +82,34 @@
 └── turbo.json
 ```
 
-### apps/web 내부 (고전 구조)
+### apps/web 내부 (페이지별 폴더 구조)
+
 
 ```
 apps/web/src/
-├── app/          # Next.js App Router (layout, page, providers)
+├── app/                    # Next.js App Router
 │   ├── layout.tsx
-│   ├── page.tsx
-│   ├── providers.tsx   # TanStack Query Provider
-│   └── fonts/
+│   ├── page.tsx            # 홈
+│   ├── providers.tsx       # TanStack Query Provider
+│   ├── fonts/
+│   ├── tournament/         # 토너먼트 생성 페이지 (예시)
+│   │   ├── page.tsx
+│   │   ├── components/     # 해당 페이지 전용 컴포넌트
+│   │   │   └── {ComponentName}/
+│   │   │       ├── {ComponentName}.tsx
+│   │   │       └── {ComponentName}.style.ts
+│   │   ├── hooks/          # 해당 페이지 전용 훅
+│   │   ├── utils/          # 해당 페이지 전용 유틸
+│   │   ├── types/          # 해당 페이지 전용 타입
+│   │   └── consts/         # 해당 페이지 전용 상수
+│   ├── wishlist/           # 위시리스트 페이지 (예시)
+│   │   ├── page.tsx
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── utils/
+│   │   ├── types/
+│   │   └── consts/
+│   └── ...                 # 다른 페이지도 동일한 패턴 (필요한 폴더만 생성)
 ├── components/
 │   └── common/   # 페이지 무관 재사용 공통 컴포넌트 (Button, Input 등)
 │       └── {ComponentName}/
@@ -105,6 +124,11 @@ apps/web/src/
 ├── styles/       # globals.css (Tailwind import)
 └── consts/       # 상수
 ```
+
+**배치 기준:**
+
+- 특정 페이지에서만 쓰이는 컴포넌트/훅/상수 → 해당 페이지 폴더 안
+- 2개 이상 페이지에서 사용 → `components/common/`, `hooks/`, `consts/`로 올리기
 
 ### Path Alias
 
