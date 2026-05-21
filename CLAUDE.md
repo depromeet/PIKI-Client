@@ -74,16 +74,16 @@
 │   ├── app/              # React Native + Expo (WebView 래퍼)
 │   └── web/              # Next.js 16 (메인 서비스)
 ├── packages/
-│   ├── core/             # @repo/core — 웹뷰 통신용 type/hook/util
-│   ├── ui/               # @repo/ui — 공유 UI (현재 미사용)
-│   ├── eslint-config/    # @repo/eslint-config
-│   └── typescript-config/ # @repo/typescript-config
+│   ├── core/             # @piki/core — 웹뷰 통신용 type/hook/util
+│   └── typescript-config/ # @piki/typescript-config
 ├── prettier.config.mjs   # 루트 Prettier (공통)
+├── eslint.config.mjs   # 루트 ESLint (공통)
 ├── .prettierignore
 └── turbo.json
 ```
 
 ### apps/web 내부 (페이지별 폴더 구조)
+
 
 ```
 apps/web/src/

@@ -1,17 +1,19 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "PIKI",
+    "slug": "piki",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "app",
+    "scheme": "piki",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.piki.app"
     },
     "android": {
+      "package": "com.piki.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",

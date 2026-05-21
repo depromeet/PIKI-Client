@@ -1,5 +1,5 @@
 {
-  "name": "@repo/core",
+  "name": "@piki/core",
   "version": "0.0.1",
   "private": true,
   "exports": {
@@ -9,7 +9,7 @@
     "react": "19.2.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
+    "@piki/typescript-config": "workspace:*",
     "@types/react": "19.2.2",
     "typescript": "5.9.2"
   }
