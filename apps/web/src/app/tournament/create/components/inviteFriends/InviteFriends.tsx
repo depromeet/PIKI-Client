@@ -2,7 +2,7 @@ import { AddIconOutline } from '@/assets/icons';
 
 function InviteFriends() {
   return (
-    <div className="flex h-[66px] w-[362px] items-center justify-between rounded-xl bg-gray-50 px-4 py-3">
+    <div className="flex h-[66px] w-full items-center justify-between rounded-xl bg-gray-50 px-4 py-3">
       <div className="flex items-center gap-4">
         <div className="flex">
           <div className="h-[23px] w-[23px] rounded-full border-2 border-gray-500" />
