@@ -15,13 +15,12 @@ const COLORS = [
 ] as const;
 
 const fillEntries = Object.entries(FillIcons) as [string, React.FC<React.SVGProps<SVGSVGElement>>][];
-const outlineEntries = Object.entries(OutlineIcons) as [string, React.FC<React.SVGProps<SVGSVGElement>>][];
 
 const iconNames = fillEntries.map(([key]) => key.replace(/IconFill$/, ''));
 
 function IconDocsPage() {
   const [size, setSize] = useState<(typeof SIZES)[number]>(40);
-  const [color, setColor] = useState(COLORS[0]);
+  const [color, setColor] = useState<(typeof COLORS)[number]>(COLORS[0]);
 
   return (
     <div className="min-h-dvh p-8 text-black">
