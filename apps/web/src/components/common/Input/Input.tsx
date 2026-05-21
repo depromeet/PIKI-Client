@@ -57,9 +57,9 @@ function Input({
       </div>
       <p
         id={helperText ? helperTextId : undefined}
-        className={cn('body-2-regular', status === 'error' ? 'text-red-600' : 'text-gray-300', !helperText && 'invisible')}
+        className={cn('body-2-regular min-h-lh', status === 'error' ? 'text-red-600' : 'text-gray-300')}
       >
-        {helperText ?? ' '}
+        {helperText}
       </p>
     </div>
   );
