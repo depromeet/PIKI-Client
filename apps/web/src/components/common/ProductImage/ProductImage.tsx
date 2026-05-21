@@ -19,6 +19,8 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
   /** 이미지 크기. lg: 200×200 / sm: 72×72 */
   size?: SizeVariantT;
+  /** true면 부모 크기에 맞게 꽉 채움 (size prop 무시) */
+  fill?: boolean;
   /** 상품 미등록 상태. true면 src 없이 회색 빈 박스만 표시 (에러 UI 없음) */
   isEmpty?: boolean;
   /** 로딩 중 표시할 커스텀 UI */
@@ -29,6 +31,7 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
 
 function ProductImage({
   size = 'lg',
+  fill = false,
   isEmpty = false,
   loadingFallback,
   errorFallback,
@@ -42,6 +45,7 @@ function ProductImage({
   const [isError, setIsError] = useState(false);
 
   if (isEmpty || !imageProps.src) {
+    if (fill) return <div className={cn('h-full w-full', baseClass)} />;
     return <div style={{ width: dimension, height: dimension }} className={baseClass} />;
   }
 
@@ -55,14 +59,28 @@ function ProductImage({
     onError?.(e);
   };
 
+  if (fill) {
+    return (
+      <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
+        <BaseImage
+          {...imageProps}
+          src={imageProps.src}
+          className={cn('object-cover', className)}
+          loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
+          errorFallback={errorFallback ?? null}
+          onLoad={handleLoad}
+          onError={handleError}
+        />
+      </div>
+    );
+  }
+
   return (
     <div style={{ width: dimension, height: dimension }} className="relative overflow-visible">
       <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
         <BaseImage
           {...imageProps}
           src={imageProps.src}
-          width={dimension}
-          height={dimension}
           className={className}
           loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
           errorFallback={
