@@ -1,4 +1,4 @@
-import { type WebBridgeMessageT } from '@repo/core';
+import { type WebBridgeMessageT } from '@piki/core';
 import { useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';

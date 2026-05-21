@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/react-library.json",
+  "extends": "@piki/typescript-config/react-library.json",
   "compilerOptions": {
     "strictNullChecks": true
   },
