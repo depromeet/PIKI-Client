@@ -18,7 +18,7 @@ This Turborepo includes the following packages/apps:
 
 - `docs`: a [Next.js](https://nextjs.org/) app
 - `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `@piki/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
