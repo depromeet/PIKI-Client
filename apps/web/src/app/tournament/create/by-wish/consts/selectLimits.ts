@@ -2,4 +2,4 @@
 export const MIN_SELECT = 2;
 
 // 토너먼트 후보 선택 최대 개수
-export const MAX_SELECT = 3;
+export const MAX_SELECT = 32;
