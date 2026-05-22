@@ -16,7 +16,7 @@ type ButtonLinkProps = Omit<ComponentProps<typeof Link>, 'children'> &
 function ButtonLink({
   variant,
   size,
-  icon = 'none',
+  icon,
   leadingIcon,
   className,
   children,

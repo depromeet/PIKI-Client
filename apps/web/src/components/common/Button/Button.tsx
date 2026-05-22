@@ -15,7 +15,7 @@ type ButtonProps = Omit<ComponentProps<'button'>, 'children'> &
 function Button({
   variant,
   size,
-  icon = 'none',
+  icon,
   leadingIcon,
   className,
   children,
