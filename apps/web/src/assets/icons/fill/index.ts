@@ -73,6 +73,7 @@ export { default as HashIconFill } from './hash.svg';
 export { default as HeartIconFill } from './heart.svg';
 export { default as HelpIconFill } from './help.svg';
 export { default as HistoryIconFill } from './history.svg';
+export { default as HomeIconFill } from './home.svg';
 export { default as InboxIconFill } from './inbox.svg';
 export { default as ImageIconFill } from './image.svg';
 export { default as InfoIconFill } from './info.svg';
