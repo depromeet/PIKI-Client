@@ -10,9 +10,9 @@ type WishCardProps = {
 
 function WishCard({ name, price, imageUrl }: WishCardProps) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl bg-white">
+    <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-white">
       {/* 이미지 */}
-      <div className="relative flex h-[143px] items-center justify-center self-stretch bg-white p-3">
+      <div className="relative flex h-[143px] items-center justify-center self-stretch bg-white">
         {imageUrl ? (
           <Image src={imageUrl} alt={name} fill className="object-cover" />
         ) : (
@@ -23,7 +23,7 @@ function WishCard({ name, price, imageUrl }: WishCardProps) {
       </div>
 
       {/* 상품명 + 가격 */}
-      <div className="flex flex-1 flex-col items-center gap-[9.351px] self-stretch px-3 py-3">
+      <div className="flex flex-1 flex-col items-center justify-center gap-[9.351px] self-stretch px-3 py-3">
         <p className="self-stretch text-center text-[16.364px] font-medium leading-[23.377px] tracking-[-0.701px] text-[#686F7E]">
           {name}
         </p>
