@@ -21,7 +21,7 @@ function WishlistPage() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-[#F6F7F8] px-[21px]">
-      {/* Header + Tab */}
+      {/* 헤더: 타이틀 + 아이콘 액션 + 탭 */}
       <div className="sticky top-0 z-10 inline-flex w-full flex-col items-start gap-5 bg-[#F6F7F8] pt-[24px] pb-6">
         <div className="flex w-full flex-col gap-[5px]">
           <div className="flex justify-end">
@@ -33,7 +33,7 @@ function WishlistPage() {
         <WishTab activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
-      {/* Content */}
+      {/* 탭 콘텐츠 */}
       <main className="flex flex-1 flex-col pb-24">
         {activeTab === '저장한 위시템' && <WishListTabContent items={MOCK_WISH_ITEMS} />}
         {activeTab === '토너먼트 기록' && (
@@ -44,7 +44,7 @@ function WishlistPage() {
         )}
       </main>
 
-      {/* Bottom Tab Bar */}
+      {/* 하단 탭 바 */}
       <div className="fixed bottom-[40px] left-1/2 -translate-x-1/2 z-20">
         <BottomTabBar />
       </div>
