@@ -22,6 +22,7 @@ export const buttonStyles = cva(
         sm: 'rounded-[12px] body-2-semibold',
         md: 'rounded-[12px] body-1-semibold',
         lg: 'h-[54px] w-full rounded-[12px] body-1-semibold',
+        xl: 'rounded-[12px] body-1-semibold',
       },
       icon: {
         none: 'gap-0',
@@ -36,6 +37,7 @@ export const buttonStyles = cva(
       { icon: 'only', size: 'sm', className: 'size-10 p-[10px]' },
       { icon: 'only', size: 'md', className: 'size-12 p-3' },
       { icon: 'only', size: 'lg', className: 'size-14 p-[14px]' },
+      { icon: 'only', size: 'xl', className: 'size-[61.789px] p-[15.447px]' },
     ],
     defaultVariants: {
       variant: 'primary',
