@@ -17,7 +17,7 @@ function BottomTabBar() {
   return (
     <div className="inline-flex items-center rounded-[100px] bg-white p-1 shadow-[0_0_8px_0_rgba(0,0,0,0.04)]">
       {TABS.map(({ label, icon: Icon, href }) => {
-        const isActive = pathname === href;
+        const isActive = href === '/' ? pathname === href : pathname.startsWith(href);
         return (
           <button
             key={label}

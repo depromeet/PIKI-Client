@@ -12,7 +12,7 @@ function WishCard({ name, price, imageUrl }: WishCardProps) {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl bg-white">
       {/* 이미지 */}
-      <div className="flex h-[143px] items-center justify-center self-stretch bg-white p-3">
+      <div className="relative flex h-[143px] items-center justify-center self-stretch bg-white p-3">
         {imageUrl ? (
           <Image src={imageUrl} alt={name} fill className="object-cover" />
         ) : (

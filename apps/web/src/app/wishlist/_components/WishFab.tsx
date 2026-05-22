@@ -36,7 +36,7 @@ function WishFab({ onAddItem, onDelete }: WishFabProps) {
       )}
       <div className="relative z-30">
         {isOpen && <FabMenu onAddItem={handleAddItem} onDelete={handleDelete} />}
-        <Button variant="primary" size="xl" icon="only" onClick={handleToggle} aria-label="메뉴 열기">
+        <Button variant="primary" size="xl" icon="only" onClick={handleToggle} aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}>
           <AddIconFill width={33.101} height={33.101} />
         </Button>
       </div>
