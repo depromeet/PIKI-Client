@@ -11,7 +11,7 @@ import WishSelectCard from './_components/WishSelectCard';
 import WishSelectHeader from './_components/WishSelectHeader';
 import { MAX_SELECT, MIN_SELECT } from './consts/selectLimits';
 import useWishSelection from './hooks/useWishSelection';
-import { MOCK_WISH_ITEMS } from '../../../wishlist/mocks/wishMocks';
+import { MOCK_WISH_ITEMS } from '@/app/wishlist/mocks/wishMocks';
 
 function ByWishPage() {
   const router = useRouter();

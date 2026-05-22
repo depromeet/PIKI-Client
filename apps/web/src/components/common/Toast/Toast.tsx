@@ -15,6 +15,7 @@ const variantBg: Record<ToastVariantT, string> = {
 function Toast({ message, icon, isVisible, variant = 'error' }: ToastProps) {
   return (
     <div
+      role="alert"
       className={`flex h-[67px] w-full items-center gap-5 rounded-[12px] px-5 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'pointer-events-none opacity-0'} ${variantBg[variant]}`}
     >
       {icon && (
