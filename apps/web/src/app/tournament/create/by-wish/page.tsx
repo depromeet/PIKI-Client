@@ -15,7 +15,7 @@ import { MOCK_WISH_ITEMS } from '../../../wishlist/mocks/wishMocks';
 
 function ByWishPage() {
   const router = useRouter();
-  const { selectedIds, isMaxExceeded, isAtMax, handleSelect } = useWishSelection(MAX_SELECT);
+  const { selectedIds, isMaxExceeded, handleSelect } = useWishSelection(MAX_SELECT);
 
   // TODO: 위시리스트 API 연결
   const items = MOCK_WISH_ITEMS;
@@ -43,7 +43,6 @@ function ByWishPage() {
               price={item.price}
               imageUrl={item.imageUrl}
               isSelected={selectedIds.includes(item.id)}
-              isDisabled={isAtMax && !selectedIds.includes(item.id)}
               onSelect={() => handleSelect(item.id)}
             />
           ))}

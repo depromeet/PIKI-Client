@@ -6,11 +6,10 @@ type WishSelectCardProps = {
   price: number;
   imageUrl?: string;
   isSelected: boolean;
-  isDisabled: boolean;
   onSelect: () => void;
 };
 
-function WishSelectCard({ name, price, imageUrl, isSelected, isDisabled, onSelect }: WishSelectCardProps) {
+function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSelectCardProps) {
   return (
     <button type="button" onClick={onSelect} className="relative h-full w-full text-left">
       <WishCard name={name} price={price} imageUrl={imageUrl} />

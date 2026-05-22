@@ -5,4 +5,5 @@ export const MOCK_WISH_ITEMS: WishItemT[] = [
   { id: 2, name: '힙노틱 벤트라 - 알파인스노우', price: 17910 },
   { id: 3, name: '힙노틱 벤트라 - 알파인스노우', price: 17910 },
   { id: 4, name: '힙노틱 벤트라 - 알파인스노우', price: 17910 },
+  { id: 5, name: '힙노틱 벤트라 - 알파인스노우', price: 17910 },
 ];
