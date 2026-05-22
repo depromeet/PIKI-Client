@@ -2,7 +2,7 @@ import Button from '@/components/common/Button/Button';
 
 import InviteFriends from './components/inviteFriends/InviteFriends';
 import TournamentHeader from './components/tournamentHeader/TournamentHeader';
-import WishBasket from './components/wishBasket/WishBasket';
+import WishBasketCarousel from './components/wishBasket/WishBasketCarousel';
 
 function TournamentCreatePage() {
   return (
@@ -10,7 +10,7 @@ function TournamentCreatePage() {
       <div className="flex flex-1 flex-col gap-4 pt-[80px]">
         <TournamentHeader />
         <InviteFriends />
-        <WishBasket />
+        <WishBasketCarousel />
       </div>
       <div className="pb-8">
         <Button variant="primary" size="lg">
