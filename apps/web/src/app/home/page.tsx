@@ -2,8 +2,8 @@ import {
   HeartIconFill,
   HeartIconOutline,
   LoginIconOutline,
-  NotificationIconOutline,
-  PersonIconOutline,
+  NotificationIconFill,
+  PersonIconFill,
   TrophyIconFill,
 } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
@@ -16,10 +16,10 @@ function HomePage() {
       {/* 상단 헤더 */}
       <header className="flex justify-end gap-3 px-5 pt-[60px]">
         <button type="button" aria-label="마이페이지" className="p-[3px]">
-          <PersonIconOutline className="size-6 text-text-neutral-primary" />
+          <PersonIconFill className="size-6 text-icon-neutral-secondary" />
         </button>
         <button type="button" aria-label="알림" className="p-[3px]">
-          <NotificationIconOutline className="size-6 text-text-neutral-primary" />
+          <NotificationIconFill className="size-6 text-icon-neutral-secondary" />
         </button>
       </header>
 

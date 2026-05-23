@@ -1,4 +1,4 @@
-import { ThreeDotHorizontalIconOutline } from '@/assets/icons';
+import { ThreeDotHorizontalIconFill } from '@/assets/icons';
 import StateChip from '@/components/common/StateChip/StateChip';
 import UserProfileGroup from '@/components/common/UserProfileGroup/UserProfileGroup';
 import type { UserT } from '@/components/common/UserProfileGroup/userProfileConstants';
@@ -36,7 +36,7 @@ function TournamentCard({
           <h3 className="heading-1 text-text-neutral-primary">{name}</h3>
         </div>
         <button type="button" aria-label="더보기" onClick={onMore}>
-          <ThreeDotHorizontalIconOutline className="size-6 text-text-neutral-primary" />
+          <ThreeDotHorizontalIconFill className="size-6 text-icon-neutral-secondary" />
         </button>
       </div>
       <div className="flex items-end justify-between">
