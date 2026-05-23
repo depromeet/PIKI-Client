@@ -1,6 +1,5 @@
 import {
   HeartIconFill,
-  HeartIconOutline,
   LoginIconOutline,
   NotificationIconFill,
   PersonIconFill,
@@ -69,27 +68,6 @@ function HomePage() {
         </section>
       </main>
 
-      {/* 하단 네비게이션 */}
-      <nav className="fixed bottom-[28px] left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-bg-layer-default p-1 shadow-[0_0_8px_rgba(0,0,0,0.04)]">
-        <button
-          type="button"
-          aria-label="홈"
-          aria-current="page"
-          className="flex w-20 flex-col items-center justify-center gap-1 rounded-full bg-gray-50 py-[9px]"
-        >
-          {/* TODO: HomeIcon 추가 필요 */}
-          <span className="block size-6 rounded-md bg-gray-600" aria-hidden />
-          <span className="text-[11px] text-text-neutral-secondary">홈</span>
-        </button>
-        <button
-          type="button"
-          aria-label="보관"
-          className="flex w-20 flex-col items-center justify-center gap-1 py-[9px]"
-        >
-          <HeartIconOutline className="size-6 text-text-neutral-tertiary" />
-          <span className="text-[11px] text-text-neutral-tertiary">보관</span>
-        </button>
-      </nav>
     </div>
   );
 }
