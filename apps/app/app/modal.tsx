@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ModalScreen() {
+function ModalScreen() {
   return (
     <View style={styles.container}>
       <Text>This is a modal</Text>
@@ -11,6 +11,8 @@ export default function ModalScreen() {
     </View>
   );
 }
+
+export default ModalScreen;
 
 const styles = StyleSheet.create({
   container: {

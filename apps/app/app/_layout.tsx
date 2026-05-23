@@ -7,7 +7,7 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-export default function RootLayout() {
+function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="auto" />
@@ -15,3 +15,5 @@ export default function RootLayout() {
     </SafeAreaView>
   );
 }
+
+export default RootLayout;
