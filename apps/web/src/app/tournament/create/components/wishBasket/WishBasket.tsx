@@ -5,6 +5,8 @@ import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/Button/Button';
 
+import AddWishDialog from '../addWishDialog/AddWishDialog';
+
 import WishItem from './WishItem';
 
 type WishBasketProps = {
@@ -27,13 +29,17 @@ function WishBasket({ basketIndex, items }: WishBasketProps) {
           {items.map((item, index) => (
             <WishItem key={item.id} index={index} url={item.imageUrl} />
           ))}
-          <Button
-            icon="only"
-            aria-label="위시 아이템 추가"
-            className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
-          >
-            <AddIcon width={32} height={32} className="text-white" aria-hidden />
-          </Button>
+          <AddWishDialog
+            trigger={
+              <Button
+                icon="only"
+                aria-label="위시 아이템 추가"
+                className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
+              >
+                <AddIcon width={32} height={32} className="text-white" aria-hidden />
+              </Button>
+            }
+          />
         </div>
       </div>
     </div>
