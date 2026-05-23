@@ -21,9 +21,9 @@ function WishAddModal({ isOpen, onClose, title, options }: WishAddModalProps) {
 
   return createPortal(
     <>
-      <div className="fixed inset-0 z-40 bg-black/40" onClick={onClose} />
-      <div className="fixed left-1/2 top-1/2 z-50 flex w-[362px] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-[15px] rounded-[24px] bg-white p-5">
-        <p className="text-[20px] font-bold leading-[28px] tracking-[-0.6px] text-[#2D3037]">{title}</p>
+      <div className="fixed inset-0 z-40 bg-black/40" aria-hidden="true" onClick={onClose} />
+      <div role="dialog" aria-modal="true" aria-labelledby="modal-title" className="fixed left-1/2 top-1/2 z-50 flex w-[362px] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-[15px] rounded-[24px] bg-white p-5">
+        <p id="modal-title" className="heading-1 text-[#2D3037]">{title}</p>
 
         <div className="flex w-full flex-col gap-2">
           {options.map(({ icon, label, description, onClick }) => (
@@ -37,8 +37,8 @@ function WishAddModal({ isOpen, onClose, title, options }: WishAddModalProps) {
                 {icon}
               </div>
               <div className="flex flex-col items-start gap-1">
-                <span className="text-[16px] font-semibold leading-[22px] tracking-[-0.6px] text-[#2D3037]">{label}</span>
-                <span className="text-[14px] font-normal leading-[20px] tracking-[-0.6px] text-[#686F7E]">{description}</span>
+                <span className="body-1-semibold text-[#2D3037]">{label}</span>
+                <span className="body-2-regular text-[#686F7E]">{description}</span>
               </div>
             </button>
           ))}
