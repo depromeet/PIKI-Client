@@ -18,7 +18,7 @@ const exampleDirPath = path.join(root, exampleDir);
 
 const indexContent = `import { Text, View } from "react-native";
 
-export default function Index() {
+function Index() {
   return (
     <View
       style={{
@@ -31,13 +31,17 @@ export default function Index() {
     </View>
   );
 }
+
+export default Index;
 `;
 
 const layoutContent = `import { Stack } from "expo-router";
 
-export default function RootLayout() {
+function RootLayout() {
   return <Stack />;
 }
+
+export default RootLayout;
 `;
 
 const rl = readline.createInterface({

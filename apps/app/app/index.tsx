@@ -7,7 +7,7 @@ import Webview from 'react-native-webview';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { WebBridge } from '@/utils/webBridge';
 
-export default function Page() {
+function Page() {
   const webviewRef = useRef<WebView | null>(null);
 
   const onWebviewMessage = useCallback(async (message: WebBridgeMessageT) => {
@@ -45,3 +45,5 @@ export default function Page() {
     </KeyboardAvoidingView>
   );
 }
+
+export default Page;
