@@ -8,9 +8,9 @@ import {
   TrophyIconFill,
 } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
-import UserProfileBlue from '@/assets/images/user-profile-blue.svg';
-import UserProfileYellow from '@/assets/images/user-profile-yellow.svg';
 import StateChip from '@/components/common/StateChip/StateChip';
+import UserProfileGroup from '@/components/common/UserProfileGroup/UserProfileGroup';
+import { MOCK_USERS } from '@/mocks/users';
 
 function HomePage() {
   return (
@@ -80,14 +80,7 @@ function HomePage() {
             </div>
             <div className="flex items-end justify-between">
               <span className="body-2-medium text-gray-300">0000/00/00</span>
-              <div className="flex items-center">
-                <UserProfileBlue className="-mr-1 size-[27px]" />
-                <UserProfileYellow className="-mr-1 size-[27px]" />
-                <span className="-mr-1 block size-[27px] rounded-full border-[1.6px] border-white bg-gray-50" />
-                <span className="flex size-[27px] items-center justify-center rounded-full border-[1.6px] border-white bg-gray-50 body-2-semibold text-text-neutral-tertiary">
-                  +N
-                </span>
-              </div>
+              <UserProfileGroup users={MOCK_USERS} max={3} />
             </div>
           </div>
         </section>
