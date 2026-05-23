@@ -31,11 +31,6 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
     setHasError(false);
   };
 
-  const handleOpenChange = (nextOpen: boolean) => {
-    if (!nextOpen) resetState();
-    onOpenChange(nextOpen);
-  };
-
   const handleSubmit = () => {
     if (isEmpty) return;
 

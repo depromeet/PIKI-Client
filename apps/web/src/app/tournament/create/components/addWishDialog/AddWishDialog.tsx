@@ -67,8 +67,9 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
   };
 
   const handleLinkSubmit = (url: string) => {
-    // TODO: 후속 PR — 입력된 url 으로 상품 정보 가져오기 / 상품 확인 페이지로 이동
-    console.warn('link submitted:', url);
+    // TODO: 입력된 url로 상품 정보 가져오기 (API 연동 전 mock)
+    // 임시 itemId 'new'로 상품 확인 페이지 이동, type=tournament로 분기
+    router.push(`/items/new/edit?type=tournament&url=${encodeURIComponent(url)}`);
   };
 
   return (
