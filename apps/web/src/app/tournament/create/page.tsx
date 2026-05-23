@@ -6,7 +6,7 @@ import WishBasketCarousel from './components/wishBasket/WishBasketCarousel';
 
 function TournamentCreatePage() {
   return (
-    <div className="flex min-h-screen flex-col px-5">
+    <div className="flex min-h-screen flex-col bg-gray-50 px-5">
       <div className="flex flex-1 flex-col gap-4 pt-[80px]">
         <TournamentHeader />
         <InviteFriends />
