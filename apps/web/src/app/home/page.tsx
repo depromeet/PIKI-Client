@@ -1,5 +1,4 @@
 import {
-  BasketIconFill,
   HeartIconFill,
   HeartIconOutline,
   LoginIconOutline,
@@ -9,6 +8,9 @@ import {
   TrophyIconFill,
 } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
+import UserProfileBlue from '@/assets/images/user-profile-blue.svg';
+import UserProfileYellow from '@/assets/images/user-profile-yellow.svg';
+import StateChip from '@/components/common/StateChip/StateChip';
 
 function HomePage() {
   return (
@@ -69,10 +71,7 @@ function HomePage() {
           <div className="flex h-[103px] w-full flex-col justify-center gap-2 rounded-[12px] bg-bg-layer-default px-6 py-5">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 rounded-lg bg-yellow-50 px-2 py-1">
-                  <BasketIconFill className="size-3.5 text-yellow-700" />
-                  <span className="caption-1-semibold text-yellow-700">담는 중</span>
-                </span>
+                <StateChip state="adding" />
                 <span className="heading-1 text-text-neutral-primary">토너먼트명</span>
               </div>
               <button type="button" aria-label="더보기">
@@ -82,10 +81,10 @@ function HomePage() {
             <div className="flex items-end justify-between">
               <span className="body-2-medium text-gray-300">0000/00/00</span>
               <div className="flex items-center">
-                <span className="-mr-1 block size-[27px] rounded-full bg-blue-300" />
-                <span className="-mr-1 block size-[27px] rounded-full bg-yellow-300" />
-                <span className="-mr-1 block size-[27px] rounded-full bg-gray-200" />
-                <span className="flex size-[27px] items-center justify-center rounded-full bg-gray-100 body-2-semibold text-gray-300">
+                <UserProfileBlue className="-mr-1 size-[27px]" />
+                <UserProfileYellow className="-mr-1 size-[27px]" />
+                <span className="-mr-1 block size-[27px] rounded-full border-[1.6px] border-white bg-gray-50" />
+                <span className="flex size-[27px] items-center justify-center rounded-full border-[1.6px] border-white bg-gray-50 body-2-semibold text-text-neutral-tertiary">
                   +N
                 </span>
               </div>
