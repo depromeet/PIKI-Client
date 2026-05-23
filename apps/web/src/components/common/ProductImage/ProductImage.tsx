@@ -45,28 +45,18 @@ function ProductImage({
     return <div style={{ width: dimension, height: dimension }} className={baseClass} />;
   }
 
-  if (fill) {
-    return (
-      <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
-        <BaseImage
-          {...imageProps}
-          src={imageProps.src}
-          className={cn('object-cover', className)}
-          loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
-          errorFallback={errorFallback ?? null}
-          onLoad={onLoad}
-          onError={onError}
-        />
-      </div>
-    );
-  }
+  const containerClass = fill
+    ? cn('relative h-full w-full overflow-hidden', baseClass)
+    : cn('relative overflow-hidden', baseClass);
+
+  const containerStyle = fill ? undefined : { width: dimension, height: dimension };
 
   return (
-    <div style={{ width: dimension, height: dimension }} className={cn('relative overflow-hidden', baseClass)}>
+    <div className={containerClass} style={containerStyle}>
       <BaseImage
         {...imageProps}
         src={imageProps.src}
-        className={className}
+        className={cn(fill && 'object-cover', className)}
         loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
         errorFallback={
           size === 'lg' ? <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback> : <SmErrorFallback />
