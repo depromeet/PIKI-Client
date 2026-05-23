@@ -9,10 +9,14 @@ import WishBasket from './WishBasket';
 const BASKETS = Array.from({ length: BASKET_COUNT }, () => EMPTY_WISH_ITEMS);
 
 function WishBasketCarousel() {
-  const { currentIndex, setCurrentIndex, handleTouchStart, handleTouchEnd } = useBasketCarousel();
+  const { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd } = useBasketCarousel();
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div
+      className="flex flex-col items-center gap-4 outline-none"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
       <div className="w-full overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-in-out"

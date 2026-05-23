@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { BASKET_COUNT } from '../consts/wishBasketConsts';
 
@@ -10,18 +10,13 @@ const useBasketCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
-        setCurrentIndex(prev => Math.min(prev + 1, BASKET_COUNT - 1));
-      } else if (e.key === 'ArrowLeft') {
-        setCurrentIndex(prev => Math.max(prev - 1, 0));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      setCurrentIndex(prev => Math.min(prev + 1, BASKET_COUNT - 1));
+    } else if (e.key === 'ArrowLeft') {
+      setCurrentIndex(prev => Math.max(prev - 1, 0));
+    }
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0]?.clientX ?? null;
@@ -47,7 +42,7 @@ const useBasketCarousel = () => {
     }
   };
 
-  return { currentIndex, setCurrentIndex, handleTouchStart, handleTouchEnd };
+  return { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd };
 };
 
 export default useBasketCarousel;
