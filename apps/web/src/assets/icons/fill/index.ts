@@ -80,7 +80,7 @@ export { default as InsightIconFill } from './insight.svg';
 export { default as InternetOffIconFill } from './internet-off.svg';
 export { default as LeaderIconFill } from './leader.svg';
 export { default as LineChartIconFill } from './line-chart.svg';
-export { default as LinkIconFill, default as LinkIconFill } from './link.svg';
+export { default as LinkIconFill } from './link.svg';
 export { default as ListIconFill } from './list.svg';
 export { default as LiveIconFill } from './live.svg';
 export { default as LoaderIconFill } from './loader.svg';
