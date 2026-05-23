@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './reset.css';
 @import './typography.css';
+@import 'tw-animate-css';
 
 /** 디자인 토큰 정의 */
 @theme {

@@ -9,6 +9,7 @@ export default function DesignSystemPage() {
       <LinkItem href="/design-system/image">Image / Skeleton UI</LinkItem>
       <LinkItem href="/design-system/button">Button</LinkItem>
       <LinkItem href="/design-system/input">Input</LinkItem>
+      <LinkItem href="/design-system/toast">Toast</LinkItem>
       <LinkItem href="/design-system/icon">Icons</LinkItem>
     </div>
   );
