@@ -38,10 +38,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "xcode@3.0.1": "apps/app/patches/xcode+3.0.1.patch"
-    }
   }
 }
