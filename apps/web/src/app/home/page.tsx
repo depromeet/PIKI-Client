@@ -4,11 +4,12 @@ import {
   LoginIconOutline,
   NotificationIconFill,
   PersonIconFill,
-  TrophyIconFill,
 } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import TournamentCard from '@/components/common/TournamentCard/TournamentCard';
 import { MOCK_USERS } from '@/mocks/users';
+
+import CreateTournamentDialog from './components/CreateTournamentDialog/CreateTournamentDialog';
 
 function HomePage() {
   return (
@@ -42,13 +43,7 @@ function HomePage() {
                 <HeartIconFill className="size-8 text-red-400" />
                 <span className="body-1-semibold text-text-neutral-primary">위시 담기</span>
               </button>
-              <button
-                type="button"
-                className="flex flex-1 flex-col items-center gap-2 rounded-[12px] bg-bg-layer-default p-5"
-              >
-                <TrophyIconFill className="size-8 text-yellow-400" />
-                <span className="body-1-semibold text-text-neutral-primary">토너먼트 만들기</span>
-              </button>
+              <CreateTournamentDialog />
             </div>
 
             {/* 초대 토너먼트 입장 */}

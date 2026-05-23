@@ -55,12 +55,17 @@ function Input({
         />
         {right && <span className="shrink-0 text-gray-300">{right}</span>}
       </div>
-      <p
-        id={helperText ? helperTextId : undefined}
-        className={cn('body-2-regular min-h-lh', status === 'error' ? 'text-red-600' : 'text-gray-300')}
-      >
-        {helperText}
-      </p>
+      {helperText && (
+        <p
+          id={helperTextId}
+          className={cn(
+            'body-2-regular min-h-lh',
+            status === 'error' ? 'text-red-600' : 'text-gray-300'
+          )}
+        >
+          {helperText}
+        </p>
+      )}
     </div>
   );
 }
