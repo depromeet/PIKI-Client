@@ -3,9 +3,17 @@ import WishGrid from '@/components/common/WishGrid';
 
 type WishListTabContentProps = {
   items: WishItemT[];
+  isDeleteMode?: boolean;
+  selectedIds?: Set<number>;
+  onToggleSelect?: (id: number) => void;
 };
 
-function WishListTabContent({ items }: WishListTabContentProps) {
+function WishListTabContent({
+  items,
+  isDeleteMode,
+  selectedIds,
+  onToggleSelect,
+}: WishListTabContentProps) {
   if (items.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-2 text-gray-300">
@@ -14,7 +22,14 @@ function WishListTabContent({ items }: WishListTabContentProps) {
     );
   }
 
-  return <WishGrid items={items} />;
+  return (
+    <WishGrid
+      items={items}
+      isDeleteMode={isDeleteMode}
+      selectedIds={selectedIds}
+      onToggleSelect={onToggleSelect}
+    />
+  );
 }
 
 export default WishListTabContent;

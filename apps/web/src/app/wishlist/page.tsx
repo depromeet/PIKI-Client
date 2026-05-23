@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import BottomTabBar from '@/components/common/BottomTabBar';
 import HeaderActions from '@/components/common/HeaderActions';
+import SuccessToast from '@/components/common/Toast/SuccessToast';
 
 import ImageIconFill from '@/assets/icons/fill/image.svg';
 import LinkIconFill from '@/assets/icons/fill/link.svg';
+import TrashIconFill from '@/assets/icons/fill/trash.svg';
 
 import WishAddModal from './_components/WishAddModal';
 import WishFab from './_components/WishFab';
@@ -15,9 +17,43 @@ import WishTab from './_components/WishTab';
 import { MOCK_WISH_ITEMS } from './mocks/wishMocks';
 import type { WishTabT } from './types/wishTypes';
 
+const TOAST_DURATION_MS = 2000;
+
 function WishlistPage() {
   const [activeTab, setActiveTab] = useState<WishTabT>('저장한 위시템');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [items, setItems] = useState(MOCK_WISH_ITEMS);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [isToastVisible, setIsToastVisible] = useState(false);
+
+  const handleEnterDeleteMode = () => {
+    setIsDeleteMode(true);
+    setSelectedIds(new Set());
+  };
+
+  const handleToggleSelect = (id: number) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedIds.size === 0) return;
+    setItems(prev => prev.filter(item => !selectedIds.has(item.id)));
+    setSelectedIds(new Set());
+    setIsDeleteMode(false);
+    setIsToastVisible(true);
+  };
+
+  useEffect(() => {
+    if (!isToastVisible) return;
+    const timeoutId = window.setTimeout(() => setIsToastVisible(false), TOAST_DURATION_MS);
+    return () => window.clearTimeout(timeoutId);
+  }, [isToastVisible]);
 
   return (
     <div className="flex min-h-dvh flex-col bg-[#F6F7F8] px-[21px]">
@@ -35,7 +71,14 @@ function WishlistPage() {
 
       {/* 탭 콘텐츠 */}
       <main className="flex flex-1 flex-col pb-24">
-        {activeTab === '저장한 위시템' && <WishListTabContent items={MOCK_WISH_ITEMS} />}
+        {activeTab === '저장한 위시템' && (
+          <WishListTabContent
+            items={items}
+            isDeleteMode={isDeleteMode}
+            selectedIds={selectedIds}
+            onToggleSelect={handleToggleSelect}
+          />
+        )}
         {activeTab === '토너먼트 기록' && (
           // 토너먼트 기록 데이터 연결 전 임시 UI
           <div className="flex flex-1 items-center justify-center">
@@ -44,18 +87,43 @@ function WishlistPage() {
         )}
       </main>
 
-      {/* 하단 탭 바 */}
-      <div className="fixed bottom-[40px] left-1/2 -translate-x-1/2 z-20">
-        <BottomTabBar />
+      {/* 하단 탭 바 + 선택 칩 */}
+      <div className="fixed bottom-[40px] left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+        {isDeleteMode ? (
+          <div className="flex h-[68px] w-[168px] items-center justify-center rounded-full bg-bg-layer-default shadow-[0px_0px_8px_0px_rgba(0,0,0,0.04)]">
+            <span className="body-1-bold text-text-neutral-primary">
+              {selectedIds.size}개 선택됨
+            </span>
+          </div>
+        ) : (
+          <BottomTabBar />
+        )}
       </div>
 
       {/* FAB */}
-      <div className="fixed bottom-[43.21px] left-1/2 z-30 w-full max-w-120 -translate-x-1/2 px-[21px] pointer-events-none">
+      <div className="fixed right-0 bottom-[43.21px] left-0 z-30 mx-auto w-full max-w-120 pointer-events-none px-[21px]">
         <div className="flex justify-end">
           <div className="pointer-events-auto">
-            <WishFab onAddItem={() => setIsAddModalOpen(true)} onDelete={() => {}} />
+            {isDeleteMode ? (
+              <button
+                type="button"
+                onClick={handleConfirmDelete}
+                aria-label="선택한 위시 삭제하기"
+                disabled={selectedIds.size === 0}
+                className="flex size-[62px] items-center justify-center rounded-full border border-border-neutral-muted bg-bg-layer-default shadow-[0px_0px_8px_0px_rgba(0,0,0,0.04)] disabled:opacity-50"
+              >
+                <TrashIconFill width={33} height={33} className="text-icon-neutral-primary" />
+              </button>
+            ) : (
+              <WishFab onAddItem={() => setIsAddModalOpen(true)} onDelete={handleEnterDeleteMode} />
+            )}
           </div>
         </div>
+      </div>
+
+      {/* 삭제 완료 토스트 */}
+      <div className="fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 pointer-events-none px-[21px]">
+        <SuccessToast message="선택한 위시를 삭제했어요" isVisible={isToastVisible} />
       </div>
 
       <WishAddModal
