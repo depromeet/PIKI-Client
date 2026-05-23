@@ -1,5 +1,14 @@
+import BottomTabBar from '@/components/common/BottomTabBar';
+
+// 홈
 function Home() {
-  return <div>홈 페이지</div>;
+  return (
+    <div className="flex min-h-dvh flex-col">
+      <div className="fixed bottom-[40px] left-1/2 -translate-x-1/2 z-20">
+        <BottomTabBar />
+      </div>
+    </div>
+  );
 }
 
 export default Home;
