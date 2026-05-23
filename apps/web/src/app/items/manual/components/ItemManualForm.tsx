@@ -66,7 +66,7 @@ function ItemManualForm() {
           type="button"
           onClick={handleOpenPicker}
           aria-label="이미지 추가"
-          className="mx-auto flex size-[200px] flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-bg-layer-basement"
+          className="mx-auto flex size-[200px] flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-black/4"
           style={
             imageUrl
               ? {
