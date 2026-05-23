@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { ChevronBackwardIconFill, ImageIconOutline } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input/Input';
+import formatPrice from '@/utils/formatPrice';
 
 function ItemManualForm() {
   const router = useRouter();
@@ -106,7 +107,9 @@ function ItemManualForm() {
             label="가격"
             placeholder="가격을 입력해주세요."
             value={price}
-            onChange={e => setPrice(e.target.value)}
+            onChange={e => setPrice(formatPrice(e.target.value, { withSuffix: false }))}
+            onFocus={() => setPrice(prev => formatPrice(prev, { withSuffix: false }))}
+            onBlur={() => setPrice(prev => formatPrice(prev))}
             inputMode="numeric"
           />
         </div>

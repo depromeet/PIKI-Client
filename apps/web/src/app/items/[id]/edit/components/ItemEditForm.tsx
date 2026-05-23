@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ChevronBackwardIconFill, EditIconFill } from '@/assets/icons';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input/Input';
+import formatPrice from '@/utils/formatPrice';
 
 import ItemLinkBanner from './ItemLinkBanner';
 
@@ -31,7 +32,7 @@ function ItemEditForm({
 }: ItemEditFormProps) {
   const router = useRouter();
   const [name, setName] = useState(initialName);
-  const [price, setPrice] = useState(initialPrice);
+  const [price, setPrice] = useState(formatPrice(initialPrice));
 
   const handleBack = () => {
     router.back();
@@ -97,7 +98,9 @@ function ItemEditForm({
           <Input
             label="가격"
             value={price}
-            onChange={e => setPrice(e.target.value)}
+            onChange={e => setPrice(formatPrice(e.target.value, { withSuffix: false }))}
+            onFocus={() => setPrice(prev => formatPrice(prev, { withSuffix: false }))}
+            onBlur={() => setPrice(prev => formatPrice(prev))}
             inputMode="numeric"
             right={<EditIconFill className="size-5" />}
           />
