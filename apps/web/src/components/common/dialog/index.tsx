@@ -7,7 +7,7 @@ import { CloseIconFill } from '@/assets/icons/fill';
 import { Z_INDEX } from '@/consts/zIndex';
 import { cn } from '@/utils/cn';
 
-import Button from './Button/Button';
+import Button from '../Button/Button';
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -64,13 +64,13 @@ function DialogContent({
       >
         {children}
         {showCloseButton && (
-          <DialogPrimitive.Close data-slot="dialog-close" asChild>
+          <DialogClose asChild>
             {/** TODO: 수정 필요 */}
-            <button className="absolute top-2 right-2">
+            <button type="button" className="absolute top-2 right-2">
               <CloseIconFill />
               <span className="sr-only">Close</span>
             </button>
-          </DialogPrimitive.Close>
+          </DialogClose>
         )}
       </DialogPrimitive.Content>
     </DialogPortal>
