@@ -1,6 +1,6 @@
 'use client';
 
-import { type WebBridgeMessageT, isWebBridgeMessageT } from '@repo/core';
+import { type WebBridgeMessageT, isWebBridgeMessageT } from '@piki/core';
 import { useEffect, useRef } from 'react';
 
 /**

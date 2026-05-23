@@ -1,4 +1,4 @@
-import { type WebBridgeMessageT, isWebBridgeMessageT } from '@repo/core';
+import { type WebBridgeMessageT, isWebBridgeMessageT } from '@piki/core';
 import { useCallback } from 'react';
 import type { WebViewMessageEvent } from 'react-native-webview';
 

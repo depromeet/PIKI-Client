@@ -9,12 +9,15 @@
 ## 🎯 프로젝트 컨텍스트
 
 ### 한 줄 정의
+
 **쌓인 위시리스트에서 먼저 살 것을 골라주는 소비 결정 서비스**
 
 ### 타겟 유저
+
 위시리스트와 장바구니는 가득하지만, 선택 피로로 구매를 계속 미루는 패션·라이프스타일 중심의 **20~30대 모바일 쇼핑 사용자**.
 
 ### 핵심 기능
+
 - **링크 기반 상품 저장** — 여러 쇼핑몰 링크를 한곳에 모음
 - **1:1 토너먼트 비교** — 두 개씩 비교해 최종 1순위 결정 (WOW 포인트)
 - **AI 소비 메이트** — 질문/공감/리마인드 (WOW 포인트)
@@ -22,6 +25,7 @@
 - **커머스 직접 연동** — 결정된 상품 즉시 구매
 
 ### 플랫폼 전략
+
 **RN(Expo) 앱이 WebView로 Next.js 웹앱을 감싸는 구조.**
 → 실제 UI/비즈니스 로직은 `apps/web`에 집중. 네이티브 기능만 `apps/app`에서 처리.
 
@@ -30,12 +34,14 @@
 ## 💻 기술 스택
 
 ### 공통
+
 - **패키지 매니저**: pnpm 10.17.0
 - **모노레포**: Turborepo
 - **언어**: TypeScript 5.9.2
 - **배포**: Vercel (web), Expo (app)
 
 ### apps/web (Next.js)
+
 - **프레임워크**: Next.js 16 (App Router)
 - **React**: 19.2.0
 - **상태관리**: Zustand
@@ -46,11 +52,13 @@
 - **아이콘**: Lucide React 우선 → 불가 시 SVG 컴포넌트화
 
 ### apps/app (React Native)
+
 - **프레임워크**: React Native + Expo
 - **라우팅**: Expo Router
 - **주요 역할**: WebView로 `apps/web` 렌더링
 
 ### CI/CD
+
 - **GitHub Actions**: PR 단위 빌드 검사 (`lint` → `check-types` → `build`)
 - **필수 통과 조건**: `pnpm install --frozen-lockfile`
 
@@ -59,29 +67,49 @@
 ## 📁 프로젝트 구조
 
 ### 모노레포 루트
+
 ```
 18th-team3-client/
 ├── apps/
 │   ├── app/              # React Native + Expo (WebView 래퍼)
 │   └── web/              # Next.js 16 (메인 서비스)
 ├── packages/
-│   ├── core/             # @repo/core — 웹뷰 통신용 type/hook/util
-│   ├── ui/               # @repo/ui — 공유 UI (현재 미사용)
-│   ├── eslint-config/    # @repo/eslint-config
-│   └── typescript-config/ # @repo/typescript-config
+│   ├── core/             # @piki/core — 웹뷰 통신용 type/hook/util
+│   └── typescript-config/ # @piki/typescript-config
 ├── prettier.config.mjs   # 루트 Prettier (공통)
+├── eslint.config.mjs   # 루트 ESLint (공통)
 ├── .prettierignore
 └── turbo.json
 ```
 
-### apps/web 내부 (고전 구조)
+### apps/web 내부 (페이지별 폴더 구조)
+
+
 ```
 apps/web/src/
-├── app/          # Next.js App Router (layout, page, providers)
+├── app/                    # Next.js App Router
 │   ├── layout.tsx
-│   ├── page.tsx
-│   ├── providers.tsx   # TanStack Query Provider
-│   └── fonts/
+│   ├── page.tsx            # 홈
+│   ├── providers.tsx       # TanStack Query Provider
+│   ├── fonts/
+│   ├── tournament/         # 토너먼트 생성 페이지 (예시)
+│   │   ├── page.tsx
+│   │   ├── components/     # 해당 페이지 전용 컴포넌트
+│   │   │   └── {ComponentName}/
+│   │   │       ├── {ComponentName}.tsx
+│   │   │       └── {ComponentName}.style.ts
+│   │   ├── hooks/          # 해당 페이지 전용 훅
+│   │   ├── utils/          # 해당 페이지 전용 유틸
+│   │   ├── types/          # 해당 페이지 전용 타입
+│   │   └── consts/         # 해당 페이지 전용 상수
+│   ├── wishlist/           # 위시리스트 페이지 (예시)
+│   │   ├── page.tsx
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── utils/
+│   │   ├── types/
+│   │   └── consts/
+│   └── ...                 # 다른 페이지도 동일한 패턴 (필요한 폴더만 생성)
 ├── components/
 │   └── common/   # 페이지 무관 재사용 공통 컴포넌트 (Button, Input 등)
 │       └── {ComponentName}/
@@ -97,26 +125,33 @@ apps/web/src/
 └── consts/       # 상수
 ```
 
+**배치 기준:**
+
+- 특정 페이지에서만 쓰이는 컴포넌트/훅/상수 → 해당 페이지 폴더 안
+- 2개 이상 페이지에서 사용 → `components/common/`, `hooks/`, `consts/`로 올리기
+
 ### Path Alias
+
 `@/*` → `apps/web/src/*`
 
 ---
 
 ## 📝 네이밍 컨벤션
 
-| 대상 | 규칙 | 예시 |
-|---|---|---|
-| **컴포넌트 파일** | PascalCase | `ScaleResult.tsx` |
-| **일반 파일** (훅, 유틸) | camelCase | `useAuth.ts`, `formatDate.ts` |
-| **폴더** | kebab-case | `scale-result/` |
-| **타입** | T suffix | `UserT`, `ProductT` |
-| **API 함수** | HTTP 메서드 prefix | `getUser`, `postWishlist`, `patchProfile`, `deleteItem` |
+| 대상                     | 규칙               | 예시                                                    |
+| ------------------------ | ------------------ | ------------------------------------------------------- |
+| **컴포넌트 파일**        | PascalCase         | `ScaleResult.tsx`                                       |
+| **일반 파일** (훅, 유틸) | camelCase          | `useAuth.ts`, `formatDate.ts`                           |
+| **폴더**                 | kebab-case         | `scale-result/`                                         |
+| **타입**                 | T suffix           | `UserT`, `ProductT`                                     |
+| **API 함수**             | HTTP 메서드 prefix | `getUser`, `postWishlist`, `patchProfile`, `deleteItem` |
 
 ---
 
 ## 🎨 코딩 컨벤션
 
 ### 컴포넌트
+
 - **`function` 키워드 + default export**
 
 ```tsx
@@ -128,6 +163,7 @@ export default MyComponent;
 ```
 
 ### 유틸 함수
+
 - **화살표 함수** 사용
 
 ```ts
@@ -135,6 +171,7 @@ const formatDate = (date: Date) => date.toISOString();
 ```
 
 ### 타입 선언
+
 - **`type` 사용** (interface 대신)
 - **T suffix** (컨벤션상 타입 선언 시)
 - Props 타입명: `{ComponentName}Props`
@@ -151,6 +188,7 @@ type MyComponentProps = {
 ```
 
 ### Props 네이밍
+
 - **내부 핸들러**: `handle-` (예: `handleClick`, `handleSubmit`)
 - **외부에서 받는 props**: `on-` (예: `onClick`, `onSubmit`)
 
@@ -165,6 +203,7 @@ function Button({ onClick }: ButtonProps) {
 ```
 
 ### 기타
+
 - **세미콜론**: 사용 (`semi: true`)
 - **따옴표**: `singleQuote: true` (`'홑따옴표'`)
 - **printWidth**: 100
@@ -176,6 +215,7 @@ function Button({ onClick }: ButtonProps) {
 ## 📦 Import 규칙
 
 ### 정렬 (자동화됨 — `@trivago/prettier-plugin-sort-imports`)
+
 ```
 1. 외부 라이브러리  (<THIRD_PARTY_MODULES>)
 2. 절대경로        (^@/)
@@ -183,6 +223,7 @@ function Button({ onClick }: ButtonProps) {
 ```
 
 ### 예시
+
 ```tsx
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -195,6 +236,7 @@ import styles from './Page.module.css';
 ```
 
 ### Prettier 옵션
+
 - `importOrderSeparation: true` (그룹 간 빈 줄)
 - `importOrderSortSpecifiers: true` (그룹 내 알파벳 정렬)
 
@@ -214,16 +256,19 @@ import styles from './Page.module.css';
 ## 🔀 Git 전략
 
 ### 브랜치 구조
+
 ```
 main ← dev ← {type}/{issue-number}-{description}
 ```
 
 ### 브랜치 네이밍
+
 - **패턴**: `{type}/{issue-number}-{description}`
 - **예시**: `feat/1-login-page`, `chore/3-web-setup`, `fix/5-auth-bug`
 - **타입**: `feat`, `fix`, `chore`, `docs`, `refactor`, `style`, `test`
 
 ### 커밋 메시지
+
 - **형식**: `{type}: {한글 설명}`
 - **예시**:
   - `feat: 로그인 페이지 구현`
@@ -231,23 +276,29 @@ main ← dev ← {type}/{issue-number}-{description}
   - `fix: 토큰 만료 처리 수정`
 
 ### 머지 방식
+
 - **Squash Merge** 사용
 - PR 제목이 그대로 dev의 커밋 메시지가 됨 → PR 제목 신중히 작성
 
 ### PR 컨벤션
+
 - **base 브랜치**: `dev` (main 아님)
 - **템플릿**:
+
 ```markdown
 ## 작업 내용
+
 [내용 정리]
 
 ## 스크린샷
 
 ## 연관 이슈
+
 closes #이슈번호
 ```
 
 ### 코드 리뷰 — PN 룰
+
 - **P1** (Request changes): 꼭 반영 — 중대한 오류 가능성
 - **P2** (Request changes): 적극 고려 — 수용 or 토론
 - **P3** (Comment): 웬만하면 반영 — 미반영 시 사유 설명
@@ -255,6 +306,7 @@ closes #이슈번호
 - **P5** (Approve): 사소한 의견 — 무시 가능
 
 ### 리뷰 규칙
+
 - **랜덤 1명 승인** 시 머지 가능
 - 리뷰 자동 배정 워크플로우 사용
 
@@ -263,12 +315,14 @@ closes #이슈번호
 ## 🌐 API 통신 — Response Schema 규약
 
 ### 기본 원칙
+
 1. **HTTP Status Code는 REST 의미대로 사용** (200, 201, 400, 401, 403, 404, 500)
 2. **성공/실패 Body 구조 통일**
 3. **`fetch`는 4xx/5xx에서 자동 throw 안 함** → 반드시 `response.ok` 확인
 4. **`success` 필드 사용 안 함** (`response.ok`와 중복)
 
 ### 응답 구조
+
 ```json
 {
   "status": 200,
@@ -278,31 +332,31 @@ closes #이슈번호
 }
 ```
 
-| 필드 | 설명 |
-|---|---|
-| `status` | HTTP Status Code와 동일 |
-| `data` | 실제 비즈니스 응답 데이터 (실패 시 `null`) |
-| `detail` | 응답 메시지 (사용자 표시용) |
-| `code` | 서버 정의 Enum 코드 (세부 분기용) |
+| 필드     | 설명                                       |
+| -------- | ------------------------------------------ |
+| `status` | HTTP Status Code와 동일                    |
+| `data`   | 실제 비즈니스 응답 데이터 (실패 시 `null`) |
+| `detail` | 응답 메시지 (사용자 표시용)                |
+| `code`   | 서버 정의 Enum 코드 (세부 분기용)          |
 
 ### 검증 오류 응답 (400)
+
 ```json
 {
   "status": 400,
   "data": null,
   "detail": "입력값이 올바르지 않습니다.",
   "code": "INVALID_INPUT",
-  "errors": [
-    { "field": "url", "reason": "URL 형식이 올바르지 않습니다." }
-  ]
+  "errors": [{ "field": "url", "reason": "URL 형식이 올바르지 않습니다." }]
 }
 ```
 
 ### 페이지 응답 구조
+
 ```json
 {
   "status": 200,
-  "data": [ { "wishId": 1, "title": "셔츠" } ],
+  "data": [{ "wishId": 1, "title": "셔츠" }],
   "detail": "요청이 정상적으로 처리되었습니다.",
   "code": "COMMON_SUCCESS",
   "pageInfo": { "nextCursor": "abc123", "hasNext": true }
@@ -310,6 +364,7 @@ closes #이슈번호
 ```
 
 ### 프론트엔드 fetch 처리 표준
+
 ```ts
 export async function request(url: string, options?: RequestInit) {
   const response = await fetch(url, options);
@@ -330,6 +385,7 @@ export async function request(url: string, options?: RequestInit) {
 ```
 
 ### 검증 오류 세부 처리
+
 ```ts
 if (response.status === 400 && body.errors) {
   return body.errors;
@@ -337,6 +393,7 @@ if (response.status === 400 && body.errors) {
 ```
 
 ### 분기 처리 (세부 에러)
+
 ```ts
 if (body.code === 'WISH_NOT_FOUND') {
   // 특정 에러 처리
@@ -344,21 +401,23 @@ if (body.code === 'WISH_NOT_FOUND') {
 ```
 
 ### HTTP Status 사용 기준
-| 상황 | HTTP Status |
-|---|---|
-| 조회 성공 | 200 OK |
-| 생성 성공 | 201 Created |
-| 잘못된 요청 | 400 Bad Request |
-| 인증 실패 | 401 Unauthorized |
-| 권한 없음 | 403 Forbidden |
-| 리소스 없음 | 404 Not Found |
-| 서버 오류 | 500 Internal Server Error |
+
+| 상황        | HTTP Status               |
+| ----------- | ------------------------- |
+| 조회 성공   | 200 OK                    |
+| 생성 성공   | 201 Created               |
+| 잘못된 요청 | 400 Bad Request           |
+| 인증 실패   | 401 Unauthorized          |
+| 권한 없음   | 403 Forbidden             |
+| 리소스 없음 | 404 Not Found             |
+| 서버 오류   | 500 Internal Server Error |
 
 ---
 
 ## 🤖 Claude 작업 지침
 
 ### 코드 생성 시
+
 - **위 컨벤션을 반드시 준수**
 - 신규 컴포넌트: `function` 키워드 + PascalCase 파일명 + default export
 - 신규 훅: 화살표 함수 + camelCase 파일명
@@ -367,25 +426,29 @@ if (body.code === 'WISH_NOT_FOUND') {
 - 경로는 `@/*` 절대경로 우선, 같은 디렉토리는 상대경로
 
 ### 커밋 메시지 제안 시
+
 - `{type}: {한글 설명}` 형식 사용
 - type: feat, fix, chore, docs, refactor, style, test
 
 ### PR 작성 시
+
 - 제목: `{type}: {한글 설명}` 형식
 - 본문에 `closes #이슈번호` 포함
 - base 브랜치는 `dev`
 
 ### 리뷰 코멘트 작성 시
+
 - PN 태그 (P1~P5) 사용
 - 이유 명확히 설명
 
 ### API 관련 코드 생성 시
+
 - HTTP status 기반 분기 (`response.ok`)
 - body 구조: `{ status, data, detail, code }` 가정
 - fetch 래퍼 함수 활용 패턴
 
-
 ### 의심스러울 때
+
 - 기존 코드 패턴 확인
 - 팀 컨벤션 우선 (이 문서)
 - 판단 어려우면 사용자에게 확인

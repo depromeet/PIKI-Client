@@ -1,0 +1,13 @@
+@keyframes spinner-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.15;
+  }
+}
+
+.spinner-segment {
+  fill: var(--spinner-color, var(--color-gray-600));
+  animation: spinner-fade var(--spinner-timing, 1s) linear infinite;
+}
