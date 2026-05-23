@@ -1,37 +1,33 @@
 'use client';
 
+import Link from 'next/link';
 import type { ComponentProps, ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
 import { type ButtonStyleProps, buttonStyles } from './Button.style';
 
-type ButtonProps = Omit<ComponentProps<'button'>, 'children'> &
+type ButtonLinkProps = Omit<ComponentProps<typeof Link>, 'children'> &
   ButtonStyleProps & {
     leadingIcon?: ReactNode;
     children?: ReactNode;
   };
 
-function Button({
+function ButtonLink({
   variant,
   size,
   icon,
   leadingIcon,
   className,
   children,
-  type = 'button',
   ...rest
-}: ButtonProps) {
+}: ButtonLinkProps) {
   return (
-    <button
-      type={type}
-      className={cn(buttonStyles({ variant, size, icon }), className)}
-      {...rest}
-    >
+    <Link className={cn(buttonStyles({ variant, size, icon }), className)} {...rest}>
       {icon === 'leading' && leadingIcon}
       {children}
-    </button>
+    </Link>
   );
 }
 
-export default Button;
+export default ButtonLink;
