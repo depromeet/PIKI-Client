@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { EditIconFill, TrophyIconFill } from '@/assets/icons';
@@ -12,11 +13,8 @@ import {
 } from '@/components/common/dialog';
 import Input from '@/components/common/Input/Input';
 
-type CreateTournamentDialogProps = {
-  onCreate?: (name: string) => void;
-};
-
-function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
+function CreateTournamentDialog() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
 
@@ -25,9 +23,9 @@ function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
 
   const handleCreate = () => {
     if (isDisabled) return;
-    onCreate?.(trimmedName);
     setOpen(false);
     setName('');
+    router.push('/tournament/create');
   };
 
   return (
