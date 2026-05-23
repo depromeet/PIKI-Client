@@ -56,9 +56,9 @@ function WishlistPage() {
   }, [isToastVisible]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#F6F7F8] px-[21px]">
+    <div className="flex min-h-dvh flex-col bg-bg-layer-basement px-[21px]">
       {/* 헤더: 타이틀 + 아이콘 액션 + 탭 */}
-      <div className="sticky top-0 z-10 inline-flex w-full flex-col items-start gap-5 bg-[#F6F7F8] pt-[24px] pb-6">
+      <div className="sticky top-0 z-10 inline-flex w-full flex-col items-start gap-5 bg-bg-layer-basement pt-[24px] pb-6">
         <div className="flex w-full flex-col gap-[5px]">
           <div className="flex justify-end">
             <HeaderActions />

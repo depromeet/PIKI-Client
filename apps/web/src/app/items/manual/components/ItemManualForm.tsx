@@ -41,7 +41,7 @@ function ItemManualForm() {
   };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-layer-default pb-[78px]">
+    <div className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
       <button
         type="button"
         onClick={handleBack}
