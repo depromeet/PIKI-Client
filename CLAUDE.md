@@ -152,13 +152,14 @@ apps/web/src/
 
 ### 컴포넌트
 
-- **컴포넌트는 반드시 `export default function ComponentName() {}` 형태의 함수 선언식 사용**
-- **`function ComponentName() {}` 선언 후 아래에서 `export default ComponentName;`로 분리하지 않음**
+- **`function` 키워드 + default export**
 
 ```tsx
-export default function MyComponent({ children }: MyComponentProps) {
+function MyComponent({ children }: MyComponentProps) {
   return <div>{children}</div>;
 }
+
+export default MyComponent;
 ```
 
 ### 유틸 함수
@@ -418,7 +419,7 @@ if (body.code === 'WISH_NOT_FOUND') {
 ### 코드 생성 시
 
 - **위 컨벤션을 반드시 준수**
-- 신규 컴포넌트: PascalCase 파일명 + `export default function ComponentName() {}` 형태 사용
+- 신규 컴포넌트: `function` 키워드 + PascalCase 파일명 + default export
 - 신규 훅: 화살표 함수 + camelCase 파일명
 - 신규 타입: `type` 키워드 + T suffix
 - API 함수: HTTP 메서드 prefix (`getUser`, `postWishlist` 등)
