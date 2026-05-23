@@ -8,7 +8,7 @@ type LgErrorFallbackProps = {
   children?: ReactNode;
 };
 
-export default function LgErrorFallback({ radius, children }: LgErrorFallbackProps) {
+function LgErrorFallback({ radius, children }: LgErrorFallbackProps) {
   return (
     <div className={cn('absolute inset-0 flex items-center justify-center bg-gray-50', radius)}>
       {children ?? (
@@ -23,3 +23,5 @@ export default function LgErrorFallback({ radius, children }: LgErrorFallbackPro
     </div>
   );
 }
+
+export default LgErrorFallback;

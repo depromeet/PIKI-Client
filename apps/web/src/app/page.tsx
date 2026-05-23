@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>main</div>;
+function Home() {
+  return <div>홈 페이지</div>;
 }
+
+export default Home;
