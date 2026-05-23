@@ -1,8 +1,7 @@
 'use client';
 
 import type { ImageProps } from 'next/image';
-import type { ReactNode, SyntheticEvent } from 'react';
-import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 import BaseImage from '@/components/common/BaseImage/BaseImage';
 import { cn } from '@/utils/cn';
@@ -12,8 +11,6 @@ import LoadingFallback from './fallback/LoadingFallback';
 import SmErrorFallback from './fallback/SmErrorFallback';
 import type { SizeVariantT } from './productImageConstants';
 import { SIZE_STYLE } from './productImageConstants';
-
-type ImgEvent = SyntheticEvent<HTMLImageElement>;
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
@@ -42,22 +39,11 @@ function ProductImage({
 }: ProductImageProps) {
   const { dimension, radius, decoration } = SIZE_STYLE[size];
   const baseClass = cn('bg-gray-50', radius, decoration);
-  const [isError, setIsError] = useState(false);
 
   if (isEmpty || !imageProps.src) {
     if (fill) return <div className={cn('h-full w-full', baseClass)} />;
     return <div style={{ width: dimension, height: dimension }} className={baseClass} />;
   }
-
-  const handleLoad = (e: ImgEvent) => {
-    setIsError(false);
-    onLoad?.(e);
-  };
-
-  const handleError = (e: ImgEvent) => {
-    setIsError(true);
-    onError?.(e);
-  };
 
   if (fill) {
     return (
@@ -68,31 +54,26 @@ function ProductImage({
           className={cn('object-cover', className)}
           loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
           errorFallback={errorFallback ?? null}
-          onLoad={handleLoad}
-          onError={handleError}
+          onLoad={onLoad}
+          onError={onError}
         />
       </div>
     );
   }
 
   return (
-    <div style={{ width: dimension, height: dimension }} className="relative overflow-visible">
-      <div className={cn('relative h-full w-full overflow-hidden', baseClass)}>
-        <BaseImage
-          {...imageProps}
-          src={imageProps.src}
-          className={className}
-          loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
-          errorFallback={
-            size === 'lg' ? (
-              <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback>
-            ) : null
-          }
-          onLoad={handleLoad}
-          onError={handleError}
-        />
-      </div>
-      {isError && size === 'sm' && <SmErrorFallback />}
+    <div style={{ width: dimension, height: dimension }} className={cn('relative overflow-hidden', baseClass)}>
+      <BaseImage
+        {...imageProps}
+        src={imageProps.src}
+        className={className}
+        loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
+        errorFallback={
+          size === 'lg' ? <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback> : <SmErrorFallback />
+        }
+        onLoad={onLoad}
+        onError={onError}
+      />
     </div>
   );
 }
