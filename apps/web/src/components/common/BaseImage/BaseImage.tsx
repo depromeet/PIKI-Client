@@ -5,16 +5,14 @@ import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
 import { useState } from 'react';
 
-type ImgEvent = SyntheticEvent<HTMLImageElement>;
-
 import { cn } from '@/utils/cn';
+
+type ImgEvent = SyntheticEvent<HTMLImageElement>;
 
 type ImageState = 'loading' | 'success' | 'error';
 
-type BaseImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
+type BaseImageProps = Omit<ImageProps, 'src' | 'fill'> & {
   src: ImageProps['src'];
-  width: number;
-  height: number;
   loadingFallback?: ReactNode;
   errorFallback?: ReactNode;
 };
@@ -22,8 +20,6 @@ type BaseImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
 function BaseImage({
   src,
   alt,
-  width,
-  height,
   loadingFallback,
   errorFallback,
   onLoad,
@@ -57,8 +53,7 @@ function BaseImage({
         {...imageProps}
         src={src}
         alt={alt}
-        width={width}
-        height={height}
+        fill
         onLoad={handleLoad}
         onError={handleError}
         className={cn(
