@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 import { Toaster } from '@/components/common/toast';
 
-export default function Home() {
+function Home() {
   return (
     <main className="flex min-h-screen flex-col gap-4 p-6">
       <h1 className="text-xl font-semibold">토스트 테스트</h1>
@@ -47,3 +47,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;

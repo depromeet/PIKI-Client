@@ -6,7 +6,7 @@ import { type ReactNode } from 'react';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-export default function Providers({ children }: Readonly<{ children: ReactNode }>) {
+function Providers({ children }: Readonly<{ children: ReactNode }>) {
   const queryClient = getQueryClient();
 
   return (
@@ -16,3 +16,5 @@ export default function Providers({ children }: Readonly<{ children: ReactNode }
     </QueryClientProvider>
   );
 }
+
+export default Providers;
