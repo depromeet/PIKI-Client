@@ -13,6 +13,7 @@ import {
 } from '@/components/common/dialog';
 import { cn } from '@/utils/cn';
 
+import AddByImageDialog from '../addByImageDialog/AddByImageDialog';
 import AddByLinkDialog from '../addByLinkDialog/AddByLinkDialog';
 
 type WishOptionT = {
@@ -51,6 +52,7 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
   const router = useRouter();
   const [wishOpen, setWishOpen] = useState(false);
   const [linkOpen, setLinkOpen] = useState(false);
+  const [imageOpen, setImageOpen] = useState(false);
 
   const handleSelect = (key: WishOptionT['key']) => {
     if (key === 'wishlist') {
@@ -63,7 +65,10 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
       setLinkOpen(true);
       return;
     }
-    // TODO: 이미지로 담기 라우팅 (후속 PR)
+    if (key === 'image') {
+      setWishOpen(false);
+      setImageOpen(true);
+    }
   };
 
   const handleLinkSubmit = (url: string) => {
@@ -111,6 +116,7 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
       </Dialog>
 
       <AddByLinkDialog open={linkOpen} onOpenChange={setLinkOpen} onSubmit={handleLinkSubmit} />
+      <AddByImageDialog open={imageOpen} onOpenChange={setImageOpen} />
     </>
   );
 }
