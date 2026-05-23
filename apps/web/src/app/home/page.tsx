@@ -4,12 +4,10 @@ import {
   LoginIconOutline,
   NotificationIconOutline,
   PersonIconOutline,
-  ThreeDotHorizontalIconOutline,
   TrophyIconFill,
 } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
-import StateChip from '@/components/common/StateChip/StateChip';
-import UserProfileGroup from '@/components/common/UserProfileGroup/UserProfileGroup';
+import TournamentCard from '@/components/common/TournamentCard/TournamentCard';
 import { MOCK_USERS } from '@/mocks/users';
 
 function HomePage() {
@@ -67,22 +65,12 @@ function HomePage() {
         {/* 진행 중인 토너먼트 */}
         <section className="flex flex-col gap-3">
           <h2 className="heading-2 text-black">진행 중인 토너먼트</h2>
-          {/* TournamentCard placeholder */}
-          <div className="flex h-[103px] w-full flex-col justify-center gap-2 rounded-[12px] bg-bg-layer-default px-6 py-5">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <StateChip state="adding" />
-                <span className="heading-1 text-text-neutral-primary">토너먼트명</span>
-              </div>
-              <button type="button" aria-label="더보기">
-                <ThreeDotHorizontalIconOutline className="size-6 text-text-neutral-primary" />
-              </button>
-            </div>
-            <div className="flex items-end justify-between">
-              <span className="body-2-medium text-gray-300">0000/00/00</span>
-              <UserProfileGroup users={MOCK_USERS} max={3} />
-            </div>
-          </div>
+          <TournamentCard
+            state="adding"
+            name="토너먼트명"
+            date="0000/00/00"
+            users={MOCK_USERS}
+          />
         </section>
       </main>
 
