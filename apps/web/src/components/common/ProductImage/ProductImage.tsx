@@ -62,7 +62,7 @@ function ProductImage({
           size === 'lg' ? (
             <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback>
           ) : (
-            <SmErrorFallback />
+            errorFallback ?? <SmErrorFallback />
           )
         }
         onLoad={onLoad}
