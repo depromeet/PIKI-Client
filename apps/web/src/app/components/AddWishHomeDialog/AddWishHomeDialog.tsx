@@ -56,8 +56,12 @@ function AddWishHomeDialog() {
     }
   };
 
-  const handleLinkSubmit = (url: string) => {
-    router.push(`/items/new/edit?type=wish&url=${encodeURIComponent(url)}`);
+  const handleLinkSubmit = () => {
+    router.push('/wishlist');
+  };
+
+  const handleImageSubmit = () => {
+    router.push('/wishlist');
   };
 
   return (
@@ -107,7 +111,11 @@ function AddWishHomeDialog() {
       </Dialog>
 
       <AddByLinkDialog open={linkOpen} onOpenChange={setLinkOpen} onSubmit={handleLinkSubmit} />
-      <AddByImageDialog open={imageOpen} onOpenChange={setImageOpen} />
+      <AddByImageDialog
+        open={imageOpen}
+        onOpenChange={setImageOpen}
+        onSubmit={handleImageSubmit}
+      />
     </>
   );
 }
