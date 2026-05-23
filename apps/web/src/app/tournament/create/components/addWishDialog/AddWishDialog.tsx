@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import type { ComponentType, ReactNode, SVGProps } from 'react';
 
 import { HeartIconFill, ImageIconFill, LinkIconFill } from '@/assets/icons';
@@ -41,10 +42,19 @@ const OPTIONS: WishOptionT[] = [
 
 type AddWishDialogProps = {
   trigger: ReactNode;
-  onSelect?: (key: WishOptionT['key']) => void;
 };
 
-function AddWishDialog({ trigger, onSelect }: AddWishDialogProps) {
+function AddWishDialog({ trigger }: AddWishDialogProps) {
+  const router = useRouter();
+
+  const handleSelect = (key: WishOptionT['key']) => {
+    if (key === 'wishlist') {
+      router.push('/tournament/create/by-wish');
+      return;
+    }
+    // TODO: 링크로 담기 / 이미지로 담기 라우팅 (후속 PR)
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -60,7 +70,7 @@ function AddWishDialog({ trigger, onSelect }: AddWishDialogProps) {
             <li key={key}>
               <button
                 type="button"
-                onClick={() => onSelect?.(key)}
+                onClick={() => handleSelect(key)}
                 className={cn(
                   'flex w-full items-center gap-4 rounded-[12px] border border-gray-100 bg-bg-layer-default px-5 pt-4 pb-[15px]',
                   'transition-colors active:bg-gray-50'
