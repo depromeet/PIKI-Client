@@ -59,7 +59,11 @@ function ProductImage({
         className={cn(fill && 'object-cover', className)}
         loadingFallback={<LoadingFallback>{loadingFallback}</LoadingFallback>}
         errorFallback={
-          size === 'lg' ? <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback> : <SmErrorFallback />
+          size === 'lg' ? (
+            <LgErrorFallback radius={radius}>{errorFallback}</LgErrorFallback>
+          ) : (
+            <SmErrorFallback />
+          )
         }
         onLoad={onLoad}
         onError={onError}
