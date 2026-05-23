@@ -2,8 +2,8 @@ import WarningIconFill from '@/assets/icons/fill/warning.svg';
 
 function SmErrorFallback() {
   return (
-    <div className="absolute -top-2 -right-2">
-      <WarningIconFill width={20} height={20} aria-hidden />
+    <div className="absolute inset-0 flex items-center justify-center">
+      <WarningIconFill width={30} height={30} className="text-red-400" aria-hidden />
     </div>
   );
 }

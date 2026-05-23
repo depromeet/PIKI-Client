@@ -5,6 +5,7 @@ import {
   PersonIconFill,
 } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
+import BottomTabBar from '@/components/common/BottomTabBar';
 import TournamentCard from '@/components/common/TournamentCard/TournamentCard';
 import { MOCK_USERS } from '@/mocks/users';
 
@@ -59,15 +60,14 @@ function HomePage() {
         {/* 진행 중인 토너먼트 */}
         <section className="flex flex-col gap-3">
           <h2 className="heading-2 text-black">진행 중인 토너먼트</h2>
-          <TournamentCard
-            state="adding"
-            name="토너먼트명"
-            date="0000/00/00"
-            users={MOCK_USERS}
-          />
+          <TournamentCard state="adding" name="토너먼트명" date="0000/00/00" users={MOCK_USERS} />
         </section>
       </main>
 
+      {/* 하단 네비게이션 */}
+      <div className="fixed bottom-[40px] left-1/2 z-20 -translate-x-1/2">
+        <BottomTabBar />
+      </div>
     </div>
   );
 }

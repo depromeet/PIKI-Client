@@ -2,7 +2,7 @@
 
 import { toast } from 'sonner';
 
-import { Toaster } from '@/components/common/toast';
+import { Toaster } from '@/components/common/Toast';
 
 function Home() {
   return (
