@@ -29,6 +29,7 @@ function WishBasket({ basketIndex, items }: WishBasketProps) {
           ))}
           <Button
             icon="only"
+            aria-label="위시 아이템 추가"
             className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
           >
             <AddIcon width={32} height={32} className="text-white" aria-hidden />
