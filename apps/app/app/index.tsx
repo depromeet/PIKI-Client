@@ -10,7 +10,7 @@ import { handleOpenImagePicker } from '@/utils/handleImage';
 import { WebBridge } from '@/utils/webBridge';
 
 /** TODO: 추후 env로 분리 */
-const WEBVIEW_URI = 'http://192.168.5.120:3000';
+const WEBVIEW_URI = 'http://192.168.45.109:3000';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
