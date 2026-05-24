@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import AddIconFill from '@/assets/icons/fill/add.svg';
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/common/button';
 
 import FabMenu from './FabMenu';
 

@@ -1,4 +1,4 @@
-import type { WishItemT } from '@/components/common/WishGrid';
+import type { WishItemT } from '@/components/common/wish-grid';
 
 export const MOCK_WISH_ITEMS: WishItemT[] = [
   { id: 1, name: '댕기 명주실 복어', price: 52000 },

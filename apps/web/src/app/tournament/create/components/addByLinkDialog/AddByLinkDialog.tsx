@@ -3,13 +3,13 @@
 import { useState } from 'react';
 
 import { LinkIconFill } from '@/assets/icons';
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/common/button';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
 } from '@/components/common/dialog';
-import Input from '@/components/common/Input/Input';
+import Input from '@/components/common/input';
 
 const URL_PATTERN = /^https?:\/\/.+/i;
 

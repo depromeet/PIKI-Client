@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-import BottomTabBar from '@/components/common/BottomTabBar';
-import HeaderActions from '@/components/common/HeaderActions';
-import SuccessToast from '@/components/common/Toast/SuccessToast';
+import BottomTabBar from '@/components/common/bottom-tab-bar';
+import HeaderActions from '@/components/common/header-actions';
+import SuccessToast from '@/components/common/toast/SuccessToast';
 
 import ImageIconFill from '@/assets/icons/fill/image.svg';
 import LinkIconFill from '@/assets/icons/fill/link.svg';

@@ -1,6 +1,6 @@
 import type { StaticImageData } from 'next/image';
 
-import ProductImage from '@/components/common/ProductImage/ProductImage';
+import ProductImage from '@/components/common/product-image';
 
 type WishItemProps = {
   index: number;

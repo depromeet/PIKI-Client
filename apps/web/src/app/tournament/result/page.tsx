@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
-import ActionSnackbar from '@/components/common/Toast/ActionSnackbar';
+import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
 import { readResult } from '@/utils/resultStorage';
 
 import type { RankedProductT } from '../types/tournamentTypes';

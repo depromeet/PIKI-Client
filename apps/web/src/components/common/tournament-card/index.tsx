@@ -1,8 +1,8 @@
 import { ThreeDotHorizontalIconFill } from '@/assets/icons';
-import StateChip from '@/components/common/StateChip/StateChip';
-import UserProfileGroup from '@/components/common/UserProfileGroup/UserProfileGroup';
-import type { UserT } from '@/components/common/UserProfileGroup/userProfileConstants';
-import type { StateChipStyleProps } from '@/components/common/StateChip/StateChip.style';
+import StateChip from '@/components/common/state-chip';
+import UserProfileGroup from '@/components/common/user-profile-group';
+import type { UserT } from '@/components/common/user-profile-group/userProfileConstants';
+import type { StateChipStyleProps } from '@/components/common/state-chip/StateChip.style';
 import { cn } from '@/utils/cn';
 
 type TournamentStateT = NonNullable<StateChipStyleProps['state']>;

@@ -4,14 +4,14 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { EditIconFill, TrophyIconFill } from '@/assets/icons';
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/common/button';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from '@/components/common/dialog';
-import Input from '@/components/common/Input/Input';
+import Input from '@/components/common/input';
 
 function CreateTournamentDialog() {
   const router = useRouter();

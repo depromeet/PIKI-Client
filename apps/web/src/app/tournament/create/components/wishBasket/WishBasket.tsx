@@ -3,7 +3,7 @@ import type { StaticImageData } from 'next/image';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/common/button';
 
 import AddWishDialog from '../addWishDialog/AddWishDialog';
 

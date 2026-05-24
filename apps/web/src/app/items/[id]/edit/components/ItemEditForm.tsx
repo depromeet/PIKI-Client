@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { ChevronBackwardIconFill, EditIconFill } from '@/assets/icons';
-import Button from '@/components/common/Button/Button';
-import Input from '@/components/common/Input/Input';
+import Button from '@/components/common/button';
+import Input from '@/components/common/input';
 import formatPrice from '@/utils/formatPrice';
 
 import ItemLinkBanner from './ItemLinkBanner';

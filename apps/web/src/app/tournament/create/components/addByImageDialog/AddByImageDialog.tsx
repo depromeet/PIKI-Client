@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import { ImageIconOutline } from '@/assets/icons';
-import Button from '@/components/common/Button/Button';
+import Button from '@/components/common/button';
 import {
   Dialog,
   DialogContent,
