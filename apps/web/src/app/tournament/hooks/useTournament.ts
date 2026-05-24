@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { MOCK_PRODUCTS } from '@/mocks/products';
+import { writeResult } from '@/utils/resultStorage';
 
 import { LOSER_RANKS, NEXT_SLOT, ROUND_LABELS } from '../consts/rounds';
 import type { MatchPairT, ProductT, RankedProductT } from '../types/tournamentTypes';
@@ -47,7 +48,11 @@ const useTournament = () => {
     rankedRef.current = [...rankedRef.current, { ...loser, rank: LOSER_RANKS[matchIndex]! }];
 
     if (matchIndex === FINAL_MATCH_INDEX) {
-      // TODO: 결과 페이지 도입 시 ranked 결과를 localStorage(piki:) 또는 store에 저장
+      const finalRanked: RankedProductT[] = [
+        ...rankedRef.current,
+        { ...winner, rank: 1 },
+      ].sort((a, b) => a.rank - b.rank);
+      writeResult(finalRanked);
       router.push('/tournament/result');
       return;
     }
