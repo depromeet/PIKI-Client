@@ -1,0 +1,38 @@
+import Image from 'next/image';
+
+import type { ProductT } from '../types/tournamentTypes';
+
+type ProductCardProps = ProductT & {
+  isPicked?: boolean;
+  onClick?: () => void;
+};
+
+function ProductCard({ imageUrl, name, price, isPicked, onClick }: ProductCardProps) {
+  return (
+    <button type="button" onClick={onClick} className="relative w-[148px] text-left">
+      {isPicked && (
+        <div className="absolute top-0 left-1/2 z-10 flex size-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-500 shadow-lg">
+          <span className="body-1-bold -rotate-12 text-white">Pick!</span>
+        </div>
+      )}
+      <div className="flex w-[148px] flex-col overflow-hidden rounded-2xl bg-bg-layer-default shadow-[0_1px_8px_0_rgba(0,0,0,0.10)]">
+        <div className="relative h-[123px] w-[148px] shrink-0 bg-gray-50">
+          <Image
+            src={imageUrl}
+            alt={name}
+            fill
+            sizes="(max-width: 480px) 45vw, 200px"
+            priority
+            className="object-cover"
+          />
+        </div>
+        <div className="flex flex-1 flex-col items-center justify-center gap-2 p-4 text-center">
+          <p className="body-2-medium text-text-neutral-secondary">{name}</p>
+          <p className="body-1-bold text-text-neutral-primary">{price.toLocaleString()}원</p>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+export default ProductCard;
