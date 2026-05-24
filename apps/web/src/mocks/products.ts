@@ -1,4 +1,4 @@
-import type { ProductT } from '@/app/tournament/types/tournamentTypes';
+import type { ProductT } from '@/app/tournament/_types/tournament';
 
 // 토너먼트 진행/결과 화면용 더미 상품 (8강 기준 8개)
 // TODO: API 연동 시 실제 위시 데이터로 교체

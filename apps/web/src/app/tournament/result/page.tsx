@@ -6,8 +6,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
 import { readResult } from '@/utils/resultStorage';
 
-import type { RankedProductT } from '../types/tournamentTypes';
-
+import type { RankedProductT } from '../_types/tournament';
 import ReceiptDrawMachine from './_components/ReceiptDrawMachine';
 
 const TOAST_DURATION_MS = 3000;
@@ -57,7 +56,7 @@ function TournamentResultPage() {
   }, [isToastVisible]);
 
   const handleGoHome = () => {
-    router.push('/');
+    router.push('/home');
   };
 
   const handleSaveResult = () => {
@@ -87,15 +86,11 @@ function TournamentResultPage() {
       </h1>
 
       <div className="mx-auto mt-4 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
-        <ReceiptDrawMachine
-          tournamentName={TOURNAMENT_NAME_FALLBACK}
-          result={result}
-          date={date}
-        />
+        <ReceiptDrawMachine tournamentName={TOURNAMENT_NAME_FALLBACK} result={result} date={date} />
       </div>
 
       {/* 저장 완료 토스트 */}
-      <div className="fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 px-5 pointer-events-none">
+      <div className="pointer-events-none fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 px-5">
         <div className="pointer-events-auto">
           <ActionSnackbar
             message="보관함에 결과를 저장했어요."

@@ -1,4 +1,4 @@
-import type { RankedProductT } from '@/app/tournament/types/tournamentTypes';
+import type { RankedProductT } from '@/app/tournament/_types/tournament';
 
 const RESULT_KEY = 'piki:result';
 

@@ -16,7 +16,7 @@ let failedQueue: Array<{
 
 // 큐에 쌓인 요청들을 일괄 처리
 const processQueue = (error: unknown) => {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach(prom => {
     if (error) {
       prom.reject(error);
     } else {
@@ -33,7 +33,7 @@ export const clientApi = axios.create({
 
 clientApi.interceptors.response.use(
   // 응답 언래핑: { status, data, detail, code } → data
-  (response) => response.data.data,
+  response => response.data.data,
   async (error: AxiosError<ApiErrorResponseT>) => {
     const originalRequest = error.config as RetryableRequest | undefined;
 
@@ -44,18 +44,16 @@ clientApi.interceptors.response.use(
           failedQueue.push({ resolve, reject });
         })
           .then(() => clientApi(originalRequest))
-          .catch((err) => Promise.reject(err));
+          .catch(err => Promise.reject(err));
       }
 
       originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-          null,
-          { withCredentials: true },
-        );
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, null, {
+          withCredentials: true,
+        });
         processQueue(null);
         return clientApi(originalRequest);
       } catch (refreshError) {
@@ -70,5 +68,5 @@ clientApi.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  },
+  }
 );

@@ -4,7 +4,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/utils/cn';
 
 import './Skeleton.css';
-import { skeletonStyles } from './Skeleton.style';
+import { skeletonStyles } from './skeleton.style';
 
 type SkeletonProps = ComponentPropsWithoutRef<'div'> & VariantProps<typeof skeletonStyles>;
 

@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { cn } from '@/utils/cn';
 
-import { PROFILE_SVG, type UserT } from './userProfileConstants';
+import { PROFILE_SVG, type UserT } from './userProfile.const';
 
 type UserProfileProps = {
   user: UserT;

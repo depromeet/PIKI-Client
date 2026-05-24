@@ -1,8 +1,8 @@
-import InviteFriends from './components/inviteFriends/InviteFriends';
-import TournamentHeader from './components/tournamentHeader/TournamentHeader';
-import TournamentStartButton from './components/tournamentStartButton/TournamentStartButton';
-import WishBasketCarousel from './components/wishBasket/WishBasketCarousel';
-import WishBasketStatus from './components/wishBasketStatus/WishBasketStatus';
+import InviteFriends from './_components/inviteFriends/InviteFriends';
+import TournamentHeader from './_components/tournamentHeader/TournamentHeader';
+import TournamentStartButton from './_components/tournamentStartButton/TournamentStartButton';
+import WishBasketCarousel from './_components/wishBasket/WishBasketCarousel';
+import WishBasketStatus from './_components/wishBasketStatus/WishBasketStatus';
 
 function TournamentCreatePage() {
   return (

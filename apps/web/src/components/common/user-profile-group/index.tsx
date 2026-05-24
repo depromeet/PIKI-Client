@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 
 import UserProfile from './UserProfile';
-import type { UserT } from './userProfileConstants';
+import type { UserT } from './userProfile.const';
 
 type UserProfileGroupProps = {
   users: UserT[];

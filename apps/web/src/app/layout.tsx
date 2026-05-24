@@ -42,8 +42,14 @@ function RootLayout({
         {process.env.NODE_ENV === 'development' && (
           <>
             {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-            <script src="https://unpkg.com/react-grab@0.1.29/dist/index.global.js" crossOrigin="anonymous" />
-            <script src="https://unpkg.com/@react-grab/claude-code@0.1.29/dist/client.global.js" defer />
+            <script
+              src="https://unpkg.com/react-grab@0.1.29/dist/index.global.js"
+              crossOrigin="anonymous"
+            />
+            <script
+              src="https://unpkg.com/@react-grab/claude-code@0.1.29/dist/client.global.js"
+              defer
+            />
           </>
         )}
       </head>

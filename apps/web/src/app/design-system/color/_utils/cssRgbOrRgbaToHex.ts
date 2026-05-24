@@ -8,7 +8,7 @@ export const cssRgbOrRgbaToHex = (input: string): string => {
   if (trimmed === 'transparent') return 'TRANSPARENT';
 
   const match = trimmed.match(
-    /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)$/i,
+    /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)$/i
   );
   if (!match) return trimmed;
 

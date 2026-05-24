@@ -7,11 +7,11 @@ export const serverApi = axios.create({
 });
 
 // 요청 시 쿠키를 헤더에 직접 주입
-serverApi.interceptors.request.use(async (config) => {
+serverApi.interceptors.request.use(async config => {
   const cookieStore = await cookies();
   config.headers.Cookie = cookieStore.toString();
   return config;
 });
 
 // 응답 언래핑: { status, data, detail, code } → data
-serverApi.interceptors.response.use((response) => response.data.data);
+serverApi.interceptors.response.use(response => response.data.data);

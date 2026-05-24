@@ -63,7 +63,11 @@ export const extractColorDeclarations = (css: string): Map<string, string> => {
   return map;
 };
 
-const resolveOne = (raw: string, lookup: ReadonlyMap<string, string>, chain: Set<string>): string => {
+const resolveOne = (
+  raw: string,
+  lookup: ReadonlyMap<string, string>,
+  chain: Set<string>
+): string => {
   const trimmed = raw.trim();
   const refMatch = trimmed.match(VAR_REF_REGEX);
   if (!refMatch) return trimmed;
@@ -78,10 +82,8 @@ const resolveOne = (raw: string, lookup: ReadonlyMap<string, string>, chain: Set
   return resolveOne(next, lookup, nextChain);
 };
 
-export const resolveThemeColorValue = (
-  raw: string,
-  lookup: ReadonlyMap<string, string>,
-): string => resolveOne(raw, lookup, new Set());
+export const resolveThemeColorValue = (raw: string, lookup: ReadonlyMap<string, string>): string =>
+  resolveOne(raw, lookup, new Set());
 
 export const toSwatchKey = (cssVar: string): string =>
   cssVar.startsWith('--color-') ? cssVar.slice('--color-'.length) : cssVar;
@@ -105,7 +107,7 @@ const sortAtomicWithinFamily = (entries: ThemeColorEntryT[]): ThemeColorEntryT[]
   [...entries].sort((entryA, entryB) => shadeRank(entryA.swatchKey) - shadeRank(entryB.swatchKey));
 
 export const groupThemeColors = (
-  entries: ThemeColorEntryT[],
+  entries: ThemeColorEntryT[]
 ): { atomic: Record<string, ThemeColorEntryT[]>; semantic: ThemeColorEntryT[] } => {
   const atomic: Record<string, ThemeColorEntryT[]> = {};
   for (const family of ATOMIC_FAMILY_ORDER) atomic[family] = [];
@@ -135,7 +137,7 @@ const SEMANTIC_KIND_ORDER = ['bg', 'text', 'border', 'icon'] as const;
 export type SemanticKindT = (typeof SEMANTIC_KIND_ORDER)[number];
 
 export const groupSemanticByKind = (
-  semantic: ThemeColorEntryT[],
+  semantic: ThemeColorEntryT[]
 ): Partial<Record<SemanticKindT, ThemeColorEntryT[]>> => {
   const bucket: Partial<Record<SemanticKindT, ThemeColorEntryT[]>> = {};
   for (const kind of SEMANTIC_KIND_ORDER) bucket[kind] = [];

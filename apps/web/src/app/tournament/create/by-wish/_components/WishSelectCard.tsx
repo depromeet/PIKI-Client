@@ -14,7 +14,7 @@ function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSel
     <button type="button" onClick={onSelect} className="relative h-full w-full text-left">
       <WishCard name={name} price={price} imageUrl={imageUrl} />
       {isSelected && (
-        <div className="absolute left-2 top-2 z-10">
+        <div className="absolute top-2 left-2 z-10">
           <CheckboxSelectedIconFill width={30.317} height={30.317} />
         </div>
       )}

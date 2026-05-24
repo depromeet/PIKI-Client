@@ -1,7 +1,6 @@
 'use client';
 
 import { EditIconFill, LinkIconFill } from '@/assets/icons';
-
 import Input from '@/components/common/input';
 
 function InputDocsPage() {
@@ -12,11 +11,7 @@ function InputDocsPage() {
       <section className="mb-8 flex flex-col gap-4">
         <h2 className="text-lg font-semibold">Default</h2>
         <Input label="상품명" placeholder="텍스트를 입력해주세요." />
-        <Input
-          label="링크 URL"
-          placeholder="복사한 링크를 입력해주세요."
-          left={<LinkIconFill />}
-        />
+        <Input label="링크 URL" placeholder="복사한 링크를 입력해주세요." left={<LinkIconFill />} />
       </section>
 
       <section className="mb-8 flex flex-col gap-4">
@@ -41,12 +36,7 @@ function InputDocsPage() {
           aria-invalid
           helperText="상품명을 입력해주세요."
         />
-        <Input
-          label="가격"
-          defaultValue="0"
-          aria-invalid
-          helperText="1원 이상 입력해주세요."
-        />
+        <Input label="가격" defaultValue="0" aria-invalid helperText="1원 이상 입력해주세요." />
         <Input
           label="링크 URL"
           defaultValue="https://29cm.onelink.me/108020121..."

@@ -1,0 +1,71 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { EditIconFill, TrophyIconFill } from '@/assets/icons';
+import Button from '@/components/common/button';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/common/dialog';
+import Input from '@/components/common/input';
+
+type CreateTournamentDialogProps = {
+  onCreate?: (name: string) => void;
+};
+
+function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('');
+
+  const trimmedName = name.trim();
+  const isDisabled = trimmedName.length === 0;
+
+  const handleCreate = () => {
+    if (isDisabled) return;
+    setOpen(false);
+    setName('');
+    if (onCreate) {
+      onCreate(trimmedName);
+      return;
+    }
+    router.push('/tournament/create');
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="flex flex-1 flex-col items-center gap-2 rounded-[12px] bg-bg-layer-default p-5"
+        >
+          <TrophyIconFill className="size-8 text-yellow-400" />
+          <span className="body-1-semibold text-text-neutral-primary">토너먼트 만들기</span>
+        </button>
+      </DialogTrigger>
+      <DialogContent
+        showCloseButton={false}
+        className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-5"
+      >
+        <DialogTitle className="text-center heading-1 text-text-neutral-primary">
+          새 토너먼트
+        </DialogTitle>
+        <div className="flex flex-col gap-[15px]">
+          <Input
+            label="토너먼트 이름"
+            placeholder="ex.이번주 신발 고르기"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            autoFocus
+            maxLength={30}
+            right={isDisabled ? <EditIconFill className="size-5" /> : null}
+          />
+          <Button size="lg" variant="primary" disabled={isDisabled} onClick={handleCreate}>
+            생성하기
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default CreateTournamentDialog;

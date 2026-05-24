@@ -4,9 +4,9 @@ import { forwardRef } from 'react';
 
 import { ImageIconOutline, LinkIconFill } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
-
-import type { RankedProductT } from '../../types/tournamentTypes';
 import { cn } from '@/utils/cn';
+
+import type { RankedProductT } from '../../_types/tournament';
 
 const kodeMono = Kode_Mono({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -155,7 +155,13 @@ function RankedRowLarge({ product, index }: RankedRowProps) {
   return (
     <div className="flex items-center justify-center gap-[15px] px-5">
       <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-black/5">
-        <Image src={product.imageUrl} alt={product.name} fill sizes="80px" className="object-cover" />
+        <Image
+          src={product.imageUrl}
+          alt={product.name}
+          fill
+          sizes="80px"
+          className="object-cover"
+        />
       </div>
       <div className="flex w-32 flex-col gap-1 tracking-[-0.6px]">
         <p className="text-[14px] leading-5 text-text-neutral-primary">
@@ -177,11 +183,11 @@ function RankedRowSmall({ product, index }: RankedRowProps) {
     <div className="flex items-start justify-between px-5">
       <div className="flex items-start gap-1">
         <p className="text-[14px] leading-5 text-text-neutral-primary">{orderStr}.</p>
-        <p className="w-[138px] text-[14px] leading-5 text-text-neutral-primary tracking-[-0.6px]">
+        <p className="w-[138px] text-[14px] leading-5 tracking-[-0.6px] text-text-neutral-primary">
           {product.name}
         </p>
       </div>
-      <p className="text-[14px] leading-[22px] font-bold text-text-neutral-primary tracking-[-0.6px]">
+      <p className="text-[14px] leading-[22px] font-bold tracking-[-0.6px] text-text-neutral-primary">
         {formatPrice(product.price)}
       </p>
     </div>

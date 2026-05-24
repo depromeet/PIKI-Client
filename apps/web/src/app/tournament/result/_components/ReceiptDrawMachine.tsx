@@ -6,8 +6,7 @@ import { useLayoutEffect, useRef } from 'react';
 
 import ReceiptPrinterImg from '@/assets/images/tournament/result/receipt-printer.png';
 
-import type { RankedProductT } from '../../types/tournamentTypes';
-
+import type { RankedProductT } from '../../_types/tournament';
 import ReceiptPaper from './ReceiptPaper';
 
 /** 프린터 래퍼 aspect ratio (디자인 박스) */

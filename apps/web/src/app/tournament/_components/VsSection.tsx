@@ -1,8 +1,7 @@
 'use client';
 
-import useCardSelectionAnimation from '../hooks/useCardSelectionAnimation';
-import type { ProductT } from '../types/tournamentTypes';
-
+import useCardSelectionAnimation from '../_hooks/useCardSelectionAnimation';
+import type { ProductT } from '../_types/tournament';
 import FinalProductCard from './FinalProductCard';
 import ProductCard from './ProductCard';
 
