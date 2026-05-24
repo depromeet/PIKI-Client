@@ -69,7 +69,7 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
   const handleLinkSubmit = (url: string) => {
     // TODO: 입력된 url로 상품 정보 가져오기 (API 연동 전 mock)
     // 임시 itemId 'new'로 상품 확인 페이지 이동, type=tournament로 분기
-    router.push(`/items/new/edit?type=tournament&url=${encodeURIComponent(url)}`);
+    router.push(`/item/new/edit?type=tournament&url=${encodeURIComponent(url)}`);
   };
 
   return (
