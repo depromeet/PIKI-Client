@@ -1,4 +1,4 @@
-import type { UserT } from '@/components/common/user-profile-group/userProfileConstants';
+import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
 
 export const MOCK_USERS: UserT[] = [
   { id: 1, profileType: 'blue', name: '사용자 1' },

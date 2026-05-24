@@ -104,7 +104,7 @@ apps/web/src/
 │       └── {component-name}/             # 폴더명: kebab-case
 │           ├── index.tsx                 # 컴포넌트 본체 (default export)
 │           ├── {ComponentName}.style.ts  # cva variants (스타일 분리 시)
-│           └── {componentName}Constants.ts # 상수/타입 (필요 시)
+│           └── {componentName}.const.ts  # 상수/타입 (필요 시)
 ├── apis/         # API 호출 함수 (HTTP 메서드 prefix 컨벤션)
 ├── hooks/        # 커스텀 훅
 ├── utils/        # 공통 유틸리티 함수
@@ -122,7 +122,7 @@ apps/web/src/
 - **폴더명**: kebab-case (`button/`, `wish-card/`, `state-chip/`)
 - **대표 컴포넌트 파일명**: `index.tsx` (default export)
 - **import 경로**: `@/components/common/{component-name}` (폴더명까지만, 파일명 생략)
-- **보조 파일**: 폴더 내부에서 PascalCase / camelCase 그대로 (`StateChip.style.ts`, `UserProfile.tsx`, `userProfileConstants.ts`)
+- **보조 파일**: 폴더 내부에서 PascalCase / camelCase 그대로 (`StateChip.style.ts`, `UserProfile.tsx`, `userProfile.consts.ts`)
 
 ```tsx
 // ✅ Good

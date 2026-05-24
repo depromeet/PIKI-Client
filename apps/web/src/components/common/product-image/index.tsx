@@ -9,8 +9,8 @@ import { cn } from '@/utils/cn';
 import LgErrorFallback from './fallback/LgErrorFallback';
 import LoadingFallback from './fallback/LoadingFallback';
 import SmErrorFallback from './fallback/SmErrorFallback';
-import type { SizeVariantT } from './productImageConstants';
-import { SIZE_STYLE } from './productImageConstants';
+import type { SizeVariantT } from './productImage.const';
+import { SIZE_STYLE } from './productImage.const';
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
