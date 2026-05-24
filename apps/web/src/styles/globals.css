@@ -116,7 +116,7 @@
 
   --color-text-neutral-primary: var(--color-gray-950);
   --color-text-neutral-secondary: var(--color-gray-800);
-  --color-text-neutral-tertiary: var(--color-gray-50);
+  --color-text-neutral-tertiary: var(--color-gray-300);
   --color-text-neutral-inverse: var(--color-base-50);
 
   --color-border-accent: var(--color-blue-500);
