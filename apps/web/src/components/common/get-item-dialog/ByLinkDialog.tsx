@@ -1,0 +1,83 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { LinkIconFill } from '@/assets/icons';
+import Button from '@/components/common/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
+import Input from '@/components/common/input';
+import type { ItemTypeT } from '@/types/item';
+
+const URL_PATTERN = /^https?:\/\/.+/i;
+
+type ByLinkProps = {
+  type: ItemTypeT;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
+
+function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
+  const router = useRouter();
+
+  const [url, setUrl] = useState('');
+  const [hasError, setHasError] = useState(false);
+
+  const trimmedUrl = url.trim();
+  const isEmpty = trimmedUrl.length === 0;
+
+  const resetState = () => {
+    setUrl('');
+    setHasError(false);
+  };
+
+  const handleSubmit = () => {
+    if (isEmpty) return;
+
+    if (!URL_PATTERN.test(trimmedUrl)) {
+      setHasError(true);
+      return;
+    }
+
+    if (type === 'wish') router.push('/wishlist');
+    else router.push(`/item/new/edit?type=tournament&url=${encodeURIComponent(trimmedUrl)}`);
+
+    onOpenChange(false);
+    resetState();
+  };
+
+  const handleChange = (value: string) => {
+    setUrl(value);
+    if (hasError) setHasError(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent showCloseButton={false} className="flex flex-col gap-5 rounded-3xl">
+        <DialogTitle className="text-center heading-1 text-text-neutral-primary">
+          링크로 담기
+        </DialogTitle>
+        <DialogDescription className="sr-only">상품 URL을 입력해 담습니다.</DialogDescription>
+        <div className="flex flex-col gap-4">
+          <Input
+            label="링크 URL"
+            placeholder="복사한 링크를 입력해주세요."
+            value={url}
+            onChange={event => handleChange(event.target.value)}
+            left={<LinkIconFill className="size-5" />}
+            aria-invalid={hasError}
+            helperText={hasError ? '올바른 URL 형식으로 입력해주세요.' : undefined}
+            autoFocus
+            inputMode="url"
+          />
+          <Button size="lg" variant="primary" disabled={isEmpty} onClick={handleSubmit}>
+            {type === 'wish' && '위시리스트에 담기'}
+            {type === 'tournament' && '후보 바구니에 담기'}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default ByLinkDialog;

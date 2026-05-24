@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import ImageIconFill from '@/assets/icons/fill/image.svg';
-import LinkIconFill from '@/assets/icons/fill/link.svg';
 import TrashIconFill from '@/assets/icons/fill/trash.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
 import HeaderActions from '@/components/common/header-actions';
 import SuccessToast from '@/components/common/toast/SuccessToast';
 
-import WishAddModal from './_components/WishAddModal';
+import WishAddDialog from './_components/WishAddDialog';
 import WishFab from './_components/WishFab';
 import WishListTabContent from './_components/WishListTabContent';
 import WishTab from './_components/WishTab';
@@ -20,7 +18,7 @@ const TOAST_DURATION_MS = 2000;
 
 function WishlistPage() {
   const [activeTab, setActiveTab] = useState<WishTabT>('저장한 위시템');
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [items, setItems] = useState(MOCK_WISH_ITEMS);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -116,7 +114,10 @@ function WishlistPage() {
                 <TrashIconFill width={33} height={33} className="text-icon-neutral-primary" />
               </button>
             ) : (
-              <WishFab onAddItem={() => setIsAddModalOpen(true)} onDelete={handleEnterDeleteMode} />
+              <WishFab
+                onAddItem={() => setIsAddDialogOpen(true)}
+                onDelete={handleEnterDeleteMode}
+              />
             )}
           </div>
         </div>
@@ -127,27 +128,7 @@ function WishlistPage() {
         <SuccessToast message="선택한 위시를 삭제했어요" isVisible={isToastVisible} />
       </div>
 
-      <WishAddModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        title="위시템 담기"
-        options={[
-          // TODO: 링크로 담기 페이지 연결
-          {
-            icon: <LinkIconFill width={20} height={20} />,
-            label: '링크로 담기',
-            description: '상품URL을 붙여넣어요',
-            onClick: () => {},
-          },
-          // TODO: 이미지로 담기 페이지 연결
-          {
-            icon: <ImageIconFill width={20} height={20} />,
-            label: '이미지로 담기',
-            description: '스크린샷을 첨부해요',
-            onClick: () => {},
-          },
-        ]}
-      />
+      <WishAddDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
   );
 }
