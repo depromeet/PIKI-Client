@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 
 import ActionSnackbar from '@/components/common/Toast/ActionSnackbar';
 import { readResult } from '@/utils/resultStorage';
@@ -14,21 +14,45 @@ const TOAST_DURATION_MS = 3000;
 // TODO: 토너먼트 생성 시 입력한 이름을 store/URL에서 가져오기
 const TOURNAMENT_NAME_FALLBACK = '봄 아우터 고르기';
 
-const loadOrderedResult = (): RankedProductT[] | null => {
-  const stored = readResult();
-  if (!stored) return null;
-  return [...stored].sort((a, b) => a.rank - b.rank);
+const subscribeResult = (callback: () => void) => {
+  window.addEventListener('storage', callback);
+  return () => window.removeEventListener('storage', callback);
 };
+
+let cachedClientResult: RankedProductT[] | null = null;
+const getClientResultSnapshot = (): RankedProductT[] | null => {
+  const stored = readResult();
+  if (!stored) {
+    cachedClientResult = null;
+    return null;
+  }
+  // 캐시로 referential equality 유지 (useSyncExternalStore 무한 렌더 방지)
+  if (
+    cachedClientResult &&
+    cachedClientResult.length === stored.length &&
+    cachedClientResult.every((item, index) => item.rank === stored[index]?.rank)
+  ) {
+    return cachedClientResult;
+  }
+  cachedClientResult = [...stored].sort((a, b) => a.rank - b.rank);
+  return cachedClientResult;
+};
+const getServerResultSnapshot = (): RankedProductT[] | null => null;
 
 function TournamentResultPage() {
   const router = useRouter();
-  const [result] = useState<RankedProductT[] | null>(() => loadOrderedResult());
+  const result = useSyncExternalStore(
+    subscribeResult,
+    getClientResultSnapshot,
+    getServerResultSnapshot
+  );
   const [date] = useState(() => new Date());
-  const [isToastVisible, setIsToastVisible] = useState(() => result !== null);
+  const [isToastDismissed, setIsToastDismissed] = useState(false);
+  const isToastVisible = result !== null && !isToastDismissed;
 
   useEffect(() => {
     if (!isToastVisible) return;
-    const timeoutId = window.setTimeout(() => setIsToastVisible(false), TOAST_DURATION_MS);
+    const timeoutId = window.setTimeout(() => setIsToastDismissed(true), TOAST_DURATION_MS);
     return () => window.clearTimeout(timeoutId);
   }, [isToastVisible]);
 
@@ -37,12 +61,12 @@ function TournamentResultPage() {
   };
 
   const handleSaveResult = () => {
-    // 이미 진행 종료 시점에 저장됨 — 명시적 저장 토스트만 노출
-    setIsToastVisible(true);
+    // 이미 진행 종료 시점에 저장됨 — 명시적 저장 토스트만 재노출
+    setIsToastDismissed(false);
   };
 
   const handleConfirmSaved = () => {
-    setIsToastVisible(false);
+    setIsToastDismissed(true);
     router.push('/wishlist');
   };
 
