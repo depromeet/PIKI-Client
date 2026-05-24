@@ -21,7 +21,8 @@ function ByWishPage() {
   const items = MOCK_WISH_ITEMS;
 
   const handleNext = () => {
-    // TODO: 선택된 ID 배열을 토너먼트 준비 페이지로 전달
+    // TODO: 선택된 ID 배열을 토너먼트 준비 페이지로 전달 (API 연동 시 query/state)
+    router.push('/tournament/create');
   };
 
   return (
