@@ -34,10 +34,6 @@ function ItemEditForm({
   const [name, setName] = useState(initialName);
   const [price, setPrice] = useState(formatPrice(initialPrice));
 
-  const handleBack = () => {
-    router.back();
-  };
-
   const handleDelete = () => {
     // TODO: 후보 삭제 처리
     router.back();
