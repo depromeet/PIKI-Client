@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import Button from '@/components/common/button';
 import { deleteCookie } from '@/utils/cookie';
 
 function LogoutButton() {
@@ -10,13 +11,13 @@ function LogoutButton() {
   const handleLogout = () => {
     deleteCookie('accessToken');
     deleteCookie('refreshToken');
-    router.replace('/login');
+    router.refresh();
   };
 
   return (
-    <button type="button" onClick={handleLogout}>
+    <Button size="lg" onClick={handleLogout}>
       로그아웃
-    </button>
+    </Button>
   );
 }
 
