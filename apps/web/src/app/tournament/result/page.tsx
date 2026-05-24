@@ -6,7 +6,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
 import { readResult } from '@/utils/resultStorage';
 
-import type { RankedProductT } from '../types/tournamentTypes';
+import type { RankedProductT } from '../_types/tournament';
 import ReceiptDrawMachine from './_components/ReceiptDrawMachine';
 
 const TOAST_DURATION_MS = 3000;

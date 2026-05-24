@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import type { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import type { ReactNode } from 'react';
 
-import type { ProductT } from '../types/tournamentTypes';
+import type { ProductT } from '../_types/tournament';
 
 const renderIcon = (icon: ReactNode) => {
   const raw = icon as unknown;

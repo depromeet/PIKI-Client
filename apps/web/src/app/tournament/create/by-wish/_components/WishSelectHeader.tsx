@@ -1,4 +1,4 @@
-import { MAX_SELECT, MIN_SELECT } from '../consts/selectLimits';
+import { MAX_SELECT, MIN_SELECT } from '../_consts/selectLimits';
 
 type WishSelectHeaderProps = {
   selectedCount: number;

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { MOCK_WISH_ITEMS } from '@/app/wishlist/mocks/wishMocks';
+import { MOCK_WISH_ITEMS } from '@/app/wishlist/_mocks/wishMocks';
 import WarningIconFill from '@/assets/icons/fill/warning.svg';
 import Button from '@/components/common/button';
 import Toast from '@/components/common/toast/Toast';
@@ -10,8 +10,8 @@ import ToastGradientOverlay from '@/components/common/toast/ToastGradientOverlay
 
 import WishSelectCard from './_components/WishSelectCard';
 import WishSelectHeader from './_components/WishSelectHeader';
-import { MAX_SELECT, MIN_SELECT } from './consts/selectLimits';
-import useWishSelection from './hooks/useWishSelection';
+import { MAX_SELECT, MIN_SELECT } from './_consts/selectLimits';
+import useWishSelection from './_hooks/useWishSelection';
 
 function ByWishPage() {
   const router = useRouter();

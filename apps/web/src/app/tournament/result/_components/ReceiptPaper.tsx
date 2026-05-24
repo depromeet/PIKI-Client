@@ -6,7 +6,7 @@ import { ImageIconOutline, LinkIconFill } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import { cn } from '@/utils/cn';
 
-import type { RankedProductT } from '../../types/tournamentTypes';
+import type { RankedProductT } from '../../_types/tournament';
 
 const kodeMono = Kode_Mono({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 

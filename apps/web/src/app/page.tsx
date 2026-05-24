@@ -4,8 +4,8 @@ import BottomTabBar from '@/components/common/bottom-tab-bar';
 import TournamentCard from '@/components/common/tournament-card';
 import { MOCK_USERS } from '@/mocks/users';
 
-import AddWishHomeDialog from './components/AddWishHomeDialog/AddWishHomeDialog';
-import CreateTournamentDialog from './components/CreateTournamentDialog/CreateTournamentDialog';
+import AddWishHomeDialog from './_components/AddWishHomeDialog';
+import CreateTournamentDialog from './_components/CreateTournamentDialog';
 
 function HomePage() {
   return (

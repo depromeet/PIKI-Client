@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import type { ProductT } from '../types/tournamentTypes';
+import type { ProductT } from '../_types/tournament';
 
 type ProductCardProps = ProductT & {
   isPicked?: boolean;

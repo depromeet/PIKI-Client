@@ -6,8 +6,8 @@ import { useRef, useState } from 'react';
 import { MOCK_PRODUCTS } from '@/mocks/products';
 import { writeResult } from '@/utils/resultStorage';
 
-import { LOSER_RANKS, NEXT_SLOT, ROUND_LABELS } from '../consts/rounds';
-import type { MatchPairT, ProductT, RankedProductT } from '../types/tournamentTypes';
+import { LOSER_RANKS, NEXT_SLOT, ROUND_LABELS } from '../_consts/rounds';
+import type { MatchPairT, ProductT, RankedProductT } from '../_types/tournament';
 
 const FINAL_MATCH_INDEX = 6;
 

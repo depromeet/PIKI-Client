@@ -13,8 +13,8 @@ import WishAddModal from './_components/WishAddModal';
 import WishFab from './_components/WishFab';
 import WishListTabContent from './_components/WishListTabContent';
 import WishTab from './_components/WishTab';
-import { MOCK_WISH_ITEMS } from './mocks/wishMocks';
-import type { WishTabT } from './types/wishTypes';
+import { MOCK_WISH_ITEMS } from './_mocks/wishMocks';
+import type { WishTabT } from './_types/wishTypes';
 
 const TOAST_DURATION_MS = 2000;
 

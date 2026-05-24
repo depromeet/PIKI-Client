@@ -1,6 +1,6 @@
 import { cn } from '@/utils/cn';
 
-import type { WishTabT } from '../types/wishTypes';
+import type { WishTabT } from '../_types/wishTypes';
 
 const TABS: WishTabT[] = ['저장한 위시템', '토너먼트 기록'];
 

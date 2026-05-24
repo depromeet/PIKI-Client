@@ -1,6 +1,6 @@
 import { MOCK_ITEM } from '@/mocks/items';
 
-import ItemEditForm, { type ItemEditTypeT } from './components/ItemEditForm';
+import ItemEditForm, { type ItemEditTypeT } from './_components/ItemEditForm';
 
 const parseType = (raw: string | string[] | undefined): ItemEditTypeT => {
   if (raw === 'tournament') return 'tournament';

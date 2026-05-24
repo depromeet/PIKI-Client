@@ -3,8 +3,8 @@
 import RoundBadge from './_components/RoundBadge';
 import TournamentQuestion from './_components/TournamentQuestion';
 import VsSection from './_components/VsSection';
-import { FINAL_ROUND_LABEL } from './consts/rounds';
-import useTournament from './hooks/useTournament';
+import { FINAL_ROUND_LABEL } from './_consts/rounds';
+import useTournament from './_hooks/useTournament';
 
 function TournamentPage() {
   const { currentMatch, roundLabel, handleSelect } = useTournament();

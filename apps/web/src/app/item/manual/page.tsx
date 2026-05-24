@@ -1,4 +1,4 @@
-import ItemManualForm from './components/ItemManualForm';
+import ItemManualForm from './_components/ItemManualForm';
 
 function ItemManualPage() {
   return <ItemManualForm />;
