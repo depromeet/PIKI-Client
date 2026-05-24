@@ -46,7 +46,7 @@ function Input({
           id={inputId}
           disabled={disabled}
           aria-invalid={ariaInvalid}
-          aria-describedby={helperText ? helperTextId : undefined}
+          {...(helperText ? { 'aria-describedby': helperTextId } : {})}
           className={cn(
             'w-full overflow-hidden bg-transparent body-1-medium text-ellipsis whitespace-nowrap text-gray-600 outline-none placeholder:text-gray-300 focus:text-gray-900 disabled:text-gray-300',
             className

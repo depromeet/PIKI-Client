@@ -17,6 +17,7 @@ export default defineConfig([
     rules: {
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-nested-ternary': 'error',
+      'no-undefined': 'error',
       'no-unused-vars': 'off',
       'unused-imports/no-unused-imports': 'error',
     },

@@ -49,10 +49,11 @@ function ProductImage({
     ? cn('relative h-full w-full overflow-hidden', baseClass)
     : cn('relative overflow-hidden', baseClass);
 
-  const containerStyle = fill ? undefined : { width: dimension, height: dimension };
-
   return (
-    <div className={containerClass} style={containerStyle}>
+    <div
+      className={containerClass}
+      {...(!fill ? { style: { width: dimension, height: dimension } } : {})}
+    >
       <BaseImage
         {...imageProps}
         src={imageProps.src}

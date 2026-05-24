@@ -11,7 +11,7 @@ type RetryableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
 let isRefreshing = false;
 // refresh 완료를 기다리는 요청 큐
 let failedQueue: Array<{
-  resolve: (value: undefined) => void;
+  resolve: () => void;
   reject: (reason?: unknown) => void;
 }> = [];
 
@@ -21,7 +21,7 @@ const processQueue = (error: unknown) => {
     if (error) {
       prom.reject(error);
     } else {
-      prom.resolve(undefined);
+      prom.resolve();
     }
   });
   failedQueue = [];
@@ -48,7 +48,7 @@ clientApi.interceptors.response.use(
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       // refresh 진행 중이면 큐에 대기
       if (isRefreshing) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
           .then(() => clientApi(originalRequest))

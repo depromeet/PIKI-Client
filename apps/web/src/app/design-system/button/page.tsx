@@ -87,7 +87,7 @@ function ButtonCell({ size, variant, state, icon }: ButtonCellProps) {
       size={size}
       variant={variant}
       icon={icon}
-      leadingIcon={icon === 'leading' ? <LoaderIcon /> : undefined}
+      {...(icon === 'leading' ? { leadingIcon: <LoaderIcon /> } : {})}
       className={pressedOverride}
       {...props}
     >
