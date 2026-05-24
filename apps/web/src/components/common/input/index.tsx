@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
-import { inputStyles } from './Input.style';
+import { inputStyles } from './input.style';
 
 type InputStatusT = 'default' | 'error' | 'disabled';
 

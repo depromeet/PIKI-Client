@@ -5,7 +5,7 @@ import type { ComponentProps, ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
-import { type ButtonStyleProps, buttonStyles } from './Button.style';
+import { type ButtonStyleProps, buttonStyles } from './button.style';
 
 type ButtonLinkProps = Omit<ComponentProps<typeof Link>, 'children'> &
   ButtonStyleProps & {

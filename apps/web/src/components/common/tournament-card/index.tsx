@@ -1,6 +1,6 @@
 import { ThreeDotHorizontalIconFill } from '@/assets/icons';
 import StateChip from '@/components/common/state-chip';
-import type { StateChipStyleProps } from '@/components/common/state-chip/StateChip.style';
+import type { StateChipStyleProps } from '@/components/common/state-chip/stateChip.style';
 import UserProfileGroup from '@/components/common/user-profile-group';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
 import { cn } from '@/utils/cn';

@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import { BasketIconFill, TargetIconFill, TrophyIconFill } from '@/assets/icons';
 import { cn } from '@/utils/cn';
 
-import { type StateChipStyleProps, stateChipStyles } from './StateChip.style';
+import { type StateChipStyleProps, stateChipStyles } from './stateChip.style';
 
 const STATE_CONFIG = {
   adding: { label: '담는 중', Icon: BasketIconFill },
