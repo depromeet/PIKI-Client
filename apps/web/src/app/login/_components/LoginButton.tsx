@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/common/Button/Button';
-import Spinner from '@/components/common/Spinner/Spinner';
+import Button from '@/components/common/button';
+import Spinner from '@/components/common/spinner';
 import type { UserIdentityTypeT } from '@/types/user';
 
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
