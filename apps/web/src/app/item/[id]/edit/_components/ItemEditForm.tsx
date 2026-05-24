@@ -4,17 +4,17 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { ChevronBackwardIconFill, EditIconFill } from '@/assets/icons';
+import { EditIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
+import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
+import type { ItemTypeT } from '@/types/item';
 import formatPrice from '@/utils/formatPrice';
 
 import ItemLinkBanner from './ItemLinkBanner';
 
-export type ItemEditTypeT = 'wish' | 'tournament';
-
 type ItemEditFormProps = {
-  type: ItemEditTypeT;
+  type: ItemTypeT;
   initialName: string;
   initialPrice: string;
   imageUrl: string;
@@ -55,18 +55,9 @@ function ItemEditForm({
     : '상품명과 가격은 직접 수정할 수 있어요';
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-layer-default pb-[78px]">
-      {isWish && (
-        <button
-          type="button"
-          onClick={handleBack}
-          aria-label="뒤로가기"
-          className="absolute top-[59px] left-[19px] p-0"
-        >
-          <ChevronBackwardIconFill className="size-[30px] text-icon-neutral-primary" />
-        </button>
-      )}
-      <div className="mx-auto flex w-[362px] flex-col gap-6 px-0 pt-[79px]">
+    <div className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-[78px]">
+      {isWish && <Header left={<HeaderIcon name="BACK" />} />}
+      <div className="mx-auto flex w-[362px] flex-col gap-6 px-0 pt-3">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">

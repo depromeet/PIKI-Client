@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import TrashIconFill from '@/assets/icons/fill/trash.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
-import HeaderActions from '@/components/common/header-actions';
+import { Header, HeaderIcon } from '@/components/common/header';
 import SuccessToast from '@/components/common/toast/SuccessToast';
 
 import WishAddDialog from './_components/WishAddDialog';
@@ -53,14 +53,19 @@ function WishlistPage() {
   }, [isToastVisible]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-layer-basement px-[21px]">
+    <div className="flex min-h-dvh flex-col bg-bg-layer-basement">
       {/* 헤더: 타이틀 + 아이콘 액션 + 탭 */}
       <div className="sticky top-0 z-10 inline-flex w-full flex-col items-start gap-5 bg-bg-layer-basement pt-[24px] pb-6">
         <div className="flex w-full flex-col gap-[5px]">
-          <div className="flex justify-end">
-            <HeaderActions />
-          </div>
-          <h1 className="text-[28px] leading-[137.5%] font-bold tracking-[-0.708px] text-[#171719]">
+          <Header
+            right={
+              <>
+                <HeaderIcon name="PROFILE" />
+                <HeaderIcon name="ALARM" />
+              </>
+            }
+          />
+          <h1 className="px-5 text-[28px] leading-[137.5%] font-bold tracking-[-0.708px] text-[#171719]">
             위시
           </h1>
         </div>
@@ -69,7 +74,7 @@ function WishlistPage() {
       </div>
 
       {/* 탭 콘텐츠 */}
-      <main className="flex flex-1 flex-col pb-24">
+      <main className="flex flex-1 flex-col px-5 pb-24">
         {activeTab === '저장한 위시템' && (
           <WishListTabContent
             items={items}
