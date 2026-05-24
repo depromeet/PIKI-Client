@@ -6,7 +6,7 @@ import HeartIconFill from '@/assets/icons/fill/heart.svg';
 import HomeIconFill from '@/assets/icons/fill/home.svg';
 
 const TABS = [
-  { label: '홈', icon: HomeIconFill, href: '/' },
+  { label: '홈', icon: HomeIconFill, href: '/home' },
   { label: '위시', icon: HeartIconFill, href: '/wishlist' },
 ] as const;
 
@@ -17,8 +17,7 @@ function BottomTabBar() {
   return (
     <div className="inline-flex items-center rounded-[100px] bg-white p-1 shadow-[0_0_8px_0_rgba(0,0,0,0.04)]">
       {TABS.map(({ label, icon: Icon, href }) => {
-        const isActive =
-          href === '/' ? pathname === href : pathname === href || pathname.startsWith(href + '/');
+        const isActive = pathname === href || pathname.startsWith(`${href}/`);
         return (
           <button
             key={label}

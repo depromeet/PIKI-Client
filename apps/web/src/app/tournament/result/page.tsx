@@ -56,7 +56,7 @@ function TournamentResultPage() {
   }, [isToastVisible]);
 
   const handleGoHome = () => {
-    router.push('/');
+    router.push('/home');
   };
 
   const handleSaveResult = () => {
