@@ -14,7 +14,10 @@ const COLORS = [
   { label: 'text-black', class: 'text-black' },
 ] as const;
 
-const fillEntries = Object.entries(FillIcons) as [string, React.FC<React.SVGProps<SVGSVGElement>>][];
+const fillEntries = Object.entries(FillIcons) as [
+  string,
+  React.FC<React.SVGProps<SVGSVGElement>>,
+][];
 
 const iconNames = fillEntries.map(([key]) => key.replace(/IconFill$/, ''));
 
@@ -62,12 +65,21 @@ function IconDocsPage() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {iconNames.map(name => {
-          const FillIcon = FillIcons[`${name}IconFill` as keyof typeof FillIcons] as React.FC<React.SVGProps<SVGSVGElement>> | undefined;
-          const OutlineIcon = OutlineIcons[`${name}IconOutline` as keyof typeof OutlineIcons] as React.FC<React.SVGProps<SVGSVGElement>> | undefined;
+          const FillIcon = FillIcons[`${name}IconFill` as keyof typeof FillIcons] as
+            | React.FC<React.SVGProps<SVGSVGElement>>
+            | undefined;
+          const OutlineIcon = OutlineIcons[`${name}IconOutline` as keyof typeof OutlineIcons] as
+            | React.FC<React.SVGProps<SVGSVGElement>>
+            | undefined;
 
           return (
-            <div key={name} className="flex flex-col items-center gap-3 rounded-xl border border-gray-200 p-4">
-              <p className="text-xs text-gray-400">{name.replace(/([A-Z])/g, m => `-${m.toLowerCase()}`).replace(/^-/, '')}</p>
+            <div
+              key={name}
+              className="flex flex-col items-center gap-3 rounded-xl border border-gray-200 p-4"
+            >
+              <p className="text-xs text-gray-400">
+                {name.replace(/([A-Z])/g, m => `-${m.toLowerCase()}`).replace(/^-/, '')}
+              </p>
               <div className={`flex gap-4 ${color.class}`}>
                 {FillIcon && (
                   <div className="flex flex-col items-center gap-1">

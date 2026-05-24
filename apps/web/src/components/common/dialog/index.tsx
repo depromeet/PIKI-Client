@@ -33,7 +33,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 fixed inset-0 isolate bg-bg-layer-overlay duration-100',
+        'fixed inset-0 isolate bg-bg-layer-overlay duration-100 data-closed:animate-out data-closed:fade-out-0 data-open:animate-in data-open:fade-in-0',
         className
       )}
       style={{ zIndex: Z_INDEX.DIALOG, ...props.style }}
@@ -56,7 +56,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 fixed top-1/2 left-1/2 grid w-[calc(100%-40px)] max-w-[calc(480px-40px)] -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-white p-5 duration-100 outline-none',
+          'fixed top-1/2 left-1/2 grid w-[calc(100%-40px)] max-w-[calc(480px-40px)] -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-white p-5 duration-100 outline-none data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
           className
         )}
         style={{ zIndex: Z_INDEX.DIALOG, ...props.style }}

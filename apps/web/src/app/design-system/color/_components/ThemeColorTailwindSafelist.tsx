@@ -5,7 +5,7 @@ function ThemeColorTailwindSafelist() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 -z-10 h-px w-px overflow-hidden opacity-0"
+      className="pointer-events-none fixed top-0 left-0 -z-10 h-px w-px overflow-hidden opacity-0"
     >
       <span className="bg-base-50" />
       <span className="bg-base-950" />

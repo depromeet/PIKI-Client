@@ -1,8 +1,8 @@
 import { ThreeDotHorizontalIconFill } from '@/assets/icons';
 import StateChip from '@/components/common/StateChip/StateChip';
+import type { StateChipStyleProps } from '@/components/common/StateChip/StateChip.style';
 import UserProfileGroup from '@/components/common/UserProfileGroup/UserProfileGroup';
 import type { UserT } from '@/components/common/UserProfileGroup/userProfileConstants';
-import type { StateChipStyleProps } from '@/components/common/StateChip/StateChip.style';
 import { cn } from '@/utils/cn';
 
 type TournamentStateT = NonNullable<StateChipStyleProps['state']>;
@@ -28,7 +28,10 @@ function TournamentCard({
 }: TournamentCardProps) {
   return (
     <article
-      className={cn('flex w-full flex-col gap-2 rounded-xl bg-bg-layer-default px-6 py-5', className)}
+      className={cn(
+        'flex w-full flex-col gap-2 rounded-xl bg-bg-layer-default px-6 py-5',
+        className
+      )}
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">

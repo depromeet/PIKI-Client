@@ -5,12 +5,7 @@ import { useState } from 'react';
 import type { ComponentType, SVGProps } from 'react';
 
 import { HeartIconFill, ImageIconFill, LinkIconFill } from '@/assets/icons';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/common/dialog';
 import { cn } from '@/utils/cn';
 
 import AddByImageDialog from '../../tournament/create/components/addByImageDialog/AddByImageDialog';
@@ -80,7 +75,7 @@ function AddWishHomeDialog() {
           showCloseButton={false}
           className="flex w-[362px] max-w-[calc(100%-40px)] flex-col gap-[15px] rounded-3xl"
         >
-          <DialogTitle className="heading-1 text-center text-text-neutral-primary">
+          <DialogTitle className="text-center heading-1 text-text-neutral-primary">
             위시템 담기
           </DialogTitle>
           <ul className="flex w-full flex-col gap-2">
@@ -111,11 +106,7 @@ function AddWishHomeDialog() {
       </Dialog>
 
       <AddByLinkDialog open={linkOpen} onOpenChange={setLinkOpen} onSubmit={handleLinkSubmit} />
-      <AddByImageDialog
-        open={imageOpen}
-        onOpenChange={setImageOpen}
-        onSubmit={handleImageSubmit}
-      />
+      <AddByImageDialog open={imageOpen} onOpenChange={setImageOpen} onSubmit={handleImageSubmit} />
     </>
   );
 }

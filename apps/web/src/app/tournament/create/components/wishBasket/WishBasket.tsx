@@ -6,7 +6,6 @@ import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/button';
 
 import AddWishDialog from '../addWishDialog/AddWishDialog';
-
 import WishItem from './WishItem';
 
 type WishBasketProps = {

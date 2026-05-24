@@ -48,7 +48,7 @@ function Input({
           aria-invalid={ariaInvalid}
           aria-describedby={helperText ? helperTextId : undefined}
           className={cn(
-            'body-1-medium w-full overflow-hidden text-ellipsis whitespace-nowrap bg-transparent text-gray-600 outline-none placeholder:text-gray-300 focus:text-gray-900 disabled:text-gray-300',
+            'w-full overflow-hidden bg-transparent body-1-medium text-ellipsis whitespace-nowrap text-gray-600 outline-none placeholder:text-gray-300 focus:text-gray-900 disabled:text-gray-300',
             className
           )}
           {...props}
@@ -59,7 +59,7 @@ function Input({
         <p
           id={helperTextId}
           className={cn(
-            'body-2-regular min-h-lh',
+            'min-h-lh body-2-regular',
             status === 'error' ? 'text-red-600' : 'text-gray-300'
           )}
         >

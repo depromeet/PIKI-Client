@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import { MOCK_WISH_ITEMS } from '@/app/wishlist/mocks/wishMocks';
 import WarningIconFill from '@/assets/icons/fill/warning.svg';
 import Button from '@/components/common/button';
 import Toast from '@/components/common/toast/Toast';
@@ -11,7 +12,6 @@ import WishSelectCard from './_components/WishSelectCard';
 import WishSelectHeader from './_components/WishSelectHeader';
 import { MAX_SELECT, MIN_SELECT } from './consts/selectLimits';
 import useWishSelection from './hooks/useWishSelection';
-import { MOCK_WISH_ITEMS } from '@/app/wishlist/mocks/wishMocks';
 
 function ByWishPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ function ByWishPage() {
       />
 
       {/* 위시 아이템 그리드 */}
-      <main className="flex flex-1 flex-col pb-32 mt-4">
+      <main className="mt-4 flex flex-1 flex-col pb-32">
         <div className="grid grid-cols-2 gap-x-2 gap-y-3">
           {items.map(item => (
             <WishSelectCard
@@ -68,7 +68,12 @@ function ByWishPage() {
         <Button variant="secondary" size="lg" onClick={() => router.back()}>
           뒤로
         </Button>
-        <Button variant="primary" size="lg" disabled={selectedIds.length < MIN_SELECT} onClick={handleNext}>
+        <Button
+          variant="primary"
+          size="lg"
+          disabled={selectedIds.length < MIN_SELECT}
+          onClick={handleNext}
+        >
           다음
         </Button>
       </div>

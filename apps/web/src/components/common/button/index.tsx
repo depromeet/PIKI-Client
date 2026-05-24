@@ -23,11 +23,7 @@ function Button({
   ...rest
 }: ButtonProps) {
   return (
-    <button
-      type={type}
-      className={cn(buttonStyles({ variant, size, icon }), className)}
-      {...rest}
-    >
+    <button type={type} className={cn(buttonStyles({ variant, size, icon }), className)} {...rest}>
       {icon === 'leading' && leadingIcon}
       {children}
     </button>

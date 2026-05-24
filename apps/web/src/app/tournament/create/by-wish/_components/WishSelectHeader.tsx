@@ -7,7 +7,12 @@ type WishSelectHeaderProps = {
   isMaxExceeded: boolean;
 };
 
-function WishSelectHeader({ selectedCount, totalCount, tournamentCandidateCount, isMaxExceeded }: WishSelectHeaderProps) {
+function WishSelectHeader({
+  selectedCount,
+  totalCount,
+  tournamentCandidateCount,
+  isMaxExceeded,
+}: WishSelectHeaderProps) {
   const renderSubtitle = () => {
     // 최대 선택 초과 시도 시
     if (isMaxExceeded)
@@ -22,14 +27,18 @@ function WishSelectHeader({ selectedCount, totalCount, tournamentCandidateCount,
       return (
         <p className="whitespace-pre-line">
           <span className="heading-2 text-[#686F7E]">{tournamentCandidateCount}개가</span>
-          <span className="heading-2-medium text-[#686F7E]">{' 이미 담겨있어요\n더 추가하고 싶은 상품을 골라보세요.'}</span>
+          <span className="heading-2-medium text-[#686F7E]">
+            {' 이미 담겨있어요\n더 추가하고 싶은 상품을 골라보세요.'}
+          </span>
         </p>
       );
     // 기본 상태
     return (
       <p className="whitespace-pre-line">
         <span className="heading-2 text-[#686F7E]">최소 {MIN_SELECT}개 이상</span>
-        <span className="heading-2-medium text-[#ADB1BB]">{' 선택해야\n토너먼트를 시작할 수 있어요.'}</span>
+        <span className="heading-2-medium text-[#ADB1BB]">
+          {' 선택해야\n토너먼트를 시작할 수 있어요.'}
+        </span>
       </p>
     );
   };

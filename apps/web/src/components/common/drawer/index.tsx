@@ -30,7 +30,7 @@ function DrawerOverlay({
     <DrawerPrimitive.Overlay
       data-slot="drawer-overlay"
       className={cn(
-        'data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 fixed inset-0 bg-bg-layer-overlay',
+        'fixed inset-0 bg-bg-layer-overlay data-closed:animate-out data-closed:fade-out-0 data-open:animate-in data-open:fade-in-0',
         className
       )}
       style={{ zIndex: Z_INDEX.DRAWER, ...props.style }}

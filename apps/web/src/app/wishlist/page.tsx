@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import BottomTabBar from '@/components/common/bottom-tab-bar';
-import HeaderActions from '@/components/common/header-actions';
-import SuccessToast from '@/components/common/toast/SuccessToast';
-
 import ImageIconFill from '@/assets/icons/fill/image.svg';
 import LinkIconFill from '@/assets/icons/fill/link.svg';
 import TrashIconFill from '@/assets/icons/fill/trash.svg';
+import BottomTabBar from '@/components/common/bottom-tab-bar';
+import HeaderActions from '@/components/common/header-actions';
+import SuccessToast from '@/components/common/toast/SuccessToast';
 
 import WishAddModal from './_components/WishAddModal';
 import WishFab from './_components/WishFab';
@@ -63,7 +62,9 @@ function WishlistPage() {
           <div className="flex justify-end">
             <HeaderActions />
           </div>
-          <h1 className="text-[28px] font-bold leading-[137.5%] tracking-[-0.708px] text-[#171719]">위시</h1>
+          <h1 className="text-[28px] leading-[137.5%] font-bold tracking-[-0.708px] text-[#171719]">
+            위시
+          </h1>
         </div>
 
         <WishTab activeTab={activeTab} onTabChange={setActiveTab} />
@@ -101,7 +102,7 @@ function WishlistPage() {
       </div>
 
       {/* FAB */}
-      <div className="fixed right-0 bottom-[43.21px] left-0 z-30 mx-auto w-full max-w-120 pointer-events-none px-[21px]">
+      <div className="pointer-events-none fixed right-0 bottom-[43.21px] left-0 z-30 mx-auto w-full max-w-120 px-[21px]">
         <div className="flex justify-end">
           <div className="pointer-events-auto">
             {isDeleteMode ? (
@@ -122,7 +123,7 @@ function WishlistPage() {
       </div>
 
       {/* 삭제 완료 토스트 */}
-      <div className="fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 pointer-events-none px-[21px]">
+      <div className="pointer-events-none fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 px-[21px]">
         <SuccessToast message="선택한 위시를 삭제했어요" isVisible={isToastVisible} />
       </div>
 
@@ -132,9 +133,19 @@ function WishlistPage() {
         title="위시템 담기"
         options={[
           // TODO: 링크로 담기 페이지 연결
-          { icon: <LinkIconFill width={20} height={20} />, label: '링크로 담기', description: '상품URL을 붙여넣어요', onClick: () => {} },
+          {
+            icon: <LinkIconFill width={20} height={20} />,
+            label: '링크로 담기',
+            description: '상품URL을 붙여넣어요',
+            onClick: () => {},
+          },
           // TODO: 이미지로 담기 페이지 연결
-          { icon: <ImageIconFill width={20} height={20} />, label: '이미지로 담기', description: '스크린샷을 첨부해요', onClick: () => {} },
+          {
+            icon: <ImageIconFill width={20} height={20} />,
+            label: '이미지로 담기',
+            description: '스크린샷을 첨부해요',
+            onClick: () => {},
+          },
         ]}
       />
     </div>

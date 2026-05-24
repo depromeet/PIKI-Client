@@ -5,12 +5,7 @@ import { useState } from 'react';
 
 import { EditIconFill, TrophyIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/common/dialog';
 import Input from '@/components/common/input';
 
 type CreateTournamentDialogProps = {
@@ -51,7 +46,7 @@ function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
         showCloseButton={false}
         className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-5"
       >
-        <DialogTitle className="heading-1 text-center text-text-neutral-primary">
+        <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           새 토너먼트
         </DialogTitle>
         <div className="flex flex-col gap-[15px]">

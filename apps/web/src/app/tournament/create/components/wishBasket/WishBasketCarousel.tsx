@@ -9,7 +9,8 @@ import WishBasket from './WishBasket';
 const BASKETS = Array.from({ length: BASKET_COUNT }, () => EMPTY_WISH_ITEMS);
 
 function WishBasketCarousel() {
-  const { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd } = useBasketCarousel();
+  const { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd } =
+    useBasketCarousel();
 
   return (
     <div

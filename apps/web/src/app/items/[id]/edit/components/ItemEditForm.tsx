@@ -77,13 +77,7 @@ function ItemEditForm({
 
         {/* 상품 이미지 */}
         <div className="relative mx-auto size-[200px] overflow-hidden rounded-xl bg-gray-50">
-          <Image
-            src={imageUrl}
-            alt="상품 이미지"
-            fill
-            sizes="200px"
-            className="object-cover"
-          />
+          <Image src={imageUrl} alt="상품 이미지" fill sizes="200px" className="object-cover" />
         </div>
 
         {/* 입력 필드 */}

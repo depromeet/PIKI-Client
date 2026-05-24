@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import HeartIconFill from '@/assets/icons/fill/heart.svg';
 import HomeIconFill from '@/assets/icons/fill/home.svg';
@@ -17,7 +17,8 @@ function BottomTabBar() {
   return (
     <div className="inline-flex items-center rounded-[100px] bg-white p-1 shadow-[0_0_8px_0_rgba(0,0,0,0.04)]">
       {TABS.map(({ label, icon: Icon, href }) => {
-        const isActive = href === '/' ? pathname === href : pathname === href || pathname.startsWith(href + '/');
+        const isActive =
+          href === '/' ? pathname === href : pathname === href || pathname.startsWith(href + '/');
         return (
           <button
             key={label}
@@ -29,7 +30,7 @@ function BottomTabBar() {
           >
             <Icon width={24} height={24} />
             <span
-              className="text-[11px] font-medium leading-[127.3%] tracking-[0.342px]"
+              className="text-[11px] leading-[127.3%] font-medium tracking-[0.342px]"
               style={{ fontFeatureSettings: "'ss10' on" }}
             >
               {label}

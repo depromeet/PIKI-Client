@@ -76,13 +76,7 @@ function ButtonCell({ size, variant, state, icon }: ButtonCellProps) {
 
   if (icon === 'only') {
     return (
-      <Button
-        size={size}
-        variant={variant}
-        icon="only"
-        className={pressedOverride}
-        {...props}
-      >
+      <Button size={size} variant={variant} icon="only" className={pressedOverride} {...props}>
         <PlusIcon size={PLUS_ICON_SIZE[size]} />
       </Button>
     );
@@ -120,7 +114,7 @@ function ButtonMatrix({ title, icon }: SectionProps) {
               {SIZES.map(size => (
                 <span
                   key={size}
-                  className="caption-1-regular text-text-neutral-secondary text-center"
+                  className="text-center caption-1-regular text-text-neutral-secondary"
                 >
                   {size}
                 </span>

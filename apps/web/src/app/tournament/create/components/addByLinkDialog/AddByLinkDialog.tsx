@@ -4,11 +4,7 @@ import { useState } from 'react';
 
 import { LinkIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/common/dialog';
 import Input from '@/components/common/input';
 
 const URL_PATTERN = /^https?:\/\/.+/i;
@@ -55,7 +51,7 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
         showCloseButton={false}
         className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-5 rounded-3xl"
       >
-        <DialogTitle className="heading-1 text-center text-text-neutral-primary">
+        <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           링크로 담기
         </DialogTitle>
         <div className="flex flex-col gap-4">
@@ -70,12 +66,7 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
             autoFocus
             inputMode="url"
           />
-          <Button
-            size="lg"
-            variant="primary"
-            disabled={isEmpty}
-            onClick={handleSubmit}
-          >
+          <Button size="lg" variant="primary" disabled={isEmpty} onClick={handleSubmit}>
             후보 바구니에 담기
           </Button>
         </div>

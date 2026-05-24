@@ -4,11 +4,7 @@ import { useRef } from 'react';
 
 import { ImageIconOutline } from '@/assets/icons';
 import Button from '@/components/common/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/common/dialog';
 
 const MAX_IMAGE_COUNT = 5;
 
@@ -39,7 +35,7 @@ function AddByImageDialog({ open, onOpenChange, onSubmit }: AddByImageDialogProp
         showCloseButton={false}
         className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-3 rounded-3xl"
       >
-        <DialogTitle className="heading-1 text-center text-text-neutral-primary">
+        <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           이미지로 담기
         </DialogTitle>
         <button

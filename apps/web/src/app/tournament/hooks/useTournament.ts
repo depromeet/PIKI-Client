@@ -48,10 +48,9 @@ const useTournament = () => {
     rankedRef.current = [...rankedRef.current, { ...loser, rank: LOSER_RANKS[matchIndex]! }];
 
     if (matchIndex === FINAL_MATCH_INDEX) {
-      const finalRanked: RankedProductT[] = [
-        ...rankedRef.current,
-        { ...winner, rank: 1 },
-      ].sort((a, b) => a.rank - b.rank);
+      const finalRanked: RankedProductT[] = [...rankedRef.current, { ...winner, rank: 1 }].sort(
+        (a, b) => a.rank - b.rank
+      );
       writeResult(finalRanked);
       router.push('/tournament/result');
       return;
