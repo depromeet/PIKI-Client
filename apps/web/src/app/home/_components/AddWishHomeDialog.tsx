@@ -8,8 +8,8 @@ import { HeartIconFill, ImageIconFill, LinkIconFill } from '@/assets/icons';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/common/dialog';
 import { cn } from '@/utils/cn';
 
-import AddByImageDialog from '../tournament/create/_components/addByImageDialog/AddByImageDialog';
-import AddByLinkDialog from '../tournament/create/_components/addByLinkDialog/AddByLinkDialog';
+import AddByImageDialog from '../../tournament/create/_components/addByImageDialog/AddByImageDialog';
+import AddByLinkDialog from '../../tournament/create/_components/addByLinkDialog/AddByLinkDialog';
 
 type WishOptionT = {
   key: 'link' | 'image';

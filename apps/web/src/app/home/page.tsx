@@ -5,9 +5,9 @@ import TournamentCard from '@/components/common/tournament-card';
 import { MOCK_USERS } from '@/mocks/users';
 import { getQueryClient } from '@/utils/queryClient';
 
-import AddWishHomeDialog from '../_components/AddWishHomeDialog';
-import CreateTournamentDialog from '../_components/CreateTournamentDialog';
 import { getTournamentList } from './_apis/getTournamentList';
+import AddWishHomeDialog from './_components/AddWishHomeDialog';
+import CreateTournamentDialog from './_components/CreateTournamentDialog';
 
 async function HomePage() {
   const queryClient = getQueryClient();
