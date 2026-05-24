@@ -7,7 +7,7 @@ import { CloseIconFill } from '@/assets/icons/fill';
 import { Z_INDEX } from '@/consts/zIndex';
 import { cn } from '@/utils/cn';
 
-import Button from '../Button/Button';
+import Button from '../button';
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;

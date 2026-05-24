@@ -1,5 +1,5 @@
-import type { WishItemT } from '@/components/common/WishGrid';
-import WishGrid from '@/components/common/WishGrid';
+import type { WishItemT } from '@/components/common/wish-grid';
+import WishGrid from '@/components/common/wish-grid';
 
 type WishListTabContentProps = {
   items: WishItemT[];

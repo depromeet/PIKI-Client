@@ -1,6 +1,6 @@
 'use client';
 
-import Skeleton from '@/components/common/Skeleton/Skeleton';
+import Skeleton from '@/components/common/skeleton';
 
 import DemoCard from './DemoCard';
 

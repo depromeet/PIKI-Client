@@ -1,7 +1,7 @@
 import { LoginIconOutline, NotificationIconFill, PersonIconFill } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
-import BottomTabBar from '@/components/common/BottomTabBar';
-import TournamentCard from '@/components/common/TournamentCard/TournamentCard';
+import BottomTabBar from '@/components/common/bottom-tab-bar';
+import TournamentCard from '@/components/common/tournament-card';
 import { MOCK_USERS } from '@/mocks/users';
 
 import AddWishHomeDialog from './components/AddWishHomeDialog/AddWishHomeDialog';

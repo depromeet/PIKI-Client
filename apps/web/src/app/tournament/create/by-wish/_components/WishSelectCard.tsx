@@ -1,5 +1,5 @@
 import CheckboxSelectedIconFill from '@/assets/icons/fill/checkbox-selected.svg';
-import WishCard from '@/components/common/WishCard';
+import WishCard from '@/components/common/wish-card';
 
 type WishSelectCardProps = {
   name: string;

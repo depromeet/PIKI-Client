@@ -93,9 +93,9 @@ apps/web/src/
 │   ├── fonts/
 │   ├── tournament/         # 토너먼트 생성 페이지 (예시)
 │   │   ├── page.tsx
-│   │   ├── components/     # 해당 페이지 전용 컴포넌트
-│   │   │   └── {ComponentName}/
-│   │   │       ├── {ComponentName}.tsx
+│   │   ├── _components/    # 해당 페이지 전용 컴포넌트
+│   │   │   └── {component-name}/
+│   │   │       ├── index.tsx           # 컴포넌트 본체 (default export)
 │   │   │       └── {ComponentName}.style.ts
 │   │   ├── hooks/          # 해당 페이지 전용 훅
 │   │   ├── utils/          # 해당 페이지 전용 유틸
@@ -111,9 +111,9 @@ apps/web/src/
 │   └── ...                 # 다른 페이지도 동일한 패턴 (필요한 폴더만 생성)
 ├── components/
 │   └── common/   # 페이지 무관 재사용 공통 컴포넌트 (Button, Input 등)
-│       └── {ComponentName}/
-│           ├── {ComponentName}.tsx        # 컴포넌트 본체
-│           ├── {ComponentName}.style.ts   # cva variants (스타일 분리 시)
+│       └── {component-name}/             # 폴더명: kebab-case
+│           ├── index.tsx                 # 컴포넌트 본체 (default export)
+│           ├── {ComponentName}.style.ts  # cva variants (스타일 분리 시)
 │           └── {componentName}Constants.ts # 상수/타입 (필요 시)
 ├── apis/         # API 호출 함수 (HTTP 메서드 prefix 컨벤션)
 ├── hooks/        # 커스텀 훅
@@ -128,6 +128,23 @@ apps/web/src/
 
 - 특정 페이지에서만 쓰이는 컴포넌트/훅/상수 → 해당 페이지 폴더 안
 - 2개 이상 페이지에서 사용 → `components/common/`, `hooks/`, `consts/`로 올리기
+
+**컴포넌트 폴더 컨벤션:**
+
+- **폴더명**: kebab-case (`button/`, `wish-card/`, `state-chip/`)
+- **대표 컴포넌트 파일명**: `index.tsx` (default export)
+- **import 경로**: `@/components/common/{component-name}` (폴더명까지만, 파일명 생략)
+- **보조 파일**: 폴더 내부에서 PascalCase / camelCase 그대로 (`StateChip.style.ts`, `UserProfile.tsx`, `userProfileConstants.ts`)
+
+```tsx
+// ✅ Good
+import Button from '@/components/common/button';
+import StateChip from '@/components/common/state-chip';
+import { stateChipStyles } from '@/components/common/state-chip/StateChip.style';
+
+// ❌ Bad — 이름 중복, PascalCase 폴더
+import Button from '@/components/common/Button/Button';
+```
 
 ### Path Alias
 

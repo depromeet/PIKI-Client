@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 
 import WarningIconFill from '@/assets/icons/fill/warning.svg';
-import Button from '@/components/common/Button/Button';
-import Toast from '@/components/common/Toast/Toast';
-import ToastGradientOverlay from '@/components/common/Toast/ToastGradientOverlay';
+import Button from '@/components/common/button';
+import Toast from '@/components/common/toast/Toast';
+import ToastGradientOverlay from '@/components/common/toast/ToastGradientOverlay';
 
 import WishSelectCard from './_components/WishSelectCard';
 import WishSelectHeader from './_components/WishSelectHeader';

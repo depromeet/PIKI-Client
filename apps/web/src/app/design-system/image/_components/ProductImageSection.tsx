@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import ProductImage from '@/components/common/ProductImage/ProductImage';
+import ProductImage from '@/components/common/product-image';
 
 import DemoRow from './DemoRow';
 

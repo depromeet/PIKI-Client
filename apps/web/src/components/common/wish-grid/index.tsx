@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 import { CheckboxEmptyIconFill, CheckboxSelectedIconFill } from '@/assets/icons';
-import WishCard from '@/components/common/WishCard';
-import WishFailedCard from '@/components/common/WishFailedCard';
+import WishCard from '@/components/common/wish-card';
+import WishFailedCard from '@/components/common/wish-failed-card';
 
 export type WishItemStatusT = 'ok' | 'failed';
 
