@@ -13,7 +13,11 @@ import {
 } from '@/components/common/dialog';
 import Input from '@/components/common/Input/Input';
 
-function CreateTournamentDialog() {
+type CreateTournamentDialogProps = {
+  onCreate?: (name: string) => void;
+};
+
+function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -25,6 +29,10 @@ function CreateTournamentDialog() {
     if (isDisabled) return;
     setOpen(false);
     setName('');
+    if (onCreate) {
+      onCreate(trimmedName);
+      return;
+    }
     router.push('/tournament/create');
   };
 
