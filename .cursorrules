@@ -43,7 +43,7 @@
 - **API 통신**: TanStack Query (@tanstack/react-query)
 - **스키마 검증**: Zod
 - **API 모킹**: MSW (필요 시)
-- **아이콘**: Lucide React 우선 → 불가 시 SVG 컴포넌트화
+- **아이콘**: `@/assets/icons` (fill/outline SVG) — Lucide React 사용 안 함
 
 ### apps/app (React Native)
 - **프레임워크**: React Native + Expo
@@ -81,26 +81,28 @@ apps/web/src/
 │   ├── page.tsx            # 홈
 │   ├── providers.tsx       # TanStack Query Provider
 │   ├── fonts/
-│   ├── tournament/         # 토너먼트 생성 페이지 (예시)
+│   ├── tournament/         # 토너먼트 (예시)
 │   │   ├── page.tsx
-│   │   ├── _components/    # 해당 페이지 전용 컴포넌트
-│   │   │   └── {component-name}/
-│   │   │       ├── index.tsx           # 컴포넌트 본체 (default export)
-│   │   │       └── {componentName}.style.ts
-│   │   ├── hooks/          # 해당 페이지 전용 훅
-│   │   ├── utils/          # 해당 페이지 전용 유틸
-│   │   ├── types/          # 해당 페이지 전용 타입
-│   │   └── consts/         # 해당 페이지 전용 상수
-│   ├── wishlist/           # 위시리스트 페이지 (예시)
+│   │   ├── _common/            # tournament/* 하위 라우트 간 공유
+│   │   │   ├── _components/
+│   │   │   ├── _hooks/
+│   │   │   ├── _consts/
+│   │   │   └── _types/
+│   │   └── create/
+│   │       ├── page.tsx
+│   │       ├── _common/        # create/* 하위 라우트 간 공유
+│   │       │   ├── _components/
+│   │       │   ├── _hooks/
+│   │       │   └── _consts/
+│   │       └── by-wish/
+│   │           ├── page.tsx
+│   │           └── _components/  # by-wish 전용 (아직 레벨업 전)
+│   ├── wishlist/
 │   │   ├── page.tsx
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── utils/
-│   │   ├── types/
-│   │   └── consts/
-│   └── ...                 # 다른 페이지도 동일한 패턴 (필요한 폴더만 생성)
+│   │   └── _components/        # wishlist 전용
+│   └── ...
 ├── components/
-│   └── common/   # 페이지 무관 재사용 공통 컴포넌트 (Button, Input 등)
+│   └── common/   # app/ 밖 — top-level 라우트 간 공유 + 범용 UI
 │       └── {component-name}/             # 폴더명: kebab-case
 │           ├── index.tsx                 # 컴포넌트 본체 (default export)
 │           ├── {componentName}.style.ts  # cva variants (스타일 분리 시)
@@ -114,15 +116,46 @@ apps/web/src/
 └── consts/       # 상수
 ```
 
-**배치 기준:**
-- 특정 페이지에서만 쓰이는 컴포넌트/훅/상수 → 해당 페이지 폴더 안
-- 2개 이상 페이지에서 사용 → `components/common/`, `hooks/`, `consts/`로 올리기
+**Colocation 배치 (한 단계씩 레벨업):**
 
-**컴포넌트 폴더 컨벤션:**
+코드는 **가장 가까운 사용처**에 둔다. 재사용 범위가 넓어질 때만 **부모 라우트로 한 단계** 끌어올린다. 처음부터 `components/common/`에 두지 않는다.
+
+| 재사용 범위 | 배치 위치 |
+| --- | --- |
+| 단일 `page.tsx` 전용 | 해당 라우트 폴더의 `_components/` (또는 `_hooks/`, `_consts/`, `_types/`) |
+| **같은 부모 아래 2개 이상** 하위 라우트에서 공유 | **부모 라우트**의 `_common/_components/` 등으로 끌어올림 |
+| **`app/` top-level 라우트 간** 공유 (tournament ↔ wishlist 등) | `components/common/{component-name}/` — **App Router 밖**으로 이동 |
+| 앱 전역 훅/유틸/상수 | `hooks/`, `utils/`, `consts/`, `types/` |
+
+```
+예) by-wish/page 전용                    → app/tournament/create/by-wish/_components/
+    create/page + by-wish/page 에서 공유  → app/tournament/create/_common/_components/  (↑ app 내 한 단계)
+    tournament/* 전체에서 공유              → app/tournament/_common/_components/       (↑ app 내 한 단계)
+    tournament + wishlist 등 top-level 공유 → components/common/{name}/                (app/ 밖으로)
+    Button, Dialog 등 범용 UI             → components/common/button/
+```
+
+- **한 라우트 전용** → `_components/` 등을 라우트 폴더에 직접 둔다
+- **app/ 내부 레벨업(형제 라우트 간 공유)** → 부모에 `_common/`을 만들고 그 안에 `_components/`, `_hooks/`, `_consts/`, `_types/` 배치
+- **`app/` top-level 라우트를 넘나들면** `_common/`을 더 이상 쌓지 않고 `src/components/common/`(또는 `hooks/`, `utils/` 등)으로 이동
+- `app/_common/`, `app/_components/` ❌ — top-level 간 공유는 App Router 밖에서 관리
+- 필요한 폴더만 생성 — 빈 폴더는 만들지 않음
+
+**`components/common` (App Router 밖):**
+- `app/` **top-level 라우트 간** 공유되거나, **앱 전역 범용 UI**는 여기로 이동
+- `{component-name}/` **kebab-case 폴더** 안에 둔다 — 바로 아래 `.tsx` 금지
+- import는 폴더까지만 — `@/components/common/{component-name}`
+
+**컴포넌트 폴더 내부 파일명:**
+
+| 파일 종류 | 규칙 | 예시 |
+| --- | --- | --- |
+| **대표 컴포넌트** | `index.tsx` (default export) | `button/index.tsx` |
+| **보조 컴포넌트** | PascalCase | `UserProfile.tsx`, `ButtonLink.tsx` |
+| **스타일 (cva)** | camelCase + `.style.ts` | `button.style.ts`, `stateChip.style.ts` |
+| **상수/타입** | camelCase + `.const.ts` | `userProfile.const.ts` |
+
 - **폴더명**: kebab-case (`button/`, `wish-card/`, `state-chip/`)
-- **대표 컴포넌트 파일명**: `index.tsx` (default export)
-- **import 경로**: `@/components/common/{component-name}` (폴더명까지만, 파일명 생략)
-- **보조 파일**: 폴더 내부에서 PascalCase / camelCase 그대로 (`stateChip.style.ts`, `UserProfile.tsx`, `userProfile.const.ts`)
 
 ```tsx
 // ✅ Good
@@ -130,7 +163,8 @@ import Button from '@/components/common/button';
 import StateChip from '@/components/common/state-chip';
 import { stateChipStyles } from '@/components/common/state-chip/stateChip.style';
 
-// ❌ Bad — 이름 중복, PascalCase 폴더
+// ❌ Bad — common 바로 아래 파일, PascalCase 폴더, 중복 경로
+import Button from '@/components/common/Button';
 import Button from '@/components/common/Button/Button';
 ```
 
@@ -143,9 +177,11 @@ import Button from '@/components/common/Button/Button';
 
 | 대상 | 규칙 | 예시 |
 |---|---|---|
-| **컴포넌트 파일** | PascalCase | `ScaleResult.tsx` |
+| **폴더** | kebab-case | `wish-card/`, `state-chip/` |
+| **공통 컴포넌트 본체** | `index.tsx` | `components/common/button/index.tsx` |
+| **보조 컴포넌트 파일** | PascalCase | `UserProfile.tsx`, `ButtonLink.tsx` |
+| **스타일/상수 파일** | camelCase | `button.style.ts`, `userProfile.const.ts` |
 | **일반 파일** (훅, 유틸) | camelCase | `useAuth.ts`, `formatDate.ts` |
-| **폴더** | kebab-case | `scale-result/` |
 | **타입** | T suffix | `UserT`, `ProductT` |
 | **API 함수** | HTTP 메서드 prefix | `getUser`, `postWishlist`, `patchProfile`, `deleteItem` |
 
