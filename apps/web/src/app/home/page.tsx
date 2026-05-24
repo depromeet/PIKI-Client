@@ -3,11 +3,20 @@ import PikiLogo from '@/assets/images/piki-logo.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
 import TournamentCard from '@/components/common/tournament-card';
 import { MOCK_USERS } from '@/mocks/users';
+import { getQueryClient } from '@/utils/queryClient';
 
 import AddWishHomeDialog from '../_components/AddWishHomeDialog';
 import CreateTournamentDialog from '../_components/CreateTournamentDialog';
+import { getTournamentList } from './_apis/getTournamentList';
 
-function HomePage() {
+async function HomePage() {
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['tournamentList', ['IN_PROGRESS']],
+    queryFn: () => getTournamentList(['IN_PROGRESS']),
+  });
+
   return (
     <div className="relative flex min-h-dvh flex-col bg-bg-layer-basement pb-32">
       {/* 상단 헤더 */}
