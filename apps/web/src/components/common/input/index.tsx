@@ -1,5 +1,5 @@
-import { useId } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -55,17 +55,16 @@ function Input({
         />
         {right && <span className="shrink-0 text-gray-300">{right}</span>}
       </div>
-      {helperText && (
-        <p
-          id={helperTextId}
-          className={cn(
-            'min-h-lh body-2-regular',
-            status === 'error' ? 'text-red-600' : 'text-gray-300'
-          )}
-        >
-          {helperText}
-        </p>
-      )}
+
+      <p
+        id={helperTextId}
+        className={cn(
+          'min-h-lh body-2-regular',
+          status === 'error' ? 'text-red-600' : 'text-gray-300'
+        )}
+      >
+        {helperText}
+      </p>
     </div>
   );
 }
