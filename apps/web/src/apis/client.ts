@@ -1,7 +1,8 @@
-import axios from 'axios';
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 import type { ApiErrorResponseT } from '@/types/api';
+import { getCookie } from '@/utils/cookie';
 
 // 재시도 여부 플래그를 포함한 요청 타입
 type RetryableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
@@ -27,13 +28,20 @@ const processQueue = (error: unknown) => {
 };
 
 export const clientApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 
+/** TEMP: 삭제 예정. 추후 httponly cookie로 처리 예정 */
+clientApi.interceptors.request.use(config => {
+  const accessToken = getCookie('accessToken');
+  if (!accessToken) return config;
+
+  config.headers.set('Authorization', `Bearer ${accessToken}`);
+  return config;
+});
+
 clientApi.interceptors.response.use(
-  // 응답 언래핑: { status, data, detail, code } → data
-  response => response.data.data,
+  response => response,
   async (error: AxiosError<ApiErrorResponseT>) => {
     const originalRequest = error.config as RetryableRequest | undefined;
 
@@ -51,7 +59,7 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, null, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/token/refresh`, null, {
           withCredentials: true,
         });
         processQueue(null);
