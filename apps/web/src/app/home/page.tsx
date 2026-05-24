@@ -1,20 +1,22 @@
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+
 import { LoginIconOutline, NotificationIconFill, PersonIconFill } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
-import TournamentCard from '@/components/common/tournament-card';
-import { MOCK_USERS } from '@/mocks/users';
+import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournamentList } from './_apis/getTournamentList';
 import AddWishHomeDialog from './_components/AddWishHomeDialog';
 import CreateTournamentDialog from './_components/CreateTournamentDialog';
+import TorunamentList from './_components/TournamentList';
 
 async function HomePage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['tournamentList', ['IN_PROGRESS']],
-    queryFn: () => getTournamentList(['IN_PROGRESS']),
+    queryKey: ['tournamentList', [TOURNAMENT_STATUS.PENDING, TOURNAMENT_STATUS.IN_PROGRESS]],
+    queryFn: () => getTournamentList([TOURNAMENT_STATUS.PENDING, TOURNAMENT_STATUS.IN_PROGRESS]),
   });
 
   return (
@@ -57,10 +59,9 @@ async function HomePage() {
         </section>
 
         {/* 진행 중인 토너먼트 */}
-        <section className="flex flex-col gap-3">
-          <h2 className="heading-2 text-black">진행 중인 토너먼트</h2>
-          <TournamentCard state="adding" name="토너먼트명" date="0000/00/00" users={MOCK_USERS} />
-        </section>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <TorunamentList />
+        </HydrationBoundary>
       </main>
 
       {/* 하단 네비게이션 */}
