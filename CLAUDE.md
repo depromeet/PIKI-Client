@@ -84,7 +84,6 @@
 
 ### apps/web 내부 (페이지별 폴더 구조)
 
-
 ```
 apps/web/src/
 ├── app/                    # Next.js App Router
