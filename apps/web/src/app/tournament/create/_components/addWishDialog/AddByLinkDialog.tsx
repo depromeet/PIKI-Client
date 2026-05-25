@@ -22,31 +22,30 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
   const trimmedUrl = url.trim();
   const isEmpty = trimmedUrl.length === 0;
 
-  const resetState = () => {
-    setUrl('');
-    setHasError(false);
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setUrl('');
+      setHasError(false);
+    }
+    onOpenChange(open);
+  };
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+    if (hasError) setHasError(false);
   };
 
   const handleSubmit = () => {
-    if (isEmpty) return;
-
     if (!URL_PATTERN.test(trimmedUrl)) {
       setHasError(true);
       return;
     }
-
     onSubmit?.(trimmedUrl);
-    onOpenChange(false);
-    resetState();
-  };
-
-  const handleChange = (value: string) => {
-    setUrl(value);
-    if (hasError) setHasError(false);
+    handleOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         showCloseButton={false}
         className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-5 rounded-3xl"
@@ -59,10 +58,10 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
             label="링크 URL"
             placeholder="복사한 링크를 입력해주세요."
             value={url}
-            onChange={e => handleChange(e.target.value)}
+            onChange={handleUrlChange}
             left={<LinkIconFill className="size-5" />}
             aria-invalid={hasError}
-            {...(hasError ? { helperText: '올바른 URL 형식으로 입력해주세요.' } : {})}
+            helperText={hasError ? '올바른 URL 형식으로 입력해주세요.' : undefined}
             autoFocus
             inputMode="url"
           />
