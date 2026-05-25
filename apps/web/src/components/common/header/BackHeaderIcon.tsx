@@ -20,7 +20,12 @@ function BackHeaderIcon({ onClick, className }: BackHeaderIconProps) {
   const router = useRouter();
 
   return (
-    <button type="button" onClick={onClick ?? router.back} className={className}>
+    <button
+      type="button"
+      aria-label="뒤로가기"
+      onClick={onClick ?? router.back}
+      className={className}
+    >
       <ChevronBackwardIconFill className="size-6 text-icon-neutral-secondary" />
     </button>
   );

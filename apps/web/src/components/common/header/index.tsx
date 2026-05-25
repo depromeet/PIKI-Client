@@ -83,7 +83,12 @@ function HeaderIcon({
     case 'ALARM':
       return (
         // TODO: href 수정 필요
-        <Link href="/" className={cn(ICON_BASE_STYLE, className)} onClick={onClick}>
+        <Link
+          href="/"
+          aria-label="알림"
+          className={cn(ICON_BASE_STYLE, className)}
+          onClick={onClick}
+        >
           <NotificationIconFill className="size-6 text-icon-neutral-secondary" />
         </Link>
       );
