@@ -11,29 +11,19 @@ import AddByImageDialog from './AddByImageDialog';
 import AddByLinkDialog from './AddByLinkDialog';
 import WishOptionButton from './WishOptionButton';
 
+type OpenDialogT = 'wish' | 'link' | 'image' | null;
+
 type AddWishDialogProps = {
   trigger: ReactNode;
 };
 
 function AddWishDialog({ trigger }: AddWishDialogProps) {
   const router = useRouter();
-  const [wishOpen, setWishOpen] = useState(false);
-  const [linkOpen, setLinkOpen] = useState(false);
-  const [imageOpen, setImageOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState<OpenDialogT>(null);
 
   const handleWishlist = () => {
-    setWishOpen(false);
+    setOpenDialog(null);
     router.push('/tournament/create/by-wish');
-  };
-
-  const handleLink = () => {
-    setWishOpen(false);
-    setLinkOpen(true);
-  };
-
-  const handleImage = () => {
-    setWishOpen(false);
-    setImageOpen(true);
   };
 
   const handleLinkSubmit = (url: string) => {
@@ -44,7 +34,7 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
 
   return (
     <>
-      <Dialog open={wishOpen} onOpenChange={setWishOpen}>
+      <Dialog open={openDialog === 'wish'} onOpenChange={open => setOpenDialog(open ? 'wish' : null)}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent
           showCloseButton={false}
@@ -64,20 +54,27 @@ function AddWishDialog({ trigger }: AddWishDialogProps) {
               label="링크로 담기"
               description="상품URL을 붙여넣어요"
               Icon={LinkIconFill}
-              onClick={handleLink}
+              onClick={() => setOpenDialog('link')}
             />
             <WishOptionButton
               label="이미지로 담기"
               description="스크린샷을 첨부해요"
               Icon={ImageIconFill}
-              onClick={handleImage}
+              onClick={() => setOpenDialog('image')}
             />
           </div>
         </DialogContent>
       </Dialog>
 
-      <AddByLinkDialog open={linkOpen} onOpenChange={setLinkOpen} onSubmit={handleLinkSubmit} />
-      <AddByImageDialog open={imageOpen} onOpenChange={setImageOpen} />
+      <AddByLinkDialog
+        open={openDialog === 'link'}
+        onOpenChange={open => setOpenDialog(open ? 'link' : null)}
+        onSubmit={handleLinkSubmit}
+      />
+      <AddByImageDialog
+        open={openDialog === 'image'}
+        onOpenChange={open => setOpenDialog(open ? 'image' : null)}
+      />
     </>
   );
 }
