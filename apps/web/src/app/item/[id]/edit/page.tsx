@@ -1,6 +1,9 @@
-import { MOCK_ITEM } from '@/mocks/items';
-import type { ItemTypeT } from '@/types/item';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
+import type { ItemTypeT } from '@/types/item';
+import { getQueryClient } from '@/utils/queryClient';
+
+import { getWishlist } from './_apis/getWishlist';
 import ItemEditForm from './_components/ItemEditForm';
 
 const parseType = (raw: string | string[] | undefined): ItemTypeT => {
@@ -14,21 +17,21 @@ type ItemEditPageProps = {
 };
 
 async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
-  await params;
+  const { id } = await params;
   const { type: typeParam } = await searchParams;
   const type = parseType(typeParam);
+  const wishId = Number(id);
 
-  // TODO: type, id 기반으로 실제 데이터 조회 (현재는 mock)
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['wishlist'],
+    queryFn: getWishlist,
+  });
 
   return (
-    <ItemEditForm
-      type={type}
-      initialName={MOCK_ITEM.name}
-      initialPrice={MOCK_ITEM.price}
-      imageUrl={MOCK_ITEM.imageUrl}
-      productUrl={MOCK_ITEM.productUrl}
-      productUrlLabel={MOCK_ITEM.productUrlLabel}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ItemEditForm type={type} wishId={wishId} />
+    </HydrationBoundary>
   );
 }
 
