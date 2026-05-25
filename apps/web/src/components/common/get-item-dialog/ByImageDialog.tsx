@@ -4,6 +4,7 @@ import { ImageIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import { useImagePicker } from '@/hooks/useImagePicker';
+import { usePostWishOCR } from '@/hooks/usePostWishOCR';
 import type { ItemTypeT } from '@/types/item';
 
 import Spacing from '../spacing';
@@ -17,13 +18,21 @@ type Props = {
 };
 
 function ByImageDialog({ type, open, onOpenChange }: Props) {
+  const { mutate: postWishOCR } = usePostWishOCR();
+
   const { openPicker, inputRef, handleInputChange, isPending } = useImagePicker({
     maxCount: MAX_IMAGE_COUNT,
     onSuccess: async _files => {
-      if (type === 'wish')
-        // TODO: API 연동
+      if (type === 'wish') {
+        _files.forEach(file => {
+          const formData = new FormData();
+          formData.append('image', file);
+          postWishOCR(formData);
+        });
+      }
+      // TODO: API 연동
 
-        onOpenChange(false);
+      onOpenChange(false);
     },
   });
 
