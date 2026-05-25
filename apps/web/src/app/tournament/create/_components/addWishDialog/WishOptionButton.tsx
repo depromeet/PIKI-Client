@@ -15,7 +15,7 @@ function WishOptionButton({ label, description, Icon, onClick }: WishOptionButto
       type="button"
       onClick={onClick}
       className={cn(
-        'flex w-full items-center gap-4 rounded-[12px] border border-gray-100 bg-bg-layer-default px-5 pt-4 pb-[15px]',
+        'flex w-full cursor-pointer items-center gap-4 rounded-[12px] border border-gray-100 bg-bg-layer-default px-5 pt-4 pb-[15px]',
         'transition-colors active:bg-gray-50'
       )}
     >
