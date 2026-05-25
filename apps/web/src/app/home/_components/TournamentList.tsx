@@ -18,7 +18,7 @@ function TorunamentList() {
           key={tournament.tournamentId}
           state="adding" // TODO: 상태에 따라 변경
           name={tournament.name}
-          date={tournament.createdAt}
+          date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
           users={MOCK_USERS} // TODO: 유저 목록에 따라 변경
         />
       ))}
