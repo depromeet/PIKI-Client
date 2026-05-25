@@ -1,21 +1,25 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { LinkIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import Input from '@/components/common/input';
+import type { ItemTypeT } from '@/types/item';
 
 const URL_PATTERN = /^https?:\/\/.+/i;
 
-type AddByLinkDialogProps = {
+type ByLinkProps = {
+  type: ItemTypeT;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit?: (url: string) => void;
 };
 
-function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps) {
+function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
+  const router = useRouter();
+
   const [url, setUrl] = useState('');
   const [hasError, setHasError] = useState(false);
 
@@ -35,7 +39,9 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
       return;
     }
 
-    onSubmit?.(trimmedUrl);
+    if (type === 'wish') router.push('/wishlist');
+    else router.push(`/item/new/edit?type=tournament&url=${encodeURIComponent(trimmedUrl)}`);
+
     onOpenChange(false);
     resetState();
   };
@@ -47,19 +53,17 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        showCloseButton={false}
-        className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-5 rounded-3xl"
-      >
+      <DialogContent showCloseButton={false} className="flex flex-col gap-5 rounded-3xl">
         <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           링크로 담기
         </DialogTitle>
+        <DialogDescription className="sr-only">상품 URL을 입력해 담습니다.</DialogDescription>
         <div className="flex flex-col gap-4">
           <Input
             label="링크 URL"
             placeholder="복사한 링크를 입력해주세요."
             value={url}
-            onChange={e => handleChange(e.target.value)}
+            onChange={event => handleChange(event.target.value)}
             left={<LinkIconFill className="size-5" />}
             aria-invalid={hasError}
             {...(hasError ? { helperText: '올바른 URL 형식으로 입력해주세요.' } : {})}
@@ -67,7 +71,8 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
             inputMode="url"
           />
           <Button size="lg" variant="primary" disabled={isEmpty} onClick={handleSubmit}>
-            후보 바구니에 담기
+            {type === 'wish' && '위시리스트에 담기'}
+            {type === 'tournament' && '후보 바구니에 담기'}
           </Button>
         </div>
       </DialogContent>
@@ -75,4 +80,4 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
   );
 }
 
-export default AddByLinkDialog;
+export default ByLinkDialog;

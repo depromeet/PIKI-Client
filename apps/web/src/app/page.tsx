@@ -1,8 +1,9 @@
 import { cookies } from 'next/headers';
 
 import { getMe } from '@/apis/getMe';
-import LogoutButton from '@/app/_components/LogoutButton';
 import ButtonLink from '@/components/common/button/ButtonLink';
+
+import LogoutButton from './_components/LogoutButton';
 
 // TEMP
 async function Page() {

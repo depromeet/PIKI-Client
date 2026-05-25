@@ -51,7 +51,7 @@ export const extractColorDeclarations = (css: string): Map<string, string> => {
   while (match !== null) {
     const namePart = match[1];
     const valuePart = match[2];
-    if (!namePart || valuePart === undefined) {
+    if (!namePart || valuePart == null) {
       match = COLOR_DECL_REGEX.exec(themeInner);
       continue;
     }

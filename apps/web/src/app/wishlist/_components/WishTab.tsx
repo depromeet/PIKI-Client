@@ -11,7 +11,7 @@ type WishTabProps = {
 
 function WishTab({ activeTab, onTabChange }: WishTabProps) {
   return (
-    <div className="w-full">
+    <div className="w-full px-5">
       <div className="flex h-[48px] items-center rounded-[12px] bg-[#E7E8EA] p-1">
         {TABS.map(tab => (
           <button

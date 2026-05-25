@@ -17,7 +17,7 @@ export const cssRgbOrRgbaToHex = (input: string): string => {
   const blue = Number(match[3]);
   const alphaRaw = match[4];
 
-  if (alphaRaw !== undefined) {
+  if (typeof alphaRaw === 'string') {
     const alpha = Number(alphaRaw);
     if (alpha < 1)
       return `#${byteToHex(red)}${byteToHex(green)}${byteToHex(blue)}${byteToHex(alpha * 255)}`.toUpperCase();

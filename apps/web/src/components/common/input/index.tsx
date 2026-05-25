@@ -1,5 +1,5 @@
-import { useId } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -46,7 +46,7 @@ function Input({
           id={inputId}
           disabled={disabled}
           aria-invalid={ariaInvalid}
-          aria-describedby={helperText ? helperTextId : undefined}
+          {...(helperText ? { 'aria-describedby': helperTextId } : {})}
           className={cn(
             'w-full overflow-hidden bg-transparent body-1-medium text-ellipsis whitespace-nowrap text-gray-600 outline-none placeholder:text-gray-300 focus:text-gray-900 disabled:text-gray-300',
             className
@@ -55,17 +55,16 @@ function Input({
         />
         {right && <span className="shrink-0 text-gray-300">{right}</span>}
       </div>
-      {helperText && (
-        <p
-          id={helperTextId}
-          className={cn(
-            'min-h-lh body-2-regular',
-            status === 'error' ? 'text-red-600' : 'text-gray-300'
-          )}
-        >
-          {helperText}
-        </p>
-      )}
+
+      <p
+        id={helperTextId}
+        className={cn(
+          'min-h-lh body-2-regular',
+          status === 'error' ? 'text-red-600' : 'text-gray-300'
+        )}
+      >
+        {helperText}
+      </p>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
-import { LoginIconOutline, NotificationIconFill, PersonIconFill } from '@/assets/icons';
+import { LoginIconOutline } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
+import { Header, HeaderIcon } from '@/components/common/header';
 import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import { getQueryClient } from '@/utils/queryClient';
 
@@ -20,17 +21,16 @@ async function HomePage() {
   });
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-bg-layer-basement pb-32">
+    <div className="relative flex min-h-dvh flex-col bg-bg-layer-basement pt-15 pb-32">
       {/* 상단 헤더 */}
-      <header className="flex justify-end gap-3 px-5 pt-[60px]">
-        <button type="button" aria-label="마이페이지" className="p-[3px]">
-          <PersonIconFill className="size-6 text-icon-neutral-secondary" />
-        </button>
-        <button type="button" aria-label="알림" className="p-[3px]">
-          <NotificationIconFill className="size-6 text-icon-neutral-secondary" />
-        </button>
-      </header>
-
+      <Header
+        right={
+          <>
+            <HeaderIcon name="PROFILE" />
+            <HeaderIcon name="ALARM" />
+          </>
+        }
+      />
       {/* 메인 컨텐츠 */}
       <main className="mx-auto mt-[54px] flex w-[362px] flex-col gap-12">
         {/* 로고 + CTA 영역 */}
@@ -50,7 +50,7 @@ async function HomePage() {
             {/* 초대 토너먼트 입장 */}
             <button
               type="button"
-              className="flex h-[54px] w-full items-center justify-center gap-2 rounded-[12px] bg-bg-layer-default px-9"
+              className="flex h-[54px] w-full cursor-pointer items-center justify-center gap-2 rounded-[12px] bg-bg-layer-default px-9"
             >
               <LoginIconOutline className="size-6 text-icon-neutral-secondary" />
               <span className="body-1-semibold text-text-neutral-primary">초대 토너먼트 입장</span>

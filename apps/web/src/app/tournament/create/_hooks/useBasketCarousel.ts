@@ -27,7 +27,7 @@ const useBasketCarousel = () => {
 
     const endX = e.changedTouches[0]?.clientX;
 
-    if (endX === undefined) {
+    if (endX == null) {
       touchStartX.current = null;
       return;
     }

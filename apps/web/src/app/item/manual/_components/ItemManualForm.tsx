@@ -67,15 +67,15 @@ function ItemManualForm() {
           onClick={handleOpenPicker}
           aria-label="이미지 추가"
           className="mx-auto flex size-[200px] flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-black/4"
-          style={
-            imageUrl
-              ? {
+          {...(imageUrl
+            ? {
+                style: {
                   backgroundImage: `url(${imageUrl})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                }
-              : undefined
-          }
+                },
+              }
+            : {})}
         >
           {!imageUrl && (
             <>
