@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {
+    root: new URL('../..', import.meta.url).pathname,
     rules: {
       '*.svg': {
         loaders: ['@svgr/webpack'],

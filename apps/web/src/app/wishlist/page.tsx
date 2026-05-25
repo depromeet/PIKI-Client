@@ -1,28 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { toast } from 'sonner';
 
 import TrashIconFill from '@/assets/icons/fill/trash.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
 import { Header, HeaderIcon } from '@/components/common/header';
-import SuccessToast from '@/components/common/toast/SuccessToast';
+import { Toaster } from '@/components/common/toast';
+import { useDeleteWish } from '@/hooks/useDeleteWish';
+import { useGetWishlist } from '@/hooks/useGetWishlist';
 
 import WishAddDialog from './_components/WishAddDialog';
 import WishFab from './_components/WishFab';
 import WishListTabContent from './_components/WishListTabContent';
 import WishTab from './_components/WishTab';
-import { MOCK_WISH_ITEMS } from './_mocks/wishMocks';
 import type { WishTabT } from './_types/wishTypes';
-
-const TOAST_DURATION_MS = 2000;
 
 function WishlistPage() {
   const [activeTab, setActiveTab] = useState<WishTabT>('저장한 위시템');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [items, setItems] = useState(MOCK_WISH_ITEMS);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
-  const [isToastVisible, setIsToastVisible] = useState(false);
+
+  // 위시리스트 조회 (GET /api/v1/wishlists)
+  const { data: items = [] } = useGetWishlist();
+  // 선택한 위시 삭제 (DELETE /api/v1/wishlists/{wishId})
+  const { mutateAsync: deleteWishlistMutation } = useDeleteWish();
 
   const handleEnterDeleteMode = () => {
     setIsDeleteMode(true);
@@ -38,19 +42,15 @@ function WishlistPage() {
     });
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedIds.size === 0) return;
-    setItems(prev => prev.filter(item => !selectedIds.has(item.id)));
-    setSelectedIds(new Set());
-    setIsDeleteMode(false);
-    setIsToastVisible(true);
+    try {
+      await Promise.all([...selectedIds].map(id => deleteWishlistMutation(id)));
+      setSelectedIds(new Set());
+      setIsDeleteMode(false);
+      toast.success('선택한 위시를 삭제했어요');
+    } catch {}
   };
-
-  useEffect(() => {
-    if (!isToastVisible) return;
-    const timeoutId = window.setTimeout(() => setIsToastVisible(false), TOAST_DURATION_MS);
-    return () => window.clearTimeout(timeoutId);
-  }, [isToastVisible]);
 
   return (
     <div className="flex min-h-dvh flex-col bg-bg-layer-basement">
@@ -129,9 +129,7 @@ function WishlistPage() {
       </div>
 
       {/* 삭제 완료 토스트 */}
-      <div className="pointer-events-none fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 px-[21px]">
-        <SuccessToast message="선택한 위시를 삭제했어요" isVisible={isToastVisible} />
-      </div>
+      <Toaster />
 
       <WishAddDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
