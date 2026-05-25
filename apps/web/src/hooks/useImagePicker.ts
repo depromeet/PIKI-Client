@@ -1,0 +1,162 @@
+'use client';
+
+import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+import type { ChangeEvent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
+import { nativeImageToFile } from '@/utils/handleImage';
+import { WebBridge, isWebview } from '@/utils/webBridge';
+
+const DEFAULT_MAX_COUNT = 5;
+
+type PendingRequestT = {
+  resolve: (files: File[]) => void;
+  reject: (error: Error) => void;
+};
+
+type UseImagePickerProps = {
+  maxCount?: number;
+  onSuccess: (files: File[]) => void | Promise<void>;
+  onCancel?: () => void;
+  onError?: (error: Error) => void;
+};
+
+/**
+ * 웹 / 웹뷰 환경에서 이미지 선택을 처리하는 훅
+ *
+ * @param maxCount - 최대 선택 가능한 이미지 개수
+ * @param onSuccess - 이미지 선택 성공 시 호출되는 콜백 함수
+ * @param onCancel - 이미지 선택 취소 시 호출되는 콜백 함수
+ * @param onError - 이미지 선택 오류 시 호출되는 콜백 함수
+ */
+export const useImagePicker = ({
+  maxCount = DEFAULT_MAX_COUNT,
+  onSuccess,
+  onCancel,
+  onError,
+}: UseImagePickerProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  /** 웹뷰 비동기 응답을 requestId로 매칭 */
+  const pendingRequestsRef = useRef<Map<string, PendingRequestT>>(new Map());
+
+  /** 이미지 선택 중인 상태 */
+  const [isPending, setIsPending] = useState(false);
+
+  const handleImagesSelect = useCallback(
+    async (files: File[]) => {
+      setIsPending(true);
+      try {
+        await onSuccess(files);
+      } catch (error) {
+        const pickError =
+          error instanceof Error ? error : new Error('이미지 처리 중 오류가 발생했습니다.');
+        onError?.(pickError);
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [onSuccess, onError]
+  );
+
+  const rejectPendingRequest = useCallback((requestId: string, error: Error) => {
+    const pending = pendingRequestsRef.current.get(requestId);
+    if (!pending) return;
+
+    pendingRequestsRef.current.delete(requestId);
+    pending.reject(error);
+  }, []);
+
+  /** 앱 → 웹 이미지 피커 응답 수신 */
+  useWebBridgeMessage(message => {
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS) {
+      const pending = pendingRequestsRef.current.get(message.payload.requestId);
+      if (!pending) return;
+
+      pendingRequestsRef.current.delete(message.payload.requestId);
+      pending.resolve(message.payload.images.map(nativeImageToFile));
+      return;
+    }
+
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_CANCEL) {
+      rejectPendingRequest(message.payload.requestId, new Error('IMAGE_PICKER_CANCELLED'));
+      onCancel?.();
+      return;
+    }
+
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR) {
+      rejectPendingRequest(
+        message.payload.requestId,
+        new Error(message.payload.detail || '이미지 선택 중 오류가 발생했습니다.')
+      );
+    }
+  });
+
+  useEffect(
+    () => () => {
+      pendingRequestsRef.current.forEach(pending => {
+        pending.reject(new Error('IMAGE_PICKER_UNMOUNTED'));
+      });
+      pendingRequestsRef.current.clear();
+    },
+    []
+  );
+
+  /** 웹뷰: 앱에 피커 오픈 요청 후 Base64 응답 대기 */
+  const openNativePicker = useCallback(() => {
+    const requestId = crypto.randomUUID();
+
+    const pendingPromise = new Promise<File[]>((resolve, reject) => {
+      pendingRequestsRef.current.set(requestId, { resolve, reject });
+    });
+
+    setIsPending(true);
+
+    WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER, {
+      requestId,
+      maxCount,
+    });
+
+    void pendingPromise
+      .then(async files => {
+        await handleImagesSelect(files);
+      })
+      .catch(error => {
+        if (error instanceof Error && error.message === 'IMAGE_PICKER_CANCELLED') return;
+
+        const pickError =
+          error instanceof Error ? error : new Error('이미지 선택 중 오류가 발생했습니다.');
+        onError?.(pickError);
+      });
+  }, [maxCount, handleImagesSelect, onError]);
+
+  /** 이미지 첨부 피커 열기 */
+  const openPicker = useCallback(() => {
+    if (isWebview()) {
+      openNativePicker();
+      return;
+    }
+
+    inputRef.current?.click();
+  }, [openNativePicker]);
+
+  /** 웹에서 이미지 첨부 시 */
+  const handleInputChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(event.target.files ?? []).slice(0, maxCount);
+      event.target.value = '';
+
+      if (files.length === 0) return;
+
+      void handleImagesSelect(files);
+    },
+    [maxCount, handleImagesSelect]
+  );
+
+  return {
+    openPicker,
+    isPending,
+    inputRef,
+    handleInputChange,
+  };
+};

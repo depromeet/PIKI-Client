@@ -1,11 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
-
 import { ImageIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
+import { useImagePicker } from '@/hooks/useImagePicker';
 import type { ItemTypeT } from '@/types/item';
 
 import Spacing from '../spacing';
@@ -19,22 +17,15 @@ type Props = {
 };
 
 function ByImageDialog({ type, open, onOpenChange }: Props) {
-  const router = useRouter();
+  const { openPicker, inputRef, handleInputChange, isPending } = useImagePicker({
+    maxCount: MAX_IMAGE_COUNT,
+    onSuccess: async _files => {
+      if (type === 'wish')
+        // TODO: API 연동
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleOpenPicker = () => inputRef.current?.click();
-
-  const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files ?? []).slice(0, MAX_IMAGE_COUNT);
-    event.target.value = '';
-    if (files.length === 0) return;
-
-    if (type === 'wish') router.push('/wishlist');
-    /** tournament: TODO API 연동 */
-
-    onOpenChange(false);
-  };
+        onOpenChange(false);
+    },
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,10 +38,7 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           상품 스크린샷 이미지를 선택해 담습니다. (최대 {MAX_IMAGE_COUNT}장까지 가져올 수 있어요.)
         </DialogDescription>
 
-        <div
-          onClick={handleOpenPicker}
-          className="flex w-full flex-col items-center rounded-xl border border-dashed border-border-neutral-muted bg-bg-layer-basement py-8"
-        >
+        <div className="flex w-full flex-col items-center rounded-xl border border-dashed border-border-neutral-muted bg-bg-layer-basement py-8">
           <ImageIconFill className="size-6 text-icon-neutral-secondary" />
 
           <Spacing size={10} />
@@ -64,7 +52,7 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           </p>
         </div>
 
-        <Button size="lg" variant="primary" onClick={handleOpenPicker}>
+        <Button size="lg" variant="primary" onClick={openPicker} disabled={isPending}>
           사진 선택하기
         </Button>
 
@@ -74,7 +62,7 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           accept="image/*"
           multiple
           className="hidden"
-          onChange={handleFilesChange}
+          onChange={handleInputChange}
         />
       </DialogContent>
     </Dialog>
