@@ -61,7 +61,7 @@ function AddByLinkDialog({ open, onOpenChange, onSubmit }: AddByLinkDialogProps)
             onChange={handleUrlChange}
             left={<LinkIconFill className="size-5" />}
             aria-invalid={hasError}
-            helperText={hasError ? '올바른 URL 형식으로 입력해주세요.' : undefined}
+            {...(hasError && { helperText: '올바른 URL 형식으로 입력해주세요.' })}
             autoFocus
             inputMode="url"
           />
