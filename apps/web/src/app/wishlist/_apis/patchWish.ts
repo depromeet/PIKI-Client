@@ -1,11 +1,12 @@
+import { clientApi } from '@/apis/client';
+import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
-import type { PatchWishPayloadT, WishlistEntryT } from '@/types/wishlist';
 
-import { clientApi } from './client';
+import type { PatchWishPayloadT, WishlistEntryT } from '../_types/wishTypes';
 
 export const patchWish = async (wishId: number, payload: PatchWishPayloadT) => {
   const { data } = await clientApi.patch<ApiResponseT<WishlistEntryT>>(
-    `/api/v1/wishlists/${wishId}`,
+    ENDPOINTS.WISHLIST(wishId),
     payload
   );
   return data.data;

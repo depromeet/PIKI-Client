@@ -12,7 +12,7 @@ function FabMenu({ onAddItem, onDelete }: FabMenuProps) {
       <button
         type="button"
         onClick={onAddItem}
-        className="flex items-start gap-3 self-stretch rounded-xl px-4 py-3 active:bg-gray-50"
+        className="flex cursor-pointer items-start gap-3 self-stretch rounded-xl px-4 py-3 active:bg-gray-50"
       >
         <HeartIconFill width={20} height={20} className="shrink-0 text-gray-600" />
         {/* TODO: 아이템 추가 페이지 생기면 연결 */}
@@ -21,7 +21,7 @@ function FabMenu({ onAddItem, onDelete }: FabMenuProps) {
       <button
         type="button"
         onClick={onDelete}
-        className="flex items-start gap-3 self-stretch rounded-xl px-4 py-3 active:bg-gray-50"
+        className="flex cursor-pointer items-start gap-3 self-stretch rounded-xl px-4 py-3 active:bg-gray-50"
       >
         <TrashIconFill width={20} height={20} className="shrink-0 text-gray-600" />
         <span className="flex-1 text-left body-1-semibold text-[#2D3037]">삭제하기</span>
