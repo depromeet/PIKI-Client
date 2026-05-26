@@ -59,7 +59,7 @@ function ByWishPage() {
       </main>
 
       {/* 하단 버튼: 뒤로 / 다음 */}
-      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] bg-[#FFF] px-5 py-3 pt-4">
+      <div className="bg-layer-basement fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] px-5 py-3">
         <Button variant="secondary" size="lg" onClick={() => router.back()}>
           뒤로
         </Button>
