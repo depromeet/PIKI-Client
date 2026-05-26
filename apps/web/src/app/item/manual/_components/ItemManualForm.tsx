@@ -42,12 +42,12 @@ function ItemManualForm() {
   };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
       <button
         type="button"
         onClick={handleBack}
         aria-label="뒤로가기"
-        className="absolute top-[60px] left-5 p-0"
+        className="absolute top-[60px] left-5 cursor-pointer p-0"
       >
         <ChevronBackwardIconFill className="size-[30px] text-icon-neutral-primary" />
       </button>
@@ -66,7 +66,7 @@ function ItemManualForm() {
           type="button"
           onClick={handleOpenPicker}
           aria-label="이미지 추가"
-          className="mx-auto flex size-[200px] flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-black/4"
+          className="mx-auto flex size-[200px] cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-black/4"
           {...(imageUrl
             ? {
                 style: {
@@ -130,7 +130,7 @@ function ItemManualForm() {
           저장하기
         </Button>
       </div>
-    </div>
+    </main>
   );
 }
 
