@@ -49,7 +49,9 @@ function WishlistPage() {
       setSelectedIds(new Set());
       setIsDeleteMode(false);
       toast.success('선택한 위시를 삭제했어요');
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

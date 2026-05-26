@@ -9,6 +9,6 @@ export const getWishlist = async () => {
     id: wish.id,
     name: item.name,
     price: item.currentPrice,
-    imageUrl: item.imageUrl || undefined,
+    imageUrl: item.imageUrl || void 0,
   }));
 };
