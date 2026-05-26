@@ -10,6 +10,7 @@ export const useDeleteWish = (wishId: number) => {
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteWish(wishId),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
       router.back();
     },

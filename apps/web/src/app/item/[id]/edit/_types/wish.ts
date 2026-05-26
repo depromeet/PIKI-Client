@@ -13,8 +13,6 @@ export type WishT = {
   };
 };
 
-export type GetWishlistResponseT = WishT[];
-
 export type PatchWishRequestT = {
   name?: string;
   currentPrice?: number;

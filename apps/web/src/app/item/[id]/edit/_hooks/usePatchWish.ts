@@ -11,6 +11,7 @@ export const usePatchWish = (wishId: number) => {
   const { mutate, isPending } = useMutation({
     mutationFn: (body: PatchWishRequestT) => patchWish(wishId, body),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
       router.back();
     },

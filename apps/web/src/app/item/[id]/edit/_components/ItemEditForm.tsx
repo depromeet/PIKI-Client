@@ -40,9 +40,9 @@ function ItemEditForm({ type, wishId }: ItemEditFormProps) {
   const { mutate: updateWish, isPending: isUpdating } = usePatchWish(wishId);
   const { mutate: removeWish, isPending: isDeleting } = useDeleteWish(wishId);
 
-  const [name, setName] = useState(wish?.item.name ?? '');
+  const [name, setName] = useState(wish.item.name);
   const [price, setPrice] = useState(
-    wish?.item.currentPrice ? formatPrice(String(wish.item.currentPrice)) : ''
+    wish.item.currentPrice ? formatPrice(String(wish.item.currentPrice)) : ''
   );
 
   const isWish = type === 'wish';
@@ -63,14 +63,6 @@ function ItemEditForm({ type, wishId }: ItemEditFormProps) {
       currentPrice: parsePriceToNumber(price),
     });
   };
-
-  if (!wish) {
-    return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-default">
-        <p className="body-1-medium text-text-neutral-tertiary">위시템을 찾을 수 없어요</p>
-      </main>
-    );
-  }
 
   const { item } = wish;
   const sourceUrl = item.sourceUrl ?? '';

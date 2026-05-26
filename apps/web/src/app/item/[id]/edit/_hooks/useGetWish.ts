@@ -1,14 +1,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { getWishlist } from '../_apis/getWishlist';
+import { getWish } from '../_apis/getWish';
 
 export const useGetWish = (wishId: number) => {
-  const { data: list } = useSuspenseQuery({
-    queryKey: ['wishlist'],
-    queryFn: getWishlist,
+  const { data: wish } = useSuspenseQuery({
+    queryKey: ['wish', wishId],
+    queryFn: () => getWish(wishId),
   });
-
-  const wish = list.find(entry => entry.wish.id === wishId) ?? null;
 
   return { wish };
 };

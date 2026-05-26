@@ -3,7 +3,7 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { ItemTypeT } from '@/types/item';
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getWishlist } from './_apis/getWishlist';
+import { getWish } from './_apis/getWish';
 import ItemEditForm from './_components/ItemEditForm';
 
 const parseType = (raw: string | string[] | undefined): ItemTypeT => {
@@ -24,8 +24,8 @@ async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ['wishlist'],
-    queryFn: getWishlist,
+    queryKey: ['wish', wishId],
+    queryFn: () => getWish(wishId),
   });
 
   return (
