@@ -53,7 +53,7 @@ function ItemEditForm({
   return (
     <div className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-[78px]">
       {isWish && <Header left={<HeaderIcon name="BACK" />} />}
-      <div className="mx-auto flex w-[362px] flex-col gap-6 px-0 pt-3">
+      <div className="flex w-full flex-col gap-6 px-5 pt-3">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
