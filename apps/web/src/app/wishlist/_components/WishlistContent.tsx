@@ -75,7 +75,7 @@ function WishlistContent() {
         )}
       </main>
 
-      <div className="fixed bottom-[40px] left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+      <div className="fixed bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
         {isDeleteMode ? (
           <div className="flex h-[68px] w-[168px] items-center justify-center rounded-full bg-bg-layer-default shadow-[0px_0px_8px_0px_rgba(0,0,0,0.04)]">
             <span className="body-1-bold text-text-neutral-primary">{selectedIds.size}개 선택됨</span>
@@ -93,7 +93,7 @@ function WishlistContent() {
               onClick={handleConfirmDelete}
               aria-label="선택한 위시 삭제하기"
               disabled={selectedIds.size === 0}
-              className="flex size-[62px] items-center justify-center rounded-full border border-border-neutral-muted bg-bg-layer-default shadow-[0px_0px_8px_0px_rgba(0,0,0,0.04)] disabled:opacity-50"
+              className="flex size-[62px] cursor-pointer items-center justify-center rounded-full border border-border-neutral-muted bg-bg-layer-default shadow-[0px_0px_8px_0px_rgba(0,0,0,0.04)] disabled:opacity-50"
             >
               <TrashIconFill width={33} height={33} className="text-icon-neutral-primary" />
             </button>

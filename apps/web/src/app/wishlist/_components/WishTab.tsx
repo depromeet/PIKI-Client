@@ -31,16 +31,16 @@ function WishTab() {
 
   return (
     <div className="w-full px-5">
-      <div className="flex h-[48px] items-center rounded-[12px] bg-[#E7E8EA] p-1">
+      <div className="flex h-12 items-center rounded-xl bg-[#E7E8EA] p-1">
         {TABS.map(tab => (
           <button
             key={tab}
             type="button"
             onClick={() => handleTabChange(tab)}
             className={cn(
-              'flex h-[40px] flex-1 items-center justify-center gap-2 text-[16.203px] leading-normal font-semibold transition-colors',
+              'flex h-10 flex-1 cursor-pointer items-center justify-center gap-2 text-[16.203px] leading-normal font-semibold transition-colors',
               activeTab === tab
-                ? 'rounded-[8px] bg-white text-[#000] shadow-[0_0_8px_0_rgba(0,0,0,0.08)]'
+                ? 'rounded-lg bg-white text-black shadow-[0_0_8px_0_rgba(0,0,0,0.08)]'
                 : 'text-gray-400'
             )}
           >
