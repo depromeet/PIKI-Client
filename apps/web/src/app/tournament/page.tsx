@@ -1,14 +1,32 @@
 'use client';
 
 import RoundBadge from './_components/RoundBadge';
+import RoundTransition from './_components/RoundTransition';
 import TournamentQuestion from './_components/TournamentQuestion';
 import VsSection from './_components/VsSection';
-import { FINAL_ROUND_LABEL } from './_consts/rounds';
+import { ROUND_TRANSITION_COPY } from './_consts/rounds';
 import useTournament from './_hooks/useTournament';
 
 function TournamentPage() {
-  const { currentMatch, roundLabel, handleSelect } = useTournament();
-  const isFinal = roundLabel === FINAL_ROUND_LABEL;
+  const {
+    currentMatch,
+    roundLabel,
+    isFinalRound,
+    transitionStage,
+    handleSelect,
+    handleTransitionComplete,
+  } = useTournament();
+
+  if (transitionStage) {
+    const copy = ROUND_TRANSITION_COPY[transitionStage];
+    return (
+      <RoundTransition
+        title={copy.title}
+        description={copy.description}
+        onComplete={handleTransitionComplete}
+      />
+    );
+  }
 
   return (
     <div className="hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto bg-bg-layer-basement px-4 pt-[calc(env(safe-area-inset-top)+48px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
@@ -22,7 +40,7 @@ function TournamentPage() {
             key={roundLabel}
             left={currentMatch[0]}
             right={currentMatch[1]}
-            isFinal={isFinal}
+            isFinal={isFinalRound}
             onSelect={handleSelect}
           />
         )}

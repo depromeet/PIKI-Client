@@ -1,0 +1,90 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import { FireIconFill } from '@/assets/icons';
+
+type RoundTransitionProps = {
+  title: string;
+  description: string;
+  duration?: number;
+  onComplete: () => void;
+};
+
+const ARC_SIZE = 164;
+const ARC_STROKE_WIDTH = 4;
+const ARC_RADIUS = (ARC_SIZE - ARC_STROKE_WIDTH) / 2;
+const ARC_CIRCUMFERENCE = 2 * Math.PI * ARC_RADIUS;
+
+function RoundTransition({ title, description, duration = 3, onComplete }: RoundTransitionProps) {
+  const [remaining, setRemaining] = useState(duration);
+  // 마운트 직후 한 프레임 동안 호 가득 → started=true 되면 transition으로 0까지 줄어듦
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setStarted(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
+    if (remaining <= 0) {
+      onComplete();
+      return;
+    }
+    const timer = setTimeout(() => setRemaining(prev => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [remaining, onComplete]);
+
+  // 호 길이: 마운트 직후엔 가득, 이후엔 전체 duration에 걸쳐 0까지 줄어듦
+  const visibleArcLength = started ? 0 : ARC_CIRCUMFERENCE;
+  const arcTransitionDuration = started ? duration * 1000 : 0;
+
+  return (
+    <main className="flex min-h-dvh w-full flex-col items-center bg-bg-layer-basement px-5">
+      <div className="mt-35 flex flex-col items-center gap-4">
+        <FireIconFill className="size-11 text-blue-500" aria-hidden />
+        <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
+          {title}
+        </h1>
+      </div>
+
+      <p className="mt-6 text-center text-[18px] leading-6.5 font-medium tracking-[-0.6px] text-text-neutral-secondary whitespace-pre-line">
+        {description}
+      </p>
+
+      <div className="relative mt-15 flex size-66.25 items-center justify-center">
+        {/* 가장 바깥 옅은 링 — C5DBFB 10% */}
+        <div className="absolute inset-0 rounded-full bg-[#C5DBFB]/10" aria-hidden />
+        {/* 중간 링 — C5DBFB 20% */}
+        <div className="absolute inset-6 rounded-full bg-[#C5DBFB]/20" aria-hidden />
+        {/* 흰 원 */}
+        <div className="relative flex size-41 items-center justify-center rounded-full bg-white shadow-[0_2px_10px_0_rgba(197,219,251,0.20)]">
+          {/* 카운트다운 호 — 흰 원 가장자리를 따라 도는 진행 호 */}
+          <svg
+            width={ARC_SIZE}
+            height={ARC_SIZE}
+            className="absolute -rotate-90"
+            aria-label={`${remaining}초 후 다음 화면`}
+          >
+            <circle
+              cx={ARC_SIZE / 2}
+              cy={ARC_SIZE / 2}
+              r={ARC_RADIUS}
+              stroke="#74ABF9"
+              strokeWidth={ARC_STROKE_WIDTH}
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray={`${visibleArcLength} ${ARC_CIRCUMFERENCE}`}
+              style={{ transition: `stroke-dasharray ${arcTransitionDuration}ms linear` }}
+            />
+          </svg>
+          <span className="text-[48px] leading-8 font-bold tracking-[-0.6px] text-blue-500">
+            {remaining}
+          </span>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+export default RoundTransition;
