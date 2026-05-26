@@ -131,7 +131,7 @@ function WishlistPage() {
       </div>
 
       {/* 삭제 완료 토스트 */}
-      <Toaster />
+      <Toaster mobileOffset={{ bottom: '146px' }} />
 
       <WishAddDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
