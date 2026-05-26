@@ -95,7 +95,7 @@ function ItemEditForm({
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-3 border-t border-gray-50 bg-bg-layer-basement px-5 py-3">
+      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-3 border-t border-gray-50 bg-bg-layer-basement p-5">
         {!isWish && (
           <Button
             variant="secondary"

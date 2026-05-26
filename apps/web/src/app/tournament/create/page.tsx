@@ -13,7 +13,7 @@ function TournamentCreatePage() {
         <WishBasketStatus />
         <WishBasketCarousel />
       </div>
-      <div className="pb-8">
+      <div className="pb-5">
         <TournamentStartButton count={0} />
       </div>
     </div>
