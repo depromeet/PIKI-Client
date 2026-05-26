@@ -20,6 +20,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'api.dicebear.com',
       },
+      // TEMP: 위시 상품 이미지 임시
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
     ],
   },
 
