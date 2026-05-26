@@ -34,7 +34,7 @@ function ByWishPage() {
   };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#F4F4F6] px-5">
+    <div className="flex min-h-dvh flex-col bg-[#F4F4F6]">
       {/* 헤더: 선택 안내 문구 + 선택 개수 */}
       <WishSelectHeader
         selectedCount={selectedIds.length}

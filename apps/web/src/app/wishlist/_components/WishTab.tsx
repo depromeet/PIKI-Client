@@ -30,8 +30,8 @@ function WishTab() {
   };
 
   return (
-    <div className="w-full px-5">
-      <div className="flex h-12 items-center rounded-xl bg-[#E7E8EA] p-1">
+    <div className="w-full">
+      <div className="flex h-[48px] items-center rounded-[12px] bg-[#E7E8EA] p-1">
         {TABS.map(tab => (
           <button
             key={tab}

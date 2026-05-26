@@ -46,7 +46,7 @@ function Header({
   return (
     <header
       className={cn(
-        'relative flex h-7.5 w-full shrink-0 items-center justify-between px-5',
+        'relative flex h-7.5 w-full shrink-0 items-center justify-between',
         className
       )}
     >
@@ -66,7 +66,7 @@ function Header({
   );
 }
 
-const ICON_BASE_STYLE = 'p-[3px] cursor-pointer';
+const ICON_BASE_STYLE = 'cursor-pointer';
 
 function HeaderIcon({
   name,

@@ -21,7 +21,7 @@ async function HomePage() {
   });
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-bg-layer-basement pt-9 pb-32">
+    <div className="relative flex min-h-dvh flex-col pt-9 pb-32">
       {/* 상단 헤더 */}
       <Header
         right={
@@ -32,7 +32,7 @@ async function HomePage() {
         }
       />
       {/* 메인 컨텐츠 */}
-      <main className="mt-[54px] flex w-full flex-col gap-12 px-5">
+      <main className="mt-[54px] flex w-full flex-col gap-12">
         {/* 로고 + CTA 영역 */}
         <section className="flex flex-col items-center gap-12">
           {/* PIKI 로고 */}

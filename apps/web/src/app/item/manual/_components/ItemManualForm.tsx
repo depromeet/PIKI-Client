@@ -49,12 +49,12 @@ function ItemManualForm() {
     price.replace(/[^\d]/g, '') !== '0';
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
+    <main className="flex min-h-dvh flex-col pb-[78px]">
       <div className="pt-9">
         <Header left={<HeaderIcon name="BACK" onClick={handleBack} />} />
       </div>
 
-      <div className="flex w-full flex-col gap-6 px-5 pt-6">
+      <div className="flex w-full flex-col gap-6 pt-6">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
