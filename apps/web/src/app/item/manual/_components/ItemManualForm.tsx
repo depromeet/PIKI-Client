@@ -41,7 +41,11 @@ function ItemManualForm() {
     router.back();
   };
 
-  const isValid = Boolean(imageUrl) && name.trim().length > 0 && price.replace(/[^\d]/g, '') !== '' && price.replace(/[^\d]/g, '') !== '0';
+  const isValid =
+    Boolean(imageUrl) &&
+    name.trim().length > 0 &&
+    price.replace(/[^\d]/g, '') !== '' &&
+    price.replace(/[^\d]/g, '') !== '0';
 
   return (
     <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
@@ -49,7 +53,7 @@ function ItemManualForm() {
         type="button"
         onClick={handleBack}
         aria-label="뒤로가기"
-        className="absolute top-[60px] left-5 cursor-pointer p-0"
+        className="absolute top-9 left-5 cursor-pointer p-0"
       >
         <ChevronBackwardIconFill className="size-[30px] text-icon-neutral-primary" />
       </button>
