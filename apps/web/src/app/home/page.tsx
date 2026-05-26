@@ -21,7 +21,7 @@ async function HomePage() {
   });
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-bg-layer-basement pt-15 pb-32">
+    <div className="relative flex min-h-dvh flex-col bg-bg-layer-basement pt-9 pb-32">
       {/* 상단 헤더 */}
       <Header
         right={
