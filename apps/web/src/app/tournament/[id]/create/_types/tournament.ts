@@ -1,4 +1,15 @@
-import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
+import type { TOURNAMENT_STATUS } from '@/consts/tournament';
+
+export type TournamentStatusT = (typeof TOURNAMENT_STATUS)[keyof typeof TOURNAMENT_STATUS];
+
+export type TournamentItemT = {
+  tournamentItemId: number;
+  itemId: number;
+  name: string;
+  price: number;
+  currency: string;
+  imageUrl: string;
+};
 
 export type TournamentParticipantT = {
   userId: string;
@@ -6,7 +17,7 @@ export type TournamentParticipantT = {
   profileImage: string;
 };
 
-export type GetTournamentResponseT = {
+export type TournamentDataT = {
   tournamentId: number;
   name: string;
   status: TournamentStatusT;
