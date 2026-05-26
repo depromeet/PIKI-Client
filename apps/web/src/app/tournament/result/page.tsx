@@ -102,7 +102,7 @@ function TournamentResultPage() {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center gap-2.5 bg-bg-layer-basement px-5 pt-3 pb-5">
+      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center gap-2.5 px-5 pt-3 pb-5">
         <button
           type="button"
           onClick={handleGoHome}
