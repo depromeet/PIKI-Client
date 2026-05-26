@@ -3,8 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { ChevronBackwardIconFill, ImageIconOutline } from '@/assets/icons';
+import { ImageIconOutline } from '@/assets/icons';
 import Button from '@/components/common/button';
+import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
 import formatPrice from '@/utils/formatPrice';
 
@@ -49,16 +50,11 @@ function ItemManualForm() {
 
   return (
     <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
-      <button
-        type="button"
-        onClick={handleBack}
-        aria-label="뒤로가기"
-        className="absolute top-9 left-5 cursor-pointer p-0"
-      >
-        <ChevronBackwardIconFill className="size-[30px] text-icon-neutral-primary" />
-      </button>
+      <div className="pt-9">
+        <Header left={<HeaderIcon name="BACK" onClick={handleBack} />} />
+      </div>
 
-      <div className="flex w-full flex-col gap-6 px-5 pt-[102px]">
+      <div className="flex w-full flex-col gap-6 px-5 pt-6">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
