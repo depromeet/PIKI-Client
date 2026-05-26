@@ -34,6 +34,10 @@ function ItemEditForm({
   const [name, setName] = useState(initialName);
   const [price, setPrice] = useState(formatPrice(initialPrice));
 
+  const isChanged =
+    name.trim() !== initialName.trim() ||
+    formatPrice(price) !== formatPrice(initialPrice);
+
   const handleDelete = () => {
     // TODO: 후보 삭제 처리
     router.back();
@@ -104,7 +108,13 @@ function ItemEditForm({
             삭제하기
           </Button>
         )}
-        <Button variant="primary" size="lg" onClick={handleSave} className="flex-1">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={handleSave}
+          disabled={!isChanged}
+          className="flex-1"
+        >
           저장하기
         </Button>
       </div>

@@ -41,6 +41,8 @@ function ItemManualForm() {
     router.back();
   };
 
+  const isValid = Boolean(imageUrl) && name.trim().length > 0 && price.replace(/[^\d]/g, '') !== '' && price.replace(/[^\d]/g, '') !== '0';
+
   return (
     <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
       <button
@@ -126,7 +128,13 @@ function ItemManualForm() {
         >
           삭제하기
         </Button>
-        <Button variant="primary" size="lg" onClick={handleSave} className="flex-1">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={handleSave}
+          disabled={!isValid}
+          className="flex-1"
+        >
           저장하기
         </Button>
       </div>
