@@ -48,7 +48,7 @@ function TournamentPage() {
           </p>
         )}
       </div>
-      <div className={`w-full ${isFinalRound ? 'mt-25' : 'mt-3'}`}>
+      <div className={`w-full ${isFinalRound ? 'mt-29' : 'mt-8'}`}>
         {currentMatch && (
           <VsSection
             key={roundLabel}

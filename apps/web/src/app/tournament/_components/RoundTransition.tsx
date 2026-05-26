@@ -54,9 +54,9 @@ function RoundTransition({
 
   return (
     <main
-      className={`flex min-h-dvh w-full flex-col items-center px-5 ${containerClassName}`}
+      className={`flex min-h-dvh w-full flex-col items-center px-5 pt-[calc(env(safe-area-inset-top)+48px)] ${containerClassName}`}
     >
-      <div className="mt-35 flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4">
         {isFinal ? (
           <div className="flex items-center justify-center gap-1.5 rounded-[28px] bg-white px-5 py-3">
             <TrophyIconFill className="size-4.5 text-yellow-400" aria-hidden />
@@ -76,7 +76,7 @@ function RoundTransition({
         {description}
       </p>
 
-      <div className="relative mt-15 flex size-66.25 items-center justify-center">
+      <div className="relative mt-24 flex size-66.25 items-center justify-center">
         {/* 가장 바깥 옅은 링 */}
         <div className="absolute inset-0 rounded-full bg-[#C5DBFB]/10" aria-hidden />
         {/* 중간 링 */}
