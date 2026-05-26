@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import { FireIconFill } from '@/assets/icons';
+import { FireIconFill, TrophyIconFill } from '@/assets/icons';
+
+import type { TransitionStageT } from '../_consts/rounds';
 
 type RoundTransitionProps = {
+  stage: TransitionStageT;
   title: string;
   description: string;
   duration?: number;
@@ -16,7 +19,13 @@ const ARC_STROKE_WIDTH = 4;
 const ARC_RADIUS = (ARC_SIZE - ARC_STROKE_WIDTH) / 2;
 const ARC_CIRCUMFERENCE = 2 * Math.PI * ARC_RADIUS;
 
-function RoundTransition({ title, description, duration = 3, onComplete }: RoundTransitionProps) {
+function RoundTransition({
+  stage,
+  title,
+  description,
+  duration = 3,
+  onComplete,
+}: RoundTransitionProps) {
   const [remaining, setRemaining] = useState(duration);
   // 마운트 직후 한 프레임 동안 호 가득 → started=true 되면 transition으로 0까지 줄어듦
   const [started, setStarted] = useState(false);
@@ -35,14 +44,29 @@ function RoundTransition({ title, description, duration = 3, onComplete }: Round
     return () => clearTimeout(timer);
   }, [remaining, onComplete]);
 
-  // 호 길이: 마운트 직후엔 가득, 이후엔 전체 duration에 걸쳐 0까지 줄어듦
   const visibleArcLength = started ? 0 : ARC_CIRCUMFERENCE;
   const arcTransitionDuration = started ? duration * 1000 : 0;
+  const isFinal = stage === 'toFinal';
+
+  const containerClassName = isFinal
+    ? 'bg-gradient-to-b from-[#ECF3FE] via-[#F3F7FE] to-white'
+    : 'bg-bg-layer-basement';
 
   return (
-    <main className="flex min-h-dvh w-full flex-col items-center bg-bg-layer-basement px-5">
+    <main
+      className={`flex min-h-dvh w-full flex-col items-center px-5 ${containerClassName}`}
+    >
       <div className="mt-35 flex flex-col items-center gap-4">
-        <FireIconFill className="size-11 text-blue-500" aria-hidden />
+        {isFinal ? (
+          <div className="flex items-center justify-center gap-1.5 rounded-[28px] bg-white px-5 py-3">
+            <TrophyIconFill className="size-4.5 text-yellow-400" aria-hidden />
+            <span className="text-[18px] leading-6.5 font-semibold tracking-[-0.6px] text-text-neutral-secondary">
+              결승전
+            </span>
+          </div>
+        ) : (
+          <FireIconFill className="size-11 text-blue-500" aria-hidden />
+        )}
         <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
           {title}
         </h1>
@@ -53,13 +77,12 @@ function RoundTransition({ title, description, duration = 3, onComplete }: Round
       </p>
 
       <div className="relative mt-15 flex size-66.25 items-center justify-center">
-        {/* 가장 바깥 옅은 링 — C5DBFB 10% */}
+        {/* 가장 바깥 옅은 링 */}
         <div className="absolute inset-0 rounded-full bg-[#C5DBFB]/10" aria-hidden />
-        {/* 중간 링 — C5DBFB 20% */}
+        {/* 중간 링 */}
         <div className="absolute inset-6 rounded-full bg-[#C5DBFB]/20" aria-hidden />
-        {/* 흰 원 */}
+        {/* 흰 원 + 카운트다운 호 */}
         <div className="relative flex size-41 items-center justify-center rounded-full bg-white shadow-[0_2px_10px_0_rgba(197,219,251,0.20)]">
-          {/* 카운트다운 호 — 흰 원 가장자리를 따라 도는 진행 호 */}
           <svg
             width={ARC_SIZE}
             height={ARC_SIZE}

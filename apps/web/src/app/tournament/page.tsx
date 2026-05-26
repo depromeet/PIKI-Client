@@ -21,6 +21,7 @@ function TournamentPage() {
     const copy = ROUND_TRANSITION_COPY[transitionStage];
     return (
       <RoundTransition
+        stage={transitionStage}
         title={copy.title}
         description={copy.description}
         onComplete={handleTransitionComplete}
