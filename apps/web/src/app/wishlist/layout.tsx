@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { Header, HeaderIcon } from '@/components/common/header';
 
 import WishTab from './_components/WishTab';
@@ -23,7 +25,9 @@ function WishlistLayout({ children }: WishlistLayoutProps) {
             내 보관함
           </h1>
         </div>
-        <WishTab />
+        <Suspense>
+          <WishTab />
+        </Suspense>
       </div>
       {children}
     </div>

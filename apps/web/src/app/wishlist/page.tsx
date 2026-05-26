@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getQueryClient } from '@/utils/queryClient';
@@ -15,7 +17,9 @@ async function WishlistPage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <WishlistContent />
+      <Suspense>
+        <WishlistContent />
+      </Suspense>
     </HydrationBoundary>
   );
 }
