@@ -4,7 +4,7 @@ import ProductImage from '@/components/common/product-image';
 
 type WishItemProps = {
   index: number;
-  url: StaticImageData;
+  url?: string | StaticImageData;
 };
 
 function WishItem({ index, url }: WishItemProps) {

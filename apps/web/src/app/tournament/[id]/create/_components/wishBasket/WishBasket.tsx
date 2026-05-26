@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
@@ -10,7 +9,7 @@ import WishItem from './WishItem';
 
 type WishBasketProps = {
   basketIndex: number;
-  items: { id: number; imageUrl: StaticImageData }[];
+  items: { id: number | string; imageUrl: StaticImageData | string }[];
 };
 
 function WishBasket({ basketIndex, items }: WishBasketProps) {
