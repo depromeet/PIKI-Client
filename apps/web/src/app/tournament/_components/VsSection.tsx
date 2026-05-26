@@ -38,30 +38,34 @@ function VsSection({ left, right, isFinal = false, onSelect }: VsSectionProps) {
 
   const CardComponent = isFinal ? FinalProductCard : ProductCard;
 
+  const vsBadgeColor = isFinal ? 'bg-[#1F7AF9]' : 'bg-gray-800';
+
   return (
     <div className="w-full">
-      {/* 헹거 영역 */}
-      <div className="relative" style={{ height: HANGER_HEIGHT }}>
-        <div
-          className="absolute top-0 left-1/2 h-full -translate-x-1/2"
-          style={{
-            width: '1px',
-            backgroundImage: DASH_V,
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 100%)',
-          }}
-        />
-        <div
-          className={`absolute bottom-0 left-1/2 -translate-x-1/2 ${transition}`}
-          style={{
-            width: HORIZONTAL_LINE_WIDTH,
-            height: '1px',
-            backgroundImage: DASH_H,
-            transform: `rotate(${hangerRotate}deg)`,
-            ...duration,
-          }}
-        />
-      </div>
+      {/* 헹거 영역 — 결승에선 제거 */}
+      {!isFinal && (
+        <div className="relative" style={{ height: HANGER_HEIGHT }}>
+          <div
+            className="absolute top-0 left-1/2 h-full -translate-x-1/2"
+            style={{
+              width: '1px',
+              backgroundImage: DASH_V,
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 100%)',
+            }}
+          />
+          <div
+            className={`absolute bottom-0 left-1/2 -translate-x-1/2 ${transition}`}
+            style={{
+              width: HORIZONTAL_LINE_WIDTH,
+              height: '1px',
+              backgroundImage: DASH_H,
+              transform: `rotate(${hangerRotate}deg)`,
+              ...duration,
+            }}
+          />
+        </div>
+      )}
 
       {/* 카드 영역 */}
       <div className="relative flex gap-3">
@@ -74,13 +78,15 @@ function VsSection({ left, right, isFinal = false, onSelect }: VsSectionProps) {
             ...duration,
           }}
         >
-          <div
-            style={{
-              width: '1px',
-              height: HOOK_HEIGHT,
-              backgroundImage: DASH_V,
-            }}
-          />
+          {!isFinal && (
+            <div
+              style={{
+                width: '1px',
+                height: HOOK_HEIGHT,
+                backgroundImage: DASH_V,
+              }}
+            />
+          )}
           <CardComponent
             {...left}
             isPicked={selectedSide === 'left'}
@@ -97,13 +103,15 @@ function VsSection({ left, right, isFinal = false, onSelect }: VsSectionProps) {
             ...duration,
           }}
         >
-          <div
-            style={{
-              width: '1px',
-              height: HOOK_HEIGHT,
-              backgroundImage: DASH_V,
-            }}
-          />
+          {!isFinal && (
+            <div
+              style={{
+                width: '1px',
+                height: HOOK_HEIGHT,
+                backgroundImage: DASH_V,
+              }}
+            />
+          )}
           <CardComponent
             {...right}
             isPicked={selectedSide === 'right'}
@@ -113,9 +121,9 @@ function VsSection({ left, right, isFinal = false, onSelect }: VsSectionProps) {
 
         {/* VS 뱃지 */}
         <div
-          className={`absolute left-1/2 z-10 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gray-800 text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white ${transition}`}
+          className={`absolute left-1/2 z-10 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full ${vsBadgeColor} text-[12.026px] leading-[17.18px] font-semibold tracking-[-0.515px] text-white ${transition}`}
           style={{
-            top: HOOK_HEIGHT + IMAGE_HEIGHT,
+            top: isFinal ? IMAGE_HEIGHT / 2 : HOOK_HEIGHT + IMAGE_HEIGHT,
             filter: selectedSide ? 'blur(2px)' : 'none',
             ...duration,
           }}

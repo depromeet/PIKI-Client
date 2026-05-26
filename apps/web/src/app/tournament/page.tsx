@@ -29,13 +29,26 @@ function TournamentPage() {
     );
   }
 
+  const backgroundClassName = isFinalRound
+    ? 'bg-gradient-to-b from-[#ECF3FE] via-[#F3F7FE] to-white'
+    : 'bg-bg-layer-basement';
+
   return (
-    <div className="hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto bg-bg-layer-basement px-4 pt-[calc(env(safe-area-inset-top)+48px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
-      <div className="mb-6">
-        <RoundBadge label={roundLabel} />
+    <main
+      className={`hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto px-4 pt-[calc(env(safe-area-inset-top)+48px)] pb-[calc(env(safe-area-inset-bottom)+24px)] ${backgroundClassName}`}
+    >
+      <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-4">
+          <RoundBadge label={roundLabel} isFinal={isFinalRound} />
+          <TournamentQuestion isFinal={isFinalRound} />
+        </div>
+        {isFinalRound && (
+          <p className="text-[18px] leading-6.5 font-medium tracking-[-0.6px] text-text-neutral-secondary">
+            최종 선택을 해주세요
+          </p>
+        )}
       </div>
-      <TournamentQuestion />
-      <div className="mt-3 w-full">
+      <div className={`w-full ${isFinalRound ? 'mt-25' : 'mt-3'}`}>
         {currentMatch && (
           <VsSection
             key={roundLabel}
@@ -46,7 +59,7 @@ function TournamentPage() {
           />
         )}
       </div>
-    </div>
+    </main>
   );
 }
 
