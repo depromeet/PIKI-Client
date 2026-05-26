@@ -130,14 +130,15 @@ apps/web/src/
 
 코드는 **가장 가까운 사용처**에 둔다. 재사용 범위가 넓어질 때만 **부모 라우트로 한 단계** 끌어올린다. 처음부터 `components/common/`에 두지 않는다.
 
-| 재사용 범위 | 배치 위치 |
-| --- | --- |
-| 단일 `page.tsx` 전용 | 해당 라우트 폴더의 `_components/` (또는 `_hooks/`, `_apis/`, `_consts/`, `_types/`) |
-| **같은 부모 아래 2개 이상** 하위 라우트에서 공유 | **부모 라우트**의 `_common/_components/` 등으로 끌어올림 |
-| **`app/` top-level 라우트 간** 공유 (tournament ↔ wishlist 등) | `components/common/{component-name}/` — **App Router 밖**으로 이동 |
-| **2개 이상 top-level 라우트 또는 앱 전역**에서 쓰는 API/훅/유틸 | `src/apis/`, `hooks/`, `utils/`, `consts/`, `types/` |
+| 재사용 범위                                                     | 배치 위치                                                                           |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 단일 `page.tsx` 전용                                            | 해당 라우트 폴더의 `_components/` (또는 `_hooks/`, `_apis/`, `_consts/`, `_types/`) |
+| **같은 부모 아래 2개 이상** 하위 라우트에서 공유                | **부모 라우트**의 `_common/_components/` 등으로 끌어올림                            |
+| **`app/` top-level 라우트 간** 공유 (tournament ↔ wishlist 등)  | `components/common/{component-name}/` — **App Router 밖**으로 이동                  |
+| **2개 이상 top-level 라우트 또는 앱 전역**에서 쓰는 API/훅/유틸 | `src/apis/`, `hooks/`, `utils/`, `consts/`, `types/`                                |
 
 **API 함수 배치 예시:**
+
 - 단일 페이지 전용 (홈의 토너먼트 리스트 조회 등) → `app/home/_apis/getTournamentList.ts`
 - 2개 이상 페이지에서 공유 (유저 정보 조회, 이미지로 위시 담기 등) → `src/apis/`
 
@@ -163,12 +164,12 @@ apps/web/src/
 
 **컴포넌트 폴더 내부 파일명:**
 
-| 파일 종류 | 규칙 | 예시 |
-| --- | --- | --- |
-| **대표 컴포넌트** | `index.tsx` (default export) | `button/index.tsx` |
-| **보조 컴포넌트** | PascalCase | `UserProfile.tsx`, `ButtonLink.tsx` |
-| **스타일 (cva)** | camelCase + `.style.ts` | `button.style.ts`, `stateChip.style.ts` |
-| **상수/타입** | camelCase + `.const.ts` | `userProfile.const.ts` |
+| 파일 종류         | 규칙                         | 예시                                    |
+| ----------------- | ---------------------------- | --------------------------------------- |
+| **대표 컴포넌트** | `index.tsx` (default export) | `button/index.tsx`                      |
+| **보조 컴포넌트** | PascalCase                   | `UserProfile.tsx`, `ButtonLink.tsx`     |
+| **스타일 (cva)**  | camelCase + `.style.ts`      | `button.style.ts`, `stateChip.style.ts` |
+| **상수/타입**     | camelCase + `.const.ts`      | `userProfile.const.ts`                  |
 
 - **폴더명**: kebab-case (`button/`, `wish-card/`, `state-chip/`)
 
@@ -300,14 +301,14 @@ export const useGetWishlist = () => {
 ### 예시
 
 ```tsx
-import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import { apiClient } from '@/apis/apiClient';
 import { UserT } from '@/types/user';
 
-import { formatDate } from './utils';
 import styles from './Page.module.css';
+import { formatDate } from './utils';
 ```
 
 ### Prettier 옵션
