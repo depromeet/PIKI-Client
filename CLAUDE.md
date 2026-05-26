@@ -132,10 +132,14 @@ apps/web/src/
 
 | 재사용 범위 | 배치 위치 |
 | --- | --- |
-| 단일 `page.tsx` 전용 | 해당 라우트 폴더의 `_components/` (또는 `_hooks/`, `_consts/`, `_types/`) |
+| 단일 `page.tsx` 전용 | 해당 라우트 폴더의 `_components/` (또는 `_hooks/`, `_apis/`, `_consts/`, `_types/`) |
 | **같은 부모 아래 2개 이상** 하위 라우트에서 공유 | **부모 라우트**의 `_common/_components/` 등으로 끌어올림 |
 | **`app/` top-level 라우트 간** 공유 (tournament ↔ wishlist 등) | `components/common/{component-name}/` — **App Router 밖**으로 이동 |
-| 앱 전역 훅/유틸/상수 | `hooks/`, `utils/`, `consts/`, `types/` |
+| **2개 이상 top-level 라우트 또는 앱 전역**에서 쓰는 API/훅/유틸 | `src/apis/`, `hooks/`, `utils/`, `consts/`, `types/` |
+
+**API 함수 배치 예시:**
+- 단일 페이지 전용 (홈의 토너먼트 리스트 조회 등) → `app/home/_apis/getTournamentList.ts`
+- 2개 이상 페이지에서 공유 (유저 정보 조회, 이미지로 위시 담기 등) → `src/apis/`
 
 ```
 예) by-wish/page 전용                    → app/tournament/create/by-wish/_components/
@@ -251,6 +255,26 @@ function Button({ onClick }: ButtonProps) {
   };
   return <button onClick={handleClick}>...</button>;
 }
+```
+
+### 쿼리 훅 (TanStack Query)
+
+- **훅 내부에서 의미 있는 이름으로 rename 후 반환** — 호출하는 쪽에서 매번 `data: items` 처럼 rename하지 않도록
+- 반환 객체는 도메인 의미가 드러나는 이름 (`{ wish }`, `{ items }`, `{ user }`)
+
+```ts
+// ❌ Bad — 호출하는 쪽에서 매번 rename 필요
+export const useGetWishlist = () => {
+  return useQuery({ queryKey: ['wishlists'], queryFn: getWishlist });
+};
+// 사용처: const { data: items = [] } = useGetWishlist();
+
+// ✅ Good — 훅 내부에서 이름 정리
+export const useGetWishlist = () => {
+  const { data: items = [] } = useQuery({ queryKey: ['wishlists'], queryFn: getWishlist });
+  return { items };
+};
+// 사용처: const { items } = useGetWishlist();
 ```
 
 ### 기타
