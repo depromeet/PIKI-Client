@@ -13,12 +13,12 @@ type AddWishDialogProps = {
 
 function AddWishDialog({ trigger }: AddWishDialogProps) {
   const { id: tournamentId } = useParams<{ id: string }>();
-  const { postItemLink } = usePostTournamentItemLink(tournamentId);
+  const { postTournamentItemLinkMutation } = usePostTournamentItemLink(tournamentId);
 
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <GetItemDialogContent type="tournament" onLinkSubmit={postItemLink} />
+      <GetItemDialogContent type="tournament" onLinkSubmit={postTournamentItemLinkMutation} />
     </Dialog>
   );
 }
