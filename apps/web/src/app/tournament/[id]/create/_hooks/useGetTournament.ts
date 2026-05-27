@@ -6,6 +6,7 @@ export const useGetTournament = (tournamentId: string) => {
   const { data: tournamentData } = useSuspenseQuery({
     queryKey: ['tournament', tournamentId],
     queryFn: () => getTournament(tournamentId),
+    refetchInterval: 30_000,
   });
 
   return { tournamentData };
