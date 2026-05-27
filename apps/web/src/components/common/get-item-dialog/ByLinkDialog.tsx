@@ -16,9 +16,10 @@ type ByLinkProps = {
   type: ItemTypeT;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSubmit: (url: string) => void;
 };
 
-function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
+function ByLinkDialog({ type, open, onOpenChange, onSubmit }: ByLinkProps) {
   const router = useRouter();
   const { id: tournamentId } = useParams<{ id: string }>();
   const { postTournamentItemLinkMutation } = usePostTournamentItemLink(tournamentId);
@@ -42,11 +43,16 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
       return;
     }
 
+<<<<<<< HEAD
     if (type === 'tournament') {
       postTournamentItemLinkMutation(trimmedUrl);
     } else {
       router.push('/wishlist');
     }
+=======
+    if (onSubmit) onSubmit(trimmedUrl);
+    else if (type === 'wish') router.push('/wishlist');
+>>>>>>> 86fa98f (feat: 링크로 담기에서 토너먼트 아이템 POST API 연동)
 
     onOpenChange(false);
     resetState();
