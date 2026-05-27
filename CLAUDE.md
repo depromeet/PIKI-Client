@@ -263,6 +263,16 @@ function Button({ onClick }: ButtonProps) {
 
 ---
 
+## 🧩 RSC / UI / Next 가이드
+
+- **`page.tsx`는 가능하면 RSC** — `'use client'`는 상호작용이 필요한 자식 컴포넌트로 내림
+- **고정 width 지양** — 모바일은 `w-full + px-5` 패턴, 상한은 `max-w-*`로
+- **Semantic tag** — 컨테이너는 `<main>`, 타이틀은 `<h1>`/`<h2>`
+- **클릭 요소엔 `cursor-pointer`** (Tailwind v4는 자동 적용 X, 공통 `Button`은 cva에서 처리됨)
+- **Next 기능 우선** — `<Link>`, `<Image>`, `next/font` 등. `router.push`는 부수 작업(Dialog 닫기, API 후 처리)이 있을 때만
+
+---
+
 ## 📦 Import 규칙
 
 ### 정렬 (자동화됨 — `@trivago/prettier-plugin-sort-imports`)
