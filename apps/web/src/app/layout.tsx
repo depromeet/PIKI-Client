@@ -56,7 +56,7 @@ function RootLayout({
       <body className="h-full overflow-hidden">
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto h-full max-w-120 overflow-y-auto bg-bg-layer-basement px-5 [scrollbar-gutter:stable] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">{children}</div>
+          <div className="mx-auto h-full max-w-120 overflow-y-auto bg-bg-layer-basement px-5 [scrollbar-gutter:stable] hide-scrollbar">{children}</div>
         </Providers>
       </body>
     </html>

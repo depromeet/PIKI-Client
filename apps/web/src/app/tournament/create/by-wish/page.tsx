@@ -43,7 +43,7 @@ function ByWishPage() {
       />
 
       {/* 위시 아이템 그리드 */}
-      <main className="mt-4 flex flex-1 flex-col overflow-y-auto pb-32 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <main className="mt-4 flex flex-1 flex-col overflow-y-auto pb-32 hide-scrollbar">
         <div className="grid grid-cols-2 gap-x-2 gap-y-3">
           {items.map(item => (
             <WishSelectCard
