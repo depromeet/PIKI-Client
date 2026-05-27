@@ -2,7 +2,7 @@
 
 import { gsap } from 'gsap';
 import Image from 'next/image';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 import ReceiptPrinterImg from '@/assets/images/tournament/result/receipt-printer.png';
 
@@ -12,8 +12,17 @@ import ReceiptPaper from './ReceiptPaper';
 /** 프린터 래퍼 aspect ratio (디자인 박스) */
 const PRINTER_ASPECT_NUMERATOR = 267;
 const PRINTER_ASPECT_DENOMINATOR = 62;
-/** 프린터 프레임 하단(슬롯)과 영수증 상단이 겹치는 픽셀 — 슬롯 안에서 영수증이 빠져나오는 효과 */
-const RECEIPT_SLOT_OVERLAP_PX = 12;
+
+/**
+ * 디자인 기준: 컨테이너가 최대 420px 너비일 때 영수증 오버레이 top이 53px로 맞춰져 있음.
+ * 너비가 줄면 프린터 박스 높이도 비례해 줄므로, 동일 시각 비율을 유지하기 위해 높이에 선형 스케일 적용.
+ */
+const RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX = 53;
+const MAX_PRINTER_CONTAINER_WIDTH_PX = 420;
+const REFERENCE_PRINTER_FRAME_HEIGHT_PX =
+  (MAX_PRINTER_CONTAINER_WIDTH_PX * PRINTER_ASPECT_DENOMINATOR) / PRINTER_ASPECT_NUMERATOR;
+const RECEIPT_TOP_PER_PRINTER_HEIGHT =
+  RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX / REFERENCE_PRINTER_FRAME_HEIGHT_PX;
 
 type ReceiptDrawMachineProps = {
   tournamentName: string;
@@ -26,6 +35,20 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
   const printerFrameRef = useRef<HTMLDivElement | null>(null);
   const receiptPaperRef = useRef<HTMLDivElement | null>(null);
   const slotBarRef = useRef<HTMLDivElement | null>(null);
+  const [receiptTopPx, setReceiptTopPx] = useState(RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX);
+
+  useLayoutEffect(() => {
+    const frame = printerFrameRef.current;
+    if (!frame) return;
+
+    const updateReceiptTop = () =>
+      setReceiptTopPx(frame.getBoundingClientRect().height * RECEIPT_TOP_PER_PRINTER_HEIGHT);
+
+    updateReceiptTop();
+    const resizeObserver = new ResizeObserver(updateReceiptTop);
+    resizeObserver.observe(frame);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const animationScopeElement = animationScopeRef.current;
@@ -102,18 +125,7 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
       className="relative isolate flex min-h-0 w-full flex-1 flex-col items-center"
       ref={animationScopeRef}
     >
-      {/* 영수증 종이 — 슬롯에서 빠져나오는 시각 효과를 위해 프린터보다 낮은 z-index */}
-      <div
-        className="absolute inset-x-0 top-0 z-10 flex justify-center will-change-transform"
-        style={{
-          paddingTop: `calc(${(PRINTER_ASPECT_DENOMINATOR / PRINTER_ASPECT_NUMERATOR) * 100}% - ${RECEIPT_SLOT_OVERLAP_PX}px)`,
-        }}
-        ref={receiptPaperRef}
-      >
-        <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
-      </div>
-
-      {/* 프린터 (영수증 위로 덮음) */}
+      {/* 프린터 (먼저 렌더) */}
       <div
         className="relative z-30 w-full shrink-0"
         ref={printerFrameRef}
@@ -125,12 +137,25 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
           className="h-full w-full object-contain"
           priority
         />
-        <div className="absolute inset-x-0 bottom-0 h-[5px]" ref={slotBarRef} />
+        <div className="absolute inset-x-0 bottom-0 h-1.25" ref={slotBarRef} />
       </div>
 
       {/* 영수증 종이 영역 공간 확보 (layout reserved) */}
       <div className="invisible flex w-full justify-center" aria-hidden>
         <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
+      </div>
+
+      {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음 */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex items-start justify-center overflow-hidden"
+        style={{ top: `${receiptTopPx}px` }}
+      >
+        <div
+          ref={receiptPaperRef}
+          className="pointer-events-auto flex h-fit will-change-transform"
+        >
+          <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
+        </div>
       </div>
     </div>
   );
