@@ -22,8 +22,11 @@ function TournamentCreatePage() {
         <WishBasketStatus />
         <WishBasketCarousel items={tournamentData.pending?.items} />
       </div>
-      <div className="pb-5">
-        <TournamentStartButton count={0} />
+      <div className="pb-8">
+        <TournamentStartButton
+          count={tournamentData.pending?.items.length ?? 0}
+          tournamentId={tournamentId}
+        />
       </div>
     </div>
   );
