@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { forwardRef } from 'react';
 
 import { ImageIconOutline, LinkIconFill } from '@/assets/icons';
-import PikiLogo from '@/assets/images/piki-logo.svg';
+import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
 import { cn } from '@/utils/cn';
 
 import type { RankedProductT } from '../../_types/tournament';
@@ -57,7 +57,7 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
     >
       {/* PIKI 로고 + 헤드라인 */}
       <div className="flex flex-col items-center gap-4">
-        <PikiLogo aria-label="PIKI" className="h-14 w-[77px]" />
+        <PikiReceiptLogo aria-label="PIKI" className="h-14 w-19.25" />
         <p className="text-center text-[12px] leading-[16px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
           FROM ENDLESS WISHLISTS,
           <br />
