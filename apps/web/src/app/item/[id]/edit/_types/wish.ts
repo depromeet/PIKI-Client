@@ -1,16 +1,9 @@
-export type WishT = {
-  wish: {
-    id: number;
-    createdAt: string;
-  };
-  item: {
-    id: number;
-    name: string;
-    currentPrice: number;
-    currency: string | null;
-    imageUrl: string | null;
-    sourceUrl: string | null;
-  };
+import type { ItemT } from '@/types/item';
+import type { WishT } from '@/types/wish';
+
+export type GetWishResponseT = {
+  wish: WishT;
+  item: ItemT;
 };
 
 export type PatchWishRequestT = {
@@ -20,4 +13,4 @@ export type PatchWishRequestT = {
   currency?: string;
 };
 
-export type PatchWishResponseT = WishT;
+export type PatchWishResponseT = GetWishResponseT;
