@@ -168,13 +168,15 @@ function RankedRowLarge({ product, index }: RankedRowProps) {
   return (
     <div className="flex items-center justify-center gap-[15px] px-5">
       <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-black/5">
-        <Image
-          src={product.imageUrl}
-          alt={product.name}
-          fill
-          sizes="80px"
-          className="object-cover"
-        />
+        {product.imageUrl && (
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            sizes="80px"
+            className="object-cover"
+          />
+        )}
       </div>
       <div className="flex w-32 flex-col gap-1 tracking-[-0.6px]">
         <p className="text-[14px] leading-5 text-text-neutral-primary">

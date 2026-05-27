@@ -1,17 +1,10 @@
 import type { ReactNode } from 'react';
 
-export type ProductT = {
-  id: number;
-  url: string;
-  name: string;
-  imageUrl: string;
-  price: number;
-  tags?: TagT[];
-};
+import type { TournamentItemT, TournamentRankingT } from '@/types/tournament';
 
-export type RankedProductT = ProductT & {
-  rank: number;
-};
+export type ProductT = TournamentItemT;
+export type RankedProductT = TournamentRankingT;
+export type MatchPairT = [ProductT, ProductT];
 
 export type TagT = {
   name: string;
@@ -20,7 +13,5 @@ export type TagT = {
   backgroundColor: string;
   textColor: string;
 };
-
-export type MatchPairT = [ProductT, ProductT];
 
 export type CardSideT = 'left' | 'right';
