@@ -1,25 +1,16 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
-import type { ItemTypeT } from '@/types/item';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getWish } from './_apis/getWish';
-import ItemEditForm from './_components/ItemEditForm';
-
-const parseType = (raw: string | string[] | undefined): ItemTypeT => {
-  if (raw === 'tournament') return 'tournament';
-  return 'wish';
-};
+import WishEditForm from './_components/WishEditForm';
 
 type ItemEditPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ type?: string | string[] }>;
 };
 
-async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
+async function ItemEditPage({ params }: ItemEditPageProps) {
   const { id } = await params;
-  const { type: typeParam } = await searchParams;
-  const type = parseType(typeParam);
   const wishId = Number(id);
 
   const queryClient = getQueryClient();
@@ -30,7 +21,7 @@ async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ItemEditForm type={type} wishId={wishId} />
+      <WishEditForm wishId={wishId} />
     </HydrationBoundary>
   );
 }

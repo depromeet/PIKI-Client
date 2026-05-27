@@ -7,16 +7,13 @@ import { EditIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
-import type { ItemTypeT } from '@/types/item';
 import formatPrice from '@/utils/formatPrice';
 
-import { useDeleteWish } from '../_hooks/useDeleteWish';
 import { useGetWish } from '../_hooks/useGetWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
 import ItemLinkBanner from './ItemLinkBanner';
 
-type ItemEditFormProps = {
-  type: ItemTypeT;
+type WishEditFormProps = {
   wishId: number;
 };
 
@@ -35,26 +32,14 @@ const getSourceUrlLabel = (sourceUrl: string | null): string => {
   }
 };
 
-function ItemEditForm({ type, wishId }: ItemEditFormProps) {
+function WishEditForm({ wishId }: WishEditFormProps) {
   const { wish } = useGetWish(wishId);
   const { mutate: updateWish, isPending: isUpdating } = usePatchWish(wishId);
-  const { mutate: removeWish, isPending: isDeleting } = useDeleteWish(wishId);
 
   const [name, setName] = useState(wish.item.name);
   const [price, setPrice] = useState(
     wish.item.currentPrice ? formatPrice(String(wish.item.currentPrice)) : ''
   );
-
-  const isWish = type === 'wish';
-  const title = isWish ? '위시템 정보 확인' : '상품 정보를 가져왔어요';
-  const description = isWish
-    ? '필요한 정보는 직접 수정할 수 있어요'
-    : '상품명과 가격은 직접 수정할 수 있어요';
-
-  const handleDelete = () => {
-    if (isDeleting) return;
-    removeWish();
-  };
 
   const handleSave = () => {
     if (isUpdating) return;
@@ -70,14 +55,16 @@ function ItemEditForm({ type, wishId }: ItemEditFormProps) {
 
   return (
     <div className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-[78px]">
-      {isWish && <Header left={<HeaderIcon name="BACK" />} />}
+      <Header left={<HeaderIcon name="BACK" />} />
       <div className="mx-auto flex w-[362px] flex-col gap-6 px-0 pt-3">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
-            {title}
+            위시템 정보 확인
           </h1>
-          <p className="heading-2-medium text-text-neutral-tertiary">{description}</p>
+          <p className="heading-2-medium text-text-neutral-tertiary">
+            필요한 정보는 직접 수정할 수 있어요
+          </p>
         </header>
 
         {/* 상품 이미지 */}
@@ -119,18 +106,6 @@ function ItemEditForm({ type, wishId }: ItemEditFormProps) {
 
       {/* 하단 고정 버튼 */}
       <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-3 border-t border-gray-50 bg-bg-layer-default px-5 py-3">
-        {!isWish && (
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="flex-1"
-            aria-label="후보 삭제하기"
-          >
-            삭제하기
-          </Button>
-        )}
         <Button
           variant="primary"
           size="lg"
@@ -145,4 +120,4 @@ function ItemEditForm({ type, wishId }: ItemEditFormProps) {
   );
 }
 
-export default ItemEditForm;
+export default WishEditForm;
