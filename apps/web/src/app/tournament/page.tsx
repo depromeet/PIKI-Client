@@ -1,10 +1,26 @@
-import { MOCK_PRODUCTS } from '@/mocks/products';
+import { notFound } from 'next/navigation';
 
 import TournamentClient from './_components/TournamentClient';
 
-// TODO: Phase 4-1c — searchParams의 tournamentId로 GET/POST start 호출 후 실제 데이터 전달
-function TournamentPage() {
-  return <TournamentClient tournamentId={1} initialItems={MOCK_PRODUCTS} />;
+type TournamentPageProps = {
+  searchParams: Promise<{ tournamentId?: string | string[] }>;
+};
+
+const parseTournamentId = (raw: string | string[] | undefined): number | null => {
+  if (typeof raw !== 'string') return null;
+  const id = Number(raw);
+  return Number.isInteger(id) && id > 0 ? id : null;
+};
+
+async function TournamentPage({ searchParams }: TournamentPageProps) {
+  const { tournamentId: tournamentIdParam } = await searchParams;
+  const tournamentId = parseTournamentId(tournamentIdParam);
+
+  if (tournamentId === null) {
+    notFound();
+  }
+
+  return <TournamentClient tournamentId={tournamentId} />;
 }
 
 export default TournamentPage;

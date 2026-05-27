@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+
 import type { TournamentItemT } from '@/types/tournament';
 
 import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
 import useTournament from '../_hooks/useTournament';
+import { usePostStartTournament } from '../_hooks/usePostStartTournament';
 import RoundBadge from './RoundBadge';
 import RoundTransition from './RoundTransition';
 import TournamentQuestion from './TournamentQuestion';
@@ -11,10 +14,40 @@ import VsSection from './VsSection';
 
 type TournamentClientProps = {
   tournamentId: number;
+};
+
+function TournamentClient({ tournamentId }: TournamentClientProps) {
+  const [initialItems, setInitialItems] = useState<TournamentItemT[] | null>(null);
+  const hasRequestedStartRef = useRef(false);
+  const { startTournament, isPending } = usePostStartTournament(tournamentId);
+
+  useEffect(() => {
+    if (hasRequestedStartRef.current) return;
+    hasRequestedStartRef.current = true;
+    startTournament(undefined, {
+      onSuccess: data => setInitialItems(data.items),
+    });
+  }, [startTournament]);
+
+  if (initialItems === null) {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
+        <p className="body-1-medium text-text-neutral-tertiary">
+          {isPending ? '토너먼트 준비 중...' : '잠시만 기다려주세요...'}
+        </p>
+      </main>
+    );
+  }
+
+  return <TournamentRunner tournamentId={tournamentId} initialItems={initialItems} />;
+}
+
+type TournamentRunnerProps = {
+  tournamentId: number;
   initialItems: TournamentItemT[];
 };
 
-function TournamentClient({ tournamentId, initialItems }: TournamentClientProps) {
+function TournamentRunner({ tournamentId, initialItems }: TournamentRunnerProps) {
   const {
     currentMatch,
     roundLabel,
