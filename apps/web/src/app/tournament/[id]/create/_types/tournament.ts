@@ -1,13 +1,10 @@
-import type { TOURNAMENT_STATUS } from '@/consts/tournament';
-import type { TournamentItemT } from '@/types/tournament';
+import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
 
-export type { TournamentItemT };
+export type { TournamentItemT, TournamentStatusT };
 
 export type TournamentItemLinkDataT = {
   itemId: number;
 };
-
-export type TournamentStatusT = (typeof TOURNAMENT_STATUS)[keyof typeof TOURNAMENT_STATUS];
 
 export type TournamentParticipantT = {
   userId: string;

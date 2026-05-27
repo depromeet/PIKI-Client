@@ -12,7 +12,7 @@ import OptionButton from './OptionButton';
 
 type GetItemDialogContentProps = {
   type: ItemTypeT;
-  onLinkSubmit: (url: string) => void;
+  onLinkSubmit?: (url: string) => void;
 };
 
 function GetItemDialogContent({ type, onLinkSubmit }: GetItemDialogContentProps) {
@@ -56,7 +56,7 @@ function GetItemDialogContent({ type, onLinkSubmit }: GetItemDialogContentProps)
         type={type}
         open={isSubDialogOpen === 'link'}
         onOpenChange={open => setIsSubDialogOpen(open ? 'link' : null)}
-        onSubmit={onLinkSubmit}
+        onSubmit={onLinkSubmit ?? (() => {})}
       />
       <ByImageDialog
         type={type}
