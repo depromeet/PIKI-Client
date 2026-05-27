@@ -201,6 +201,24 @@ import Button from '@/components/common/Button/Button';
 | **일반 파일** (훅, 유틸) | camelCase          | `useAuth.ts`, `formatDate.ts`                           |
 | **타입**                 | T suffix           | `UserT`, `ProductT`                                     |
 | **API 함수**             | HTTP 메서드 prefix | `getUser`, `postWishlist`, `patchProfile`, `deleteItem` |
+| **API 요청/응답 타입**   | 함수명 + `RequestT`/`ResponseT` | `PostWishRequestT`, `PostWishResponseT` |
+| **API 훅**               | `use` + 함수명 | `usePostWish`, `usePatchItem`, `useGetWishlist` |
+| **공통 객체 타입**       | `src/types/` 에 위치, T suffix | `WishT`, `ItemT`, `UserT` |
+
+---
+
+## 🌐 API 컨벤션
+
+- **요청/응답 타입**: 함수명을 PascalCase로 한 뒤 `RequestT` / `ResponseT` 접미
+  - `postWish` → `PostWishRequestT`, `PostWishResponseT`
+- **API 훅**: `use` + 함수명
+  - `postWish` → `usePostWish`, `patchItem` → `usePatchItem`
+- **API endpoint**: `src/consts/api.ts` 에 상수로 모아서 관리
+- **공통 객체 타입**(wish/item/tournament 등 도메인 모델): `src/types/<domain>.ts`
+  - 예: `src/types/wish.ts` 에 `WishT`, `src/types/item.ts` 에 `ItemT`
+- **API 함수 위치**:
+  - 단일 페이지 전용 → `app/<page>/_apis/`
+  - 2개 이상 페이지에서 공유 → `src/apis/`
 
 ---
 
