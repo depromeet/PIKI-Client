@@ -46,12 +46,11 @@ function TournamentResultPage() {
     getServerResultSnapshot
   );
   const [date] = useState(() => new Date());
-  const [isToastDismissed, setIsToastDismissed] = useState(false);
-  const isToastVisible = result !== null && !isToastDismissed;
+  const [isToastVisible, setIsToastVisible] = useState(false);
 
   useEffect(() => {
     if (!isToastVisible) return;
-    const timeoutId = window.setTimeout(() => setIsToastDismissed(true), TOAST_DURATION_MS);
+    const timeoutId = window.setTimeout(() => setIsToastVisible(false), TOAST_DURATION_MS);
     return () => window.clearTimeout(timeoutId);
   }, [isToastVisible]);
 
@@ -60,12 +59,12 @@ function TournamentResultPage() {
   };
 
   const handleSaveResult = () => {
-    // 이미 진행 종료 시점에 저장됨 — 명시적 저장 토스트만 재노출
-    setIsToastDismissed(false);
+    // 이미 진행 종료 시점에 저장됨 — 명시적 저장 토스트만 노출
+    setIsToastVisible(true);
   };
 
   const handleConfirmSaved = () => {
-    setIsToastDismissed(true);
+    setIsToastVisible(false);
     router.push('/wishlist');
   };
 
@@ -85,12 +84,12 @@ function TournamentResultPage() {
         <span className="text-text-neutral-primary">승자는</span>
       </h1>
 
-      <div className="mx-auto mt-4 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
         <ReceiptDrawMachine tournamentName={TOURNAMENT_NAME_FALLBACK} result={result} date={date} />
       </div>
 
-      {/* 저장 완료 토스트 */}
-      <div className="pointer-events-none fixed right-0 bottom-[110px] left-0 z-40 mx-auto w-full max-w-120 px-5">
+      {/* 저장 완료 토스트 — 하단 버튼 영역 위에 살짝 겹침 */}
+      <div className="pointer-events-none fixed right-0 bottom-25 left-0 z-40 mx-auto w-full max-w-120 px-5">
         <div className="pointer-events-auto">
           <ActionSnackbar
             message="보관함에 결과를 저장했어요."

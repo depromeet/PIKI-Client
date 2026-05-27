@@ -15,13 +15,13 @@ function ActionSnackbar({ message, actionLabel, isVisible, onAction }: ActionSna
     >
       <span aria-hidden className="absolute inset-0 bg-gray-900 opacity-[0.52]" />
       <span aria-hidden className="absolute inset-0 bg-[#0066FF] opacity-[0.05]" />
-      <p className="relative flex-1 px-0.5 py-[5px] text-[15px] leading-snug font-semibold text-white opacity-[0.88]">
+      <p className="relative flex-1 px-0.5 py-[5px] text-[15px] leading-snug font-semibold tracking-[0.144px] text-white opacity-[0.88]">
         {message}
       </p>
       <button
         type="button"
         onClick={onAction}
-        className="relative shrink-0 px-0.5 py-1 text-[15px] leading-snug font-semibold text-white"
+        className="relative shrink-0 px-0.5 py-1 text-[15px] leading-snug font-semibold tracking-[0.144px] text-white"
       >
         {actionLabel}
       </button>
