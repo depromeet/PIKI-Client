@@ -1,12 +1,14 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
 import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
-import useTournament from '../_hooks/useTournament';
+import { useGetTournament } from '../_hooks/useGetTournament';
 import { usePostStartTournament } from '../_hooks/usePostStartTournament';
+import useTournament from '../_hooks/useTournament';
 import RoundBadge from './RoundBadge';
 import RoundTransition from './RoundTransition';
 import TournamentQuestion from './TournamentQuestion';
@@ -17,6 +19,27 @@ type TournamentClientProps = {
 };
 
 function TournamentClient({ tournamentId }: TournamentClientProps) {
+  const { tournamentData } = useGetTournament(tournamentId);
+
+  if (tournamentData.status === 'COMPLETED') {
+    return <RedirectTo url={`/tournament/result?tournamentId=${tournamentId}`} />;
+  }
+
+  if (tournamentData.status === 'IN_PROGRESS') {
+    return (
+      <TournamentRunner
+        tournamentId={tournamentId}
+        initialItems={tournamentData.inProgress.remainingItems}
+      />
+    );
+  }
+
+  // PENDING — 토너먼트 시작 API 호출 후 진행
+  return <TournamentStarter tournamentId={tournamentId} />;
+}
+
+/** PENDING 상태에서 진입한 경우 — start API 호출 후 진행 */
+function TournamentStarter({ tournamentId }: { tournamentId: number }) {
   const [initialItems, setInitialItems] = useState<TournamentItemT[] | null>(null);
   const hasRequestedStartRef = useRef(false);
   const { startTournament, isPending } = usePostStartTournament(tournamentId);
@@ -101,6 +124,15 @@ function TournamentRunner({ tournamentId, initialItems }: TournamentRunnerProps)
       </div>
     </main>
   );
+}
+
+function RedirectTo({ url }: { url: string }) {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace(url);
+  }, [router, url]);
+
+  return null;
 }
 
 export default TournamentClient;
