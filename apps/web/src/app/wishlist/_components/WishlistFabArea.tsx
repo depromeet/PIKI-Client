@@ -18,7 +18,7 @@ function WishlistFabArea({
   onConfirmDelete,
 }: WishlistFabAreaProps) {
   return (
-    <div className="pointer-events-none fixed right-0 bottom-[43.21px] left-0 z-30 mx-auto flex w-full max-w-120 justify-end px-[21px]">
+    <div className="pointer-events-none fixed right-0 bottom-10 left-0 z-30 mx-auto flex w-full max-w-120 justify-end px-[21px]">
       <div className="pointer-events-auto">
         {isDeleteMode ? (
           <button

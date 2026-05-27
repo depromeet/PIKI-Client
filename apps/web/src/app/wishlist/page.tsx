@@ -5,21 +5,44 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getWishlist } from './_apis/getWishlist';
+import TournamentHistoryContent from './_components/TournamentHistoryContent';
 import WishlistContent from './_components/WishlistContent';
+import type { WishTabT } from './_types/wishTypes';
 
-async function WishlistPage() {
+type WishlistPageProps = {
+  searchParams: Promise<{ tab?: string }>;
+};
+
+const getActiveWishTab = (tab?: string): WishTabT => {
+  if (tab === 'tournament') return '토너먼트 기록';
+  return '저장한 위시템';
+};
+
+async function WishlistPage({ searchParams }: WishlistPageProps) {
+  const { tab } = await searchParams;
+  const activeTab = getActiveWishTab(tab);
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ['wishlists'],
-    queryFn: getWishlist,
-  });
+  if (activeTab === '저장한 위시템') {
+    await queryClient.prefetchQuery({
+      queryKey: ['wishlists'],
+      queryFn: getWishlist,
+    });
+  }
+  // TODO: if (activeTab === '토너먼트 기록') await prefetch tournamentHistory; // API 생기면
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense>
-        <WishlistContent />
-      </Suspense>
+      {activeTab === '토너먼트 기록' && (
+        <Suspense>
+          <TournamentHistoryContent />
+        </Suspense>
+      )}
+      {activeTab === '저장한 위시템' && (
+        <Suspense>
+          <WishlistContent />
+        </Suspense>
+      )}
     </HydrationBoundary>
   );
 }
