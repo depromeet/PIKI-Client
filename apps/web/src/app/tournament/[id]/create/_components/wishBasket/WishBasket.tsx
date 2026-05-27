@@ -1,4 +1,5 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
+import type { StaticImageData } from 'next/image';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
