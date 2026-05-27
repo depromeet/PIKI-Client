@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import type { StaticImageData } from 'next/image';
+import Image from 'next/image';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
@@ -28,6 +28,7 @@ function WishBasket({ basketIndex, items }: WishBasketProps) {
           {items.map((item, index) => (
             <WishItem key={item.id} index={index} url={item.imageUrl} />
           ))}
+
           <AddWishDialog
             trigger={
               <Button

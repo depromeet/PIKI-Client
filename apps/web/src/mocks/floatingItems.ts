@@ -1,4 +1,4 @@
-import type { FloatingItemT } from '@/app/tournament/loading/_components/FloatingProducts';
+import type { FloatingItemT } from '@/app/tournament/[id]/loading/_components/FloatingProducts';
 
 // 대진표 로딩 화면에서 떠다니는 더미 상품 (8강 기준 8개)
 // TODO: API 연동 시 실제 위시 데이터로 교체

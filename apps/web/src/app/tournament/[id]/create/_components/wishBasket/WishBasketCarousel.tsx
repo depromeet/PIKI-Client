@@ -1,7 +1,10 @@
 'use client';
 
-import { BASKET_COUNT, EMPTY_WISH_ITEMS } from '@/app/tournament/create/_consts/wishBasketConsts';
-import useBasketCarousel from '@/app/tournament/create/_hooks/useBasketCarousel';
+import {
+  BASKET_COUNT,
+  EMPTY_WISH_ITEMS,
+} from '@/app/tournament/[id]/create/_consts/wishBasketConsts';
+import useBasketCarousel from '@/app/tournament/[id]/create/_hooks/useBasketCarousel';
 
 import CarouselIndicator from './CarouselIndicator';
 import WishBasket from './WishBasket';
