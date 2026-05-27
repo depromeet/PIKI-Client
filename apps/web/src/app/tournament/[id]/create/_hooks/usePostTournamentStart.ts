@@ -6,12 +6,13 @@ import { postTournamentStart } from '../_apis/postTournamentStart';
 export const usePostTournamentStart = (tournamentId: string) => {
   const router = useRouter();
 
-  const { mutate: startTournament, isPending } = useMutation({
-    mutationFn: () => postTournamentStart(tournamentId),
-    onSuccess: () => {
-      router.push(`/tournament/${tournamentId}/match`);
-    },
-  });
+  const { mutate: postTournamentStartMutation, isPending: isPostTournamentStartPending } =
+    useMutation({
+      mutationFn: () => postTournamentStart(tournamentId),
+      onSuccess: () => {
+        router.push(`/tournament/${tournamentId}/match`);
+      },
+    });
 
-  return { startTournament, isPending };
+  return { postTournamentStartMutation, isPostTournamentStartPending };
 };

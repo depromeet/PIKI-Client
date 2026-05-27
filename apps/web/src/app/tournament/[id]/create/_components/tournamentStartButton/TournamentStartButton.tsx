@@ -10,14 +10,15 @@ type TournamentStartButtonProps = {
 };
 
 function TournamentStartButton({ count, tournamentId }: TournamentStartButtonProps) {
-  const { startTournament, isPending } = usePostTournamentStart(tournamentId);
+  const { postTournamentStartMutation, isPostTournamentStartPending } =
+    usePostTournamentStart(tournamentId);
 
   return (
     <Button
       variant="primary"
       size="lg"
-      disabled={count < 2 || isPending}
-      onClick={() => startTournament()}
+      disabled={count < 2 || isPostTournamentStartPending}
+      onClick={() => postTournamentStartMutation()}
     >
       토너먼트 시작하기
     </Button>
