@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { EditIconFill } from '@/assets/icons';
+import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
 import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
@@ -95,7 +96,7 @@ function ItemEditForm({
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-3 p-5">
+      <BottomCta>
         {!isWish && (
           <Button
             variant="secondary"
@@ -116,7 +117,7 @@ function ItemEditForm({
         >
           저장하기
         </Button>
-      </div>
+      </BottomCta>
     </main>
   );
 }

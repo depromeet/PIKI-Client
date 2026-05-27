@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
+import BottomCta from '@/components/common/bottom-cta';
 import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
 import { readResult } from '@/utils/resultStorage';
 
@@ -102,7 +103,7 @@ function TournamentResultPage() {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center gap-2.5 px-5 pt-3 pb-5">
+      <BottomCta>
         <button
           type="button"
           onClick={handleGoHome}
@@ -117,7 +118,7 @@ function TournamentResultPage() {
         >
           결과 저장하기
         </button>
-      </div>
+      </BottomCta>
     </main>
   );
 }

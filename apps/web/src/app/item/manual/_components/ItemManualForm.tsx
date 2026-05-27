@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { ImageIconOutline } from '@/assets/icons';
+import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
 import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
@@ -118,7 +119,7 @@ function ItemManualForm() {
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-2.5 px-5 pt-3 pb-5">
+      <BottomCta>
         <Button
           variant="secondary"
           size="lg"
@@ -137,7 +138,7 @@ function ItemManualForm() {
         >
           저장하기
         </Button>
-      </div>
+      </BottomCta>
     </main>
   );
 }
