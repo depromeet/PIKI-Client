@@ -1,0 +1,56 @@
+import type {
+  TournamentItemT,
+  TournamentMatchHistoryT,
+  TournamentRankingT,
+  TournamentStatusT,
+} from '@/types/tournament';
+
+export type TournamentParticipantT = {
+  userId: string;
+  nickname: string;
+  profileImage: string;
+};
+
+/** PENDING — 토너먼트 아이템 담는 중 */
+export type GetTournamentPendingResponseT = {
+  tournamentId: number;
+  name: string;
+  status: Extract<TournamentStatusT, 'PENDING'>;
+  pending: {
+    items: Array<Partial<TournamentItemT> & { tournamentItemId: number; itemId: number }>;
+    participants: TournamentParticipantT[];
+  };
+};
+
+/** IN_PROGRESS — 진행 중 (재진입 시 복원용) */
+export type GetTournamentInProgressResponseT = {
+  tournamentId: number;
+  name: string;
+  status: Extract<TournamentStatusT, 'IN_PROGRESS'>;
+  inProgress: {
+    currentRound: number;
+    lastHistory: TournamentMatchHistoryT | null;
+    remainingItems: TournamentItemT[];
+  };
+};
+
+/** COMPLETED — 결과 */
+export type GetTournamentCompletedResponseT = {
+  tournamentId: number;
+  name: string;
+  status: Extract<TournamentStatusT, 'COMPLETED'>;
+  completed: {
+    result: TournamentRankingT[];
+  };
+};
+
+export type GetTournamentResponseT =
+  | GetTournamentPendingResponseT
+  | GetTournamentInProgressResponseT
+  | GetTournamentCompletedResponseT;
+
+export type PostStartTournamentResponseT = {
+  items: TournamentItemT[];
+};
+
+export type PostRecordMatchRequestT = TournamentMatchHistoryT;
