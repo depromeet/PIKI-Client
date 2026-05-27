@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 
 import { ImageIconOutline, LinkIconFill } from '@/assets/icons';
 import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
+import ReceiptZigzag from '@/assets/images/tournament/result/receipt-zigzag.svg';
 import { cn } from '@/utils/cn';
 
 import type { RankedProductT } from '../../_types/tournament';
@@ -52,10 +53,9 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       ref={ref}
       className={cn(
         kodeMono.className,
-        'relative flex w-74.75 flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 shadow-[0px_2px_4px_rgba(0,0,0,0.12)]'
+        'relative flex w-74.75 flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]'
       )}
     >
-      {/* 상단 옅은 그라데이션 — #F9F9F9 위에서 흰색으로 페이드 */}
       <div
         aria-hidden
         className="pointer-events-none absolute -top-6 left-0 h-15.25 w-full bg-linear-to-t from-white to-[#f9f9f9]"
@@ -143,10 +143,17 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       </div>
 
       {/* 공유 액션 */}
-      <div className="flex items-center justify-center gap-5 bg-bg-layer-default py-2">
+      <div className="flex items-center justify-center gap-5 py-2">
         <ShareAction icon={<ImageIconOutline className="size-3.5" />} label="이미지 공유" />
         <ShareAction icon={<LinkIconFill className="size-[18px]" />} label="플레이 링크 공유" />
       </div>
+
+      {/* 영수증 하단 톱니 */}
+      <ReceiptZigzag
+        aria-hidden
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute top-full left-0 block h-4.5 w-full"
+      />
     </div>
   );
 });
