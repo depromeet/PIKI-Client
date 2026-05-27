@@ -12,11 +12,10 @@ import CarouselIndicator from './CarouselIndicator';
 import WishBasket from './WishBasket';
 
 type WishBasketCarouselProps = {
-  tournamentId: string;
   items?: TournamentItemT[];
 };
 
-function WishBasketCarousel({ tournamentId: _tournamentId, items = [] }: WishBasketCarouselProps) {
+function WishBasketCarousel({ items = [] }: WishBasketCarouselProps) {
   const { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd } =
     useBasketCarousel();
 

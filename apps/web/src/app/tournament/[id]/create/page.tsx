@@ -20,7 +20,7 @@ function TournamentCreatePage() {
         <TournamentHeader name={tournamentData.name} />
         <InviteFriends />
         <WishBasketStatus />
-        <WishBasketCarousel items={tournamentData.pending?.items} tournamentId={tournamentId} />
+        <WishBasketCarousel items={tournamentData.pending?.items} />
       </div>
       <div className="pb-5">
         <TournamentStartButton count={0} />

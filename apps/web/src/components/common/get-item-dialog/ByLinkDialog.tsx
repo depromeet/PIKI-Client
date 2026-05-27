@@ -15,9 +15,10 @@ type ByLinkProps = {
   type: ItemTypeT;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSubmit: (url: string) => void;
 };
 
-function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
+function ByLinkDialog({ type, open, onOpenChange, onSubmit }: ByLinkProps) {
   const router = useRouter();
 
   const [url, setUrl] = useState('');
@@ -39,8 +40,8 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
       return;
     }
 
-    if (type === 'wish') router.push('/wishlist');
-    else router.push(`/item/new/edit?type=tournament&url=${encodeURIComponent(trimmedUrl)}`);
+    if (onSubmit) onSubmit(trimmedUrl);
+    else if (type === 'wish') router.push('/wishlist');
 
     onOpenChange(false);
     resetState();
