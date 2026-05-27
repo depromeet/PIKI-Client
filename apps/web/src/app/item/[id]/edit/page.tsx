@@ -1,4 +1,5 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 
 import { getQueryClient } from '@/utils/queryClient';
 
@@ -12,6 +13,10 @@ type ItemEditPageProps = {
 async function ItemEditPage({ params }: ItemEditPageProps) {
   const { id } = await params;
   const wishId = Number(id);
+
+  if (!Number.isInteger(wishId) || wishId <= 0) {
+    notFound();
+  }
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
