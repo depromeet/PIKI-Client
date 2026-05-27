@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { MOCK_PRODUCTS } from '@/mocks/products';
 import { writeResult } from '@/utils/resultStorage';
 
-import { getRoundLabel, getTransitionStage, type TransitionStageT } from '../_consts/rounds';
+import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
 import type { MatchPairT, ProductT, RankedProductT } from '../_types/tournament';
 
 // 참가자 수는 2의 거듭제곱이어야 함 (2, 4, 8, 16, 32)

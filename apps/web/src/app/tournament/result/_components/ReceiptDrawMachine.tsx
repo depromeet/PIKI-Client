@@ -150,10 +150,7 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
         className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex items-start justify-center overflow-hidden"
         style={{ top: `${receiptTopPx}px` }}
       >
-        <div
-          ref={receiptPaperRef}
-          className="pointer-events-auto flex h-fit will-change-transform"
-        >
+        <div ref={receiptPaperRef} className="pointer-events-auto flex h-fit will-change-transform">
           <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
         </div>
       </div>

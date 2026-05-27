@@ -72,7 +72,7 @@ function RoundTransition({
         </h1>
       </div>
 
-      <p className="mt-6 text-center text-[18px] leading-6.5 font-medium tracking-[-0.6px] text-text-neutral-secondary whitespace-pre-line">
+      <p className="mt-6 text-center text-[18px] leading-6.5 font-medium tracking-[-0.6px] whitespace-pre-line text-text-neutral-secondary">
         {description}
       </p>
 
