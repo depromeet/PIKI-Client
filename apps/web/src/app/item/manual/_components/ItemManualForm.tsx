@@ -41,18 +41,20 @@ function ItemManualForm() {
     router.back();
   };
 
+  const isValid = Boolean(imageUrl) && name.trim().length > 0 && price.replace(/[^\d]/g, '') !== '' && price.replace(/[^\d]/g, '') !== '0';
+
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
       <button
         type="button"
         onClick={handleBack}
         aria-label="뒤로가기"
-        className="absolute top-[60px] left-5 p-0"
+        className="absolute top-[60px] left-5 cursor-pointer p-0"
       >
         <ChevronBackwardIconFill className="size-[30px] text-icon-neutral-primary" />
       </button>
 
-      <div className="mx-auto flex w-[362px] flex-col gap-6 px-0 pt-[102px]">
+      <div className="flex w-full flex-col gap-6 px-5 pt-[102px]">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
@@ -66,7 +68,7 @@ function ItemManualForm() {
           type="button"
           onClick={handleOpenPicker}
           aria-label="이미지 추가"
-          className="mx-auto flex size-[200px] flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-black/4"
+          className="mx-auto flex size-[200px] cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-xl bg-black/4"
           {...(imageUrl
             ? {
                 style: {
@@ -126,11 +128,17 @@ function ItemManualForm() {
         >
           삭제하기
         </Button>
-        <Button variant="primary" size="lg" onClick={handleSave} className="flex-1">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={handleSave}
+          disabled={!isValid}
+          className="flex-1"
+        >
           저장하기
         </Button>
       </div>
-    </div>
+    </main>
   );
 }
 
