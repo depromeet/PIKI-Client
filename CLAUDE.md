@@ -281,7 +281,9 @@ function Button({ onClick }: ButtonProps) {
 훅 내부에서 의미 있는 이름으로 rename 후 반환 — 호출하는 쪽에서 매번 `data: xxx` 처럼 rename하지 않도록.
 
 - **Query**: `data` → `{도메인}Data`
-- **Mutation**: `mutate` → API 함수명 그대로 (HTTP 메서드 prefix 유지)
+- **Mutation**:
+  - `mutate` → `{HTTP 메서드 prefix + 도메인}Mutation`
+  - `isPending` → `is{Http메서드 prefix + 도메인}Pending`
 
 ```ts
 // ✅ Query — data를 도메인명 + Data로
@@ -291,12 +293,14 @@ export const useGetWishlist = () => {
 };
 // 사용처: const { wishlistData } = useGetWishlist();
 
-// ✅ Mutation — mutate를 API 함수명 그대로
-export const usePostWishlist = () => {
-  const { mutate: postWishlist, isPending } = useMutation({ mutationFn: postWishlist });
-  return { postWishlist, isPending };
+// ✅ Mutation — mutate/isPending에 API 함수명 + Mutation/Pending 접미
+export const usePostGuestLogin = () => {
+  const { mutate: postGuestLoginMutation, isPending: isPostGuestLoginPending } = useMutation({
+    mutationFn: postGuestLogin,
+  });
+  return { postGuestLoginMutation, isPostGuestLoginPending };
 };
-// 사용처: const { postWishlist } = usePostWishlist();
+// 사용처: const { postGuestLoginMutation } = usePostGuestLogin();
 ```
 
 ### 기타
