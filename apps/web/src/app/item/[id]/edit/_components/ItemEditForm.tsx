@@ -34,6 +34,10 @@ function ItemEditForm({
   const [name, setName] = useState(initialName);
   const [price, setPrice] = useState(formatPrice(initialPrice));
 
+  const isChanged =
+    name.trim() !== initialName.trim() ||
+    formatPrice(price) !== formatPrice(initialPrice);
+
   const handleDelete = () => {
     // TODO: 후보 삭제 처리
     router.back();
@@ -51,9 +55,9 @@ function ItemEditForm({
     : '상품명과 가격은 직접 수정할 수 있어요';
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-[78px]">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-[78px]">
       {isWish && <Header left={<HeaderIcon name="BACK" />} />}
-      <div className="mx-auto flex w-[362px] flex-col gap-6 px-0 pt-3">
+      <div className="flex w-full flex-col gap-6 px-5 pt-3">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
@@ -104,11 +108,17 @@ function ItemEditForm({
             삭제하기
           </Button>
         )}
-        <Button variant="primary" size="lg" onClick={handleSave} className="flex-1">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={handleSave}
+          disabled={!isChanged}
+          className="flex-1"
+        >
           저장하기
         </Button>
       </div>
-    </div>
+    </main>
   );
 }
 
