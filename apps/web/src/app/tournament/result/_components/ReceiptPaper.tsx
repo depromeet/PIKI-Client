@@ -52,11 +52,17 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       ref={ref}
       className={cn(
         kodeMono.className,
-        'flex w-[299px] flex-col gap-2 bg-bg-layer-default pt-6 pb-[25px] shadow-[0px_2px_4px_rgba(0,0,0,0.12)]'
+        'relative flex w-74.75 flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 shadow-[0px_2px_4px_rgba(0,0,0,0.12)]'
       )}
     >
+      {/* 상단 옅은 그라데이션 — #F9F9F9 위에서 흰색으로 페이드 */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-6 left-0 h-15.25 w-full bg-linear-to-t from-white to-[#f9f9f9]"
+      />
+
       {/* PIKI 로고 + 헤드라인 */}
-      <div className="flex flex-col items-center gap-4">
+      <div className="relative flex flex-col items-center gap-4">
         <PikiReceiptLogo aria-label="PIKI" className="h-14 w-19.25" />
         <p className="text-center text-[12px] leading-[16px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
           FROM ENDLESS WISHLISTS,
