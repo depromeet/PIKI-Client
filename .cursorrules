@@ -259,23 +259,26 @@ function Button({ onClick }: ButtonProps) {
 }
 ```
 
-### 쿼리 훅 (TanStack Query)
-- **훅 내부에서 의미 있는 이름으로 rename 후 반환** — 호출하는 쪽에서 매번 `data: items` 처럼 rename하지 않도록
-- 반환 객체는 도메인 의미가 드러나는 이름 (`{ wish }`, `{ items }`, `{ user }`)
+### API 훅 반환값 네이밍 (TanStack Query)
+훅 내부에서 의미 있는 이름으로 rename 후 반환 — 호출하는 쪽에서 매번 `data: xxx` 처럼 rename하지 않도록.
+
+- **Query**: `data` → `{도메인}Data`
+- **Mutation**: `mutate` → API 함수명 그대로 (HTTP 메서드 prefix 유지)
 
 ```ts
-// ❌ Bad — 호출하는 쪽에서 매번 rename 필요
+// ✅ Query — data를 도메인명 + Data로
 export const useGetWishlist = () => {
-  return useQuery({ queryKey: ['wishlists'], queryFn: getWishlist });
+  const { data: wishlistData } = useQuery({ queryKey: ['wishlists'], queryFn: getWishlist });
+  return { wishlistData };
 };
-// 사용처: const { data: items = [] } = useGetWishlist();
+// 사용처: const { wishlistData } = useGetWishlist();
 
-// ✅ Good — 훅 내부에서 이름 정리
-export const useGetWishlist = () => {
-  const { data: items = [] } = useQuery({ queryKey: ['wishlists'], queryFn: getWishlist });
-  return { items };
+// ✅ Mutation — mutate를 API 함수명 그대로
+export const usePostWishlist = () => {
+  const { mutate: postWishlist, isPending } = useMutation({ mutationFn: postWishlist });
+  return { postWishlist, isPending };
 };
-// 사용처: const { items } = useGetWishlist();
+// 사용처: const { postWishlist } = usePostWishlist();
 ```
 
 ### 기타
