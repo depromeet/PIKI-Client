@@ -21,6 +21,10 @@ export type TournamentParticipantT = {
   profileImage: string;
 };
 
+export type TournamentStartDataT = {
+  items: Omit<TournamentItemT, 'itemId'>[];
+};
+
 export type TournamentDataT = {
   tournamentId: number;
   name: string;
