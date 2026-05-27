@@ -1,9 +1,12 @@
 'use client';
 
+import { useParams } from 'next/navigation';
+
 import { ImageIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import { useImagePicker } from '@/hooks/useImagePicker';
+import { usePostTournamentOCR } from '@/hooks/usePostTournamentOCR';
 import { usePostWishOCR } from '@/hooks/usePostWishOCR';
 import type { ItemTypeT } from '@/types/item';
 
@@ -18,19 +21,26 @@ type Props = {
 };
 
 function ByImageDialog({ type, open, onOpenChange }: Props) {
-  const { mutate: postWishOCR } = usePostWishOCR();
+  const { id: tournamentId } = useParams<{ id: string }>();
+  const { postWishOCRMutation } = usePostWishOCR();
+  const { postTournamentOCRMutation } = usePostTournamentOCR(Number(tournamentId));
 
   const { openPicker, inputRef, handleInputChange, isPending } = useImagePicker({
     maxCount: MAX_IMAGE_COUNT,
-    onSuccess: async _files => {
+    onSuccess: async files => {
       if (type === 'wish') {
-        _files.forEach(file => {
+        files.forEach(file => {
           const formData = new FormData();
           formData.append('image', file);
-          postWishOCR(formData);
+          postWishOCRMutation(formData);
+        });
+      } else if (type === 'tournament') {
+        files.forEach(file => {
+          const formData = new FormData();
+          formData.append('images', file);
+          postTournamentOCRMutation(formData);
         });
       }
-      // TODO: API 연동
 
       onOpenChange(false);
     },
