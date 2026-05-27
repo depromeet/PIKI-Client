@@ -3,58 +3,57 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { MOCK_PRODUCTS } from '@/mocks/products';
-import { writeResult } from '@/utils/resultStorage';
+import type { TournamentItemT } from '@/types/tournament';
 
-import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
-import type { MatchPairT, ProductT, RankedProductT } from '../_types/tournament';
+import { getRoundLabel, getTransitionStage, type TransitionStageT } from '../_consts/rounds';
+import { pairByPriceAsc } from '../_utils/pairItems';
+import { usePostRecordMatch } from './usePostRecordMatch';
 
-// 참가자 수는 2의 거듭제곱이어야 함 (2, 4, 8, 16, 32)
-const INITIAL_PARTICIPANT_COUNT = 8;
-
-const buildPairsFromItems = (items: ProductT[]): MatchPairT[] => {
-  const pairs: MatchPairT[] = [];
-  for (let i = 0; i < items.length; i += 2) {
-    pairs.push([items[i]!, items[i + 1]!]);
-  }
-  return pairs;
+type UseTournamentArgs = {
+  tournamentId: number;
+  initialItems: TournamentItemT[];
 };
 
-const useTournament = () => {
+const useTournament = ({ tournamentId, initialItems }: UseTournamentArgs) => {
   const router = useRouter();
-  const [currentRoundItems, setCurrentRoundItems] = useState<ProductT[]>(() =>
-    MOCK_PRODUCTS.slice(0, INITIAL_PARTICIPANT_COUNT)
-  );
+  const { recordMatch } = usePostRecordMatch(tournamentId);
+
+  // 현재 라운드 진행 중인 아이템 (가격 오름차순 정렬되어 페어로 묶임)
+  const [currentRoundItems, setCurrentRoundItems] = useState<TournamentItemT[]>(initialItems);
   const [matchIndex, setMatchIndex] = useState(0);
   const [transitionStage, setTransitionStage] = useState<TransitionStageT | null>(null);
 
-  const winnersRef = useRef<ProductT[]>([]);
-  const rankedRef = useRef<RankedProductT[]>([]);
+  // 라운드 내 승자 누적 (다음 라운드 진출자)
+  const winnersRef = useRef<TournamentItemT[]>([]);
 
-  const roundItemCount = currentRoundItems.length;
-  const totalMatchesInRound = roundItemCount / 2;
-  const matches = buildPairsFromItems(currentRoundItems);
-  const currentMatch = matches[matchIndex];
-  const roundLabel = getRoundLabel(roundItemCount, matchIndex);
-  const isFinalRound = roundItemCount === 2;
+  const pairs = pairByPriceAsc(currentRoundItems);
+  const totalMatchesInRound = pairs.length;
+  const currentRound = currentRoundItems.length; // API의 currentRound와 동일 의미 (2, 4, 8, ...)
+  const currentMatch = pairs[matchIndex];
+  const roundLabel = getRoundLabel(currentRound, matchIndex);
+  const isFinalRound = currentRound === 2;
 
-  const handleSelect = (winner: ProductT) => {
-    const currentPair = matches[matchIndex];
+  const handleSelect = (winner: TournamentItemT) => {
+    const currentPair = pairs[matchIndex];
     if (!currentPair) return;
 
-    const loser = winner === currentPair[0] ? currentPair[1] : currentPair[0];
-    // 같은 라운드에서 패배한 아이템은 모두 같은 등수대로 묶음 (결승만 별도 처리)
-    const loserRank = isFinalRound ? 2 : roundItemCount;
-    rankedRef.current = [...rankedRef.current, { ...loser, rank: loserRank }];
-    winnersRef.current = [...winnersRef.current, winner];
+    const [first, second] = currentPair;
+    const selectedIsFirst = winner.tournamentItemId === first.tournamentItemId;
+    const selectedTournamentItemId = winner.tournamentItemId;
+
+    // 매치 기록 전송 (성공/실패와 무관하게 UI 진행 — 낙관적 갱신)
+    recordMatch({
+      currentRound,
+      firstTournamentItemId: first.tournamentItemId,
+      secondTournamentItemId: second.tournamentItemId,
+      selectedTournamentItemId,
+    });
+
+    winnersRef.current = [...winnersRef.current, selectedIsFirst ? first : second];
 
     // 결승전 종료 → 결과 페이지
     if (isFinalRound) {
-      const finalRanked: RankedProductT[] = [...rankedRef.current, { ...winner, rank: 1 }].sort(
-        (a, b) => a.rank - b.rank
-      );
-      writeResult(finalRanked);
-      router.push('/tournament/result');
+      router.push(`/tournament/result?tournamentId=${tournamentId}`);
       return;
     }
 
@@ -65,7 +64,7 @@ const useTournament = () => {
     }
 
     // 라운드 마지막 매치 → 전환 화면 노출
-    const nextRoundItemCount = roundItemCount / 2;
+    const nextRoundItemCount = currentRound / 2;
     setTransitionStage(getTransitionStage(nextRoundItemCount));
   };
 
