@@ -12,12 +12,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: '**',
       },
-      // TEMP: 유저 프사 임시 이미지
       {
-        protocol: 'https',
-        hostname: 'api.dicebear.com',
+        protocol: 'http',
+        hostname: '**',
       },
       // TEMP: 위시 상품 이미지 임시
       {
