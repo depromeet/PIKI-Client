@@ -2,21 +2,13 @@ import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
 
 export type { TournamentItemT, TournamentStatusT };
 
-export type TournamentItemLinkDataT = {
-  itemId: number;
-};
-
 export type TournamentParticipantT = {
   userId: string;
   nickname: string;
   profileImage: string;
 };
 
-export type TournamentStartDataT = {
-  items: Omit<TournamentItemT, 'itemId'>[];
-};
-
-export type TournamentDataT = {
+export type GetTournamentResponseT = {
   tournamentId: number;
   name: string;
   status: TournamentStatusT;
