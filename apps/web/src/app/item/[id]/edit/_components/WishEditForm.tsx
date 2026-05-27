@@ -36,13 +36,20 @@ function WishEditForm({ wishId }: WishEditFormProps) {
   const { wish } = useGetWish(wishId);
   const { mutate: updateWish, isPending: isUpdating } = usePatchWish(wishId);
 
-  const [name, setName] = useState(wish.item.name);
-  const [price, setPrice] = useState(
-    wish.item.currentPrice ? formatPrice(String(wish.item.currentPrice)) : ''
-  );
+  const initialName = wish.item.name;
+  const initialPriceFormatted = wish.item.currentPrice
+    ? formatPrice(String(wish.item.currentPrice))
+    : '';
+
+  const [name, setName] = useState(initialName);
+  const [price, setPrice] = useState(initialPriceFormatted);
+
+  const isChanged =
+    name.trim() !== initialName.trim() ||
+    formatPrice(price) !== initialPriceFormatted;
 
   const handleSave = () => {
-    if (isUpdating) return;
+    if (isUpdating || !isChanged) return;
     updateWish({
       name: name.trim(),
       currentPrice: parsePriceToNumber(price),
@@ -110,7 +117,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
           variant="primary"
           size="lg"
           onClick={handleSave}
-          disabled={isUpdating}
+          disabled={isUpdating || !isChanged}
           className="flex-1"
         >
           저장하기

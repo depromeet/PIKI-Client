@@ -19,7 +19,13 @@ export const usePostMemberLogin = () => {
 
       // TODO: 게스트 로그인 응답에서 가져온 nickname으로 회원 로그인 요청 보내야 함. 현재 409 상태라 임시로 랜덤 닉네임 사용
       // await postDevMember(data.user.nickname, data.accessToken);
-      await postMemberLogin(Math.random().toString(36).slice(2, 12), data.accessToken);
+
+      const memberData = await postMemberLogin(
+        Math.random().toString(36).slice(2, 12),
+        data.accessToken
+      );
+      setCookie('accessToken', memberData.accessToken);
+      setCookie('refreshToken', memberData.refreshToken);
     },
     onSuccess: () => {
       router.push('/home');
