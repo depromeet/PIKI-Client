@@ -192,18 +192,18 @@ import Button from '@/components/common/Button/Button';
 
 ## 📝 네이밍 컨벤션
 
-| 대상                     | 규칙               | 예시                                                    |
-| ------------------------ | ------------------ | ------------------------------------------------------- |
-| **폴더**                 | kebab-case         | `wish-card/`, `state-chip/`                             |
-| **공통 컴포넌트 본체**   | `index.tsx`        | `components/common/button/index.tsx`                    |
-| **보조 컴포넌트 파일**   | PascalCase         | `UserProfile.tsx`, `ButtonLink.tsx`                     |
-| **스타일/상수 파일**     | camelCase          | `button.style.ts`, `userProfile.const.ts`               |
-| **일반 파일** (훅, 유틸) | camelCase          | `useAuth.ts`, `formatDate.ts`                           |
-| **타입**                 | T suffix           | `UserT`, `ProductT`                                     |
-| **API 함수**             | HTTP 메서드 prefix | `getUser`, `postWishlist`, `patchProfile`, `deleteItem` |
-| **API 요청/응답 타입**   | 함수명 + `RequestT`/`ResponseT` | `PostWishRequestT`, `PostWishResponseT` |
-| **API 훅**               | `use` + 함수명 | `usePostWish`, `usePatchItem`, `useGetWishlist` |
-| **공통 객체 타입**       | `src/types/` 에 위치, T suffix | `WishT`, `ItemT`, `UserT` |
+| 대상                     | 규칙                            | 예시                                                    |
+| ------------------------ | ------------------------------- | ------------------------------------------------------- |
+| **폴더**                 | kebab-case                      | `wish-card/`, `state-chip/`                             |
+| **공통 컴포넌트 본체**   | `index.tsx`                     | `components/common/button/index.tsx`                    |
+| **보조 컴포넌트 파일**   | PascalCase                      | `UserProfile.tsx`, `ButtonLink.tsx`                     |
+| **스타일/상수 파일**     | camelCase                       | `button.style.ts`, `userProfile.const.ts`               |
+| **일반 파일** (훅, 유틸) | camelCase                       | `useAuth.ts`, `formatDate.ts`                           |
+| **타입**                 | T suffix                        | `UserT`, `ProductT`                                     |
+| **API 함수**             | HTTP 메서드 prefix              | `getUser`, `postWishlist`, `patchProfile`, `deleteItem` |
+| **API 요청/응답 타입**   | 함수명 + `RequestT`/`ResponseT` | `PostWishRequestT`, `PostWishResponseT`                 |
+| **API 훅**               | `use` + 함수명                  | `usePostWish`, `usePatchItem`, `useGetWishlist`         |
+| **공통 객체 타입**       | `src/types/` 에 위치, T suffix  | `WishT`, `ItemT`, `UserT`                               |
 
 ---
 
