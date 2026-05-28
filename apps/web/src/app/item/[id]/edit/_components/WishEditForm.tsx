@@ -44,15 +44,20 @@ function WishEditForm({ wishId }: WishEditFormProps) {
   const [name, setName] = useState(initialName);
   const [price, setPrice] = useState(initialPriceFormatted);
 
+  const trimmedName = name.trim();
+  const parsedPrice = parsePriceToNumber(price);
+
   const isChanged =
-    name.trim() !== initialName.trim() ||
+    trimmedName !== initialName.trim() ||
     formatPrice(price) !== initialPriceFormatted;
+  const isValid = trimmedName.length > 0 && parsedPrice > 0;
+  const isSaveDisabled = isUpdating || !isChanged || !isValid;
 
   const handleSave = () => {
-    if (isUpdating || !isChanged) return;
+    if (isSaveDisabled) return;
     updateWish({
-      name: name.trim(),
-      currentPrice: parsePriceToNumber(price),
+      name: trimmedName,
+      currentPrice: parsedPrice,
     });
   };
 
@@ -117,7 +122,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
           variant="primary"
           size="lg"
           onClick={handleSave}
-          disabled={isUpdating || !isChanged}
+          disabled={isSaveDisabled}
           className="flex-1"
         >
           저장하기
