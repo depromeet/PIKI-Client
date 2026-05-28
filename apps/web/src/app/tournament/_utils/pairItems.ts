@@ -24,3 +24,16 @@ export const pairByPriceAsc = (items: TournamentItemT[]): ItemPairT[] => {
   }
   return pairs;
 };
+
+/**
+ * 페어 배열의 등장 순서를 Fisher–Yates로 셔플한다.
+ * 페어 내부의 좌/우 순서는 유지 — 같은 가격대끼리 붙는 매칭 자체는 그대로.
+ */
+export const shufflePairs = (pairs: ItemPairT[]): ItemPairT[] => {
+  const shuffled = [...pairs];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!];
+  }
+  return shuffled;
+};

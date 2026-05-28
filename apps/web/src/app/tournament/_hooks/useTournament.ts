@@ -1,12 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
 import { getRoundLabel, getTransitionStage, type TransitionStageT } from '../_consts/rounds';
-import { pairByPriceAsc } from '../_utils/pairItems';
+import { pairByPriceAsc, shufflePairs } from '../_utils/pairItems';
 import { usePostRecordMatch } from './usePostRecordMatch';
 
 type UseTournamentArgs = {
@@ -26,7 +26,8 @@ const useTournament = ({ tournamentId, initialItems }: UseTournamentArgs) => {
   // 라운드 내 승자 누적 (다음 라운드 진출자)
   const winnersRef = useRef<TournamentItemT[]>([]);
 
-  const pairs = pairByPriceAsc(currentRoundItems);
+  // 라운드 시작 시 한 번만 페어 생성 + 셔플 (매치 진행 중 순서가 바뀌지 않도록)
+  const pairs = useMemo(() => shufflePairs(pairByPriceAsc(currentRoundItems)), [currentRoundItems]);
   const totalMatchesInRound = pairs.length;
   const currentRound = currentRoundItems.length; // API의 currentRound와 동일 의미 (2, 4, 8, ...)
   const currentMatch = pairs[matchIndex];
