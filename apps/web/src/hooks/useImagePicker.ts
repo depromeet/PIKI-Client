@@ -1,6 +1,6 @@
 'use client';
 
-import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+import { WEBBRIDGE_MESSAGE_TYPE, type ImagePickerSuccessPayloadT } from '@piki/core';
 import type { ChangeEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -10,14 +10,19 @@ import { WebBridge, isWebview } from '@/utils/webBridge';
 
 const DEFAULT_MAX_COUNT = 5;
 
+type ImagePickerResultT = {
+  files: File[];
+  skippedCount: number;
+};
+
 type PendingRequestT = {
-  resolve: (files: File[]) => void;
+  resolve: (result: ImagePickerResultT) => void;
   reject: (error: Error) => void;
 };
 
 type UseImagePickerProps = {
   maxCount?: number;
-  onSuccess: (files: File[]) => void | Promise<void>;
+  onSuccess: (files: File[], skippedCount: number) => void | Promise<void>;
   onCancel?: () => void;
   onError?: (error: Error) => void;
 };
@@ -44,10 +49,10 @@ export const useImagePicker = ({
   const [isPending, setIsPending] = useState(false);
 
   const handleImagesSelect = useCallback(
-    async (files: File[]) => {
+    async ({ files, skippedCount }: ImagePickerResultT) => {
       setIsPending(true);
       try {
-        await onSuccess(files);
+        await onSuccess(files, skippedCount);
       } catch (error) {
         const pickError =
           error instanceof Error ? error : new Error('이미지 처리 중 오류가 발생했습니다.');
@@ -74,7 +79,10 @@ export const useImagePicker = ({
       if (!pending) return;
 
       pendingRequestsRef.current.delete(message.payload.requestId);
-      pending.resolve(message.payload.images.map(nativeImageToFile));
+      pending.resolve({
+        files: message.payload.images.map(nativeImageToFile),
+        skippedCount: getSkippedCount(message.payload),
+      });
       return;
     }
 
@@ -106,7 +114,7 @@ export const useImagePicker = ({
   const openNativePicker = useCallback(() => {
     const requestId = crypto.randomUUID();
 
-    const pendingPromise = new Promise<File[]>((resolve, reject) => {
+    const pendingPromise = new Promise<ImagePickerResultT>((resolve, reject) => {
       pendingRequestsRef.current.set(requestId, { resolve, reject });
     });
 
@@ -148,7 +156,7 @@ export const useImagePicker = ({
 
       if (files.length === 0) return;
 
-      void handleImagesSelect(files);
+      void handleImagesSelect({ files, skippedCount: 0 });
     },
     [maxCount, handleImagesSelect]
   );
@@ -160,3 +168,5 @@ export const useImagePicker = ({
     handleInputChange,
   };
 };
+
+const getSkippedCount = (payload: ImagePickerSuccessPayloadT) => payload.skippedCount;

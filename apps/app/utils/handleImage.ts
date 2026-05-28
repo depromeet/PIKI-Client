@@ -1,6 +1,7 @@
 import {
   type NativeImagePayloadT,
   type OpenImagePickerPayloadT,
+  SUPPORTED_IMAGE_MIME_TYPES,
   WEBBRIDGE_MESSAGE_TYPE,
 } from '@piki/core';
 import type { ImagePickerAsset } from 'expo-image-picker';
@@ -16,6 +17,12 @@ const getFileName = (asset: ImagePickerAsset, index: number): string => {
 
   const extension = asset.mimeType?.split('/')[1] ?? DEFAULT_IMAGE_EXTENSION;
   return `image-${index + 1}.${extension}`;
+};
+
+const isSupportedImageAsset = (asset: ImagePickerAsset) => {
+  if (!asset.mimeType) return false;
+
+  return SUPPORTED_IMAGE_MIME_TYPES.includes(asset.mimeType);
 };
 
 const uriToNativeImagePayload = async (
@@ -34,6 +41,7 @@ const uriToNativeImagePayload = async (
 /** OPEN_IMAGE_PICKER 수신 시 앨범 피커 오픈 → Base64 bridge 응답 */
 export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePickerPayloadT) => {
   try {
+    /** 갤러리 접근 권한 확인 */
     const permission = await requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
       WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR, {
@@ -43,6 +51,7 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
       return;
     }
 
+    /** 이미지 가져오기 */
     const result = await launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsMultipleSelection: true,
@@ -57,13 +66,28 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     }
 
     const selectedAssets = result.assets.slice(0, maxCount);
+
+    /** 허용 가능한 이미지 확장자만 필터링 */
+    const supportedAssets = selectedAssets.filter(isSupportedImageAsset);
+    const skippedCount = selectedAssets.length - supportedAssets.length;
+
+    if (supportedAssets.length === 0) {
+      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR, {
+        requestId,
+        detail: '지원하지 않는 형식의 이미지입니다.',
+      });
+      return;
+    }
+
     const images = await Promise.all(
-      selectedAssets.map((asset, index) => uriToNativeImagePayload(asset, index))
+      supportedAssets.map((asset, index) => uriToNativeImagePayload(asset, index))
     );
 
+    /** 이미지 전송 */
     WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS, {
       requestId,
       images,
+      skippedCount,
     });
   } catch {
     WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR, {

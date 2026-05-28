@@ -1,6 +1,8 @@
 'use client';
 
+import { SUPPORTED_IMAGE_MIME_TYPES } from '@piki/core';
 import { useParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { ImageIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
@@ -35,17 +37,25 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
     isPending: isImagePickerPending,
   } = useImagePicker({
     maxCount: MAX_IMAGE_COUNT,
-    onSuccess: async files => {
+    onSuccess: async (files, skippedCount) => {
       const formData = new FormData();
       files.forEach(file => formData.append('images', file));
 
       if (type === 'wish') {
         postWishOCRMutation(formData, {
           onSettled: () => onOpenChange(false),
+          onSuccess: () => {
+            if (skippedCount > 0)
+              toast.warning(`지원하지 않는 형식의 이미지 ${skippedCount}장은 제외됐어요.`);
+          },
         });
       } else if (type === 'tournament') {
         postTournamentOCRMutation(formData, {
           onSettled: () => onOpenChange(false),
+          onSuccess: () => {
+            if (skippedCount > 0)
+              toast.warning(`지원하지 않는 형식의 이미지 ${skippedCount}장은 제외됐어요.`);
+          },
         });
       }
     },
@@ -93,7 +103,7 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
         <input
           ref={inputRef}
           type="file"
-          accept="image/png, image/jpeg, image/webp, image/heic, image/heif"
+          accept={SUPPORTED_IMAGE_MIME_TYPES.join(', ')}
           multiple
           className="hidden"
           onChange={handleInputChange}

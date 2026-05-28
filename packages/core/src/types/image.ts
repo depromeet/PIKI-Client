@@ -18,6 +18,8 @@ export type ImagePickerSuccessMessageT = {
 export type ImagePickerSuccessPayloadT = {
   requestId: string;
   images: NativeImagePayloadT[];
+  /** 제외된 이미지 개수 */
+  skippedCount: number;
 };
 /** 앱에서 선택한 이미지를 웹으로 넘기기 위한 Base64 payload */
 export type NativeImagePayloadT = {
