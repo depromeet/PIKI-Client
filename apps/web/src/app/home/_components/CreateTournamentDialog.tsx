@@ -44,7 +44,7 @@ function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="flex w-[360px] max-w-[calc(100%-40px)] flex-col gap-5"
+        className="flex flex-col gap-5"
       >
         <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           새 토너먼트

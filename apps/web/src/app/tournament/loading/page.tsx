@@ -21,7 +21,7 @@ function TournamentLoadingPage() {
   }, [router]);
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-basement px-5 pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
+    <main className="flex min-h-dvh flex-col pt-[calc(env(safe-area-inset-top)+24px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
       <header className="flex flex-col gap-2 tracking-[-0.6px]">
         <h1 className="text-[28px] leading-10 font-bold text-text-neutral-primary">
           대진표를 만드는 중이에요

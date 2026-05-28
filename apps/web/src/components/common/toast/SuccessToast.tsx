@@ -14,7 +14,7 @@ function SuccessToast({ message, isVisible }: SuccessToastProps) {
       }`}
     >
       <span aria-hidden className="absolute inset-0 bg-gray-900 opacity-[0.52]" />
-      <span aria-hidden className="absolute inset-0 bg-[#0066FF] opacity-[0.05]" />
+      <span aria-hidden className="absolute inset-0 bg-blue-500 opacity-[0.05]" />
       <CheckCircledIconFill className="relative size-6 shrink-0 text-icon-success" />
       <span className="relative flex-1 body-2-semibold text-white opacity-[0.88]">{message}</span>
     </div>

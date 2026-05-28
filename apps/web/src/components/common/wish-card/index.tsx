@@ -24,10 +24,10 @@ function WishCard({ name, price, imageUrl }: WishCardProps) {
 
       {/* 상품명 + 가격 */}
       <div className="flex flex-1 flex-col items-center justify-center gap-[9.351px] self-stretch px-3 py-3">
-        <p className="self-stretch text-center text-[16.364px] leading-[23.377px] font-medium tracking-[-0.701px] text-[#686F7E]">
+        <p className="self-stretch text-center text-[16.364px] leading-[23.377px] font-medium tracking-[-0.701px] text-gray-600">
           {name}
         </p>
-        <p className="text-[18.701px] leading-[25.714px] font-bold tracking-[-0.701px] text-[#2D3037]">
+        <p className="text-[18.701px] leading-[25.714px] font-bold tracking-[-0.701px] text-gray-950">
           {price.toLocaleString()}원
         </p>
       </div>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { EditIconFill } from '@/assets/icons';
+import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
 import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
@@ -35,8 +36,7 @@ function ItemEditForm({
   const [price, setPrice] = useState(formatPrice(initialPrice));
 
   const isChanged =
-    name.trim() !== initialName.trim() ||
-    formatPrice(price) !== formatPrice(initialPrice);
+    name.trim() !== initialName.trim() || formatPrice(price) !== formatPrice(initialPrice);
 
   const handleDelete = () => {
     // TODO: 후보 삭제 처리
@@ -55,9 +55,9 @@ function ItemEditForm({
     : '상품명과 가격은 직접 수정할 수 있어요';
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-[78px]">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-9 pb-[78px]">
       {isWish && <Header left={<HeaderIcon name="BACK" />} />}
-      <div className="flex w-full flex-col gap-6 px-5 pt-3">
+      <div className="flex w-full flex-col gap-6 pt-3">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
@@ -96,7 +96,7 @@ function ItemEditForm({
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-3 border-t border-gray-50 bg-bg-layer-default px-5 py-3">
+      <BottomCta>
         {!isWish && (
           <Button
             variant="secondary"
@@ -117,7 +117,7 @@ function ItemEditForm({
         >
           저장하기
         </Button>
-      </div>
+      </BottomCta>
     </main>
   );
 }
