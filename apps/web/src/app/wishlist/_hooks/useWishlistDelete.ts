@@ -7,7 +7,7 @@ import { useDeleteWish } from './useDeleteWish';
 export const useWishlistDelete = () => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
-  const { mutateAsync: deleteWishlistMutation } = useDeleteWish();
+  const { mutateAsync: deleteWishMutation } = useDeleteWish();
 
   const handleEnterDeleteMode = () => {
     setIsDeleteMode(true);
@@ -27,7 +27,7 @@ export const useWishlistDelete = () => {
   const handleConfirmDelete = async () => {
     if (selectedIds.size === 0) return;
     try {
-      await Promise.all([...selectedIds].map(id => deleteWishlistMutation(id)));
+      await Promise.all([...selectedIds].map(id => deleteWishMutation(id)));
       toast.success('선택한 위시를 삭제했어요');
     } finally {
       setSelectedIds(new Set());

@@ -14,7 +14,7 @@ import WishlistTabContent from './WishlistTabContent';
 function WishlistContent() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-  const { data: items } = useGetWishlist();
+  const { data: wishlistData } = useGetWishlist();
   const { isDeleteMode, selectedIds, handleEnterDeleteMode, handleToggleSelect, handleConfirmDelete } =
     useWishlistDelete();
 
@@ -22,7 +22,7 @@ function WishlistContent() {
     <>
       <main className="flex flex-1 flex-col px-5 pb-24">
         <WishlistTabContent
-          items={items}
+          items={wishlistData}
           isDeleteMode={isDeleteMode}
           selectedIds={selectedIds}
           onToggleSelect={handleToggleSelect}
