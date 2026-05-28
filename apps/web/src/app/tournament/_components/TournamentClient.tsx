@@ -42,15 +42,15 @@ function TournamentClient({ tournamentId }: TournamentClientProps) {
 function TournamentStarter({ tournamentId }: { tournamentId: number }) {
   const [initialItems, setInitialItems] = useState<TournamentItemT[] | null>(null);
   const hasRequestedStartRef = useRef(false);
-  const { postStartTournamentMutation, isPostStartTournamentPending } =
-    usePostStartTournament(tournamentId);
+  const { postStartTournamentMutation, isPostStartTournamentPending } = usePostStartTournament({
+    tournamentId,
+    onSuccess: data => setInitialItems(data.items),
+  });
 
   useEffect(() => {
     if (hasRequestedStartRef.current) return;
     hasRequestedStartRef.current = true;
-    postStartTournamentMutation(undefined, {
-      onSuccess: data => setInitialItems(data.items),
-    });
+    postStartTournamentMutation();
   }, [postStartTournamentMutation]);
 
   if (initialItems === null) {
