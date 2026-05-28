@@ -12,7 +12,7 @@ function TournamentHistoryContent() {
 
   return (
     <>
-      <main className="flex flex-1 items-center justify-center">
+      <main className="flex flex-1 items-center justify-center pb-24">
         <p className="body-1-medium text-gray-300">토너먼트 기록이 없어요</p>
       </main>
       <div className="fixed bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
