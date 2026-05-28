@@ -13,7 +13,7 @@ export const usePostCreateTournament = () => {
       // 홈의 진행 중인 토너먼트 리스트 갱신
       queryClient.invalidateQueries({ queryKey: ['tournamentList'] });
       // TODO: 토너먼트 히스토리 쿼리 연결되면 함께 invalidate
-      router.push(`/tournament/create?tournamentId=${tournamentId}`);
+      router.push(`/tournament/${tournamentId}/create`);
     },
   });
 
