@@ -7,6 +7,7 @@ import { getQueryClient } from '@/utils/queryClient';
 import { getWishlist } from './_apis/getWishlist';
 import TournamentHistoryContent from './_components/TournamentHistoryContent';
 import WishlistContent from './_components/WishlistContent';
+import WishlistSkeleton from './_components/WishlistSkeleton';
 import type { WishTabT } from './_types/wishTypes';
 
 type WishlistPageProps = {
@@ -39,7 +40,7 @@ async function WishlistPage({ searchParams }: WishlistPageProps) {
         </Suspense>
       )}
       {activeTab === '저장한 위시템' && (
-        <Suspense>
+        <Suspense fallback={<WishlistSkeleton />}>
           <WishlistContent />
         </Suspense>
       )}
