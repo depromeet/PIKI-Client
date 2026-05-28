@@ -1,6 +1,6 @@
-import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
+import type { TournamentItemStatusT, TournamentItemT, TournamentStatusT } from '@/types/tournament';
 
-export type { TournamentItemT, TournamentStatusT };
+export type { TournamentItemStatusT, TournamentItemT, TournamentStatusT };
 
 export type TournamentParticipantT = {
   userId: string;
@@ -24,4 +24,14 @@ export type PostTournamentItemLinkResponseT = {
 
 export type PostTournamentStartResponseT = {
   items: Omit<TournamentItemT, 'itemId'>[];
+};
+
+export type GetTournamentItemResponseT = {
+  tournamentItemId: number;
+  itemId: number;
+  name: string | null;
+  imageUrl: string | null;
+  price: number | null;
+  currency: string | null;
+  status: TournamentItemStatusT;
 };
