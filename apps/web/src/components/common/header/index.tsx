@@ -45,10 +45,7 @@ function Header({
 }: Props) {
   return (
     <header
-      className={cn(
-        'relative flex h-7.5 w-full shrink-0 items-center justify-between',
-        className
-      )}
+      className={cn('relative flex h-7.5 w-full shrink-0 items-center justify-between', className)}
     >
       <div className={cn('inline-flex h-full items-center', leftClassName)}>{left}</div>
       <div
@@ -66,7 +63,7 @@ function Header({
   );
 }
 
-const ICON_BASE_STYLE = 'cursor-pointer';
+const ICON_BASE_STYLE = 'p-[3px] cursor-pointer';
 
 function HeaderIcon({
   name,
