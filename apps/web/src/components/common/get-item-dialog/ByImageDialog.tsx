@@ -11,6 +11,7 @@ import { usePostWishOCR } from '@/hooks/usePostWishOCR';
 import type { ItemTypeT } from '@/types/item';
 
 import Spacing from '../spacing';
+import Spinner from '../spinner';
 
 const MAX_IMAGE_COUNT = 5;
 
@@ -22,10 +23,17 @@ type Props = {
 
 function ByImageDialog({ type, open, onOpenChange }: Props) {
   const { id: tournamentId } = useParams<{ id: string }>();
-  const { postWishOCRMutation } = usePostWishOCR();
-  const { postTournamentOCRMutation } = usePostTournamentOCR(Number(tournamentId));
+  const { postWishOCRMutation, isPostWishOCRPending } = usePostWishOCR();
+  const { postTournamentOCRMutation, isPostTournamentOCRPending } = usePostTournamentOCR(
+    Number(tournamentId)
+  );
 
-  const { openPicker, inputRef, handleInputChange, isPending } = useImagePicker({
+  const {
+    openPicker,
+    inputRef,
+    handleInputChange,
+    isPending: isImagePickerPending,
+  } = useImagePicker({
     maxCount: MAX_IMAGE_COUNT,
     onSuccess: async files => {
       if (type === 'wish') {
@@ -34,15 +42,14 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           formData.append('image', file);
           postWishOCRMutation(formData);
         });
+        onOpenChange(false);
       } else if (type === 'tournament') {
-        files.forEach(file => {
-          const formData = new FormData();
-          formData.append('images', file);
-          postTournamentOCRMutation(formData);
+        const formData = new FormData();
+        files.forEach(file => formData.append('images', file));
+        postTournamentOCRMutation(formData, {
+          onSettled: () => onOpenChange(false),
         });
       }
-
-      onOpenChange(false);
     },
   });
 
@@ -71,14 +78,24 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           </p>
         </div>
 
-        <Button size="lg" variant="primary" onClick={openPicker} disabled={isPending}>
-          사진 선택하기
+        <Button
+          size="lg"
+          variant="primary"
+          onClick={openPicker}
+          disabled={isImagePickerPending || isPostWishOCRPending || isPostTournamentOCRPending}
+        >
+          {/** TODO: spinner size 임의값. 변경 필요 */}
+          {isImagePickerPending || isPostWishOCRPending || isPostTournamentOCRPending ? (
+            <Spinner size={20} />
+          ) : (
+            '사진 선택하기'
+          )}
         </Button>
 
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept="image/png, image/jpeg, image/webp, image/heic, image/heif"
           multiple
           className="hidden"
           onChange={handleInputChange}
