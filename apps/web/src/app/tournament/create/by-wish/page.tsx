@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { MOCK_WISH_ITEMS } from '@/app/wishlist/_mocks/wishMocks';
@@ -23,9 +22,7 @@ function ByWishPage() {
 
   useEffect(() => {
     if (!isMaxExceeded) return;
-    toast.warning(
-      `최대 ${MAX_SELECT}개까지 상품을 담을 수 있어요.`
-    );
+    toast.warning(`최대 ${MAX_SELECT}개까지 상품을 담을 수 있어요.`);
   }, [isMaxExceeded]);
 
   const handleNext = () => {

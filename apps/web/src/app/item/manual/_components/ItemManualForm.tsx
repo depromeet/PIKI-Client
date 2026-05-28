@@ -41,7 +41,11 @@ function ItemManualForm() {
     router.back();
   };
 
-  const isValid = Boolean(imageUrl) && name.trim().length > 0 && price.replace(/[^\d]/g, '') !== '' && price.replace(/[^\d]/g, '') !== '0';
+  const isValid =
+    Boolean(imageUrl) &&
+    name.trim().length > 0 &&
+    price.replace(/[^\d]/g, '') !== '' &&
+    price.replace(/[^\d]/g, '') !== '0';
 
   return (
     <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">

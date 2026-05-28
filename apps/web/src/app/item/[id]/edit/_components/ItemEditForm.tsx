@@ -35,8 +35,7 @@ function ItemEditForm({
   const [price, setPrice] = useState(formatPrice(initialPrice));
 
   const isChanged =
-    name.trim() !== initialName.trim() ||
-    formatPrice(price) !== formatPrice(initialPrice);
+    name.trim() !== initialName.trim() || formatPrice(price) !== formatPrice(initialPrice);
 
   const handleDelete = () => {
     // TODO: 후보 삭제 처리

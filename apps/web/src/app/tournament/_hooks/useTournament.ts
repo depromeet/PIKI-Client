@@ -5,7 +5,7 @@ import { useMemo, useRef, useState } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
-import { getRoundLabel, getTransitionStage, type TransitionStageT } from '../_consts/rounds';
+import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
 import { pairByPriceAsc, shufflePairs } from '../_utils/pairItems';
 import { usePostRecordMatch } from './usePostRecordMatch';
 
