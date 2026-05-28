@@ -24,13 +24,16 @@ const toUsers = (imageUrls: string[]): UserT[] =>
   }));
 
 function TorunamentList() {
-  const { data } = useGetTournamentList([TOURNAMENT_STATUS.PENDING, TOURNAMENT_STATUS.IN_PROGRESS]);
+  const { tournamentListData } = useGetTournamentList([
+    TOURNAMENT_STATUS.PENDING,
+    TOURNAMENT_STATUS.IN_PROGRESS,
+  ]);
 
   return (
     <section className="flex flex-col gap-3">
       <h2 className="heading-2 text-black">진행 중인 토너먼트</h2>
 
-      {data.map(tournament => (
+      {tournamentListData.map(tournament => (
         <TournamentCard
           key={tournament.tournamentId}
           state={STATUS_TO_STATE[tournament.status]}

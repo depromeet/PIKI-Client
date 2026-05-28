@@ -8,7 +8,7 @@ export const useDeleteWish = (wishId: number) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: deleteWishMutation, isPending: isDeleteWishPending } = useMutation({
     mutationFn: () => deleteWish(wishId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
@@ -20,5 +20,5 @@ export const useDeleteWish = (wishId: number) => {
     },
   });
 
-  return { mutate, isPending };
+  return { deleteWishMutation, isDeleteWishPending };
 };

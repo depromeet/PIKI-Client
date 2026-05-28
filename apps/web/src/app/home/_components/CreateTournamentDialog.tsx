@@ -12,14 +12,15 @@ import { usePostCreateTournament } from '../_hooks/usePostCreateTournament';
 function CreateTournamentDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
-  const { mutate: createTournament, isPending } = usePostCreateTournament();
+  const { postCreateTournamentMutation, isPostCreateTournamentPending } =
+    usePostCreateTournament();
 
   const trimmedName = name.trim();
-  const isDisabled = trimmedName.length === 0 || isPending;
+  const isDisabled = trimmedName.length === 0 || isPostCreateTournamentPending;
 
   const handleCreate = () => {
     if (isDisabled) return;
-    createTournament(
+    postCreateTournamentMutation(
       { name: trimmedName },
       {
         onSuccess: () => {

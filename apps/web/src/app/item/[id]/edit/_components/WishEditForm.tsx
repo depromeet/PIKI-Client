@@ -33,12 +33,12 @@ const getSourceUrlLabel = (sourceUrl: string | null): string => {
 };
 
 function WishEditForm({ wishId }: WishEditFormProps) {
-  const { wish } = useGetWish(wishId);
-  const { mutate: updateWish, isPending: isUpdating } = usePatchWish(wishId);
+  const { wishData } = useGetWish(wishId);
+  const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId);
 
-  const initialName = wish.item.name;
-  const initialPriceFormatted = wish.item.currentPrice
-    ? formatPrice(String(wish.item.currentPrice))
+  const initialName = wishData.item.name;
+  const initialPriceFormatted = wishData.item.currentPrice
+    ? formatPrice(String(wishData.item.currentPrice))
     : '';
 
   const [name, setName] = useState(initialName);
@@ -51,17 +51,17 @@ function WishEditForm({ wishId }: WishEditFormProps) {
     trimmedName !== initialName.trim() ||
     formatPrice(price) !== initialPriceFormatted;
   const isValid = trimmedName.length > 0 && parsedPrice > 0;
-  const isSaveDisabled = isUpdating || !isChanged || !isValid;
+  const isSaveDisabled = isPatchWishPending || !isChanged || !isValid;
 
   const handleSave = () => {
     if (isSaveDisabled) return;
-    updateWish({
+    patchWishMutation({
       name: trimmedName,
       currentPrice: parsedPrice,
     });
   };
 
-  const { item } = wish;
+  const { item } = wishData;
   const sourceUrl = item.sourceUrl ?? '';
   const sourceUrlLabel = getSourceUrlLabel(item.sourceUrl);
 
