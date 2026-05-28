@@ -32,7 +32,7 @@ async function HomePage() {
         }
       />
       {/* 메인 컨텐츠 */}
-      <main className="mx-auto mt-[54px] flex w-[362px] flex-col gap-12">
+      <main className="mt-[54px] flex w-full flex-col gap-12 px-5">
         {/* 로고 + CTA 영역 */}
         <section className="flex flex-col items-center gap-12">
           {/* PIKI 로고 */}
