@@ -16,7 +16,7 @@ type UseTournamentArgs = {
 
 const useTournament = ({ tournamentId, initialItems }: UseTournamentArgs) => {
   const router = useRouter();
-  const { recordMatch } = usePostRecordMatch(tournamentId);
+  const { postRecordMatchMutation } = usePostRecordMatch(tournamentId);
 
   // 현재 라운드 진행 중인 아이템 (가격 오름차순 정렬되어 페어로 묶임)
   const [currentRoundItems, setCurrentRoundItems] = useState<TournamentItemT[]>(initialItems);
@@ -42,7 +42,7 @@ const useTournament = ({ tournamentId, initialItems }: UseTournamentArgs) => {
     const selectedTournamentItemId = winner.tournamentItemId;
 
     // 매치 기록 전송 (성공/실패와 무관하게 UI 진행 — 낙관적 갱신)
-    recordMatch({
+    postRecordMatchMutation({
       currentRound,
       firstTournamentItemId: first.tournamentItemId,
       secondTournamentItemId: second.tournamentItemId,

@@ -42,21 +42,22 @@ function TournamentClient({ tournamentId }: TournamentClientProps) {
 function TournamentStarter({ tournamentId }: { tournamentId: number }) {
   const [initialItems, setInitialItems] = useState<TournamentItemT[] | null>(null);
   const hasRequestedStartRef = useRef(false);
-  const { startTournament, isPending } = usePostStartTournament(tournamentId);
+  const { postStartTournamentMutation, isPostStartTournamentPending } =
+    usePostStartTournament(tournamentId);
 
   useEffect(() => {
     if (hasRequestedStartRef.current) return;
     hasRequestedStartRef.current = true;
-    startTournament(undefined, {
+    postStartTournamentMutation(undefined, {
       onSuccess: data => setInitialItems(data.items),
     });
-  }, [startTournament]);
+  }, [postStartTournamentMutation]);
 
   if (initialItems === null) {
     return (
       <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
         <p className="body-1-medium text-text-neutral-tertiary">
-          {isPending ? '토너먼트 준비 중...' : '잠시만 기다려주세요...'}
+          {isPostStartTournamentPending ? '토너먼트 준비 중...' : '잠시만 기다려주세요...'}
         </p>
       </main>
     );
