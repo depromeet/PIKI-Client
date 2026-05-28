@@ -5,7 +5,7 @@ import { clientApi } from './client';
 
 export const postWishOCR = async (formData: FormData) => {
   const { data } = await clientApi.post<ApiResponseT<PostWishOCRResponseT>>(
-    '/api/v1/wishlists/ocr',
+    '/api/v1/wishlists/images',
     formData
   );
 
