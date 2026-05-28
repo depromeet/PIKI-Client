@@ -10,7 +10,11 @@ export const usePostWishOCR = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate: postWishOCRMutation, isPending: isPostWishOCRPending } = useMutation({
+  const {
+    mutate: postWishOCRMutation,
+    isPending: isPostWishOCRPending,
+    reset: resetPostWishOCRMutation,
+  } = useMutation({
     mutationFn: (formData: FormData) => postWishOCR(formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
@@ -31,5 +35,5 @@ export const usePostWishOCR = () => {
     },
   });
 
-  return { postWishOCRMutation, isPostWishOCRPending };
+  return { postWishOCRMutation, isPostWishOCRPending, resetPostWishOCRMutation };
 };

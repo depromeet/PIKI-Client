@@ -1,6 +1,6 @@
 'use client';
 
-import { WEBBRIDGE_MESSAGE_TYPE, type ImagePickerSuccessPayloadT } from '@piki/core';
+import { type ImagePickerSuccessPayloadT, WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import type { ChangeEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -130,11 +130,18 @@ export const useImagePicker = ({
         await handleImagesSelect(files);
       })
       .catch(error => {
-        if (error instanceof Error && error.message === 'IMAGE_PICKER_CANCELLED') return;
+        if (
+          error instanceof Error &&
+          (error.message === 'IMAGE_PICKER_CANCELLED' || error.message === 'IMAGE_PICKER_RESET')
+        )
+          return;
 
         const pickError =
           error instanceof Error ? error : new Error('이미지 선택 중 오류가 발생했습니다.');
         onError?.(pickError);
+      })
+      .finally(() => {
+        setIsPending(false);
       });
   }, [maxCount, handleImagesSelect, onError]);
 
@@ -161,11 +168,20 @@ export const useImagePicker = ({
     [maxCount, handleImagesSelect]
   );
 
+  const resetImagePicker = useCallback(() => {
+    pendingRequestsRef.current.forEach(pending => {
+      pending.reject(new Error('IMAGE_PICKER_RESET'));
+    });
+    pendingRequestsRef.current.clear();
+    setIsPending(false);
+  }, []);
+
   return {
     openPicker,
     isPending,
     inputRef,
     handleInputChange,
+    resetImagePicker,
   };
 };
 

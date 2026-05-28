@@ -2,6 +2,7 @@
 
 import { SUPPORTED_IMAGE_MIME_TYPES } from '@piki/core';
 import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { ImageIconFill } from '@/assets/icons';
@@ -25,16 +26,16 @@ type Props = {
 
 function ByImageDialog({ type, open, onOpenChange }: Props) {
   const { id: tournamentId } = useParams<{ id: string }>();
-  const { postWishOCRMutation, isPostWishOCRPending } = usePostWishOCR();
-  const { postTournamentOCRMutation, isPostTournamentOCRPending } = usePostTournamentOCR(
-    Number(tournamentId)
-  );
+  const { postWishOCRMutation, isPostWishOCRPending, resetPostWishOCRMutation } = usePostWishOCR();
+  const { postTournamentOCRMutation, isPostTournamentOCRPending, resetPostTournamentOCRMutation } =
+    usePostTournamentOCR(Number(tournamentId));
 
   const {
     openPicker,
     inputRef,
     handleInputChange,
     isPending: isImagePickerPending,
+    resetImagePicker,
   } = useImagePicker({
     maxCount: MAX_IMAGE_COUNT,
     onSuccess: async (files, skippedCount) => {
@@ -60,6 +61,14 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
       }
     },
   });
+
+  useEffect(() => {
+    if (open) return;
+
+    resetImagePicker();
+    resetPostWishOCRMutation();
+    resetPostTournamentOCRMutation();
+  }, [open, resetImagePicker, resetPostTournamentOCRMutation, resetPostWishOCRMutation]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

@@ -10,7 +10,11 @@ export const usePostTournamentOCR = (tournamentId: number) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate: postTournamentOCRMutation, isPending: isPostTournamentOCRPending } = useMutation({
+  const {
+    mutate: postTournamentOCRMutation,
+    isPending: isPostTournamentOCRPending,
+    reset: resetPostTournamentOCRMutation,
+  } = useMutation({
     mutationFn: (formData: FormData) => postTournamentOCR(tournamentId, formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournament', tournamentId] });
@@ -38,5 +42,5 @@ export const usePostTournamentOCR = (tournamentId: number) => {
     },
   });
 
-  return { postTournamentOCRMutation, isPostTournamentOCRPending };
+  return { postTournamentOCRMutation, isPostTournamentOCRPending, resetPostTournamentOCRMutation };
 };
