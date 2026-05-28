@@ -4,13 +4,13 @@ import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 import { AlertIconFill, CheckCircledIconFill, WarningIconFill } from '@/assets/icons/fill';
 
-const Toaster = ({ ...props }: ToasterProps) => {
+const Toaster = ({ mobileOffset, ...props }: ToasterProps) => {
   return (
     <Sonner
       visibleToasts={1}
       duration={3000}
       theme="light"
-      className="toaster group w-full! max-w-[calc(480px-40px)]!"
+      className="toaster group"
       icons={{
         success: (
           <CheckCircledIconFill className="size-6 text-icon-success" width={24} height={24} />
@@ -26,9 +26,15 @@ const Toaster = ({ ...props }: ToasterProps) => {
         } as React.CSSProperties
       }
       position="bottom-center"
+      mobileOffset={{
+        bottom: '90px',
+        left: '20px',
+        right: '20px',
+        ...(typeof mobileOffset === 'object' ? mobileOffset : {}),
+      }}
       toastOptions={{
         classNames: {
-          toast: '!gap-2 !w-full !border-none !bottom-[90px]',
+          toast: '!gap-2 !border-none',
           title: '!body-2-semibold',
           icon: '!size-6 !ml-0 !mr-0',
         },
