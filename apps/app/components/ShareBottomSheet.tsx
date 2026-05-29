@@ -20,7 +20,9 @@ export default function ShareBottomSheet(props: InitialProps) {
       <View style={styles.sheet}>
         <View style={styles.handle} />
 
-        <Text style={styles.title}>위시템을 담고 있어요</Text>
+        <Text allowFontScaling={false} style={styles.title}>
+          위시템을 담고 있어요
+        </Text>
 
         <View style={styles.imageContainer}>
           <Image
@@ -37,7 +39,9 @@ export default function ShareBottomSheet(props: InitialProps) {
     <View style={styles.sheet}>
       <View style={styles.handle} />
 
-      <Text style={styles.title}>위시 저장 완료!</Text>
+      <Text allowFontScaling={false} style={styles.title}>
+        위시 저장 완료!
+      </Text>
 
       <View style={styles.productContainer}>
         <Image
@@ -45,13 +49,19 @@ export default function ShareBottomSheet(props: InitialProps) {
           style={styles.productImage}
         />
         <View style={styles.dots}>
-          <Text style={styles.productName}>댕기 명주실 북어</Text>
-          <Text style={styles.productPrice}>52,000원</Text>
+          <Text allowFontScaling={false} style={styles.productName}>
+            댕기 명주실 북어
+          </Text>
+          <Text allowFontScaling={false} style={styles.productPrice}>
+            52,000원
+          </Text>
         </View>
       </View>
 
       <Pressable style={styles.button}>
-        <Text style={styles.buttonText}>위시 보러가기</Text>
+        <Text allowFontScaling={false} style={styles.buttonText}>
+          위시 보러가기
+        </Text>
       </Pressable>
     </View>
   );
