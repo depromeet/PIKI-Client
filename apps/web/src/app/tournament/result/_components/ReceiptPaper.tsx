@@ -74,33 +74,23 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       <div className="flex flex-col">
         {/* 날짜 / 시간 */}
         <div className="flex items-center justify-between px-5">
-          <span className="caption-1-semibold text-text-neutral-secondary">
-            {formatDate(date)}
-          </span>
-          <span className="caption-1-semibold text-text-neutral-secondary">
-            {formatTime(date)}
-          </span>
+          <span className="caption-1-semibold text-text-neutral-secondary">{formatDate(date)}</span>
+          <span className="caption-1-semibold text-text-neutral-secondary">{formatTime(date)}</span>
         </div>
 
         <SectionDivider />
 
         {/* 토너먼트 이름 */}
         <div className="flex flex-col px-5 py-2">
-          <p className="caption-1-semibold text-text-neutral-secondary">
-            Tournament name
-          </p>
-          <p className="caption-1-semibold text-text-neutral-secondary">
-            {tournamentName}
-          </p>
+          <p className="caption-1-semibold text-text-neutral-secondary">Tournament name</p>
+          <p className="caption-1-semibold text-text-neutral-secondary">{tournamentName}</p>
         </div>
 
         <SectionDivider />
 
         {/* 토너먼트 결과 라벨 */}
         <div className="flex items-center justify-center px-5 py-2">
-          <p className="caption-1-semibold text-text-neutral-secondary">
-            Tournament Results
-          </p>
+          <p className="caption-1-semibold text-text-neutral-secondary">Tournament Results</p>
         </div>
 
         <SectionDivider />

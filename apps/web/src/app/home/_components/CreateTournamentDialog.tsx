@@ -12,8 +12,7 @@ import { usePostCreateTournament } from '../_hooks/usePostCreateTournament';
 function CreateTournamentDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
-  const { postCreateTournamentMutation, isPostCreateTournamentPending } =
-    usePostCreateTournament();
+  const { postCreateTournamentMutation, isPostCreateTournamentPending } = usePostCreateTournament();
 
   const trimmedName = name.trim();
   const isDisabled = trimmedName.length === 0 || isPostCreateTournamentPending;
@@ -42,10 +41,7 @@ function CreateTournamentDialog() {
           <span className="body-1-semibold text-text-neutral-primary">토너먼트 만들기</span>
         </button>
       </DialogTrigger>
-      <DialogContent
-        showCloseButton={false}
-        className="flex flex-col gap-5"
-      >
+      <DialogContent showCloseButton={false} className="flex flex-col gap-5">
         <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           새 토너먼트
         </DialogTitle>
