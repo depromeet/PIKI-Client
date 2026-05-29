@@ -9,7 +9,7 @@ import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
 import formatPrice from '@/utils/formatPrice';
 
-import { useDeleteWish } from '../_hooks/useDeleteWish';
+import { useDeleteFailedWish } from '../_hooks/useDeleteFailedWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
 
 type ItemManualFormProps = {
@@ -23,7 +23,7 @@ function ItemManualForm({ wishId }: ItemManualFormProps) {
   const [price, setPrice] = useState('');
 
   const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId ?? 0);
-  const { deleteWishMutation, isDeleteWishPending } = useDeleteWish(wishId ?? 0);
+  const { deleteWishMutation, isDeleteWishPending } = useDeleteFailedWish(wishId ?? 0);
 
   const handleOpenPicker = () => {
     inputRef.current?.click();
