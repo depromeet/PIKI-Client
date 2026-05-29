@@ -54,7 +54,7 @@ function RoundTransition({
 
   return (
     <main
-      className={`flex min-h-dvh w-full flex-col items-center px-5 pt-[calc(env(safe-area-inset-top)+48px)] ${containerClassName}`}
+      className={`flex min-h-dvh w-full flex-col items-center px-5 pt-12 ${containerClassName}`}
     >
       <div className="flex flex-col items-center gap-4">
         {isFinal ? (

@@ -56,7 +56,9 @@ function RootLayout({
       <body className="h-full">
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto h-full max-w-120 bg-white">{children}</div>
+          <div className="mx-auto h-full max-w-120 bg-white pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
