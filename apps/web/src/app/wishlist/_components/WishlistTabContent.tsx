@@ -16,9 +16,9 @@ function WishlistTabContent({
 }: WishlistTabContentProps) {
   if (items.length === 0) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 text-gray-300">
-        <p className="body-1-medium">아직 저장한 위시템이 없어요</p>
-      </div>
+      <main className="flex flex-1 items-center justify-center">
+        <p className="body-1-medium text-gray-300">아직 저장한 위시템이 없어요</p>
+      </main>
     );
   }
 

@@ -11,7 +11,7 @@ function ItemLinkBanner({ href, label }: ItemLinkBannerProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex w-full items-center gap-4 rounded-xl bg-gray-50 px-4 py-3 transition-colors active:bg-gray-100"
+      className="flex w-full items-center gap-4 rounded-xl bg-gray-75 px-4 py-3 transition-colors active:bg-gray-100"
     >
       <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-bg-layer-default">
         <LinkIconFill className="size-6 text-icon-neutral-primary" />

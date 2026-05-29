@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { EditIconFill } from '@/assets/icons';
+import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
 import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
@@ -66,7 +67,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
   const sourceUrlLabel = getSourceUrlLabel(item.sourceUrl);
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-19.5">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-9 pb-[78px]">
       <Header left={<HeaderIcon name="BACK" />} />
       <div className="flex w-full flex-col gap-6 px-5 pt-3">
         {/* 헤더 */}
@@ -117,7 +118,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-3 border-t border-gray-50 bg-bg-layer-default px-5 py-3">
+      <BottomCta>
         <Button
           variant="primary"
           size="lg"
@@ -127,7 +128,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
         >
           저장하기
         </Button>
-      </div>
+      </BottomCta>
     </main>
   );
 }

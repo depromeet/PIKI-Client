@@ -34,7 +34,7 @@ function ByWishPage() {
   };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#F4F4F6] px-5">
+    <div className="flex h-full flex-col">
       {/* 헤더: 선택 안내 문구 + 선택 개수 */}
       <WishSelectHeader
         selectedCount={selectedIds.length}
@@ -43,7 +43,7 @@ function ByWishPage() {
       />
 
       {/* 위시 아이템 그리드 */}
-      <main className="mt-4 flex flex-1 flex-col pb-32">
+      <main className="mt-4 flex flex-1 flex-col overflow-y-auto pb-32 hide-scrollbar">
         <div className="grid grid-cols-2 gap-x-2 gap-y-3">
           {items.map(item => (
             <WishSelectCard
@@ -59,7 +59,7 @@ function ByWishPage() {
       </main>
 
       {/* 하단 버튼: 뒤로 / 다음 */}
-      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] bg-[#FFF] px-5 py-3 pt-4">
+      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] px-5 py-3">
         <Button variant="secondary" size="lg" onClick={() => router.back()}>
           뒤로
         </Button>
