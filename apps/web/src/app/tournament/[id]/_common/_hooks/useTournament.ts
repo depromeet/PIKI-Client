@@ -1,22 +1,39 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
 import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
+import type { GetTournamentCompletedResponseT } from '../_types/tournamentResponse';
 import { pairByPriceAsc, shufflePairs } from '../_utils/pairItems';
 import { usePostRecordMatch } from './usePostRecordMatch';
 
 type UseTournamentArgs = {
   tournamentId: number;
   initialItems: TournamentItemT[];
+  tournamentName: string;
 };
 
-const useTournament = ({ tournamentId, initialItems }: UseTournamentArgs) => {
+const useTournament = ({ tournamentId, initialItems, tournamentName }: UseTournamentArgs) => {
   const router = useRouter();
-  const { postRecordMatchMutation } = usePostRecordMatch(tournamentId);
+  const queryClient = useQueryClient();
+  const { postRecordMatchMutation } = usePostRecordMatch({
+    tournamentId,
+    onSuccess: data => {
+      // 결승 응답에 포함된 result로 결과 페이지의 GET을 건너뛰도록 캐시 선갱신
+      if (!data) return;
+      const completed: GetTournamentCompletedResponseT = {
+        tournamentId,
+        name: tournamentName,
+        status: 'COMPLETED',
+        completed: { result: data.result },
+      };
+      queryClient.setQueryData(['tournament', tournamentId], completed);
+    },
+  });
 
   // 현재 라운드 진행 중인 아이템 (가격 오름차순 정렬되어 페어로 묶임)
   const [currentRoundItems, setCurrentRoundItems] = useState<TournamentItemT[]>(initialItems);

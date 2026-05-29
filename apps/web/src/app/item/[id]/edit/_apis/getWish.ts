@@ -15,8 +15,6 @@ export const getWish = async (wishId: number) => {
     return data.data;
   }
 
-  const { data } = await clientApi.get<ApiResponseT<GetWishResponseT>>(
-    ENDPOINTS.WISHLIST(wishId)
-  );
+  const { data } = await clientApi.get<ApiResponseT<GetWishResponseT>>(ENDPOINTS.WISHLIST(wishId));
   return data.data;
 };

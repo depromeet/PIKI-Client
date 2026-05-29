@@ -37,7 +37,10 @@ function RootLayout({
 }>) {
   return (
     /** TEMP: 임시 배경색 추가 */
-    <html lang="ko" className={cn(pretendard.className, 'h-full overflow-hidden bg-gray-100 antialiased')}>
+    <html
+      lang="ko"
+      className={cn(pretendard.className, 'h-full overflow-hidden bg-gray-100 antialiased')}
+    >
       <head>
         {process.env.NODE_ENV === 'development' && (
           <>
@@ -56,7 +59,9 @@ function RootLayout({
       <body className="h-full overflow-hidden">
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto h-full max-w-120 overflow-y-auto bg-bg-layer-basement px-5 [scrollbar-gutter:stable] hide-scrollbar">{children}</div>
+          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto bg-bg-layer-basement px-5 [scrollbar-gutter:stable]">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>

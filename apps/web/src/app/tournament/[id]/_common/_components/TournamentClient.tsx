@@ -29,17 +29,24 @@ function TournamentClient({ tournamentId }: TournamentClientProps) {
     return (
       <TournamentRunner
         tournamentId={tournamentId}
+        tournamentName={tournamentData.name}
         initialItems={tournamentData.inProgress.remainingItems}
       />
     );
   }
 
   // PENDING — 토너먼트 시작 API 호출 후 진행
-  return <TournamentStarter tournamentId={tournamentId} />;
+  return <TournamentStarter tournamentId={tournamentId} tournamentName={tournamentData.name} />;
 }
 
 /** PENDING 상태에서 진입한 경우 — start API 호출 후 진행 */
-function TournamentStarter({ tournamentId }: { tournamentId: number }) {
+function TournamentStarter({
+  tournamentId,
+  tournamentName,
+}: {
+  tournamentId: number;
+  tournamentName: string;
+}) {
   const [initialItems, setInitialItems] = useState<TournamentItemT[] | null>(null);
   const hasRequestedStartRef = useRef(false);
   const { postStartTournamentMutation, isPostStartTournamentPending } = usePostStartTournament({
@@ -63,15 +70,22 @@ function TournamentStarter({ tournamentId }: { tournamentId: number }) {
     );
   }
 
-  return <TournamentRunner tournamentId={tournamentId} initialItems={initialItems} />;
+  return (
+    <TournamentRunner
+      tournamentId={tournamentId}
+      tournamentName={tournamentName}
+      initialItems={initialItems}
+    />
+  );
 }
 
 type TournamentRunnerProps = {
   tournamentId: number;
+  tournamentName: string;
   initialItems: TournamentItemT[];
 };
 
-function TournamentRunner({ tournamentId, initialItems }: TournamentRunnerProps) {
+function TournamentRunner({ tournamentId, tournamentName, initialItems }: TournamentRunnerProps) {
   const {
     currentMatch,
     roundLabel,
@@ -79,7 +93,7 @@ function TournamentRunner({ tournamentId, initialItems }: TournamentRunnerProps)
     transitionStage,
     handleSelect,
     handleTransitionComplete,
-  } = useTournament({ tournamentId, initialItems });
+  } = useTournament({ tournamentId, tournamentName, initialItems });
 
   if (transitionStage) {
     const copy = ROUND_TRANSITION_COPY[transitionStage];

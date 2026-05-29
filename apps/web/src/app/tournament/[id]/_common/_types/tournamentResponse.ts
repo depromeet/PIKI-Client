@@ -54,3 +54,9 @@ export type PostStartTournamentResponseT = {
 };
 
 export type PostRecordMatchRequestT = TournamentMatchHistoryT;
+
+/**
+ * 결승(currentRound=2) 기록 시 1~4위 결과가 함께 반환된다.
+ * 그 외 라운드는 null.
+ */
+export type PostRecordMatchResponseT = { result: TournamentRankingT[] } | null;

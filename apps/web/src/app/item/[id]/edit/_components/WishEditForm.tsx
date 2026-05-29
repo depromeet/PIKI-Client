@@ -49,8 +49,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
   const parsedPrice = parsePriceToNumber(price);
 
   const isChanged =
-    trimmedName !== initialName.trim() ||
-    formatPrice(price) !== initialPriceFormatted;
+    trimmedName !== initialName.trim() || formatPrice(price) !== initialPriceFormatted;
   const isValid = trimmedName.length > 0 && parsedPrice > 0;
   const isSaveDisabled = isPatchWishPending || !isChanged || !isValid;
 
