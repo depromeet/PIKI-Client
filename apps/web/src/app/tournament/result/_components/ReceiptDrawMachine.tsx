@@ -141,16 +141,19 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
       </div>
 
       {/* 영수증 종이 영역 공간 확보 (layout reserved) */}
-      <div className="invisible flex w-full justify-center" aria-hidden>
+      <div className="invisible mx-auto w-[74%]" aria-hidden>
         <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
       </div>
 
       {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음 */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex items-start justify-center overflow-hidden"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 overflow-hidden"
         style={{ top: `${receiptTopPx}px` }}
       >
-        <div ref={receiptPaperRef} className="pointer-events-auto flex h-fit will-change-transform">
+        <div
+          ref={receiptPaperRef}
+          className="pointer-events-auto mx-auto h-fit w-[74%] will-change-transform"
+        >
           <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
         </div>
       </div>
