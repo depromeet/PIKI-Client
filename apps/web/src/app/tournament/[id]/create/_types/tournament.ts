@@ -19,7 +19,7 @@ export type GetTournamentResponseT = {
 };
 
 export type PostTournamentItemLinkResponseT = {
-  itemId: number;
+  tournamentItemId: number;
 };
 
 export type PostTournamentStartResponseT = {
