@@ -9,3 +9,11 @@ export type TournamentT = {
   createdAt: string;
   participantProfileImages: string[];
 };
+
+export type PostCreateTournamentRequestT = {
+  name: string;
+};
+
+export type PostCreateTournamentResponseT = {
+  tournamentId: number;
+};

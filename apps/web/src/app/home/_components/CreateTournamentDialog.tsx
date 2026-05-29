@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { EditIconFill, TrophyIconFill } from '@/assets/icons';
@@ -8,27 +7,28 @@ import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/common/dialog';
 import Input from '@/components/common/input';
 
-type CreateTournamentDialogProps = {
-  onCreate?: (name: string) => void;
-};
+import { usePostCreateTournament } from '../_hooks/usePostCreateTournament';
 
-function CreateTournamentDialog({ onCreate }: CreateTournamentDialogProps) {
-  const router = useRouter();
+function CreateTournamentDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
+  const { postCreateTournamentMutation, isPostCreateTournamentPending } =
+    usePostCreateTournament();
 
   const trimmedName = name.trim();
-  const isDisabled = trimmedName.length === 0;
+  const isDisabled = trimmedName.length === 0 || isPostCreateTournamentPending;
 
   const handleCreate = () => {
     if (isDisabled) return;
-    setOpen(false);
-    setName('');
-    if (onCreate) {
-      onCreate(trimmedName);
-      return;
-    }
-    router.push('/tournament/create');
+    postCreateTournamentMutation(
+      { name: trimmedName },
+      {
+        onSuccess: () => {
+          setOpen(false);
+          setName('');
+        },
+      }
+    );
   };
 
   return (
