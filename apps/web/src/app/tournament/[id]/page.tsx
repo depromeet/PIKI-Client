@@ -4,21 +4,20 @@ import { notFound } from 'next/navigation';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from '../_apis/getTournament';
-import ResultClient from './_components/ResultClient';
+import TournamentClient from '../_components/TournamentClient';
 
-type TournamentResultPageProps = {
-  searchParams: Promise<{ tournamentId?: string | string[] }>;
+type TournamentPageProps = {
+  params: Promise<{ id: string }>;
 };
 
-const parseTournamentId = (raw: string | string[] | undefined): number | null => {
-  if (typeof raw !== 'string') return null;
+const parseTournamentId = (raw: string): number | null => {
   const id = Number(raw);
   return Number.isInteger(id) && id > 0 ? id : null;
 };
 
-async function TournamentResultPage({ searchParams }: TournamentResultPageProps) {
-  const { tournamentId: tournamentIdParam } = await searchParams;
-  const tournamentId = parseTournamentId(tournamentIdParam);
+async function TournamentPage({ params }: TournamentPageProps) {
+  const { id } = await params;
+  const tournamentId = parseTournamentId(id);
 
   if (tournamentId === null) {
     notFound();
@@ -32,9 +31,9 @@ async function TournamentResultPage({ searchParams }: TournamentResultPageProps)
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ResultClient tournamentId={tournamentId} />
+      <TournamentClient tournamentId={tournamentId} />
     </HydrationBoundary>
   );
 }
 
-export default TournamentResultPage;
+export default TournamentPage;

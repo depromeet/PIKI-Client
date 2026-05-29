@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
 
-import { useGetTournament } from '../../_hooks/useGetTournament';
+import { useGetTournament } from '../../../_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
 
 const TOAST_DURATION_MS = 3000;
@@ -29,7 +29,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   // COMPLETED 아닌 상태로 들어왔으면 진행 페이지로 보냄
   useEffect(() => {
     if (tournamentData.status === 'COMPLETED') return;
-    router.replace(`/tournament?tournamentId=${tournamentId}`);
+    router.replace(`/tournament/${tournamentId}`);
   }, [tournamentData.status, router, tournamentId]);
 
   if (tournamentData.status !== 'COMPLETED') {

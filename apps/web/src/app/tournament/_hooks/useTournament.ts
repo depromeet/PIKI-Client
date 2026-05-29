@@ -54,7 +54,7 @@ const useTournament = ({ tournamentId, initialItems }: UseTournamentArgs) => {
 
     // 결승전 종료 → 결과 페이지
     if (isFinalRound) {
-      router.push(`/tournament/result?tournamentId=${tournamentId}`);
+      router.push(`/tournament/${tournamentId}/result`);
       return;
     }
 

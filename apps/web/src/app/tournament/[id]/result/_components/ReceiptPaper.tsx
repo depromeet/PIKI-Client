@@ -7,7 +7,7 @@ import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
 import ReceiptZigzag from '@/assets/images/tournament/result/receipt-zigzag.svg';
 import { cn } from '@/utils/cn';
 
-import type { RankedProductT } from '../../_types/tournament';
+import type { RankedProductT } from '../../../_types/tournament';
 
 const kodeMono = Kode_Mono({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 

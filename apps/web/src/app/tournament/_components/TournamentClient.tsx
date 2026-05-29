@@ -22,7 +22,7 @@ function TournamentClient({ tournamentId }: TournamentClientProps) {
   const { tournamentData } = useGetTournament(tournamentId);
 
   if (tournamentData.status === 'COMPLETED') {
-    return <RedirectTo url={`/tournament/result?tournamentId=${tournamentId}`} />;
+    return <RedirectTo url={`/tournament/${tournamentId}/result`} />;
   }
 
   if (tournamentData.status === 'IN_PROGRESS') {
