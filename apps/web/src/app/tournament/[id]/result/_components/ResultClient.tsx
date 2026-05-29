@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
 
-import { useGetTournament } from '../../../_hooks/useGetTournament';
+import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
 
 const TOAST_DURATION_MS = 3000;

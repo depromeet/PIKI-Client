@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getTournament } from '../../_apis/getTournament';
+import { getTournament } from '../_common/_apis/getTournament';
 import ResultClient from './_components/ResultClient';
 
 type TournamentResultPageProps = {

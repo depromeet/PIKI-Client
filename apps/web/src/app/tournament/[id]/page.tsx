@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getTournament } from '../_apis/getTournament';
-import TournamentClient from '../_components/TournamentClient';
+import { getTournament } from './_common/_apis/getTournament';
+import TournamentClient from './_common/_components/TournamentClient';
 
 type TournamentPageProps = {
   params: Promise<{ id: string }>;

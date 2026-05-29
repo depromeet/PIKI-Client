@@ -8,10 +8,7 @@ type UsePostStartTournamentArgs = {
   onSuccess?: (data: PostStartTournamentResponseT) => void;
 };
 
-export const usePostStartTournament = ({
-  tournamentId,
-  onSuccess,
-}: UsePostStartTournamentArgs) => {
+export const usePostStartTournament = ({ tournamentId, onSuccess }: UsePostStartTournamentArgs) => {
   const queryClient = useQueryClient();
 
   const { mutate: postStartTournamentMutation, isPending: isPostStartTournamentPending } =
