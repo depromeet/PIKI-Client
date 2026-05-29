@@ -60,19 +60,15 @@ function RoundTransition({
         {isFinal ? (
           <div className="flex items-center justify-center gap-1.5 rounded-[28px] bg-white px-5 py-3">
             <TrophyIconFill className="size-4.5 text-yellow-400" aria-hidden />
-            <span className="text-[18px] leading-6.5 font-semibold tracking-[-0.6px] text-text-neutral-secondary">
-              결승전
-            </span>
+            <span className="heading-2 text-text-neutral-secondary">결승전</span>
           </div>
         ) : (
           <FireIconFill className="size-11 text-blue-500" aria-hidden />
         )}
-        <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
-          {title}
-        </h1>
+        <h1 className="title-1 text-text-neutral-primary">{title}</h1>
       </div>
 
-      <p className="mt-6 text-center text-[18px] leading-6.5 font-medium tracking-[-0.6px] whitespace-pre-line text-text-neutral-secondary">
+      <p className="mt-6 text-center whitespace-pre-line heading-2-medium text-text-neutral-secondary">
         {description}
       </p>
 

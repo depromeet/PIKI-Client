@@ -43,9 +43,7 @@ function TournamentClient() {
           <TournamentQuestion isFinal={isFinalRound} />
         </div>
         {isFinalRound && (
-          <p className="text-[18px] leading-6.5 font-medium tracking-[-0.6px] text-text-neutral-secondary">
-            최종 선택을 해주세요
-          </p>
+          <p className="heading-2-medium text-text-neutral-secondary">최종 선택을 해주세요</p>
         )}
       </div>
       <div className={`w-full ${isFinalRound ? 'mt-29' : 'mt-8'}`}>
