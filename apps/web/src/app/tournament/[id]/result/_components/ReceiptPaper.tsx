@@ -178,8 +178,8 @@ function RankedRowLarge({ product, index }: RankedRowProps) {
           />
         )}
       </div>
-      <div className="flex w-32 flex-col gap-1 tracking-[-0.6px]">
-        <p className="text-[14px] leading-5 text-text-neutral-primary">
+      <div className="flex w-32 flex-col gap-1">
+        <p className="body-2-regular text-text-neutral-primary">
           {orderStr}.
           <br />
           {product.name}
@@ -197,10 +197,8 @@ function RankedRowSmall({ product, index }: RankedRowProps) {
   return (
     <div className="flex items-start justify-between px-5">
       <div className="flex items-start gap-1">
-        <p className="text-[14px] leading-5 text-text-neutral-primary">{orderStr}.</p>
-        <p className="w-[138px] text-[14px] leading-5 tracking-[-0.6px] text-text-neutral-primary">
-          {product.name}
-        </p>
+        <p className="body-2-regular text-text-neutral-primary">{orderStr}.</p>
+        <p className="w-[138px] body-2-regular text-text-neutral-primary">{product.name}</p>
       </div>
       <p className="text-[14px] leading-[22px] font-bold tracking-[-0.6px] text-text-neutral-primary">
         {formatPrice(product.price)}
