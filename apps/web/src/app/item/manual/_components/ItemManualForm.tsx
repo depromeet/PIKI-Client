@@ -3,8 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { ChevronBackwardIconFill, ImageIconOutline } from '@/assets/icons';
+import { ImageIconOutline } from '@/assets/icons';
+import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
+import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
 import formatPrice from '@/utils/formatPrice';
 
@@ -41,20 +43,19 @@ function ItemManualForm() {
     router.back();
   };
 
-  const isValid = Boolean(imageUrl) && name.trim().length > 0 && price.replace(/[^\d]/g, '') !== '' && price.replace(/[^\d]/g, '') !== '0';
+  const isValid =
+    Boolean(imageUrl) &&
+    name.trim().length > 0 &&
+    price.replace(/[^\d]/g, '') !== '' &&
+    price.replace(/[^\d]/g, '') !== '0';
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-basement pb-[78px]">
-      <button
-        type="button"
-        onClick={handleBack}
-        aria-label="뒤로가기"
-        className="absolute top-[60px] left-5 cursor-pointer p-0"
-      >
-        <ChevronBackwardIconFill className="size-[30px] text-icon-neutral-primary" />
-      </button>
+    <main className="flex min-h-dvh flex-col pb-[78px]">
+      <div className="pt-9">
+        <Header left={<HeaderIcon name="BACK" onClick={handleBack} />} />
+      </div>
 
-      <div className="flex w-full flex-col gap-6 px-5 pt-[102px]">
+      <div className="flex w-full flex-col gap-6 pt-6">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="title-1 text-text-neutral-primary">상품 정보를 가져오지 못했어요</h1>
@@ -116,7 +117,7 @@ function ItemManualForm() {
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-120 items-center gap-2.5 bg-bg-layer-default px-5 pt-3 pb-5">
+      <BottomCta>
         <Button
           variant="secondary"
           size="lg"
@@ -135,7 +136,7 @@ function ItemManualForm() {
         >
           저장하기
         </Button>
-      </div>
+      </BottomCta>
     </main>
   );
 }

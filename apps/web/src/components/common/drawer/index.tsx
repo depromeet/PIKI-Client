@@ -56,7 +56,7 @@ function DrawerContent({
         style={{ zIndex: Z_INDEX.DRAWER, ...props.style }}
         {...props}
       >
-        <div className="mx-auto mt-3 hidden h-1 w-9 shrink-0 rounded-full bg-[#d9d9d9] group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        <div className="mx-auto mt-3 hidden h-1 w-9 shrink-0 rounded-full bg-gray-200 group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
         <div className="p-5">{children}</div>
       </DrawerPrimitive.Content>
     </DrawerPortal>

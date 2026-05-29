@@ -9,7 +9,7 @@ type ToastProps = {
 
 // variant별 배경색 — 추후 'info' | 'success' 등 추가 시 여기에 색 추가
 const variantBg: Record<ToastVariantT, string> = {
-  error: 'bg-[#FEEDEC]',
+  error: 'bg-red-50',
 };
 
 function Toast({ message, icon, isVisible, variant = 'error' }: ToastProps) {
@@ -21,7 +21,7 @@ function Toast({ message, icon, isVisible, variant = 'error' }: ToastProps) {
       {icon && (
         <div className="flex size-[26.787px] shrink-0 items-center justify-center">{icon}</div>
       )}
-      <span className="caption-1-semibold whitespace-pre-line text-[#2D3037]">{message}</span>
+      <span className="caption-1-semibold whitespace-pre-line text-gray-950">{message}</span>
     </div>
   );
 }

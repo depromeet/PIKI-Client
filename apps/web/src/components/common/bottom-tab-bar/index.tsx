@@ -24,7 +24,7 @@ function BottomTabBar() {
             type="button"
             onClick={() => router.push(href)}
             className={`flex w-[100px] flex-col items-center justify-center gap-0.5 rounded-[100px] py-[9px] transition-colors ${
-              isActive ? 'bg-[#F4F4F6] text-[#686F7E]' : 'text-[#ADB1BB]'
+              isActive ? 'bg-gray-50 text-gray-600' : 'text-gray-300'
             }`}
           >
             <Icon width={24} height={24} />
