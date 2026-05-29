@@ -1,17 +1,14 @@
-import type { InitialProps } from 'expo-share-extension';
+import type { InitialProps as ShareExtensionProps } from 'expo-share-extension';
 import { close, openHostApp } from 'expo-share-extension';
 import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function ShareBottomSheet(props: InitialProps) {
+export default function ShareBottomSheet({ url }: ShareExtensionProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  /** 공유된 형식에 따라 url / text 중 들어온 값을 사용 (이미지/파일은 path 문자열) */
-  const sharedValue =
-    props.url ?? props.text ?? props.images?.[0] ?? props.videos?.[0] ?? props.files?.[0] ?? '';
-
+  // TODO: 추후 수정
   const handleOpenApp = () => {
-    openHostApp(`create?value=${encodeURIComponent(sharedValue)}`);
+    openHostApp('');
     close();
   };
 
