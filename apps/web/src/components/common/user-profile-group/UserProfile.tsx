@@ -19,12 +19,25 @@ function UserProfile({ user, className }: UserProfileProps) {
         alt={user.name ?? '사용자 프로필'}
         width={27}
         height={27}
-        className={cn('size-[27px] rounded-full border-[1.6px] border-white', className)}
+        className={cn(
+          'size-[27px] shrink-0 overflow-hidden rounded-full border-[1.6px] border-white object-cover',
+          className
+        )}
       />
     );
   }
 
-  return <SvgComponent className={cn('size-[27px]', className)} aria-label={user.name} />;
+  return (
+    <span
+      className={cn(
+        'flex size-[27px] shrink-0 items-center justify-center overflow-hidden rounded-full border-[1.6px] border-white bg-bg-layer-default',
+        className
+      )}
+      aria-label={user.name}
+    >
+      <SvgComponent className="size-full" />
+    </span>
+  );
 }
 
 export default UserProfile;

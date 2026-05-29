@@ -46,7 +46,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
                 {isSelected ? (
                   <CheckboxSelectedIconFill className="size-6 text-icon-accent" />
                 ) : (
-                  <CheckboxEmptyIconFill className="size-6 text-[#8E8E93]" />
+                  <CheckboxEmptyIconFill className="size-6 text-gray-500" />
                 )}
               </span>
             </button>

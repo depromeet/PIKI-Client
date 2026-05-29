@@ -6,14 +6,14 @@ import WishBasketStatus from './_components/wishBasketStatus/WishBasketStatus';
 
 function TournamentCreatePage() {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50 px-5">
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <div className="flex flex-1 flex-col gap-4 pt-[80px]">
         <TournamentHeader />
         <InviteFriends />
         <WishBasketStatus />
         <WishBasketCarousel />
       </div>
-      <div className="pb-8">
+      <div className="pb-5">
         <TournamentStartButton count={0} />
       </div>
     </div>

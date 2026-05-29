@@ -25,7 +25,7 @@ function WishlistContent() {
 
   return (
     <>
-      <main className="flex flex-1 flex-col px-5 pb-24">
+      <main className="flex flex-1 flex-col pb-24">
         <WishlistTabContent
           items={wishlistData}
           isDeleteMode={isDeleteMode}
