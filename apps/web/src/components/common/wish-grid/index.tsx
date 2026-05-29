@@ -26,7 +26,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
     <div className="grid grid-cols-2 gap-x-2 gap-y-3">
       {items.map(item => {
         if (item.status === 'failed') {
-          return <WishFailedCard key={item.id} />;
+          return <WishFailedCard key={item.id} wishId={item.id} />;
         }
 
         const card = <WishCard name={item.name} price={item.price} imageUrl={item.imageUrl} />;
