@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingHorizontal: 20,
     alignItems: 'center',
+    flex: 1,
   },
   handle: {
     height: 4,
