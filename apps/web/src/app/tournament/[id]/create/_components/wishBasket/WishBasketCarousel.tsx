@@ -6,7 +6,7 @@ import {
   ITEMS_PER_BASKET,
 } from '@/app/tournament/[id]/create/_consts/wishBasketConsts';
 import useBasketCarousel from '@/app/tournament/[id]/create/_hooks/useBasketCarousel';
-import type { TournamentItemT } from '@/app/tournament/[id]/create/_types/tournament';
+import type { TournamentItemT } from '@/types/tournament';
 
 import CarouselIndicator from './CarouselIndicator';
 import WishBasket from './WishBasket';

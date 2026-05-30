@@ -1,7 +1,5 @@
 import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
 
-export type { TournamentItemT, TournamentStatusT };
-
 export type TournamentParticipantT = {
   userId: string;
   nickname: string;
