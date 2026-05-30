@@ -4,11 +4,11 @@ import { notFound, redirect } from 'next/navigation';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { postStartTournament } from './_apis/postStartTournament';
-import TournamentClient from './_components/TournamentClient';
 import { getTournament } from '../_common/_apis/getTournament';
 import type { GetTournamentInProgressResponseT } from '../_common/_types/tournamentResponse';
 import { parseTournamentId } from '../_common/_utils/parseTournamentId';
+import { postStartTournament } from './_apis/postStartTournament';
+import TournamentClient from './_components/TournamentClient';
 
 type TournamentPageProps = {
   params: Promise<{ id: string }>;
