@@ -1,3 +1,4 @@
+import HeartIconFill from '@/assets/icons/fill/heart.svg';
 import type { WishItemT } from '@/components/common/wish-grid';
 import WishGrid from '@/components/common/wish-grid';
 
@@ -16,8 +17,9 @@ function WishlistTabContent({
 }: WishlistTabContentProps) {
   if (items.length === 0) {
     return (
-      <main className="flex flex-1 items-center justify-center">
-        <p className="body-1-medium text-gray-300">아직 저장한 위시템이 없어요</p>
+      <main className="flex flex-1 flex-col items-center justify-center gap-3">
+        <HeartIconFill width={32} height={32} className="text-gray-200" />
+        <p className="body-1-semibold text-text-neutral-tertiary">아직 담긴 위시템이 없어요</p>
       </main>
     );
   }

@@ -53,7 +53,7 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       ref={ref}
       className={cn(
         kodeMono.className,
-        'relative flex w-74.75 flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]'
+        'relative flex w-full flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]'
       )}
     >
       <div
@@ -74,33 +74,23 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       <div className="flex flex-col">
         {/* 날짜 / 시간 */}
         <div className="flex items-center justify-between px-5">
-          <span className="text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
-            {formatDate(date)}
-          </span>
-          <span className="text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
-            {formatTime(date)}
-          </span>
+          <span className="caption-1-semibold text-text-neutral-secondary">{formatDate(date)}</span>
+          <span className="caption-1-semibold text-text-neutral-secondary">{formatTime(date)}</span>
         </div>
 
         <SectionDivider />
 
         {/* 토너먼트 이름 */}
         <div className="flex flex-col px-5 py-2">
-          <p className="text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
-            Tournament name
-          </p>
-          <p className="text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
-            {tournamentName}
-          </p>
+          <p className="caption-1-semibold text-text-neutral-secondary">Tournament name</p>
+          <p className="caption-1-semibold text-text-neutral-secondary">{tournamentName}</p>
         </div>
 
         <SectionDivider />
 
         {/* 토너먼트 결과 라벨 */}
         <div className="flex items-center justify-center px-5 py-2">
-          <p className="text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
-            Tournament Results
-          </p>
+          <p className="caption-1-semibold text-text-neutral-secondary">Tournament Results</p>
         </div>
 
         <SectionDivider />
@@ -133,7 +123,7 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
         <SectionDivider />
 
         {/* Have a nice pick */}
-        <p className="px-5 py-2 text-center text-[12px] leading-[18px] font-semibold tracking-[-0.4px] text-text-neutral-secondary">
+        <p className="px-5 py-2 text-center caption-1-semibold text-text-neutral-secondary">
           *Have a nice pick*
           <br />
           @piki.day
@@ -218,9 +208,7 @@ function ShareAction({ icon, label }: ShareActionProps) {
       <span className="flex size-[34px] items-center justify-center rounded-full border border-border-neutral-muted text-icon-neutral-primary">
         {icon}
       </span>
-      <span className="text-[12px] leading-[18px] tracking-[-0.4px] text-text-neutral-primary">
-        {label}
-      </span>
+      <span className="caption-1-regular text-text-neutral-primary">{label}</span>
     </button>
   );
 }

@@ -21,7 +21,7 @@ function WishlistLayout({ children }: WishlistLayoutProps) {
               </>
             }
           />
-          <h1 className="px-5 text-[28px] leading-[137.5%] font-bold tracking-[-0.708px] text-text-neutral-primary">
+          <h1 className="text-[28px] leading-[137.5%] font-bold tracking-[-0.708px] text-text-neutral-primary">
             내 보관함
           </h1>
         </div>

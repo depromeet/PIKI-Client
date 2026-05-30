@@ -16,10 +16,11 @@ export type WishlistEntryT = {
   // TODO: ItemT로 교체
   item: {
     id: number;
-    name: string;
-    currentPrice: number;
-    currency: string;
-    imageUrl: string;
+    status: 'OK' | 'FAILED';
+    name: string | null;
+    currentPrice: number | null;
+    currency: string | null;
+    imageUrl: string | null;
     sourceUrl: string;
   };
 };
