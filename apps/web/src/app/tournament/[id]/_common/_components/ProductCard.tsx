@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import BaseImage from '@/components/common/base-image';
 
 import type { ProductT } from '../_types/tournament';
 
@@ -18,10 +18,9 @@ function ProductCard({ imageUrl, name, price, isPicked, onClick }: ProductCardPr
       <div className="flex w-[148px] flex-col overflow-hidden rounded-2xl bg-bg-layer-default shadow-[0_1px_8px_0_rgba(0,0,0,0.10)]">
         <div className="relative h-[123px] w-[148px] shrink-0 bg-gray-50">
           {imageUrl && (
-            <Image
+            <BaseImage
               src={imageUrl}
               alt={name}
-              fill
               sizes="(max-width: 480px) 45vw, 200px"
               priority
               className="object-cover"
