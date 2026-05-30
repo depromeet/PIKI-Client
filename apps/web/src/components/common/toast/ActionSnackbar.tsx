@@ -21,7 +21,7 @@ function ActionSnackbar({ message, actionLabel, isVisible, onAction }: ActionSna
       <button
         type="button"
         onClick={onAction}
-        className="relative shrink-0 px-0.5 py-1 text-[15px] leading-snug font-semibold text-white"
+        className="relative shrink-0 px-0.5 py-1 text-[15px] leading-snug font-semibold tracking-[0.144px] text-white"
       >
         {actionLabel}
       </button>

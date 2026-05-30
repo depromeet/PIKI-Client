@@ -6,48 +6,50 @@ import { useRef, useState } from 'react';
 import { MOCK_PRODUCTS } from '@/mocks/products';
 import { writeResult } from '@/utils/resultStorage';
 
-import { LOSER_RANKS, NEXT_SLOT, ROUND_LABELS } from '../_consts/rounds';
+import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
 import type { MatchPairT, ProductT, RankedProductT } from '../_types/tournament';
 
-const FINAL_MATCH_INDEX = 6;
+// 참가자 수는 2의 거듭제곱이어야 함 (2, 4, 8, 16, 32)
+const INITIAL_PARTICIPANT_COUNT = 8;
 
-const buildInitialMatches = (seeded: ProductT[]): Array<MatchPairT | null> => {
-  if (seeded.length < 8) {
-    return [null, null, null, null, null, null, null];
+const buildPairsFromItems = (items: ProductT[]): MatchPairT[] => {
+  const pairs: MatchPairT[] = [];
+  for (let i = 0; i < items.length; i += 2) {
+    pairs.push([items[i]!, items[i + 1]!]);
   }
-  return [
-    [seeded[0]!, seeded[1]!],
-    [seeded[2]!, seeded[3]!],
-    [seeded[4]!, seeded[5]!],
-    [seeded[6]!, seeded[7]!],
-    null,
-    null,
-    null,
-  ];
+  return pairs;
 };
 
 const useTournament = () => {
   const router = useRouter();
-  const [products] = useState<ProductT[]>(() => MOCK_PRODUCTS.slice(0, 8));
-  const [matchIndex, setMatchIndex] = useState(0);
-  const [matches, setMatches] = useState<Array<MatchPairT | null>>(() =>
-    buildInitialMatches(products)
+  const [currentRoundItems, setCurrentRoundItems] = useState<ProductT[]>(() =>
+    MOCK_PRODUCTS.slice(0, INITIAL_PARTICIPANT_COUNT)
   );
+  const [matchIndex, setMatchIndex] = useState(0);
+  const [transitionStage, setTransitionStage] = useState<TransitionStageT | null>(null);
 
+  const winnersRef = useRef<ProductT[]>([]);
   const rankedRef = useRef<RankedProductT[]>([]);
-  const pendingRef = useRef<Partial<Record<number, { left?: ProductT; right?: ProductT }>>>({});
 
+  const roundItemCount = currentRoundItems.length;
+  const totalMatchesInRound = roundItemCount / 2;
+  const matches = buildPairsFromItems(currentRoundItems);
   const currentMatch = matches[matchIndex];
-  const roundLabel = ROUND_LABELS[matchIndex] ?? '';
+  const roundLabel = getRoundLabel(roundItemCount, matchIndex);
+  const isFinalRound = roundItemCount === 2;
 
   const handleSelect = (winner: ProductT) => {
     const currentPair = matches[matchIndex];
     if (!currentPair) return;
 
     const loser = winner === currentPair[0] ? currentPair[1] : currentPair[0];
-    rankedRef.current = [...rankedRef.current, { ...loser, rank: LOSER_RANKS[matchIndex]! }];
+    // 같은 라운드에서 패배한 아이템은 모두 같은 등수대로 묶음 (결승만 별도 처리)
+    const loserRank = isFinalRound ? 2 : roundItemCount;
+    rankedRef.current = [...rankedRef.current, { ...loser, rank: loserRank }];
+    winnersRef.current = [...winnersRef.current, winner];
 
-    if (matchIndex === FINAL_MATCH_INDEX) {
+    // 결승전 종료 → 결과 페이지
+    if (isFinalRound) {
       const finalRanked: RankedProductT[] = [...rankedRef.current, { ...winner, rank: 1 }].sort(
         (a, b) => a.rank - b.rank
       );
@@ -56,30 +58,31 @@ const useTournament = () => {
       return;
     }
 
-    const nextSlot = NEXT_SLOT[matchIndex];
-    if (nextSlot) {
-      const pending = pendingRef.current[nextSlot.matchIdx] ?? {};
-      pending[nextSlot.side] = winner;
-      pendingRef.current[nextSlot.matchIdx] = pending;
-
-      if (pending.left && pending.right) {
-        const pair: MatchPairT = [pending.left, pending.right];
-        setMatches(prev => {
-          const next = [...prev];
-          next[nextSlot.matchIdx] = pair;
-          return next;
-        });
-      }
+    // 라운드 중간 매치 → 다음 매치로
+    if (matchIndex < totalMatchesInRound - 1) {
+      setMatchIndex(prev => prev + 1);
+      return;
     }
 
-    setMatchIndex(prev => prev + 1);
+    // 라운드 마지막 매치 → 전환 화면 노출
+    const nextRoundItemCount = roundItemCount / 2;
+    setTransitionStage(getTransitionStage(nextRoundItemCount));
+  };
+
+  const handleTransitionComplete = () => {
+    setCurrentRoundItems(winnersRef.current);
+    winnersRef.current = [];
+    setMatchIndex(0);
+    setTransitionStage(null);
   };
 
   return {
-    products,
     currentMatch,
     roundLabel,
+    isFinalRound,
+    transitionStage,
     handleSelect,
+    handleTransitionComplete,
   };
 };
 

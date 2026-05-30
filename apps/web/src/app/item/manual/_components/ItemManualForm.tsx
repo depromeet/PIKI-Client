@@ -65,9 +65,7 @@ function ItemManualForm({ wishId }: ItemManualFormProps) {
       <div className="flex w-full flex-col gap-6 pt-6">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
-          <h1 className="title-1 text-center text-text-neutral-primary">
-            상품 정보를 가져오지 못했어요
-          </h1>
+          <h1 className="title-1 text-text-neutral-primary">상품 정보를 가져오지 못했어요</h1>
           <p className="heading-2-medium text-text-neutral-tertiary">직접 입력 후 저장해주세요</p>
         </header>
 
