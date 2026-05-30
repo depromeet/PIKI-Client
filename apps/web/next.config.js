@@ -10,6 +10,7 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      // TEMP: 모든 도메인 허용 — 추후 실제 CDN 도메인으로 교체 필요
       {
         protocol: 'https',
         hostname: '**',
