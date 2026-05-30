@@ -2,22 +2,26 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
+import { getTournament } from '../_apis/getTournament';
 import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
-import type { GetTournamentCompletedResponseT } from '../_types/tournamentResponse';
+import type {
+  GetTournamentCompletedResponseT,
+  GetTournamentInProgressResponseT,
+} from '../_types/tournamentResponse';
 import { pairByPriceAsc, shufflePairs } from '../_utils/pairItems';
 import { usePostRecordMatch } from './usePostRecordMatch';
 
 type UseTournamentArgs = {
   tournamentId: number;
-  initialItems: TournamentItemT[];
   tournamentName: string;
+  inProgress: GetTournamentInProgressResponseT['inProgress'];
 };
 
-const useTournament = ({ tournamentId, initialItems, tournamentName }: UseTournamentArgs) => {
+const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTournamentArgs) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { postRecordMatchMutation } = usePostRecordMatch({
@@ -35,41 +39,49 @@ const useTournament = ({ tournamentId, initialItems, tournamentName }: UseTourna
     },
   });
 
-  // 현재 라운드 진행 중인 아이템 (가격 오름차순 정렬되어 페어로 묶임)
-  const [currentRoundItems, setCurrentRoundItems] = useState<TournamentItemT[]>(initialItems);
-  const [matchIndex, setMatchIndex] = useState(0);
+  // 서버 권위의 현재 라운드 (2, 4, 8, ...) — 라운드 종료 시 refetch로 갱신
+  const [currentRound, setCurrentRound] = useState(inProgress.currentRound);
+  // 현재 라운드 진행 중 남은 미대결 아이템 (매치 끝날 때마다 두 아이템씩 빠짐)
+  const [remainingItems, setRemainingItems] = useState<TournamentItemT[]>(
+    inProgress.remainingItems
+  );
   const [transitionStage, setTransitionStage] = useState<TransitionStageT | null>(null);
 
-  // 라운드 내 승자 누적 (다음 라운드 진출자)
-  const winnersRef = useRef<TournamentItemT[]>([]);
-
-  // 라운드 시작 시 한 번만 페어 생성 + 셔플 (매치 진행 중 순서가 바뀌지 않도록)
-  const pairs = useMemo(() => shufflePairs(pairByPriceAsc(currentRoundItems)), [currentRoundItems]);
-  const totalMatchesInRound = pairs.length;
-  const currentRound = currentRoundItems.length; // API의 currentRound와 동일 의미 (2, 4, 8, ...)
-  const currentMatch = pairs[matchIndex];
+  // 페어 생성 + 셔플 (remainingItems가 바뀔 때마다 — 매치 끝나면 다음 페어가 자동 노출)
+  const pairs = useMemo(() => shufflePairs(pairByPriceAsc(remainingItems)), [remainingItems]);
+  const currentMatch = pairs[0];
+  // 현재 라운드 전체 매치 수 = currentRound / 2
+  // 진행한 매치 수 = (currentRound - remainingItems.length) / 2
+  const matchIndex = (currentRound - remainingItems.length) / 2;
   const roundLabel = getRoundLabel(currentRound, matchIndex);
   const isFinalRound = currentRound === 2;
+  const isLastMatchInRound = pairs.length === 1;
+
+  const advanceToNextRound = async () => {
+    // 라운드 종료 후 서버에서 다음 라운드 정보 가져오기
+    const next = await queryClient.fetchQuery({
+      queryKey: ['tournament', tournamentId],
+      queryFn: () => getTournament(tournamentId),
+    });
+
+    if (next.status !== 'IN_PROGRESS') return;
+    setCurrentRound(next.inProgress.currentRound);
+    setRemainingItems(next.inProgress.remainingItems);
+  };
 
   const handleSelect = (winner: TournamentItemT) => {
-    const currentPair = pairs[matchIndex];
-    if (!currentPair) return;
+    if (!currentMatch) return;
 
-    const [first, second] = currentPair;
-    const selectedIsFirst = winner.tournamentItemId === first.tournamentItemId;
-    const selectedTournamentItemId = winner.tournamentItemId;
-
-    winnersRef.current = [...winnersRef.current, selectedIsFirst ? first : second];
+    const [first, second] = currentMatch;
 
     const matchBody = {
       currentRound,
       firstTournamentItemId: first.tournamentItemId,
       secondTournamentItemId: second.tournamentItemId,
-      selectedTournamentItemId,
+      selectedTournamentItemId: winner.tournamentItemId,
     };
 
-    // 결승전 — 서버가 COMPLETED 전환 + result를 응답에 담음
-    // onSuccess(훅 onSuccess가 캐시를 COMPLETED로 시드)까지 기다린 후 결과 페이지로 이동
+    // 결승전 — onSuccess(캐시를 COMPLETED로 시드)까지 기다린 후 결과 페이지로 이동
     if (isFinalRound) {
       postRecordMatchMutation(matchBody, {
         onSuccess: () => router.push(`/tournament/${tournamentId}/result`),
@@ -80,21 +92,24 @@ const useTournament = ({ tournamentId, initialItems, tournamentName }: UseTourna
     // 일반 라운드 — 낙관적 진행 (성공/실패와 무관하게 다음 매치로)
     postRecordMatchMutation(matchBody);
 
-    // 라운드 중간 매치 → 다음 매치로
-    if (matchIndex < totalMatchesInRound - 1) {
-      setMatchIndex(prev => prev + 1);
-      return;
-    }
+    // 현재 매치 페어를 remainingItems에서 제거 (서버 동작과 동일)
+    setRemainingItems(prev =>
+      prev.filter(
+        item =>
+          item.tournamentItemId !== first.tournamentItemId &&
+          item.tournamentItemId !== second.tournamentItemId
+      )
+    );
 
     // 라운드 마지막 매치 → 전환 화면 노출
-    const nextRoundItemCount = currentRound / 2;
-    setTransitionStage(getTransitionStage(nextRoundItemCount));
+    if (isLastMatchInRound) {
+      const nextRoundItemCount = currentRound / 2;
+      setTransitionStage(getTransitionStage(nextRoundItemCount));
+    }
   };
 
-  const handleTransitionComplete = () => {
-    setCurrentRoundItems(winnersRef.current);
-    winnersRef.current = [];
-    setMatchIndex(0);
+  const handleTransitionComplete = async () => {
+    await advanceToNextRound();
     setTransitionStage(null);
   };
 

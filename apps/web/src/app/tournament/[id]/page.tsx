@@ -1,7 +1,6 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { notFound, redirect } from 'next/navigation';
 
-import type { TournamentItemT } from '@/types/tournament';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from './_common/_apis/getTournament';
@@ -28,12 +27,10 @@ async function TournamentPage({ params }: TournamentPageProps) {
     redirect(`/tournament/${tournamentId}/result`);
   }
 
-  let initialItems: TournamentItemT[];
   let hydratedTournament: GetTournamentInProgressResponseT;
 
   if (tournamentData.status === 'PENDING') {
     const { items } = await postStartTournament(tournamentId);
-    initialItems = items;
     // start 후 서버는 IN_PROGRESS로 전환됨 — 클라 캐시도 IN_PROGRESS 형태로 시드
     hydratedTournament = {
       tournamentId,
@@ -46,7 +43,6 @@ async function TournamentPage({ params }: TournamentPageProps) {
       },
     };
   } else {
-    initialItems = tournamentData.inProgress.remainingItems;
     hydratedTournament = tournamentData;
   }
 
@@ -58,7 +54,7 @@ async function TournamentPage({ params }: TournamentPageProps) {
       <TournamentClient
         tournamentId={tournamentId}
         tournamentName={hydratedTournament.name}
-        initialItems={initialItems}
+        inProgress={hydratedTournament.inProgress}
       />
     </HydrationBoundary>
   );
