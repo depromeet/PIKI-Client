@@ -6,14 +6,14 @@ import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/button';
 
 import AddWishDialog from '../addWishDialog/AddWishDialog';
-import WishItem from './WishItem';
+import TournamentBasketItem from './TournamentBasketItem';
 
-type WishBasketProps = {
+type TournamentItemBasketProps = {
   basketIndex: number;
   items: { id: number | string; imageUrl: StaticImageData | string }[];
 };
 
-function WishBasket({ basketIndex, items }: WishBasketProps) {
+function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
   return (
     <div className="relative mx-auto aspect-[356/464] w-full">
       <Image
@@ -26,7 +26,7 @@ function WishBasket({ basketIndex, items }: WishBasketProps) {
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative grid w-[45%] grid-cols-2 gap-4">
           {items.map((item, index) => (
-            <WishItem key={item.id} index={index} url={item.imageUrl} />
+            <TournamentBasketItem key={item.id} index={index} url={item.imageUrl} />
           ))}
           <AddWishDialog
             trigger={
@@ -45,4 +45,4 @@ function WishBasket({ basketIndex, items }: WishBasketProps) {
   );
 }
 
-export default WishBasket;
+export default TournamentItemBasket;

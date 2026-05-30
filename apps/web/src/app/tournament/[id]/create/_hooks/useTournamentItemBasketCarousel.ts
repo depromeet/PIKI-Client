@@ -2,11 +2,11 @@
 
 import { useRef, useState } from 'react';
 
-import { BASKET_COUNT } from '../_consts/wishBasketConsts';
+import { BASKET_COUNT } from '../_consts/tournamentItemBasketConsts';
 
 const SWIPE_THRESHOLD = 50;
 
-const useBasketCarousel = () => {
+const useTournamentItemBasketCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -45,4 +45,4 @@ const useBasketCarousel = () => {
   return { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd };
 };
 
-export default useBasketCarousel;
+export default useTournamentItemBasketCarousel;

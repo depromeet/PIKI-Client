@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/common/button';
+import Spinner from '@/components/common/spinner';
 
 import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 
@@ -20,7 +21,7 @@ function TournamentStartButton({ count, tournamentId }: TournamentStartButtonPro
       disabled={count < 2 || isPostTournamentStartPending}
       onClick={() => postTournamentStartMutation()}
     >
-      토너먼트 시작하기
+      {isPostTournamentStartPending ? <Spinner size={20} /> : '토너먼트 시작하기'}
     </Button>
   );
 }

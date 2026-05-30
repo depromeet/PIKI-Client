@@ -4,8 +4,8 @@ import { useGetTournament } from './_hooks/useGetTournament';
 import InviteFriends from './_components/inviteFriends/InviteFriends';
 import TournamentHeader from './_components/tournamentHeader/TournamentHeader';
 import TournamentStartButton from './_components/tournamentStartButton/TournamentStartButton';
-import WishBasketCarousel from './_components/wishBasket/WishBasketCarousel';
-import WishBasketStatus from './_components/wishBasketStatus/WishBasketStatus';
+import TournamentItemBasketCarousel from './_components/tournamentItemBasket/TournamentItemBasketCarousel';
+import TournamentItemBasketStatus from './_components/tournamentItemBasketStatus/TournamentItemBasketStatus';
 
 type TournamentCreateClientProps = {
   tournamentId: string;
@@ -19,8 +19,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       <div className="flex flex-1 flex-col gap-4 pt-[80px]">
         <TournamentHeader name={tournamentData.name} />
         <InviteFriends />
-        <WishBasketStatus />
-        <WishBasketCarousel items={tournamentData.pending?.items} />
+        <TournamentItemBasketStatus />
+        <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
       </div>
       <div className="pb-8">
         <TournamentStartButton

@@ -1,4 +1,4 @@
-function WishBasketStatus() {
+function TournamentItemBasketStatus() {
   return (
     <div className="flex items-center justify-center">
       <span className="inline-flex h-[40px] items-center rounded-[24px] border border-gray-100 bg-gray-75 px-3 body-2-regular text-gray-600">
@@ -7,4 +7,5 @@ function WishBasketStatus() {
     </div>
   );
 }
-export default WishBasketStatus;
+
+export default TournamentItemBasketStatus;

@@ -2,29 +2,29 @@
 
 import {
   BASKET_COUNT,
-  EMPTY_WISH_ITEMS,
+  EMPTY_BASKET_ITEMS,
   ITEMS_PER_BASKET,
-} from '@/app/tournament/[id]/create/_consts/wishBasketConsts';
-import useBasketCarousel from '@/app/tournament/[id]/create/_hooks/useBasketCarousel';
+} from '@/app/tournament/[id]/create/_consts/tournamentItemBasketConsts';
+import useTournamentItemBasketCarousel from '@/app/tournament/[id]/create/_hooks/useTournamentItemBasketCarousel';
 import type { TournamentItemT } from '@/types/tournament';
 
 import CarouselIndicator from './CarouselIndicator';
-import WishBasket from './WishBasket';
+import TournamentItemBasket from './TournamentItemBasket';
 
-type WishBasketCarouselProps = {
+type TournamentItemBasketCarouselProps = {
   items?: TournamentItemT[];
 };
 
-function WishBasketCarousel({ items = [] }: WishBasketCarouselProps) {
+function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarouselProps) {
   const { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd } =
-    useBasketCarousel();
+    useTournamentItemBasketCarousel();
 
   const baskets = Array.from({ length: BASKET_COUNT }, (_, i) => {
     const startIndex = i * ITEMS_PER_BASKET;
     const visibleItems = items.slice(startIndex, startIndex + ITEMS_PER_BASKET);
     return [
       ...visibleItems.map(item => ({ id: item.tournamentItemId, imageUrl: item.imageUrl })),
-      ...EMPTY_WISH_ITEMS.slice(visibleItems.length).map(item => ({
+      ...EMPTY_BASKET_ITEMS.slice(visibleItems.length).map(item => ({
         ...item,
         id: `empty-${i}-${item.id}`,
       })),
@@ -46,7 +46,7 @@ function WishBasketCarousel({ items = [] }: WishBasketCarouselProps) {
         >
           {baskets.map((basketItems, index) => (
             <div key={index} className="w-full shrink-0">
-              <WishBasket basketIndex={index} items={basketItems} />
+              <TournamentItemBasket basketIndex={index} items={basketItems} />
             </div>
           ))}
         </div>
@@ -61,4 +61,4 @@ function WishBasketCarousel({ items = [] }: WishBasketCarouselProps) {
   );
 }
 
-export default WishBasketCarousel;
+export default TournamentItemBasketCarousel;
