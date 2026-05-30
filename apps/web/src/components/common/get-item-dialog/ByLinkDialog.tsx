@@ -1,8 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { usePostTournamentItemLink } from '@/app/tournament/[id]/create/_hooks/usePostTournamentItemLink';
 import { LinkIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
@@ -15,11 +16,12 @@ type ByLinkProps = {
   type: ItemTypeT;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (url: string) => void;
 };
 
-function ByLinkDialog({ type, open, onOpenChange, onSubmit }: ByLinkProps) {
+function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
   const router = useRouter();
+  const { id: tournamentId } = useParams<{ id: string }>();
+  const { postTournamentItemLinkMutation } = usePostTournamentItemLink(tournamentId);
 
   const [url, setUrl] = useState('');
   const [hasError, setHasError] = useState(false);
@@ -40,8 +42,11 @@ function ByLinkDialog({ type, open, onOpenChange, onSubmit }: ByLinkProps) {
       return;
     }
 
-    if (onSubmit) onSubmit(trimmedUrl);
-    else if (type === 'wish') router.push('/wishlist');
+    if (type === 'tournament') {
+      postTournamentItemLinkMutation(trimmedUrl);
+    } else {
+      router.push('/wishlist');
+    }
 
     onOpenChange(false);
     resetState();
