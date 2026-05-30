@@ -5,7 +5,7 @@ import type { ApiResponseT } from '@/types/api';
 import type {
   PostRecordMatchRequestT,
   PostRecordMatchResponseT,
-} from '../_common/_types/tournamentResponse';
+} from '../../_common/_types/tournamentResponse';
 
 export const postRecordMatch = async (tournamentId: number, body: PostRecordMatchRequestT) => {
   const { data } = await clientApi.post<ApiResponseT<PostRecordMatchResponseT>>(

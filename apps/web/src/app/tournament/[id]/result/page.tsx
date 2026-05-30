@@ -32,7 +32,7 @@ async function TournamentResultPage({ params }: TournamentResultPageProps) {
   ]);
 
   if (tournamentData && tournamentData.status !== 'COMPLETED') {
-    redirect(`/tournament/${tournamentId}`);
+    redirect(`/tournament/${tournamentId}/match`);
   }
 
   return (

@@ -1,6 +1,6 @@
 import BaseImage from '@/components/common/base-image';
 
-import type { ProductT } from '../_common/_types/tournament';
+import type { ProductT } from '../../_common/_types/tournament';
 
 type FinalProductCardProps = ProductT & {
   isPicked?: boolean;

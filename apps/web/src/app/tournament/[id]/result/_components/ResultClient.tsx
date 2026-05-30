@@ -29,7 +29,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
     if (tournamentData.status === 'COMPLETED') return;
-    router.replace(`/tournament/${tournamentId}`);
+    router.replace(`/tournament/${tournamentId}/match`);
   }, [tournamentData.status, router, tournamentId]);
 
   if (tournamentData.status !== 'COMPLETED') {
