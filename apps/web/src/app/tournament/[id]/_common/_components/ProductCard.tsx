@@ -9,7 +9,7 @@ type ProductCardProps = ProductT & {
 
 function ProductCard({ imageUrl, name, price, isPicked, onClick }: ProductCardProps) {
   return (
-    <button type="button" onClick={onClick} className="relative w-[148px] text-left">
+    <button type="button" onClick={onClick} className="relative w-[148px] cursor-pointer text-left">
       {isPicked && (
         <div className="absolute top-0 left-1/2 z-10 flex size-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-500 shadow-lg">
           <span className="-rotate-12 body-1-bold text-white">Pick!</span>
