@@ -18,7 +18,7 @@ export const usePostWishOCR = () => {
     mutationFn: (formData: FormData) => postWishOCR(formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
-      router.push('/wishlists');
+      router.push('/wishlist');
     },
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;
