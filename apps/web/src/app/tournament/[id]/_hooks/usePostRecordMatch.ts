@@ -4,7 +4,7 @@ import { postRecordMatch } from '../_apis/postRecordMatch';
 import type {
   PostRecordMatchRequestT,
   PostRecordMatchResponseT,
-} from '../_types/tournamentResponse';
+} from '../_common/_types/tournamentResponse';
 
 type UsePostRecordMatchArgs = {
   tournamentId: number;

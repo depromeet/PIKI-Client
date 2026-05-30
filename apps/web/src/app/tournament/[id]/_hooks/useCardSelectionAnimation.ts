@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import type { CardSideT, ProductT } from '../_types/tournament';
+import type { CardSideT, ProductT } from '../_common/_types/tournament';
 
 const TILT_DEG = 12;
 const CARD_SHIFT = 24;

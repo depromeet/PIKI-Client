@@ -5,7 +5,7 @@ import { serverApi } from '@/apis/server';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
-import type { PostStartTournamentResponseT } from '../_types/tournamentResponse';
+import type { PostStartTournamentResponseT } from '../_common/_types/tournamentResponse';
 
 export const postStartTournament = async (tournamentId: number) => {
   if (environmentManager.isServer()) {

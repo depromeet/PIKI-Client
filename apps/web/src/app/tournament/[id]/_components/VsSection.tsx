@@ -1,7 +1,7 @@
 'use client';
 
+import type { ProductT } from '../_common/_types/tournament';
 import useCardSelectionAnimation from '../_hooks/useCardSelectionAnimation';
-import type { ProductT } from '../_types/tournament';
 import FinalProductCard from './FinalProductCard';
 import ProductCard from './ProductCard';
 

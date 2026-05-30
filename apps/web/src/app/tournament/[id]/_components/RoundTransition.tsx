@@ -68,7 +68,7 @@ function RoundTransition({
         <h1 className="title-1 text-text-neutral-primary">{title}</h1>
       </div>
 
-      <p className="mt-6 text-center whitespace-pre-line heading-2-medium text-text-neutral-secondary">
+      <p className="mt-6 text-center heading-2-medium whitespace-pre-line text-text-neutral-secondary">
         {description}
       </p>
 

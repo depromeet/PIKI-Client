@@ -6,12 +6,12 @@ import { useMemo, useState, useSyncExternalStore } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
-import { getTournament } from '../_apis/getTournament';
-import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
+import { getTournament } from '../_common/_apis/getTournament';
 import type {
   GetTournamentCompletedResponseT,
   GetTournamentInProgressResponseT,
-} from '../_types/tournamentResponse';
+} from '../_common/_types/tournamentResponse';
+import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
 import { pairByPriceAsc, shufflePairs } from '../_utils/pairItems';
 import { usePostRecordMatch } from './usePostRecordMatch';
 

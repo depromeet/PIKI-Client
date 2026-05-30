@@ -1,8 +1,8 @@
 'use client';
 
+import type { GetTournamentInProgressResponseT } from '../_common/_types/tournamentResponse';
 import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
 import useTournament from '../_hooks/useTournament';
-import type { GetTournamentInProgressResponseT } from '../_types/tournamentResponse';
 import RoundBadge from './RoundBadge';
 import RoundTransition from './RoundTransition';
 import TournamentQuestion from './TournamentQuestion';
