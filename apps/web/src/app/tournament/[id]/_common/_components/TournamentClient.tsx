@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
@@ -22,7 +21,8 @@ function TournamentClient({ tournamentId }: TournamentClientProps) {
   const { tournamentData } = useGetTournament(tournamentId);
 
   if (tournamentData.status === 'COMPLETED') {
-    return <RedirectTo url={`/tournament/${tournamentId}/result`} />;
+    // RSC에서 redirect 처리되므로 도달하지 않지만, status union의 안전한 분기를 위해 유지
+    return null;
   }
 
   if (tournamentData.status === 'IN_PROGRESS') {
@@ -137,15 +137,6 @@ function TournamentRunner({ tournamentId, tournamentName, initialItems }: Tourna
       </div>
     </main>
   );
-}
-
-function RedirectTo({ url }: { url: string }) {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace(url);
-  }, [router, url]);
-
-  return null;
 }
 
 export default TournamentClient;

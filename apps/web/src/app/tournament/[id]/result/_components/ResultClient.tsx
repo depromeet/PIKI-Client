@@ -26,7 +26,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     return () => window.clearTimeout(timeoutId);
   }, [isToastVisible]);
 
-  // COMPLETED 아닌 상태로 들어왔으면 진행 페이지로 보냄
+  // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
     if (tournamentData.status === 'COMPLETED') return;
     router.replace(`/tournament/${tournamentId}`);
