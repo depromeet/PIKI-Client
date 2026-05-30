@@ -1,3 +1,5 @@
+import { StaticImageData } from 'next/image';
+
 import type { TournamentItemStatusT, TournamentItemT, TournamentStatusT } from '@/types/tournament';
 
 export type { TournamentItemStatusT, TournamentItemT, TournamentStatusT };
@@ -6,6 +8,12 @@ export type TournamentParticipantT = {
   userId: string;
   nickname: string;
   profileImage: string;
+};
+
+export type WishBasketItemT = {
+  tournamentItemId: number | string;
+  imageUrl: string | StaticImageData | null;
+  status?: TournamentItemStatusT;
 };
 
 export type GetTournamentResponseT = {

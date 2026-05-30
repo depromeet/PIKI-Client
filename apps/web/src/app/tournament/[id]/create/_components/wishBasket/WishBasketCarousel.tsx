@@ -23,10 +23,10 @@ function WishBasketCarousel({ items = [] }: WishBasketCarouselProps) {
     const startIndex = i * ITEMS_PER_BASKET;
     const visibleItems = items.slice(startIndex, startIndex + ITEMS_PER_BASKET);
     return [
-      ...visibleItems.map(item => ({ id: item.tournamentItemId, imageUrl: item.imageUrl, status: item.status })),
+      ...visibleItems.map(item => ({ tournamentItemId: item.tournamentItemId, imageUrl: item.imageUrl, status: item.status })),
       ...EMPTY_WISH_ITEMS.slice(visibleItems.length).map(item => ({
-        ...item,
-        id: `empty-${i}-${item.id}`,
+        tournamentItemId: `empty-${i}-${item.id}`,
+        imageUrl: item.imageUrl,
       })),
     ];
   });
