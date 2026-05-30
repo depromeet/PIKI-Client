@@ -1,12 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
 import type { TournamentItemT } from '@/types/tournament';
 
 import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
-import { useGetTournament } from '../_hooks/useGetTournament';
-import { usePostStartTournament } from '../_hooks/usePostStartTournament';
 import useTournament from '../_hooks/useTournament';
 import RoundBadge from './RoundBadge';
 import RoundTransition from './RoundTransition';
@@ -15,77 +11,11 @@ import VsSection from './VsSection';
 
 type TournamentClientProps = {
   tournamentId: number;
-};
-
-function TournamentClient({ tournamentId }: TournamentClientProps) {
-  const { tournamentData } = useGetTournament(tournamentId);
-
-  if (tournamentData.status === 'COMPLETED') {
-    // RSC에서 redirect 처리되므로 도달하지 않지만, status union의 안전한 분기를 위해 유지
-    return null;
-  }
-
-  if (tournamentData.status === 'IN_PROGRESS') {
-    return (
-      <TournamentRunner
-        tournamentId={tournamentId}
-        tournamentName={tournamentData.name}
-        initialItems={tournamentData.inProgress.remainingItems}
-      />
-    );
-  }
-
-  // PENDING — 토너먼트 시작 API 호출 후 진행
-  return <TournamentStarter tournamentId={tournamentId} tournamentName={tournamentData.name} />;
-}
-
-/** PENDING 상태에서 진입한 경우 — start API 호출 후 진행 */
-function TournamentStarter({
-  tournamentId,
-  tournamentName,
-}: {
-  tournamentId: number;
-  tournamentName: string;
-}) {
-  const [initialItems, setInitialItems] = useState<TournamentItemT[] | null>(null);
-  const hasRequestedStartRef = useRef(false);
-  const { postStartTournamentMutation, isPostStartTournamentPending } = usePostStartTournament({
-    tournamentId,
-    onSuccess: data => setInitialItems(data.items),
-  });
-
-  useEffect(() => {
-    if (hasRequestedStartRef.current) return;
-    hasRequestedStartRef.current = true;
-    postStartTournamentMutation();
-  }, [postStartTournamentMutation]);
-
-  if (initialItems === null) {
-    return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
-        <p className="body-1-medium text-text-neutral-tertiary">
-          {isPostStartTournamentPending ? '토너먼트 준비 중...' : '잠시만 기다려주세요...'}
-        </p>
-      </main>
-    );
-  }
-
-  return (
-    <TournamentRunner
-      tournamentId={tournamentId}
-      tournamentName={tournamentName}
-      initialItems={initialItems}
-    />
-  );
-}
-
-type TournamentRunnerProps = {
-  tournamentId: number;
   tournamentName: string;
   initialItems: TournamentItemT[];
 };
 
-function TournamentRunner({ tournamentId, tournamentName, initialItems }: TournamentRunnerProps) {
+function TournamentClient({ tournamentId, tournamentName, initialItems }: TournamentClientProps) {
   const {
     currentMatch,
     roundLabel,
