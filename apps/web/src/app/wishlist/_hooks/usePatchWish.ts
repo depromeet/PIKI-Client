@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import type { PatchWishRequestT } from '../_types/wishTypes';
 import { patchWish } from '../_apis/patchWish';
+import type { PatchWishRequestT } from '../_types/wishTypes';
 
 export const usePatchWish = () => {
   const queryClient = useQueryClient();

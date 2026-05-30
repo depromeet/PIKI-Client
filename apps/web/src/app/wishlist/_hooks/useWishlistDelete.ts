@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { toast } from 'sonner';
 
 import { useDeleteWish } from './useDeleteWish';
@@ -35,5 +34,11 @@ export const useWishlistDelete = () => {
     }
   };
 
-  return { isDeleteMode, selectedIds, handleEnterDeleteMode, handleToggleSelect, handleConfirmDelete };
+  return {
+    isDeleteMode,
+    selectedIds,
+    handleEnterDeleteMode,
+    handleToggleSelect,
+    handleConfirmDelete,
+  };
 };

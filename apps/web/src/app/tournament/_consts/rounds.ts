@@ -1,24 +1,37 @@
-export const ROUND_LABELS = [
-  '8강 라운드 1',
-  '8강 라운드 2',
-  '8강 라운드 3',
-  '8강 라운드 4',
-  '4강 라운드 1',
-  '4강 라운드 2',
-  '🏆 결승전',
-] as const;
+export type TransitionStageT = 'toNext' | 'toSemi' | 'toFinal';
 
-export const FINAL_ROUND_LABEL = ROUND_LABELS[6];
+export const ROUND_TRANSITION_COPY: Record<
+  TransitionStageT,
+  { title: string; description: string }
+> = {
+  toNext: {
+    title: '다음 라운드 진출!',
+    description: '잘하고 있어요!\n이어서 다음 라운드를 시작할게요',
+  },
+  toSemi: {
+    title: '준결승 진출!',
+    description: '얼마 안 남았어요!\n이어서 준결승전을 시작할게요',
+  },
+  toFinal: {
+    title: '결승까지 왔어요!',
+    description: '마지막 두 개의 상품만 남았어요\n3초 뒤 시작할게요',
+  },
+};
 
-// matchIndex → 패자에게 부여되는 등수
-export const LOSER_RANKS = [8, 7, 6, 5, 4, 3, 2] as const;
+// 다음 라운드에 진출하는 아이템 수에 따라 어떤 전환 화면을 보여줄지 결정
+// 2 → 결승 진입, 4 → 준결승 진입, 그 외 → 일반 다음 라운드
+export const getTransitionStage = (nextRoundItemCount: number): TransitionStageT => {
+  if (nextRoundItemCount === 2) return 'toFinal';
+  if (nextRoundItemCount === 4) return 'toSemi';
+  return 'toNext';
+};
 
-// matchIndex → 승자가 다음에 채울 슬롯 정보
-export const NEXT_SLOT: Record<number, { matchIdx: number; side: 'left' | 'right' }> = {
-  0: { matchIdx: 4, side: 'left' },
-  1: { matchIdx: 4, side: 'right' },
-  2: { matchIdx: 5, side: 'left' },
-  3: { matchIdx: 5, side: 'right' },
-  4: { matchIdx: 6, side: 'left' },
-  5: { matchIdx: 6, side: 'right' },
+// 라운드 라벨 — 현재 라운드 아이템 수 기준 (8 → "8강", 4 → "4강", 2 → "결승")
+export const getRoundLabel = (roundItemCount: number, matchIndexInRound: number) => {
+  if (roundItemCount === 2) return '🏆 결승전';
+  const koreanRoundName = `${roundItemCount}강`;
+  const totalMatches = roundItemCount / 2;
+  return totalMatches === 1
+    ? koreanRoundName
+    : `${koreanRoundName} 라운드 ${matchIndexInRound + 1}`;
 };
