@@ -11,7 +11,7 @@ export type TournamentParticipantT = {
 };
 
 export type WishBasketItemT = {
-  tournamentItemId: number;
+  tournamentItemId: number | string;
   imageUrl: string | StaticImageData | null;
   status?: TournamentItemStatusT;
 };
