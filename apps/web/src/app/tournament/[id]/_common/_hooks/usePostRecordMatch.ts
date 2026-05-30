@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { postRecordMatch } from '../_apis/postRecordMatch';
 import type {
@@ -12,15 +12,9 @@ type UsePostRecordMatchArgs = {
 };
 
 export const usePostRecordMatch = ({ tournamentId, onSuccess }: UsePostRecordMatchArgs) => {
-  const queryClient = useQueryClient();
-
   const { mutate: postRecordMatchMutation, isPending: isPostRecordMatchPending } = useMutation({
     mutationFn: (body: PostRecordMatchRequestT) => postRecordMatch(tournamentId, body),
-    onSuccess: data => {
-      // 매치 기록 후 진행 상태/완료 여부가 바뀌므로 단건 조회 invalidate
-      queryClient.invalidateQueries({ queryKey: ['tournament', tournamentId] });
-      onSuccess?.(data);
-    },
+    onSuccess,
   });
 
   return { postRecordMatchMutation, isPostRecordMatchPending };
