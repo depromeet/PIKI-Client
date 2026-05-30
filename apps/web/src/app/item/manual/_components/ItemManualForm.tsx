@@ -1,30 +1,35 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { ImageIconOutline } from '@/assets/icons';
+import { ImageIconFill } from '@/assets/icons';
 import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
 import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
 import formatPrice from '@/utils/formatPrice';
 
-function ItemManualForm() {
-  const router = useRouter();
+import { useDeleteFailedWish } from '../_hooks/useDeleteFailedWish';
+import { usePatchWish } from '../_hooks/usePatchWish';
+
+type ItemManualFormProps = {
+  wishId: number | null;
+};
+
+function ItemManualForm({ wishId }: ItemManualFormProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
 
-  const handleBack = () => {
-    router.back();
-  };
+  const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId ?? 0);
+  const { deleteWishMutation, isDeleteWishPending } = useDeleteFailedWish(wishId ?? 0);
 
   const handleOpenPicker = () => {
     inputRef.current?.click();
   };
 
+  // TODO: 이미지 업로드 API 구현 후 CDN URL로 변환하여 PATCH 요청에 포함
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = '';
@@ -34,17 +39,19 @@ function ItemManualForm() {
   };
 
   const handleDelete = () => {
-    // TODO: 실제 삭제 처리 후 라우팅
-    router.back();
+    if (!wishId) return;
+    deleteWishMutation();
   };
 
   const handleSave = () => {
-    // TODO: API 연동 — 수동 입력 위시템 저장
-    router.back();
+    if (!wishId) return;
+    patchWishMutation({
+      name,
+      currentPrice: Number(price.replace(/[^\d]/g, '')),
+    });
   };
 
   const isValid =
-    Boolean(imageUrl) &&
     name.trim().length > 0 &&
     price.replace(/[^\d]/g, '') !== '' &&
     price.replace(/[^\d]/g, '') !== '0';
@@ -52,7 +59,7 @@ function ItemManualForm() {
   return (
     <main className="flex min-h-dvh flex-col pb-[78px]">
       <div className="pt-9">
-        <Header left={<HeaderIcon name="BACK" onClick={handleBack} />} />
+        <Header left={<HeaderIcon name="BACK" />} />
       </div>
 
       <div className="flex w-full flex-col gap-6 pt-6">
@@ -80,7 +87,7 @@ function ItemManualForm() {
         >
           {!imageUrl && (
             <>
-              <ImageIconOutline className="size-8 text-icon-neutral-secondary" />
+              <ImageIconFill className="size-8 text-icon-neutral-secondary" />
               <span className="body-2-medium text-text-neutral-secondary underline underline-offset-[3px]">
                 이미지를 추가해주세요
               </span>
@@ -96,7 +103,7 @@ function ItemManualForm() {
         />
 
         {/* 입력 필드 */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 px-5">
           <Input
             label="상품명"
             placeholder="상품명을 입력해주세요."
@@ -122,6 +129,7 @@ function ItemManualForm() {
           variant="secondary"
           size="lg"
           onClick={handleDelete}
+          disabled={!wishId || isDeleteWishPending}
           className="flex-1"
           aria-label="삭제하기"
         >
@@ -131,7 +139,7 @@ function ItemManualForm() {
           variant="primary"
           size="lg"
           onClick={handleSave}
-          disabled={!isValid}
+          disabled={!isValid || !wishId || isPatchWishPending}
           className="flex-1"
         >
           저장하기

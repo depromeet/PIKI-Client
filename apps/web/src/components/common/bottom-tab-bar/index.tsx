@@ -7,7 +7,7 @@ import HomeIconFill from '@/assets/icons/fill/home.svg';
 
 const TABS = [
   { label: '홈', icon: HomeIconFill, href: '/home' },
-  { label: '위시', icon: HeartIconFill, href: '/wishlist' },
+  { label: '보관', icon: HeartIconFill, href: '/wishlist' },
 ] as const;
 
 function BottomTabBar() {
@@ -23,7 +23,7 @@ function BottomTabBar() {
             key={label}
             type="button"
             onClick={() => router.push(href)}
-            className={`flex w-[100px] flex-col items-center justify-center gap-0.5 rounded-[100px] py-[9px] transition-colors ${
+            className={`flex w-[100px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-[100px] py-[9px] transition-colors ${
               isActive ? 'bg-gray-50 text-gray-600' : 'text-gray-300'
             }`}
           >

@@ -10,8 +10,9 @@ import type { WishlistEntryT } from '../_types/wishTypes';
 const mapWishlist = (entries: WishlistEntryT[]) =>
   entries.map(({ wish, item }) => ({
     id: wish.id,
-    name: item.name,
-    price: item.currentPrice,
+    status: item.status === 'FAILED' ? ('failed' as const) : ('ok' as const),
+    name: item.name ?? '',
+    price: item.currentPrice ?? 0,
     imageUrl: item.imageUrl || void 0,
   }));
 
