@@ -4,10 +4,13 @@ import { useRouter } from 'next/navigation';
 
 import Button from '@/components/common/button';
 
+import { logout } from '../_actions/logout';
+
 function LogoutButton() {
   const router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
     router.refresh();
   };
 
