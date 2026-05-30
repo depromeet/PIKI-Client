@@ -2,7 +2,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 
 import type { TournamentItemT } from '@/types/tournament';
 
@@ -46,9 +46,19 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
     inProgress.remainingItems
   );
   const [transitionStage, setTransitionStage] = useState<TransitionStageT | null>(null);
+  // SSR과 클라이언트 첫 렌더에서 동일한 페어 순서를 보장하기 위해, 마운트 후에만 셔플 적용
+  // (Math.random 결과가 SSR/CSR 간 달라 hydration mismatch 발생)
+  const isMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
-  // 페어 생성 + 셔플 (remainingItems가 바뀔 때마다 — 매치 끝나면 다음 페어가 자동 노출)
-  const pairs = useMemo(() => shufflePairs(pairByPriceAsc(remainingItems)), [remainingItems]);
+  // 페어 생성 — SSR/첫 렌더: 가격 오름차순 그대로, 마운트 후: 셔플 적용
+  const pairs = useMemo(() => {
+    const sorted = pairByPriceAsc(remainingItems);
+    return isMounted ? shufflePairs(sorted) : sorted;
+  }, [remainingItems, isMounted]);
   const currentMatch = pairs[0];
   // 현재 라운드 전체 매치 수 = currentRound / 2
   // 진행한 매치 수 = (currentRound - remainingItems.length) / 2
