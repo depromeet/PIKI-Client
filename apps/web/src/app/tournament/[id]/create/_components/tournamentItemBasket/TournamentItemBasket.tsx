@@ -1,16 +1,18 @@
 import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/button';
+import type { TournamentItemT } from '@/types/tournament';
 
+import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasketConsts';
 import AddWishDialog from '../addWishDialog/AddWishDialog';
+import EmptyBasketSlot from './EmptyBasketSlot';
 import TournamentBasketItem from './TournamentBasketItem';
 
 type TournamentItemBasketProps = {
   basketIndex: number;
-  items: { id: number | string; imageUrl: StaticImageData | string }[];
+  items: TournamentItemT[];
 };
 
 function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
@@ -20,14 +22,16 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
         src={basketImg}
         alt={`장바구니 ${basketIndex + 1}`}
         fill
-        sizes="100vw"
+        sizes="(max-width: 480px) 100vw, 480px"
         className="object-contain"
       />
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative grid w-[45%] grid-cols-2 gap-4">
-          {items.map((item, index) => (
-            <TournamentBasketItem key={item.id} index={index} url={item.imageUrl} />
-          ))}
+          {Array.from({ length: ITEMS_PER_BASKET }, (_, slotIndex) => {
+            const item = items[slotIndex];
+            if (item) return <TournamentBasketItem key={item.tournamentItemId} item={item} index={slotIndex} />;
+            return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
+          })}
           <AddWishDialog
             trigger={
               <Button

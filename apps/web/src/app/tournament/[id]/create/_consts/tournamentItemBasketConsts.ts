@@ -8,13 +8,4 @@ import img06 from '@/assets/images/empty-wish-item/img06.png';
 export const ITEMS_PER_BASKET = 8;
 export const BASKET_COUNT = 4;
 
-export const EMPTY_BASKET_ITEMS = [
-  { id: 1, imageUrl: img01 },
-  { id: 2, imageUrl: img02 },
-  { id: 3, imageUrl: img03 },
-  { id: 4, imageUrl: img04 },
-  { id: 5, imageUrl: img05 },
-  { id: 6, imageUrl: img06 },
-  { id: 7, imageUrl: img01 },
-  { id: 8, imageUrl: img02 },
-];
+export const EMPTY_BASKET_IMAGES = [img01, img02, img03, img04, img05, img06];

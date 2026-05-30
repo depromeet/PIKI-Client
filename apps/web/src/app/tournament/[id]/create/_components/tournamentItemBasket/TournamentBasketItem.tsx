@@ -1,16 +1,15 @@
-import type { StaticImageData } from 'next/image';
-
 import ProductImage from '@/components/common/product-image';
+import type { TournamentItemT } from '@/types/tournament';
 
 type TournamentBasketItemProps = {
+  item: TournamentItemT;
   index: number;
-  url?: string | StaticImageData;
 };
 
-function TournamentBasketItem({ index, url }: TournamentBasketItemProps) {
+function TournamentBasketItem({ item, index }: TournamentBasketItemProps) {
   return (
     <div className="relative aspect-square">
-      <ProductImage src={url} size="sm" fill alt={`토너먼트 아이템 ${index + 1}`} />
+      <ProductImage src={item.imageUrl ?? undefined} size="sm" fill alt={`토너먼트 아이템 ${index + 1}`} />
     </div>
   );
 }

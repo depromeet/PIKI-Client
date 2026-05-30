@@ -2,7 +2,6 @@
 
 import {
   BASKET_COUNT,
-  EMPTY_BASKET_ITEMS,
   ITEMS_PER_BASKET,
 } from '@/app/tournament/[id]/create/_consts/tournamentItemBasketConsts';
 import useTournamentItemBasketCarousel from '@/app/tournament/[id]/create/_hooks/useTournamentItemBasketCarousel';
@@ -19,18 +18,6 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
   const { currentIndex, setCurrentIndex, handleKeyDown, handleTouchStart, handleTouchEnd } =
     useTournamentItemBasketCarousel();
 
-  const baskets = Array.from({ length: BASKET_COUNT }, (_, i) => {
-    const startIndex = i * ITEMS_PER_BASKET;
-    const visibleItems = items.slice(startIndex, startIndex + ITEMS_PER_BASKET);
-    return [
-      ...visibleItems.map(item => ({ id: item.tournamentItemId, imageUrl: item.imageUrl })),
-      ...EMPTY_BASKET_ITEMS.slice(visibleItems.length).map(item => ({
-        ...item,
-        id: `empty-${i}-${item.id}`,
-      })),
-    ];
-  });
-
   return (
     <div
       className="flex flex-col items-center gap-4 outline-none"
@@ -44,9 +31,12 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {baskets.map((basketItems, index) => (
-            <div key={index} className="w-full shrink-0">
-              <TournamentItemBasket basketIndex={index} items={basketItems} />
+          {Array.from({ length: BASKET_COUNT }, (_, i) => (
+            <div key={i} className="w-full shrink-0">
+              <TournamentItemBasket
+                basketIndex={i}
+                items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
+              />
             </div>
           ))}
         </div>
