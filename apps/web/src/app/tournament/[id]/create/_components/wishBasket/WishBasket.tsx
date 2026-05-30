@@ -63,7 +63,11 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
             />
           </div>
         </div>
-        <WishFailedDrawer open={failedDrawerOpen} onClose={() => setFailedDrawerOpen(false)} />
+        <WishFailedDrawer
+          open={failedItemId !== null}
+          tournamentItemId={failedItemId}
+          onClose={() => setFailedItemId(null)}
+        />
       </div>
     );
   }

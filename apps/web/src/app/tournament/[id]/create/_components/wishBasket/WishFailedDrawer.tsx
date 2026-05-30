@@ -15,14 +15,15 @@ import {
 type WishFailedModalProps = {
   open: boolean;
   onClose: () => void;
+  tournamentItemId: number | string | null;
 };
 
-function WishFailedModal({ open, onClose }: WishFailedModalProps) {
+function WishFailedModal({ open, onClose, tournamentItemId }: WishFailedModalProps) {
   const router = useRouter();
 
   const handleManualInput = () => {
     onClose();
-    router.push('/item/manual');
+    router.push(`/item/manual?tournamentItemId=${tournamentItemId}`);
   };
 
   return (
