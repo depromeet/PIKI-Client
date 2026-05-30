@@ -132,7 +132,9 @@ export const useImagePicker = ({
       .catch(error => {
         if (
           error instanceof Error &&
-          (error.message === 'IMAGE_PICKER_CANCELLED' || error.message === 'IMAGE_PICKER_RESET')
+          (error.message === 'IMAGE_PICKER_CANCELLED' ||
+            error.message === 'IMAGE_PICKER_RESET' ||
+            error.message === 'IMAGE_PICKER_UNMOUNTED')
         )
           return;
 
