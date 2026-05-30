@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { useDeleteWish } from './useDeleteWish';
+import { useDeleteWish } from '@/hooks/useDeleteWish';
 
 export const useWishlistDelete = () => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);

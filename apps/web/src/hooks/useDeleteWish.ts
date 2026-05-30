@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { deleteWish } from '../_apis/deleteWish';
+import { deleteWish } from '@/apis/deleteWish';
 
+/** 위시 단건 삭제 */
 export const useDeleteWish = () => {
   const queryClient = useQueryClient();
 
