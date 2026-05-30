@@ -1,5 +1,3 @@
-// TEMP: 게스트 임시 로그인 때문에 생성. 추후 삭제 예정
-
 /** 쿠키에서 특정 값 가져오기 */
 const getCookie = (name: string): string | null => {
   if (typeof document === 'undefined') return null;

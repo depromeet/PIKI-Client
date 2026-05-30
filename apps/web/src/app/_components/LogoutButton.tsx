@@ -3,14 +3,14 @@
 import { useRouter } from 'next/navigation';
 
 import Button from '@/components/common/button';
-import { deleteCookie } from '@/utils/cookie';
+
+import { logout } from '../_actions/logout';
 
 function LogoutButton() {
   const router = useRouter();
 
-  const handleLogout = () => {
-    deleteCookie('accessToken');
-    deleteCookie('refreshToken');
+  const handleLogout = async () => {
+    await logout();
     router.refresh();
   };
 

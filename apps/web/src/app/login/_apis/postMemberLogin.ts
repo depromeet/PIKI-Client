@@ -1,14 +1,13 @@
 import { clientApi } from '@/apis/client';
 import type { ApiResponseT } from '@/types/api';
 
-import type { PostLoginResponseT } from '../_types/login';
+import type { PostMemberLoginResponseT } from '../_types/login';
 
 // TEMP
-export const postMemberLogin = async (nickname: string, accessToken: string) => {
-  const { data } = await clientApi.post<ApiResponseT<PostLoginResponseT>>(
+export const postMemberLogin = async (nickname: string) => {
+  const { data } = await clientApi.post<ApiResponseT<PostMemberLoginResponseT>>(
     '/api/v1/dev/users',
-    { nickname },
-    { headers: { Authorization: `Bearer ${accessToken}` } }
+    { nickname }
   );
 
   return data.data;

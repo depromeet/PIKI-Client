@@ -12,9 +12,5 @@ serverApi.interceptors.request.use(async config => {
 
   config.headers.Cookie = cookieStore.toString();
 
-  /** TEMP: 삭제 예정. 추후 httponly cookie로 처리 예정 */
-  const accessToken = cookieStore.get('accessToken')?.value;
-  if (accessToken) config.headers.set('Authorization', `Bearer ${accessToken}`);
-
   return config;
 });
