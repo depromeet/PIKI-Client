@@ -59,21 +59,26 @@ const useTournament = ({ tournamentId, initialItems, tournamentName }: UseTourna
     const selectedIsFirst = winner.tournamentItemId === first.tournamentItemId;
     const selectedTournamentItemId = winner.tournamentItemId;
 
-    // 매치 기록 전송 (성공/실패와 무관하게 UI 진행 — 낙관적 갱신)
-    postRecordMatchMutation({
+    winnersRef.current = [...winnersRef.current, selectedIsFirst ? first : second];
+
+    const matchBody = {
       currentRound,
       firstTournamentItemId: first.tournamentItemId,
       secondTournamentItemId: second.tournamentItemId,
       selectedTournamentItemId,
-    });
+    };
 
-    winnersRef.current = [...winnersRef.current, selectedIsFirst ? first : second];
-
-    // 결승전 종료 → 결과 페이지
+    // 결승전 — 서버가 COMPLETED 전환 + result를 응답에 담음
+    // onSuccess(훅 onSuccess가 캐시를 COMPLETED로 시드)까지 기다린 후 결과 페이지로 이동
     if (isFinalRound) {
-      router.push(`/tournament/${tournamentId}/result`);
+      postRecordMatchMutation(matchBody, {
+        onSuccess: () => router.push(`/tournament/${tournamentId}/result`),
+      });
       return;
     }
+
+    // 일반 라운드 — 낙관적 진행 (성공/실패와 무관하게 다음 매치로)
+    postRecordMatchMutation(matchBody);
 
     // 라운드 중간 매치 → 다음 매치로
     if (matchIndex < totalMatchesInRound - 1) {
