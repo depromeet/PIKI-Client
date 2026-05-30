@@ -7,8 +7,7 @@ type EmptyBasketSlotProps = {
 };
 
 function EmptyBasketSlot({ slotIndex }: EmptyBasketSlotProps) {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const imageUrl = EMPTY_BASKET_IMAGES[slotIndex % EMPTY_BASKET_IMAGES.length]!;
+  const imageUrl = EMPTY_BASKET_IMAGES[slotIndex % EMPTY_BASKET_IMAGES.length];
 
   return (
     <div className="relative aspect-square">

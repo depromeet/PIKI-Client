@@ -9,7 +9,7 @@ type TournamentBasketItemProps = {
 function TournamentBasketItem({ item, index }: TournamentBasketItemProps) {
   return (
     <div className="relative aspect-square">
-      <ProductImage src={item.imageUrl ?? undefined} size="sm" fill alt={`토너먼트 아이템 ${index + 1}`} />
+      <ProductImage src={item.imageUrl} size="sm" fill alt={`토너먼트 아이템 ${index + 1}`} />
     </div>
   );
 }
