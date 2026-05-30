@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 import { getMe } from '@/apis/getMe';
 import ButtonLink from '@/components/common/button/ButtonLink';
 
@@ -7,17 +5,12 @@ import LogoutButton from './_components/LogoutButton';
 
 // TEMP
 async function Page() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  let user = null;
-
-  if (accessToken)
-    try {
-      user = await getMe();
-    } catch {
-      user = null;
-    }
+  let user;
+  try {
+    user = await getMe();
+  } catch {
+    user = null;
+  }
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-8 px-5">
