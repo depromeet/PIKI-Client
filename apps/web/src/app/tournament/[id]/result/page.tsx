@@ -4,15 +4,11 @@ import { notFound } from 'next/navigation';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from '../_common/_apis/getTournament';
+import { parseTournamentId } from '../_common/_utils/parseTournamentId';
 import ResultClient from './_components/ResultClient';
 
 type TournamentResultPageProps = {
   params: Promise<{ id: string }>;
-};
-
-const parseTournamentId = (raw: string): number | null => {
-  const id = Number(raw);
-  return Number.isInteger(id) && id > 0 ? id : null;
 };
 
 async function TournamentResultPage({ params }: TournamentResultPageProps) {

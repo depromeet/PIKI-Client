@@ -5,14 +5,10 @@ import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from './_common/_apis/getTournament';
 import TournamentClient from './_common/_components/TournamentClient';
+import { parseTournamentId } from './_common/_utils/parseTournamentId';
 
 type TournamentPageProps = {
   params: Promise<{ id: string }>;
-};
-
-const parseTournamentId = (raw: string): number | null => {
-  const id = Number(raw);
-  return Number.isInteger(id) && id > 0 ? id : null;
 };
 
 async function TournamentPage({ params }: TournamentPageProps) {
