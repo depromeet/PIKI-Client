@@ -1,22 +1,27 @@
-import InviteFriends from './_components/inviteFriends/InviteFriends';
-import TournamentHeader from './_components/tournamentHeader/TournamentHeader';
-import TournamentStartButton from './_components/tournamentStartButton/TournamentStartButton';
-import WishBasketCarousel from './_components/wishBasket/WishBasketCarousel';
-import WishBasketStatus from './_components/wishBasketStatus/WishBasketStatus';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-function TournamentCreatePage() {
+import { getQueryClient } from '@/utils/queryClient';
+
+import { getTournament } from './_apis/getTournament';
+import TournamentCreateClient from './TournamentCreateClient';
+
+type TournamentCreatePageProps = {
+  params: Promise<{ id: string }>;
+};
+
+async function TournamentCreatePage({ params }: TournamentCreatePageProps) {
+  const { id } = await params;
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['tournament', id],
+    queryFn: () => getTournament(id),
+  });
+
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <div className="flex flex-1 flex-col gap-4 pt-[80px]">
-        <TournamentHeader />
-        <InviteFriends />
-        <WishBasketStatus />
-        <WishBasketCarousel />
-      </div>
-      <div className="pb-5">
-        <TournamentStartButton count={0} />
-      </div>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TournamentCreateClient tournamentId={id} />
+    </HydrationBoundary>
   );
 }
 

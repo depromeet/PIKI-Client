@@ -1,7 +1,11 @@
-function TournamentHeader() {
+type TournamentHeaderProps = {
+  name: string;
+};
+
+function TournamentHeader({ name }: TournamentHeaderProps) {
   return (
     <div className="flex flex-col items-center">
-      <p className="title-1">봄 아우터 고르기</p>
+      <h1 className="title-1">{name}</h1>
     </div>
   );
 }
