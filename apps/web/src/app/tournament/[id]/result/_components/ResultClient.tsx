@@ -39,7 +39,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const handleSaveResult = () => {
     // 이미 진행 종료 시점에 서버에서 저장됨 — 명시적 저장 토스트만 노출
-    toast('보관함에 결과를 저장했어요.');
+    toast.info('보관함에 결과를 저장했어요.');
   };
 
   return (
