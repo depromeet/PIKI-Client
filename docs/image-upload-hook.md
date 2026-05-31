@@ -85,7 +85,7 @@ onImagePick: (files: File[]) => void | Promise<void>;
 
 ```ts
 /** 훅 내부 — caller 변경 없음 */
-const resolveWebviewResult = async (payload) => {
+const resolveWebviewResult = async payload => {
   // 현재: nativeImagesToFiles(payload) → File[]
   // 추후: 앱 업로드 완료 시 fetch(blob) → File[] 또는 API가 URL만 받으면 caller API 변경 필요
 };

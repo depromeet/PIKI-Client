@@ -29,7 +29,10 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
         <div className="relative grid w-[45%] grid-cols-2 gap-4">
           {Array.from({ length: ITEMS_PER_BASKET }, (_, slotIndex) => {
             const item = items[slotIndex];
-            if (item) return <TournamentBasketItem key={item.tournamentItemId} item={item} index={slotIndex} />;
+            if (item)
+              return (
+                <TournamentBasketItem key={item.tournamentItemId} item={item} index={slotIndex} />
+              );
             return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
           })}
           <AddWishDialog
