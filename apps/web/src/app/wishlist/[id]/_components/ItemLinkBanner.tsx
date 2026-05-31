@@ -1,17 +1,27 @@
 import { ChevronForwardIconFill, LinkIconFill } from '@/assets/icons';
 
-type ItemLinkBannerProps = {
+type Props = {
   href: string;
-  label: string;
 };
 
-function ItemLinkBanner({ href, label }: ItemLinkBannerProps) {
+const getSourceUrlLabel = (sourceUrl: string): string => {
+  try {
+    const { hostname } = new URL(sourceUrl);
+    return `${hostname}에서 확인하기`;
+  } catch {
+    return sourceUrl;
+  }
+};
+
+function ItemLinkBanner({ href }: Props) {
+  const label = getSourceUrlLabel(href);
+
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex w-full items-center gap-4 rounded-xl bg-gray-75 px-4 py-3 transition-colors active:bg-gray-100"
+      className="mt-5 flex w-full items-center gap-4 rounded-xl bg-gray-75 px-4 py-3 transition-colors active:bg-gray-100"
     >
       <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-bg-layer-default">
         <LinkIconFill className="size-6 text-icon-neutral-primary" />

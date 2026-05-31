@@ -9,15 +9,14 @@ import Input from '@/components/common/input';
 import Spacing from '@/components/common/spacing';
 import Spinner from '@/components/common/spinner';
 import type { ItemStatusT } from '@/types/item';
-import { cn } from '@/utils/cn';
 import formatPrice from '@/utils/formatPrice';
 
-import { useDeleteTournamentItem } from '../_hooks/useDeleteTournamentItem';
+import { useDeleteWish } from '../_hooks/useDeleteWish';
+import { usePatchWish } from '../_hooks/usePatchWish';
 import ItemImageSection from './ItemImageSection';
 
 type ItemEditFormProps = {
-  tournamentId: number;
-  tournamentItemId: number;
+  wishId: number;
   itemStatus: ItemStatusT;
   initialImageUrl: string | null;
   initialName: string;
@@ -30,8 +29,7 @@ const parsePriceToNumber = (raw: string): number => {
 };
 
 function ItemEditForm({
-  tournamentId,
-  tournamentItemId,
+  wishId,
   itemStatus,
   initialImageUrl,
   initialName,
@@ -43,10 +41,8 @@ function ItemEditForm({
   const [price, setPrice] = useState(initialPriceFormatted);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const { deleteTournamentItemMutation, isDeleteTournamentItemPending } = useDeleteTournamentItem(
-    tournamentId,
-    tournamentItemId
-  );
+  const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId);
+  const { deleteWishMutation, isDeleteWishPending } = useDeleteWish(wishId);
 
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
@@ -58,15 +54,19 @@ function ItemEditForm({
       trimmedName !== initialName.trim() ||
       formatPrice(price) !== initialPriceFormatted ||
       selectedImage !== null;
-    if (!isChanged) return;
+    if (!isChanged || isPatchWishPending) return;
 
-    // onSubmit({ name: trimmedName, price: parsedPrice });
+    patchWishMutation({
+      name: trimmedName,
+      currentPrice: parsedPrice,
+      // imageUrl: selectedImage ? URL.createObjectURL(selectedImage) : null, // TODO: 이미지 보내는 방법 확인 필요
+    });
   };
 
   const handleDelete = () => {
-    if (isDeleteTournamentItemPending) return;
+    if (isDeleteWishPending) return;
 
-    deleteTournamentItemMutation();
+    deleteWishMutation();
   };
 
   return (
@@ -98,25 +98,20 @@ function ItemEditForm({
         />
       </div>
 
-      <BottomCta
-        className={cn(
-          'py-3',
-          itemStatus === 'FAILED' ? 'bg-bg-layer-basement' : 'bg-bg-layer-default'
-        )}
-      >
+      <BottomCta className="bg-bg-layer-basement py-3">
         {itemStatus === 'READY' && (
           <Button variant="secondary" size="lg" className="flex-1" onClick={handleDelete}>
-            {isDeleteTournamentItemPending ? <Spinner size={20} /> : '삭제하기'}
+            {isDeleteWishPending ? <Spinner size={20} /> : '삭제하기'}
           </Button>
         )}
         <Button
           variant="primary"
           size="lg"
           onClick={handleSave}
-          disabled={isDeleteTournamentItemPending || !isValid}
+          disabled={isDeleteWishPending || !isValid}
           className="flex-1"
         >
-          {itemStatus === 'FAILED' ? '저장하기' : '확인'}
+          저장하기
         </Button>
       </BottomCta>
     </>

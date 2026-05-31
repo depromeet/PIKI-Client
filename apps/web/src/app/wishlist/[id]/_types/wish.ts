@@ -1,0 +1,33 @@
+import type { ITEM_STATUS } from '@/consts/item';
+import type { WishT } from '@/types/wish';
+
+export type GetWishResponseT = {
+  wish: WishT;
+  item: { id: number } & (
+    | {
+        status: (typeof ITEM_STATUS)['PROCESSING'] | (typeof ITEM_STATUS)['FAILED'];
+        name: null;
+        imageUrl: null;
+        currentPrice: null;
+        currency: null;
+        sourceUrl: string | null; // 확인필
+      }
+    | {
+        status: (typeof ITEM_STATUS)['READY'];
+        name: string;
+        imageUrl: string;
+        currentPrice: number;
+        currency: string;
+        sourceUrl: string | null;
+      }
+  );
+};
+
+export type PatchWishRequestT = {
+  name?: string;
+  currentPrice?: number;
+  imageUrl?: string;
+  currency?: string;
+};
+
+export type PatchWishResponseT = GetWishResponseT;

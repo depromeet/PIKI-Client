@@ -1,8 +1,6 @@
-import type { TOURNAMENT_ITEM_STATUS, TOURNAMENT_STATUS } from '@/consts/tournament';
+import type { TOURNAMENT_STATUS } from '@/consts/tournament';
 
 export type TournamentStatusT = (typeof TOURNAMENT_STATUS)[keyof typeof TOURNAMENT_STATUS];
-
-export type TournamentItemStatusT = 'PROCESSING' | 'READY' | 'FAILED';
 
 export type TournamentItemT = {
   tournamentItemId: number;
@@ -27,6 +25,3 @@ export type TournamentRankingT = TournamentItemT & {
 export type PostTournamentOCRResponseT = {
   itemIds: number[];
 };
-
-export type TournamentItemStatusT =
-  (typeof TOURNAMENT_ITEM_STATUS)[keyof typeof TOURNAMENT_ITEM_STATUS];

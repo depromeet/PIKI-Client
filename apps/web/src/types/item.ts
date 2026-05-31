@@ -1,3 +1,5 @@
+import type { ITEM_STATUS } from '@/consts/item';
+
 export type ItemTypeT = 'wish' | 'tournament';
 
 export type ItemT = {
@@ -8,3 +10,5 @@ export type ItemT = {
   imageUrl: string | null;
   sourceUrl: string | null;
 };
+
+export type ItemStatusT = (typeof ITEM_STATUS)[keyof typeof ITEM_STATUS];

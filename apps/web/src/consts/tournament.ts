@@ -3,9 +3,3 @@ export const TOURNAMENT_STATUS = {
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED',
 } as const;
-
-export const TOURNAMENT_ITEM_STATUS = {
-  PROCESSING: 'PROCESSING',
-  READY: 'READY',
-  FAILED: 'FAILED',
-} as const;
