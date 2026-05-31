@@ -16,10 +16,9 @@ type ByLinkProps = {
   type: ItemTypeT;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (url: string) => void;
 };
 
-function ByLinkDialog({ type, open, onOpenChange, onSubmit }: ByLinkProps) {
+function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
   const router = useRouter();
   const { id: tournamentId } = useParams<{ id: string }>();
   const { postTournamentItemLinkMutation } = usePostTournamentItemLink(Number(tournamentId));

@@ -4,7 +4,7 @@ import type { ImageProps } from 'next/image';
 import type { ReactNode } from 'react';
 
 import BaseImage from '@/components/common/base-image';
-import { TournamentItemStatusT } from '@/types/tournament';
+import type { TournamentItemStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
 import LgErrorFallback from './fallback/LgErrorFallback';
