@@ -7,10 +7,10 @@ import { isItemType } from '@/utils/item';
 import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getWish } from './_apis/getWish';
-import ItemEditForm from './_components/ItemEditForm';
+import { getWish } from '../edit/_apis/getWish';
+import ItemCreateForm from './_components/ItemCreateForm';
 
-type ItemEditPageProps = {
+type ItemCreatePageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{
     type: ItemTypeT;
@@ -18,7 +18,7 @@ type ItemEditPageProps = {
   }>;
 };
 
-async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
+async function ItemCreatePage({ params, searchParams }: ItemCreatePageProps) {
   const { id } = await params;
   const { type, id: _tournamentId } = await searchParams;
 
@@ -39,7 +39,7 @@ async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
 
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ItemEditForm itemType={itemType} wishId={wishId} />
+        <ItemCreateForm itemType={itemType} wishId={wishId} />
       </HydrationBoundary>
     );
   } else if (type === 'tournament' && _tournamentId) {
@@ -55,7 +55,7 @@ async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
 
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ItemEditForm
+        <ItemCreateForm
           itemType={itemType}
           tournamentId={tournamentId}
           tournamentItemId={tournamentItemId}
@@ -67,4 +67,4 @@ async function ItemEditPage({ params, searchParams }: ItemEditPageProps) {
   notFound();
 }
 
-export default ItemEditPage;
+export default ItemCreatePage;

@@ -11,6 +11,5 @@ serverApi.interceptors.request.use(async config => {
   const cookieStore = await cookies();
 
   config.headers.Cookie = cookieStore.toString();
-
   return config;
 });

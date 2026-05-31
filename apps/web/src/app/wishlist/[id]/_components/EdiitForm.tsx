@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { EditIconFill } from '@/assets/icons';
 import BottomCta from '@/components/common/bottom-cta';
 import Button from '@/components/common/button';
-import { Header, HeaderIcon } from '@/components/common/header';
 import Input from '@/components/common/input';
 import formatPrice from '@/utils/formatPrice';
 
@@ -14,7 +13,7 @@ import { useGetWish } from '../_hooks/useGetWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
 import ItemLinkBanner from './ItemLinkBanner';
 
-type WishEditFormProps = {
+type ItemEditFormProps = {
   wishId: number;
 };
 
@@ -33,7 +32,7 @@ const getSourceUrlLabel = (sourceUrl: string | null): string => {
   }
 };
 
-function WishEditForm({ wishId }: WishEditFormProps) {
+function ItemEditForm({ wishId }: ItemEditFormProps) {
   const { wishData } = useGetWish(wishId);
   const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId);
 
@@ -66,9 +65,8 @@ function WishEditForm({ wishId }: WishEditFormProps) {
   const sourceUrlLabel = getSourceUrlLabel(item.sourceUrl);
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-9 pb-[78px]">
-      <Header left={<HeaderIcon name="BACK" />} />
-      <div className="flex w-full flex-col gap-6 px-5 pt-3">
+    <>
+      <main className="flex w-full flex-col gap-6 px-5 pt-3">
         {/* 헤더 */}
         <header className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-[24px] leading-8 font-bold tracking-[-0.6px] text-text-neutral-primary">
@@ -114,7 +112,7 @@ function WishEditForm({ wishId }: WishEditFormProps) {
 
         {/* 원본 링크 배너 */}
         {sourceUrl && <ItemLinkBanner href={sourceUrl} label={sourceUrlLabel} />}
-      </div>
+      </main>
 
       {/* 하단 고정 버튼 */}
       <BottomCta>
@@ -128,8 +126,8 @@ function WishEditForm({ wishId }: WishEditFormProps) {
           저장하기
         </Button>
       </BottomCta>
-    </main>
+    </>
   );
 }
 
-export default WishEditForm;
+export default ItemEditForm;

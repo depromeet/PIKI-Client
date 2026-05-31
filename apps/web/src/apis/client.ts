@@ -27,7 +27,6 @@ const processQueue = (error: unknown) => {
 };
 
 export const clientApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 
@@ -50,7 +49,7 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/token/refresh`, null, {
+        await axios.post('/api/v1/auth/token/refresh', null, {
           withCredentials: true,
         });
         processQueue(null);
