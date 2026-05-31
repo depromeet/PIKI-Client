@@ -12,7 +12,7 @@ type WishSelectCardProps = {
 
 function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSelectCardProps) {
   return (
-    <button type="button" onClick={onSelect} className="relative h-full w-full text-left">
+    <button type="button" onClick={onSelect} aria-pressed={isSelected} className="relative h-full w-full text-left">
       <WishCard name={name} price={price} imageUrl={imageUrl} />
       <div className="absolute top-2 left-2 z-10">
         {isSelected ? (

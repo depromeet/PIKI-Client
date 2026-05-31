@@ -28,7 +28,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
 
   const existingItemIds = new Set(tournamentData.pending?.items.map(i => i.itemId) ?? []);
   const items = wishlistData?.filter(
-    item => item.status !== 'failed' && !existingItemIds.has(item.itemId!)
+    item => item.status !== 'failed' && item.itemId != null && !existingItemIds.has(item.itemId)
   ) ?? [];
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
   const handleNext = () => {
     const itemIds = items
       .filter(item => selectedIds.includes(item.id))
-      .map(item => item.itemId!);
+      .map(item => item.itemId as number);
     postTournamentItemsByWishMutation(itemIds);
   };
 
