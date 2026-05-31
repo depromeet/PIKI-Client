@@ -20,7 +20,7 @@ export const WebBridge = {
     const target = webviewRef?.current;
     if (!target) return console.warn('[WEBVIEW] WebView 참조 없음');
 
-    const message: WebBridgeMessageT = { type, payload };
+    const message = { type, payload };
     target.postMessage(JSON.stringify(message));
   },
 };

@@ -19,7 +19,7 @@ export const useWebBridgeMessage = (handler: (message: WebBridgeMessageT) => voi
           return;
         }
 
-        console.error('[WEBVIEW] 수신 메시지:', parsedMessage);
+        console.log('[WEBVIEW] 수신 메시지:', parsedMessage);
         handler(parsedMessage);
       } catch {
         console.error('[WEBVIEW] 오류', event.nativeEvent.data);
