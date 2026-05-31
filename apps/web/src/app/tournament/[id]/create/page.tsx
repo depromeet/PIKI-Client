@@ -10,17 +10,17 @@ type TournamentCreatePageProps = {
 };
 
 async function TournamentCreatePage({ params }: TournamentCreatePageProps) {
-  const { id } = await params;
+  const { id: tournamentId } = await params;
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['tournament', id],
-    queryFn: () => getTournament(id),
+    queryKey: ['tournament', tournamentId],
+    queryFn: () => getTournament(Number(tournamentId)),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TournamentCreateClient tournamentId={id} />
+      <TournamentCreateClient tournamentId={tournamentId} />
     </HydrationBoundary>
   );
 }

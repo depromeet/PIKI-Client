@@ -17,7 +17,7 @@ type TournamentItemBasketProps = {
 
 function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
   return (
-    <div className="relative mx-auto aspect-[356/464] w-full">
+    <div className="relative mx-auto aspect-356/464 w-full">
       <Image
         src={basketImg}
         alt={`장바구니 ${basketIndex + 1}`}
