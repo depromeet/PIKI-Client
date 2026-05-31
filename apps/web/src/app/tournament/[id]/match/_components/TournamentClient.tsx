@@ -1,5 +1,6 @@
 'use client';
 
+import type { GetTournamentInProgressResponseT } from '../../_common/_types/tournamentResponse';
 import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
 import useTournament from '../_hooks/useTournament';
 import RoundBadge from './RoundBadge';
@@ -7,7 +8,13 @@ import RoundTransition from './RoundTransition';
 import TournamentQuestion from './TournamentQuestion';
 import VsSection from './VsSection';
 
-function TournamentClient() {
+type TournamentClientProps = {
+  tournamentId: number;
+  tournamentName: string;
+  inProgress: GetTournamentInProgressResponseT['inProgress'];
+};
+
+function TournamentClient({ tournamentId, tournamentName, inProgress }: TournamentClientProps) {
   const {
     currentMatch,
     roundLabel,
@@ -15,7 +22,7 @@ function TournamentClient() {
     transitionStage,
     handleSelect,
     handleTransitionComplete,
-  } = useTournament();
+  } = useTournament({ tournamentId, tournamentName, inProgress });
 
   if (transitionStage) {
     const copy = ROUND_TRANSITION_COPY[transitionStage];

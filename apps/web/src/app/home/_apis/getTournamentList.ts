@@ -2,6 +2,7 @@ import { environmentManager } from '@tanstack/react-query';
 
 import { clientApi } from '@/apis/client';
 import { serverApi } from '@/apis/server';
+import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 import type { TournamentStatusT } from '@/types/tournament';
 
@@ -10,7 +11,7 @@ import type { GetTournamentListResponseT } from '../_types/tournament';
 export const getTournamentList = async (status?: TournamentStatusT[]) => {
   if (environmentManager.isServer()) {
     const { data } = await serverApi.get<ApiResponseT<GetTournamentListResponseT>>(
-      '/api/v1/tournaments',
+      ENDPOINTS.TOURNAMENTS,
       { params: { status } }
     );
 
@@ -18,7 +19,7 @@ export const getTournamentList = async (status?: TournamentStatusT[]) => {
   }
 
   const { data } = await clientApi.get<ApiResponseT<GetTournamentListResponseT>>(
-    '/api/v1/tournaments',
+    ENDPOINTS.TOURNAMENTS,
     { params: { status } }
   );
   return data.data;

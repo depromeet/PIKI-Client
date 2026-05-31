@@ -12,7 +12,7 @@ type TournamentStartButtonProps = {
 
 function TournamentStartButton({ count, tournamentId }: TournamentStartButtonProps) {
   const { postTournamentStartMutation, isPostTournamentStartPending } =
-    usePostTournamentStart(tournamentId);
+    usePostTournamentStart(Number(tournamentId));
 
   return (
     <Button

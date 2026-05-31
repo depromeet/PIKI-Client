@@ -3,7 +3,7 @@ import { MAX_SELECT } from '../_consts/selectLimits';
 type WishSelectHeaderProps = {
   selectedCount: number;
   totalCount: number;
-  tournamentCandidateCount: number;
+  tournamentCandidateCount?: number;
   isMaxExceeded: boolean;
 };
 
@@ -22,12 +22,22 @@ function WishSelectHeader({
           <span className="heading-2-medium text-gray-300">까지 선택할 수 있어요</span>
         </p>
       );
+    // 이미 토너먼트 후보가 담겨있을 때
+    if (tournamentCandidateCount && tournamentCandidateCount > 0)
+      return (
+        <p className="whitespace-pre-line">
+          <span className="heading-2 text-gray-600">{tournamentCandidateCount}개가</span>
+          <span className="heading-2-medium text-gray-600">
+            {' 이미 담겨있어요\n더 추가하고 싶은 상품을 골라보세요.'}
+          </span>
+        </p>
+      );
     // 기본 상태
     return (
       <p className="whitespace-pre-line">
-        <span className="heading-2 text-text-neutral-secondary">{tournamentCandidateCount}개가</span>
-        <span className="heading-2-medium text-text-neutral-secondary">
-          {' 담겨있어요\n더 추가하고 싶은 상품을 골라보세요.'}
+        <span className="heading-2 text-gray-600">최소 {MIN_SELECT}개 이상</span>
+        <span className="heading-2-medium text-gray-300">
+          {' 선택해야\n토너먼트를 시작할 수 있어요.'}
         </span>
       </p>
     );

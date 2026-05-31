@@ -1,14 +1,12 @@
 import { ThreeDotHorizontalIconFill } from '@/assets/icons';
 import StateChip from '@/components/common/state-chip';
-import type { StateChipStyleProps } from '@/components/common/state-chip/stateChip.style';
 import UserProfileGroup from '@/components/common/user-profile-group';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import type { TournamentStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
-type TournamentStateT = NonNullable<StateChipStyleProps['state']>;
-
 type TournamentCardProps = {
-  state: TournamentStateT;
+  state: TournamentStatusT;
   name: string;
   date: string;
   users: UserT[];

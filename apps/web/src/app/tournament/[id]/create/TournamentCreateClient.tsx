@@ -1,18 +1,18 @@
 'use client';
 
-import { useGetTournament } from './_hooks/useGetTournament';
 import InviteFriends from './_components/inviteFriends/InviteFriends';
 import TournamentHeader from './_components/tournamentHeader/TournamentHeader';
-import TournamentStartButton from './_components/tournamentStartButton/TournamentStartButton';
 import TournamentItemBasketCarousel from './_components/tournamentItemBasket/TournamentItemBasketCarousel';
 import TournamentItemBasketStatus from './_components/tournamentItemBasketStatus/TournamentItemBasketStatus';
+import TournamentStartButton from './_components/tournamentStartButton/TournamentStartButton';
+import { useGetTournament } from './_hooks/useGetTournament';
 
 type TournamentCreateClientProps = {
   tournamentId: string;
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
-  const { tournamentData } = useGetTournament(tournamentId);
+  const { tournamentData } = useGetTournament(Number(tournamentId));
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">

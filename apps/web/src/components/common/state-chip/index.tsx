@@ -1,14 +1,15 @@
 import type { ComponentProps } from 'react';
 
 import { BasketIconFill, TargetIconFill, TrophyIconFill } from '@/assets/icons';
+import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import { cn } from '@/utils/cn';
 
 import { type StateChipStyleProps, stateChipStyles } from './stateChip.style';
 
 const STATE_CONFIG = {
-  adding: { label: '담는 중', Icon: BasketIconFill },
-  playing: { label: '플레이', Icon: TargetIconFill },
-  done: { label: '완료', Icon: TrophyIconFill },
+  [TOURNAMENT_STATUS.PENDING]: { label: '담는 중', Icon: BasketIconFill },
+  [TOURNAMENT_STATUS.IN_PROGRESS]: { label: '플레이', Icon: TargetIconFill },
+  [TOURNAMENT_STATUS.COMPLETED]: { label: '완료', Icon: TrophyIconFill },
 } as const;
 
 type StateChipProps = Omit<ComponentProps<'span'>, 'children'> &

@@ -40,6 +40,12 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "상품 이미지를 선택하기 위해 사진 보관함 접근 권한이 필요합니다."
+        }
       ]
     ],
     "experiments": {

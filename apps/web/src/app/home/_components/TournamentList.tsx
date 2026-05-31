@@ -1,20 +1,10 @@
 'use client';
 
-import type { StateChipStyleProps } from '@/components/common/state-chip/stateChip.style';
 import TournamentCard from '@/components/common/tournament-card';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
 import { TOURNAMENT_STATUS } from '@/consts/tournament';
-import type { TournamentStatusT } from '@/types/tournament';
 
 import { useGetTournamentList } from '../_hooks/useGetTournamentList';
-
-type TournamentStateT = NonNullable<StateChipStyleProps['state']>;
-
-const STATUS_TO_STATE: Record<TournamentStatusT, TournamentStateT> = {
-  PENDING: 'adding',
-  IN_PROGRESS: 'playing',
-  COMPLETED: 'done',
-};
 
 // TODO: 백엔드가 정식 프사 처리 도입 시 imageUrl 반영
 const toUsers = (imageUrls: string[]): UserT[] =>
@@ -36,7 +26,7 @@ function TorunamentList() {
       {tournamentListData.map(tournament => (
         <TournamentCard
           key={tournament.tournamentId}
-          state={STATUS_TO_STATE[tournament.status]}
+          state={tournament.status}
           name={tournament.name}
           date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
           users={toUsers(tournament.participantProfileImages)}

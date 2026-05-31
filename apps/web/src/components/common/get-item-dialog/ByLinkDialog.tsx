@@ -21,7 +21,7 @@ type ByLinkProps = {
 function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
   const router = useRouter();
   const { id: tournamentId } = useParams<{ id: string }>();
-  const { postTournamentItemLinkMutation } = usePostTournamentItemLink(tournamentId);
+  const { postTournamentItemLinkMutation } = usePostTournamentItemLink(Number(tournamentId));
 
   const [url, setUrl] = useState('');
   const [hasError, setHasError] = useState(false);
