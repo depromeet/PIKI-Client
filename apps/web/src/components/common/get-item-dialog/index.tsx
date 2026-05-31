@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { useParams } from 'next/navigation';
+
 import { HeartIconFill, ImageIconFill, LinkIconFill } from '@/assets/icons';
 import { DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import type { ItemTypeT } from '@/types/item';
@@ -16,6 +18,7 @@ type GetItemDialogContentProps = {
 
 function GetItemDialogContent({ type }: GetItemDialogContentProps) {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState<'link' | 'image' | null>(null);
+  const { id } = useParams<{ id: string }>();
 
   return (
     <>
@@ -30,7 +33,7 @@ function GetItemDialogContent({ type }: GetItemDialogContentProps) {
         <ul className="flex w-full flex-col gap-2">
           {type === 'tournament' && (
             <OptionButton
-              href="/tournament/create/by-wish"
+              href={`/tournament/${id}/create/by-wish`}
               label="위시에서 가져오기"
               description="내 위시리스트에서 상품을 가져와요"
               Icon={HeartIconFill}

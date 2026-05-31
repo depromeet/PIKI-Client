@@ -8,6 +8,7 @@ export type WishItemStatusT = 'ok' | 'failed';
 
 export type WishItemT = {
   id: number;
+  itemId?: number;
   name: string;
   price: number;
   imageUrl?: string;
