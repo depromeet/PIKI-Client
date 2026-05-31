@@ -22,7 +22,7 @@ type ByWishContentProps = {
 function ByWishContent({ tournamentId }: ByWishContentProps) {
   const { selectedIds, isMaxExceeded, handleSelect } = useWishSelection(MAX_SELECT);
   const { data: wishlistData } = useGetWishlist();
-  const { tournamentData } = useGetTournament(tournamentId.toString());
+  const { tournamentData } = useGetTournament(tournamentId);
   const { postTournamentItemsByWishMutation, isPostTournamentItemsByWishPending } =
     usePostTournamentItemsByWish(tournamentId);
 
