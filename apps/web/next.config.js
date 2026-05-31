@@ -10,14 +10,14 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      // TEMP: 모든 도메인 허용 — 추후 실제 CDN 도메인으로 교체 필요
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: '**',
       },
-      // TEMP: 유저 프사 임시 이미지
       {
-        protocol: 'https',
-        hostname: 'api.dicebear.com',
+        protocol: 'http',
+        hostname: '**',
       },
       // TEMP: 위시 상품 이미지 임시
       {
@@ -26,13 +26,6 @@ const nextConfig = {
       },
     ],
   },
-
-  rewrites: async () => [
-    {
-      source: '/api/v1/:path*',
-      destination: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/:path*`,
-    },
-  ],
 };
 
 export default nextConfig;

@@ -21,3 +21,7 @@ export type TournamentMatchHistoryT = {
 export type TournamentRankingT = TournamentItemT & {
   rank: number;
 };
+
+export type PostTournamentOCRResponseT = {
+  itemIds: number[];
+};

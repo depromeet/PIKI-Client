@@ -5,12 +5,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "peerDependencies": {
-    "react": "19.2.0"
-  },
   "devDependencies": {
     "@piki/typescript-config": "workspace:*",
-    "@types/react": "19.2.2",
+    "@types/react": "^19.0.0",
     "typescript": "5.9.2"
   }
 }

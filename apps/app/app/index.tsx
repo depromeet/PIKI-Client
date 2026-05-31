@@ -1,17 +1,20 @@
-import { type WebBridgeMessageT } from '@piki/core';
+import { WEBBRIDGE_MESSAGE_TYPE, type WebBridgeMessageT } from '@piki/core';
 import { useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
+import { handleOpenImagePicker } from '@/utils/handleImage';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
 
   const onWebviewMessage = useCallback(async (message: WebBridgeMessageT) => {
-    // NOTE: message.type으로 case-switch 구문 작성 예정
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER) {
+      await handleOpenImagePicker(message.payload);
+    }
   }, []);
 
   const { onMessage } = useWebBridgeMessage(onWebviewMessage);
@@ -35,7 +38,7 @@ function Page() {
          * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
          */
         // TEMP: URI env에 등록하여 사용 예정
-        source={{ uri: 'https://www.naver.com/' }}
+        source={{ uri: 'http://localhost:3000' }}
         onMessage={onMessage}
         allowsBackForwardNavigationGestures
         cacheEnabled
