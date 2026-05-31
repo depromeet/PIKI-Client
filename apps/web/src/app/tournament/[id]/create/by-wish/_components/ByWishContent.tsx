@@ -1,24 +1,35 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+
 import { toast } from 'sonner';
 
-import { MOCK_WISH_ITEMS } from '@/app/wishlist/_mocks/wishMocks';
+import { useGetWishlist } from '@/app/wishlist/_hooks/useGetWishlist';
 import Button from '@/components/common/button';
 import { Toaster } from '@/components/common/toast';
 
-import WishSelectCard from './_components/WishSelectCard';
-import WishSelectHeader from './_components/WishSelectHeader';
-import { MAX_SELECT, MIN_SELECT } from './_consts/selectLimits';
-import useWishSelection from './_hooks/useWishSelection';
+import { useGetTournament } from '../../_hooks/useGetTournament';
+import { MAX_SELECT, MIN_SELECT } from '../_consts/selectLimits';
+import { usePostTournamentItemsByWish } from '../_hooks/usePostTournamentItemsByWish';
+import useWishSelection from '../_hooks/useWishSelection';
+import WishSelectCard from './WishSelectCard';
+import WishSelectHeader from './WishSelectHeader';
 
-function ByWishPage() {
-  const router = useRouter();
+type ByWishContentProps = {
+  tournamentId: number;
+};
+
+function ByWishContent({ tournamentId }: ByWishContentProps) {
   const { selectedIds, isMaxExceeded, handleSelect } = useWishSelection(MAX_SELECT);
+  const { data: wishlistData } = useGetWishlist();
+  const { tournamentData } = useGetTournament(tournamentId.toString());
+  const { postTournamentItemsByWishMutation, isPostTournamentItemsByWishPending } =
+    usePostTournamentItemsByWish(tournamentId);
 
-  // TODO: 위시리스트 API 연결
-  const items = MOCK_WISH_ITEMS;
+  const existingItemIds = new Set(tournamentData.pending?.items.map(i => i.itemId) ?? []);
+  const items = wishlistData?.filter(
+    item => item.status !== 'failed' && !existingItemIds.has(item.itemId!)
+  ) ?? [];
 
   useEffect(() => {
     if (!isMaxExceeded) return;
@@ -26,20 +37,21 @@ function ByWishPage() {
   }, [isMaxExceeded]);
 
   const handleNext = () => {
-    // TODO: 선택된 ID 배열을 토너먼트 준비 페이지로 전달 (API 연동 시 query/state)
-    router.push('/tournament/create');
+    const itemIds = items
+      .filter(item => selectedIds.includes(item.id))
+      .map(item => item.itemId!);
+    postTournamentItemsByWishMutation(itemIds);
   };
 
   return (
     <div className="flex h-full flex-col">
-      {/* 헤더: 선택 안내 문구 + 선택 개수 */}
       <WishSelectHeader
         selectedCount={selectedIds.length}
         totalCount={items.length}
+        tournamentCandidateCount={tournamentData.pending?.items.length ?? 0}
         isMaxExceeded={isMaxExceeded}
       />
 
-      {/* 위시 아이템 그리드 */}
       <main className="mt-4 hide-scrollbar flex flex-1 flex-col overflow-y-auto pb-32">
         <div className="grid grid-cols-2 gap-x-2 gap-y-3">
           {items.map(item => (
@@ -55,25 +67,23 @@ function ByWishPage() {
         </div>
       </main>
 
-      {/* 하단 버튼: 뒤로 / 다음 */}
       <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] px-5 py-3">
-        <Button variant="secondary" size="lg" onClick={() => router.back()}>
+        <Button variant="secondary" size="lg" onClick={() => history.back()}>
           뒤로
         </Button>
         <Button
           variant="primary"
           size="lg"
-          disabled={selectedIds.length < MIN_SELECT}
+          disabled={selectedIds.length < MIN_SELECT || isPostTournamentItemsByWishPending}
           onClick={handleNext}
         >
           다음
         </Button>
       </div>
 
-      {/* 최대 선택 초과 토스트 */}
       <Toaster />
     </div>
   );
 }
 
-export default ByWishPage;
+export default ByWishContent;
