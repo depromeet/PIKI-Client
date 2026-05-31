@@ -54,6 +54,7 @@ function BaseImage({
         src={src}
         alt={alt}
         fill
+        unoptimized
         onLoad={handleLoad}
         onError={handleError}
         className={cn(

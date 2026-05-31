@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { postTournamentStart } from '../_apis/postTournamentStart';
 
-export const usePostTournamentStart = (tournamentId: string) => {
+export const usePostTournamentStart = (tournamentId: number) => {
   const router = useRouter();
 
   const { mutate: postTournamentStartMutation, isPending: isPostTournamentStartPending } =

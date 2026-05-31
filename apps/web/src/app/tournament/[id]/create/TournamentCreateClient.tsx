@@ -12,7 +12,7 @@ type TournamentCreateClientProps = {
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
-  const { tournamentData } = useGetTournament(tournamentId);
+  const { tournamentData } = useGetTournament(Number(tournamentId));
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">

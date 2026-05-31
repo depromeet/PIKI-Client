@@ -11,4 +11,5 @@ export const ENDPOINTS = {
   TOURNAMENT_MATCHES: (id: number) => `/api/v1/tournaments/${id}/matches`,
   TOURNAMENT_ITEM_LINK: (id: number) => `/api/v1/tournaments/${id}/items/link`,
   TOURNAMENT_OCR: (id: number) => `/api/v1/tournaments/${id}/items/images`,
+  TOURNAMENT_ITEM: (id: number, ItemId: number) => `/api/v1/tournaments/${id}/items/${ItemId}`,
 } as const;

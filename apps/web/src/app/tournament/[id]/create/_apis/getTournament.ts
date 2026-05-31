@@ -7,7 +7,7 @@ import type { ApiResponseT } from '@/types/api';
 
 import type { GetTournamentResponseT } from '../_types/tournament';
 
-export const getTournament = async (tournamentId: string) => {
+export const getTournament = async (tournamentId: number) => {
   const id = Number(tournamentId);
 
   if (environmentManager.isServer()) {
