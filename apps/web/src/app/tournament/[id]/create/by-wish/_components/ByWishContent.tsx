@@ -9,7 +9,7 @@ import Button from '@/components/common/button';
 import { Toaster } from '@/components/common/toast';
 
 import { useGetTournament } from '../../_hooks/useGetTournament';
-import { MAX_SELECT, MIN_SELECT } from '../_consts/selectLimits';
+import { MAX_SELECT } from '../_consts/selectLimits';
 import { usePostTournamentItemsByWish } from '../_hooks/usePostTournamentItemsByWish';
 import useWishSelection from '../_hooks/useWishSelection';
 import WishSelectCard from './WishSelectCard';
@@ -74,7 +74,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
         <Button
           variant="primary"
           size="lg"
-          disabled={selectedIds.length < MIN_SELECT || isPostTournamentItemsByWishPending}
+          disabled={selectedIds.length === 0 || isPostTournamentItemsByWishPending}
           onClick={handleNext}
         >
           다음
