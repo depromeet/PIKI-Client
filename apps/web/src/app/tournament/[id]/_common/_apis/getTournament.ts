@@ -5,22 +5,18 @@ import { serverApi } from '@/apis/server';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
-import type { GetTournamentResponseT } from '../_types/tournament';
+import type { GetTournamentResponseT } from '../_types/tournamentResponse';
 
-export const getTournament = async (tournamentId: string) => {
-  const id = Number(tournamentId);
-
+export const getTournament = async (tournamentId: number) => {
   if (environmentManager.isServer()) {
     const { data } = await serverApi.get<ApiResponseT<GetTournamentResponseT>>(
-      ENDPOINTS.TOURNAMENT(id)
+      ENDPOINTS.TOURNAMENT(tournamentId)
     );
-
     return data.data;
   }
 
   const { data } = await clientApi.get<ApiResponseT<GetTournamentResponseT>>(
-    ENDPOINTS.TOURNAMENT(id)
+    ENDPOINTS.TOURNAMENT(tournamentId)
   );
-
   return data.data;
 };

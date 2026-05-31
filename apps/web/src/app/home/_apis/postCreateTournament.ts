@@ -1,4 +1,5 @@
 import { clientApi } from '@/apis/client';
+import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
 import type {
@@ -8,7 +9,7 @@ import type {
 
 export const postCreateTournament = async (body: PostCreateTournamentRequestT) => {
   const { data } = await clientApi.post<ApiResponseT<PostCreateTournamentResponseT>>(
-    '/api/v1/tournaments',
+    ENDPOINTS.TOURNAMENTS,
     body
   );
 

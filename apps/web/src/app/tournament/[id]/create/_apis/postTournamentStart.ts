@@ -6,7 +6,7 @@ import type { PostTournamentStartResponseT } from '../_types/tournament';
 
 export const postTournamentStart = async (tournamentId: string) => {
   const { data } = await clientApi.post<ApiResponseT<PostTournamentStartResponseT>>(
-    ENDPOINTS.TOURNAMENT_START(tournamentId)
+    ENDPOINTS.TOURNAMENT_START(Number(tournamentId))
   );
 
   return data.data;

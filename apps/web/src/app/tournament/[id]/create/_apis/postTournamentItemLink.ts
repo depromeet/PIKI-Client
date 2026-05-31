@@ -6,7 +6,7 @@ import type { PostTournamentItemLinkResponseT } from '../_types/tournament';
 
 export const postTournamentItemLink = async (tournamentId: string, url: string) => {
   const { data } = await clientApi.post<ApiResponseT<PostTournamentItemLinkResponseT>>(
-    ENDPOINTS.TOURNAMENT_ITEM_LINK(tournamentId),
+    ENDPOINTS.TOURNAMENT_ITEM_LINK(Number(tournamentId)),
     { url }
   );
 

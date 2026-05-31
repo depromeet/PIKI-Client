@@ -1,9 +1,9 @@
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getTournament } from './_apis/getTournament';
 import TournamentCreateClient from './TournamentCreateClient';
+import { getTournament } from './_apis/getTournament';
 
 type TournamentCreatePageProps = {
   params: Promise<{ id: string }>;

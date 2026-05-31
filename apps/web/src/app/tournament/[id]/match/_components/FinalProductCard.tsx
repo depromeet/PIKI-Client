@@ -1,15 +1,15 @@
-import Image from 'next/image';
+import BaseImage from '@/components/common/base-image';
 
-import type { ProductT } from '../_types/tournament';
+import type { ProductT } from '../../_common/_types/tournament';
 
-type ProductCardProps = ProductT & {
+type FinalProductCardProps = ProductT & {
   isPicked?: boolean;
   onClick?: () => void;
 };
 
-function ProductCard({ imageUrl, name, price, isPicked, onClick }: ProductCardProps) {
+function FinalProductCard({ imageUrl, name, price, isPicked, onClick }: FinalProductCardProps) {
   return (
-    <button type="button" onClick={onClick} className="relative w-[148px] text-left">
+    <button type="button" onClick={onClick} className="relative w-[148px] cursor-pointer text-left">
       {isPicked && (
         <div className="absolute top-0 left-1/2 z-10 flex size-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-500 shadow-lg">
           <span className="-rotate-12 body-1-bold text-white">Pick!</span>
@@ -17,16 +17,17 @@ function ProductCard({ imageUrl, name, price, isPicked, onClick }: ProductCardPr
       )}
       <div className="flex w-[148px] flex-col overflow-hidden rounded-2xl bg-bg-layer-default shadow-[0_1px_8px_0_rgba(0,0,0,0.10)]">
         <div className="relative h-[123px] w-[148px] shrink-0 bg-gray-50">
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            sizes="(max-width: 480px) 45vw, 200px"
-            priority
-            className="object-cover"
-          />
+          {imageUrl && (
+            <BaseImage
+              src={imageUrl}
+              alt={name}
+              sizes="(max-width: 480px) 45vw, 200px"
+              priority
+              className="object-cover"
+            />
+          )}
         </div>
-        <div className="flex flex-1 flex-col items-center justify-center gap-2 p-4 text-center">
+        <div className="flex flex-col gap-2 p-4 text-center">
           <p className="body-2-medium text-text-neutral-secondary">{name}</p>
           <p className="body-1-bold text-text-neutral-primary">{price.toLocaleString()}원</p>
         </div>
@@ -35,4 +36,4 @@ function ProductCard({ imageUrl, name, price, isPicked, onClick }: ProductCardPr
   );
 }
 
-export default ProductCard;
+export default FinalProductCard;
