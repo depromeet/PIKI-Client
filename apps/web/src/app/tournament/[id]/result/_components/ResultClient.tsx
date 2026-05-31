@@ -2,13 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-import ActionSnackbar from '@/components/common/toast/ActionSnackbar';
+import { toast } from 'sonner';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
-
-const TOAST_DURATION_MS = 3000;
 
 type ResultClientProps = {
   tournamentId: number;
@@ -18,13 +15,6 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const router = useRouter();
   const { tournamentData } = useGetTournament(tournamentId);
   const [date] = useState(() => new Date());
-  const [isToastVisible, setIsToastVisible] = useState(false);
-
-  useEffect(() => {
-    if (!isToastVisible) return;
-    const timeoutId = window.setTimeout(() => setIsToastVisible(false), TOAST_DURATION_MS);
-    return () => window.clearTimeout(timeoutId);
-  }, [isToastVisible]);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
@@ -49,12 +39,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const handleSaveResult = () => {
     // 이미 진행 종료 시점에 서버에서 저장됨 — 명시적 저장 토스트만 노출
-    setIsToastVisible(true);
-  };
-
-  const handleConfirmSaved = () => {
-    setIsToastVisible(false);
-    router.push('/wishlist');
+    toast('보관함에 결과를 저장했어요.');
   };
 
   return (
@@ -67,18 +52,6 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
       <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
         <ReceiptDrawMachine tournamentName={tournamentName} result={result} date={date} />
-      </div>
-
-      {/* 저장 완료 토스트 — 하단 버튼 영역 위에 살짝 겹침 */}
-      <div className="pointer-events-none fixed right-0 bottom-25 left-0 z-40 mx-auto w-full max-w-120 px-5">
-        <div className="pointer-events-auto">
-          <ActionSnackbar
-            message="보관함에 결과를 저장했어요."
-            actionLabel="확인하기"
-            isVisible={isToastVisible}
-            onAction={handleConfirmSaved}
-          />
-        </div>
       </div>
 
       {/* 하단 버튼 */}
