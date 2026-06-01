@@ -1,19 +1,9 @@
-import Link from 'next/link';
-
+import WishCard from '@/app/wishlist/_components/wish-grid/WishCard';
+import WishFailedCard from '@/app/wishlist/_components/wish-grid/WishFailedCard';
 import { CheckboxEmptyIconFill, CheckboxSelectedIconFill } from '@/assets/icons';
-import WishCard from '@/components/common/wish-card';
-import WishFailedCard from '@/components/common/wish-failed-card';
 
-export type WishItemStatusT = 'ok' | 'failed';
-
-export type WishItemT = {
-  id: number;
-  itemId?: number;
-  name: string;
-  price: number;
-  imageUrl?: string;
-  status?: WishItemStatusT;
-};
+import type { WishItemT } from '../../_types/wish';
+import WishProcessingCard from './WishProcessingCard';
 
 type WishGridProps = {
   items: WishItemT[];
@@ -26,9 +16,8 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
   return (
     <div className="grid grid-cols-2 gap-x-2 gap-y-3">
       {items.map(item => {
-        if (item.status === 'failed') {
-          return <WishFailedCard key={item.id} wishId={item.id} />;
-        }
+        if (item.status === 'FAILED') return <WishFailedCard key={item.id} wishId={item.id} />;
+        else if (item.status === 'PROCESSING') return <WishProcessingCard key={item.id} />;
 
         const card = <WishCard name={item.name} price={item.price} imageUrl={item.imageUrl} />;
 
@@ -54,15 +43,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
           );
         }
 
-        return (
-          <Link
-            key={item.id}
-            href={`/wishlist/${item.id}`}
-            className="transition-colors active:opacity-80"
-          >
-            {card}
-          </Link>
-        );
+        return <>{card}</>;
       })}
     </div>
   );
