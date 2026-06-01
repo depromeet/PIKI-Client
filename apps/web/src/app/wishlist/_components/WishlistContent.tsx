@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
+import { useWishlistDelete } from '../_hooks/useDeleteWishes';
 import { useGetWishlist } from '../_hooks/useGetWishlist';
-import { useWishlistDelete } from '../_hooks/useWishlistDelete';
 import WishAddDialog from './WishAddDialog';
 import WishlistBottomBar from './WishlistBottomBar';
 import WishlistFabArea from './WishlistFabArea';
@@ -16,6 +16,7 @@ function WishlistContent() {
   const {
     isDeleteMode,
     selectedIds,
+    isDeleteWishesPending,
     handleEnterDeleteMode,
     handleToggleSelect,
     handleConfirmDelete,
@@ -36,6 +37,7 @@ function WishlistContent() {
 
       <WishlistFabArea
         isDeleteMode={isDeleteMode}
+        isDeleteWishesPending={isDeleteWishesPending}
         isDeleteDisabled={selectedIds.size === 0}
         onAddItem={() => setIsAddDialogOpen(true)}
         onEnterDeleteMode={handleEnterDeleteMode}
