@@ -46,7 +46,6 @@ async function TournamentItemEditPage({ params }: TournamentItemEditPageProps) {
   );
   if (tournamentItemData?.status === 'PROCESSING') {
     // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
-    alert('아직 처리 중');
     redirect(`/tournament/${tournamentId}/create`);
   }
 

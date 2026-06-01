@@ -43,7 +43,6 @@ async function WishEditPage({ params }: WishEditPageProps) {
   const wishData = queryClient.getQueryData<GetWishResponseT>(GET_WISH_QUERY_KEY);
   if (wishData?.item.status === 'PROCESSING') {
     // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
-    alert('아직 처리 중');
     redirect(`/wishlist`);
   }
 
