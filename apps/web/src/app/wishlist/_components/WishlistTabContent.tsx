@@ -1,6 +1,7 @@
 import WishGrid from '@/app/wishlist/_components/wish-grid';
 import HeartIconFill from '@/assets/icons/fill/heart.svg';
-import type { WishItemT } from '@/components/common/wish-grid';
+
+import type { WishItemT } from '../_types/wish';
 
 type WishlistTabContentProps = {
   items: WishItemT[];

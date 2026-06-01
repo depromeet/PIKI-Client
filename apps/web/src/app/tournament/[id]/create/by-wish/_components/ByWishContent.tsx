@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-
 import { toast } from 'sonner';
 
 import { useGetWishlist } from '@/app/wishlist/_hooks/useGetWishlist';
 import Button from '@/components/common/button';
-import { Toaster } from '@/components/common/toast';
 
 import { useGetTournament } from '../../_hooks/useGetTournament';
 import { MAX_SELECT } from '../_consts/selectLimits';
@@ -27,9 +25,14 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
     usePostTournamentItemsByWish(tournamentId);
 
   const existingItemIds = new Set(tournamentData.pending?.items.map(i => i.itemId) ?? []);
-  const items = wishlistData?.filter(
-    item => item.status !== 'failed' && item.itemId != null && !existingItemIds.has(item.itemId)
-  ) ?? [];
+  const items =
+    wishlistData?.filter(
+      item =>
+        item.status !== 'FAILED' &&
+        item.status !== 'PROCESSING' &&
+        item.itemId != null &&
+        !existingItemIds.has(item.itemId)
+    ) ?? [];
 
   useEffect(() => {
     if (!isMaxExceeded) return;

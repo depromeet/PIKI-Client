@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { cn } from '@/utils/cn';
 
-import type { WishTabT } from '../_types/wishTypes';
+import type { WishTabT } from '../_types/wish';
 
 const TABS: WishTabT[] = ['저장한 위시템', '토너먼트 기록'];
 
