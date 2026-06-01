@@ -25,8 +25,6 @@ export const usePostMemberLogin = () => {
     onSuccess: data => {
       router.push('/home');
 
-      console.log(data);
-
       if (isWebview() && data.accessToken && data.refreshToken) {
         setCookie('access_token', data.accessToken);
         setCookie('refresh_token', data.refreshToken);
