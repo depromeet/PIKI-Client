@@ -1,10 +1,11 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import Button from '@/components/common/button';
 import type { TournamentItemT } from '@/types/tournament';
+import { parseIdParam } from '@/utils/parseIdParam';
 
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
@@ -19,12 +20,18 @@ type TournamentItemBasketProps = {
 };
 
 function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
-  const router = useRouter();
-  const [failedDrawerOpen, setFailedDrawerOpen] = useState(false);
+  const { id: _tournamentId } = useParams<{ id: string }>();
+  const tournamentId = parseIdParam(_tournamentId);
+
+  const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
-    if (item.status === 'READY') router.push(`/item/${item.tournamentItemId}/edit?type=tournament`);
-    if (item.status === 'FAILED') setFailedDrawerOpen(true);
+    if (!tournamentId) return;
+
+    // if (item.status === 'READY')
+    // router.push(`/tournament/${tournamentId}/item/${item.tournamentItemId}`); // TODO: 변경된 디자인에 맞춰 수정 필요
+
+    if (item.status === 'FAILED') setFailedItem(item);
   };
 
   return (
@@ -64,10 +71,14 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
           />
         </div>
       </div>
-      <TournamentItemFailedModal
-        open={failedDrawerOpen}
-        onClose={() => setFailedDrawerOpen(false)}
-      />
+      {failedItem && tournamentId && (
+        <TournamentItemFailedModal
+          open
+          tournamentId={tournamentId}
+          tournamentItemId={failedItem.tournamentItemId}
+          onClose={() => setFailedItem(null)}
+        />
+      )}
     </div>
   );
 }
