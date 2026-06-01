@@ -1,7 +1,5 @@
 'use client';
 
-import Spacing from '@/components/common/spacing';
-
 import { useGetTournament } from '../_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import InviteFriends from './invite-friends/InviteFriends';
@@ -19,17 +17,17 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { tournamentData } = useGetTournament(Number(tournamentId));
 
   return (
-    <div className="bg-layer-basement flex h-dvh min-h-0 flex-col pt-20 pb-8">
-      <TournamentHeader name={tournamentData.name} />
-      <Spacing size={16} />
-      <InviteFriends />
-      <Spacing size={16} />
-      <TournamentItemBasketStatus
-        isProcessing={
-          tournamentData.pending?.items.some(item => item.status === 'PROCESSING') ?? false
-        }
-        count={tournamentData.pending?.items.length ?? 0}
-      />
+    <div className="flex h-dvh min-h-0 flex-col bg-bg-layer-basement pt-20 pb-8">
+      <div className="space-y-4 px-5">
+        <TournamentHeader name={tournamentData.name} />
+        <InviteFriends />
+        <TournamentItemBasketStatus
+          isProcessing={
+            tournamentData.pending?.items.some(item => item.status === 'PROCESSING') ?? false
+          }
+          count={tournamentData.pending?.items.length ?? 0}
+        />
+      </div>
 
       <TournamentItemBasketCarousel
         items={tournamentData.pending?.items}

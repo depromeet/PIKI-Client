@@ -5,7 +5,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
 
-import { ITEMS_PER_BASKET, getActiveBasketCount } from '../../_consts/tournamentItemBasket';
+import {
+  BASKET_CAROUSEL_SLIDE_SIZE_PERCENT,
+  ITEMS_PER_BASKET,
+  getActiveBasketCount,
+} from '../../_consts/tournamentItemBasket';
 import CarouselIndicator from './CarouselIndicator';
 import TournamentItemBasket from './TournamentItemBasket';
 
@@ -47,12 +51,16 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
       key={activeBasketCount}
       className="relative flex min-h-0 w-full flex-1 flex-col"
       setApi={setCarouselApi}
-      opts={{ loop: false }}
+      opts={{ loop: false, align: 'center', containScroll: false }}
     >
       <div className="relative mb-3 min-h-0 w-full flex-1 **:data-[slot=carousel-content]:h-full">
         <CarouselContent className="ml-0 h-full w-full">
           {Array.from({ length: activeBasketCount }, (_, i) => (
-            <CarouselItem key={i} className="h-full min-h-0 pl-0">
+            <CarouselItem
+              key={i}
+              className="h-full min-h-0 pl-0"
+              style={{ flex: `0 0 ${BASKET_CAROUSEL_SLIDE_SIZE_PERCENT}%` }}
+            >
               <TournamentItemBasket
                 basketIndex={i}
                 items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
