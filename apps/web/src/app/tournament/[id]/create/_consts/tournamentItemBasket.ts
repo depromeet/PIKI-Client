@@ -12,15 +12,3 @@ export const BASKET_COUNT = 4;
 export const BASKET_CAROUSEL_SLIDE_SIZE_PERCENT = 75;
 
 export const EMPTY_BASKET_IMAGES = [img01, img02, img03, img04, img05, img06];
-
-/** 아이템 개수에 따른 활성 장바구니 수 (최대 BASKET_COUNT) */
-export const getActiveBasketCount = (itemCount: number) => {
-  if (itemCount === 0) return 1;
-
-  const filledBaskets = Math.ceil(itemCount / ITEMS_PER_BASKET);
-  const isLastBasketFull = itemCount % ITEMS_PER_BASKET === 0;
-
-  if (isLastBasketFull) return Math.min(BASKET_COUNT, filledBaskets + 1);
-
-  return Math.min(BASKET_COUNT, filledBaskets);
-};
