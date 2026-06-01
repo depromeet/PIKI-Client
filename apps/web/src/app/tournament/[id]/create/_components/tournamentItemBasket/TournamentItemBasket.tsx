@@ -3,15 +3,15 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
-import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/button';
 import type { TournamentItemT } from '@/types/tournament';
 
+import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
 import AddWishDialog from '../addWishDialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
-import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 import TournamentBasketItem from './TournamentBasketItem';
+import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 
 type TournamentItemBasketProps = {
   basketIndex: number;
