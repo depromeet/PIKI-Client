@@ -1,21 +1,26 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { setCookie } from '@/utils/cookie';
+import { isWebview } from '@/utils/webBridge';
+
 import { postGuestLogin } from '../_apis/postGuestLogin';
 
 export const usePostGuestLogin = () => {
   const router = useRouter();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: postGuestLoginMutation, isPending: isPostGuestLoginPending } = useMutation({
     mutationFn: postGuestLogin,
     onSuccess: data => {
       router.push('/home');
 
-      if (data.accessToken && data.refreshToken) {
+      if (isWebview() && data.accessToken && data.refreshToken) {
+        setCookie('access_token', data.accessToken);
+        setCookie('refresh_token', data.refreshToken);
         // TODO: 웹뷰로 로그인 정보 전송
       }
     },
   });
 
-  return { mutate, isPending };
+  return { postGuestLoginMutation, isPostGuestLoginPending };
 };

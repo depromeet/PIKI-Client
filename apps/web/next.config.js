@@ -35,6 +35,9 @@ const nextConfig = {
       },
     ];
   },
+
+  /** NOTE: localhost가 아닌 경우 추가 필요 */
+  allowedDevOrigins: [],
 };
 
 export default nextConfig;

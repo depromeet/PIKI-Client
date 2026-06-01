@@ -2,6 +2,8 @@ import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
 import type { ApiErrorResponseT } from '@/types/api';
+import { getCookie } from '@/utils/cookie';
+import { isWebview } from '@/utils/webBridge';
 
 // 재시도 여부 플래그를 포함한 요청 타입
 type RetryableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
@@ -28,6 +30,15 @@ const processQueue = (error: unknown) => {
 
 export const clientApi = axios.create({
   withCredentials: true,
+});
+
+clientApi.interceptors.request.use(config => {
+  const accessToken = getCookie('access_token');
+  if (isWebview() && accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+
+  config.headers['X-Client-Type'] = isWebview() ? 'app' : 'web';
+
+  return config;
 });
 
 clientApi.interceptors.response.use(
