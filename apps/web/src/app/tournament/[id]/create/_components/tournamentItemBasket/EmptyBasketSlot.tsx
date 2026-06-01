@@ -1,4 +1,4 @@
-import ProductImage from '@/components/common/product-image';
+import ProductImage from '@/app/tournament/[id]/create/_components/product-image';
 
 import { EMPTY_BASKET_IMAGES } from '../../_consts/tournamentItemBasket';
 
