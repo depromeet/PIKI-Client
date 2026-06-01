@@ -19,7 +19,7 @@ function TournamentBasketItem({ item, index, onClick }: TournamentBasketItemProp
     >
       <ProductImage
         {...(item.imageUrl ? { src: item.imageUrl } : {})}
-        size="sm"
+        size="lg"
         fill
         alt={`토너먼트 아이템 ${index + 1}`}
         parsingStatus={item.status}
