@@ -2,8 +2,6 @@ import type { TOURNAMENT_STATUS } from '@/consts/tournament';
 
 export type TournamentStatusT = (typeof TOURNAMENT_STATUS)[keyof typeof TOURNAMENT_STATUS];
 
-export type TournamentItemStatusT = 'PROCESSING' | 'READY' | 'FAILED';
-
 export type TournamentItemT = {
   tournamentItemId: number;
   itemId?: number;

@@ -57,7 +57,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
         return (
           <Link
             key={item.id}
-            href={`/item/${item.id}/edit?type=wish`}
+            href={`/wishlist/${item.id}`}
             className="transition-colors active:opacity-80"
           >
             {card}

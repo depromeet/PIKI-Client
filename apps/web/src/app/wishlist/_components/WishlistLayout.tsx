@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { Header, HeaderIcon } from '@/components/common/header';
 
-import WishTab from './_components/WishTab';
+import WishTab from './WishTab';
 
 type WishlistLayoutProps = {
   children: React.ReactNode;

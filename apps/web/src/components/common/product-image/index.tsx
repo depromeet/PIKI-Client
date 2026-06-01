@@ -4,7 +4,7 @@ import type { ImageProps } from 'next/image';
 import type { ReactNode } from 'react';
 
 import BaseImage from '@/components/common/base-image';
-import type { TournamentItemStatusT } from '@/types/tournament';
+import type { ItemStatusT } from '@/types/item';
 import { cn } from '@/utils/cn';
 
 import LgErrorFallback from './fallback/LgErrorFallback';
@@ -21,7 +21,7 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   fill?: boolean;
 
   /** 파싱 상태. PROCESSING이면 스피너, FAILED이면 경고 아이콘 표시 */
-  parsingStatus?: TournamentItemStatusT;
+  parsingStatus?: ItemStatusT;
   /** 로딩 중 표시할 커스텀 UI */
   loadingFallback?: ReactNode;
   /** 에러 시 표시할 커스텀 UI */

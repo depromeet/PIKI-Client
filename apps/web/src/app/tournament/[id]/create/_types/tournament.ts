@@ -1,8 +1,7 @@
 import type { StaticImageData } from 'next/image';
 
-import type { TournamentItemStatusT, TournamentItemT, TournamentStatusT } from '@/types/tournament';
-
-export type { TournamentItemStatusT, TournamentItemT, TournamentStatusT };
+import type { ItemStatusT } from '@/types/item';
+import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
 
 export type TournamentParticipantT = {
   userId: string;
@@ -13,7 +12,7 @@ export type TournamentParticipantT = {
 export type WishBasketItemT = {
   tournamentItemId: number | string;
   imageUrl: string | StaticImageData | null;
-  status?: TournamentItemStatusT;
+  status?: ItemStatusT;
 };
 
 export type GetTournamentResponseT = {
@@ -41,5 +40,5 @@ export type GetTournamentItemResponseT = {
   imageUrl: string | null;
   price: number | null;
   currency: string | null;
-  status: TournamentItemStatusT;
+  status: ItemStatusT;
 };

@@ -1,12 +1,9 @@
 'use client';
 
-import {
-  BASKET_COUNT,
-  ITEMS_PER_BASKET,
-} from '@/app/tournament/[id]/create/_consts/tournamentItemBasketConsts';
-import useTournamentItemBasketCarousel from '@/app/tournament/[id]/create/_hooks/useTournamentItemBasketCarousel';
 import type { TournamentItemT } from '@/types/tournament';
 
+import { BASKET_COUNT, ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasketConsts';
+import useTournamentItemBasketCarousel from '../../_hooks/useTournamentItemBasketCarousel';
 import CarouselIndicator from './CarouselIndicator';
 import TournamentItemBasket from './TournamentItemBasket';
 

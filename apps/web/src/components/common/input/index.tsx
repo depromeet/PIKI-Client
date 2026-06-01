@@ -34,7 +34,7 @@ function Input({
   else if (ariaInvalid) status = 'error';
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       {label && (
         <label htmlFor={inputId} className="body-2-semibold text-gray-950">
           {label}

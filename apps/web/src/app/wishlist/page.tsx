@@ -6,6 +6,7 @@ import { getQueryClient } from '@/utils/queryClient';
 import { getWishlist } from './_apis/getWishlist';
 import TournamentHistoryContent from './_components/TournamentHistoryContent';
 import WishlistContent from './_components/WishlistContent';
+import WishlistLayout from './_components/WishlistLayout';
 import WishlistSkeleton from './_components/WishlistSkeleton';
 import type { WishTabT } from './_types/wishTypes';
 
@@ -32,18 +33,20 @@ async function WishlistPage({ searchParams }: WishlistPageProps) {
   // TODO: if (activeTab === '토너먼트 기록') await prefetch tournamentHistory; // API 생기면
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      {activeTab === '토너먼트 기록' && (
-        <Suspense>
-          <TournamentHistoryContent />
-        </Suspense>
-      )}
-      {activeTab === '저장한 위시템' && (
-        <Suspense fallback={<WishlistSkeleton />}>
-          <WishlistContent />
-        </Suspense>
-      )}
-    </HydrationBoundary>
+    <WishlistLayout>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        {activeTab === '토너먼트 기록' && (
+          <Suspense>
+            <TournamentHistoryContent />
+          </Suspense>
+        )}
+        {activeTab === '저장한 위시템' && (
+          <Suspense fallback={<WishlistSkeleton />}>
+            <WishlistContent />
+          </Suspense>
+        )}
+      </HydrationBoundary>
+    </WishlistLayout>
   );
 }
 

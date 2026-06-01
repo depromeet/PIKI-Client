@@ -15,6 +15,7 @@ function WishlistContent() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const { data: wishlistData } = useGetWishlist();
+  console.log(wishlistData);
   const {
     isDeleteMode,
     selectedIds,
