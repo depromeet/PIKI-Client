@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 
-import { Toaster } from '@/components/common/toast';
-
 import { useGetWishlist } from '../_hooks/useGetWishlist';
 import { useWishlistDelete } from '../_hooks/useWishlistDelete';
 import WishAddDialog from './WishAddDialog';
@@ -44,7 +42,6 @@ function WishlistContent() {
         onConfirmDelete={handleConfirmDelete}
       />
 
-      <Toaster mobileOffset={{ bottom: '146px' }} />
       <WishAddDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </>
   );

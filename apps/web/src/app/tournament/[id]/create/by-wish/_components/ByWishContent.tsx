@@ -80,8 +80,6 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
           다음
         </Button>
       </div>
-
-      <Toaster />
     </div>
   );
 }
