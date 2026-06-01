@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { usePostTournamentItemLink } from '@/app/tournament/[id]/create/_hooks/usePostTournamentItemLink';
 import { LinkIconFill } from '@/assets/icons';
@@ -50,7 +51,12 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
           onOpenChange(false);
           resetState();
         },
-        onSuccess: () => router.push('/wishlist'),
+        onSuccess: () => {
+          router.push('/wishlist');
+          toast.success('위시에 상품을 담았어요', {
+            classNames: { toast: '!bottom-[122px]' },
+          });
+        },
       });
     else
       postTournamentItemLinkMutation(trimmedUrl, {
