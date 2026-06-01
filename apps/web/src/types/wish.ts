@@ -5,6 +5,11 @@ export type PostWishOCRResponseT = {
   item: ItemT;
 };
 
+export type PostWishLinkResponseT = {
+  wish: WishT;
+  item: ItemT;
+};
+
 export type WishT = {
   id: number;
   createdAt: string;
