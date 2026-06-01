@@ -23,6 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           '--normal-bg': 'var(--color-gray-500)',
           '--normal-text': 'var(--color-text-neutral-inverse)',
           '--border-radius': 'var(--radius-xl)',
+          '--width': 'min(100%, 440px)',
         } as React.CSSProperties
       }
       position="bottom-center"
