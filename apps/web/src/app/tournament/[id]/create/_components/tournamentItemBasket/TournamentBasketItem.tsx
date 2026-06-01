@@ -14,6 +14,7 @@ function TournamentBasketItem({ item, index }: TournamentBasketItemProps) {
         size="sm"
         fill
         alt={`토너먼트 아이템 ${index + 1}`}
+        parsingStatus={item.status}
       />
     </div>
   );
