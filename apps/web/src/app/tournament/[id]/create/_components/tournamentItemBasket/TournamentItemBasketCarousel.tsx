@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
+import { cn } from '@/utils/cn';
 
 import {
   BASKET_CAROUSEL_SLIDE_SIZE_PERCENT,
   ITEMS_PER_BASKET,
-  getActiveBasketCount,
 } from '../../_consts/tournamentItemBasket';
+import { getActiveBasketCount, getBasketIndexForLastItem } from '../../_utils/tournamentItemBasket';
 import CarouselIndicator from './CarouselIndicator';
 import TournamentItemBasket from './TournamentItemBasket';
 
@@ -20,19 +21,54 @@ type TournamentItemBasketCarouselProps = {
 function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
+
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
+
+  const prevItemCountRef = useRef(items.length);
+
   const isCarouselEnabled = activeBasketCount > 1;
+
+  /** 담기 완료 시 마지막 아이템이 있는 바구니로 이동 */
+  useEffect(() => {
+    if (!isCarouselEnabled) {
+      prevItemCountRef.current = items.length;
+      return;
+    }
+
+    if (!carouselApi) return;
+
+    const prevCount = prevItemCountRef.current;
+    if (items.length > prevCount) {
+      carouselApi.scrollTo(getBasketIndexForLastItem(items.length));
+    }
+
+    prevItemCountRef.current = items.length;
+  }, [items.length, carouselApi, isCarouselEnabled]);
+
+  /** 초기 이미지 위치 틀어짐 방지 */
+  useLayoutEffect(() => {
+    if (!carouselApi) return;
+
+    carouselApi.reInit();
+    carouselApi.scrollTo(carouselApi.selectedScrollSnap(), true);
+  }, [carouselApi, activeBasketCount]);
 
   useEffect(() => {
     if (!carouselApi) return;
 
     const handleSelect = () => setCurrentIndex(carouselApi.selectedScrollSnap());
 
+    const handleReInit = () => {
+      carouselApi.scrollTo(carouselApi.selectedScrollSnap(), true);
+    };
+
     handleSelect();
     carouselApi.on('select', handleSelect);
+    carouselApi.on('reInit', handleReInit);
 
     return () => {
       carouselApi.off('select', handleSelect);
+      carouselApi.off('reInit', handleReInit);
     };
   }, [carouselApi]);
 
@@ -47,10 +83,10 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
+    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4">
       <Carousel
         key={activeBasketCount}
-        className="relative w-full"
+        className={cn('relative w-full', !carouselApi && 'invisible')}
         setApi={setCarouselApi}
         opts={{ loop: false, align: 'center', containScroll: false }}
       >
@@ -58,7 +94,7 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
           {Array.from({ length: activeBasketCount }, (_, i) => (
             <CarouselItem
               key={i}
-              className="pl-0"
+              className="shrink-0 grow-0 pl-0"
               style={{ flex: `0 0 ${BASKET_CAROUSEL_SLIDE_SIZE_PERCENT}%` }}
             >
               <TournamentItemBasket

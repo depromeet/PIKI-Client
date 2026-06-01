@@ -84,7 +84,7 @@ function Carousel({
     [scrollPrev, scrollNext]
   );
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!api || !setApi) return;
     setApi(api);
   }, [api, setApi]);
