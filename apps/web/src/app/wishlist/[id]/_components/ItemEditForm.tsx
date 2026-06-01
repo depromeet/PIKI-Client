@@ -111,7 +111,7 @@ function ItemEditForm({
           disabled={isDeleteWishPending || !isValid}
           className="flex-1"
         >
-          저장하기
+          {isPatchWishPending ? <Spinner size={20} /> : '저장하기'}
         </Button>
       </BottomCta>
     </>
