@@ -47,7 +47,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-bg-layer-basement px-5">
       <WishSelectHeader
         selectedCount={selectedIds.length}
         totalCount={items.length}
@@ -70,7 +70,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] px-5 py-3">
+      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] bg-white px-5 py-3">
         <Button variant="secondary" size="lg" onClick={() => history.back()}>
           뒤로
         </Button>

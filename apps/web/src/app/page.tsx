@@ -13,7 +13,7 @@ async function Page() {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-8 px-5">
+    <div className="flex h-screen flex-col items-center justify-center gap-8 bg-white px-5">
       <h1 className="title-1">PIKI</h1>
 
       {user && (
