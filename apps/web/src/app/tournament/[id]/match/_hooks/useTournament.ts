@@ -69,10 +69,9 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
 
   const advanceToNextRound = async () => {
     // 라운드 종료 후 서버에서 다음 라운드 정보 가져오기
-    const next = await queryClient.fetchQuery({
-      queryKey: ['tournament', tournamentId],
-      queryFn: () => getTournament(tournamentId),
-    });
+    // queryClient.fetchQuery는 setQueryData로 시드된 캐시를 반환할 수 있어 직접 fetch
+    const next = await getTournament(tournamentId);
+    queryClient.setQueryData(['tournament', tournamentId], next);
 
     if (next.status !== 'IN_PROGRESS') return;
     setCurrentRound(next.inProgress.currentRound);
@@ -99,6 +98,18 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
       return;
     }
 
+    // 라운드 마지막 매치 → POST 응답 기다린 후 전환 화면 노출
+    // (응답 안 기다리고 advance 시 서버가 아직 다음 라운드로 전환 못해 같은 라운드 다시 받는 race 방지)
+    if (isLastMatchInRound) {
+      postRecordMatchMutation(matchBody, {
+        onSuccess: () => {
+          const nextRoundItemCount = currentRound / 2;
+          setTransitionStage(getTransitionStage(nextRoundItemCount));
+        },
+      });
+      return;
+    }
+
     // 일반 라운드 — 낙관적 진행 (성공/실패와 무관하게 다음 매치로)
     postRecordMatchMutation(matchBody);
 
@@ -110,12 +121,6 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
           item.tournamentItemId !== second.tournamentItemId
       )
     );
-
-    // 라운드 마지막 매치 → 전환 화면 노출
-    if (isLastMatchInRound) {
-      const nextRoundItemCount = currentRound / 2;
-      setTransitionStage(getTransitionStage(nextRoundItemCount));
-    }
   };
 
   const handleTransitionComplete = async () => {
