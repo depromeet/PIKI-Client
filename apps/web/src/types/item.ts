@@ -4,6 +4,7 @@ export type ItemTypeT = 'wish' | 'tournament';
 
 export type ItemT = {
   id: number;
+  status: ItemStatusT;
   name: string;
   currentPrice: number;
   currency: string | null;
