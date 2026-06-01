@@ -10,7 +10,10 @@ function PushDisabledBanner() {
           휴대폰의 앱 알림이 꺼져있어요
         </span>
       </div>
-      <ChevronForwardIcon className="size-6 text-icon-neutral-secondary" aria-hidden />
+      <ChevronForwardIcon
+        className="size-6 cursor-pointer text-icon-neutral-secondary"
+        aria-hidden
+      />
     </div>
   );
 }
