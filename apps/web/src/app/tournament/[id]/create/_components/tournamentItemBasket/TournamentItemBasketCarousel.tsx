@@ -40,25 +40,25 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
 
   if (!isCarouselEnabled) {
     return (
-      <div className="relative mb-3 min-h-0 w-full flex-1">
+      <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
         <TournamentItemBasket basketIndex={0} items={items} />
       </div>
     );
   }
 
   return (
-    <Carousel
-      key={activeBasketCount}
-      className="relative flex min-h-0 w-full flex-1 flex-col"
-      setApi={setCarouselApi}
-      opts={{ loop: false, align: 'center', containScroll: false }}
-    >
-      <div className="relative mb-3 min-h-0 w-full flex-1 **:data-[slot=carousel-content]:h-full">
-        <CarouselContent className="ml-0 h-full w-full">
+    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
+      <Carousel
+        key={activeBasketCount}
+        className="relative w-full"
+        setApi={setCarouselApi}
+        opts={{ loop: false, align: 'center', containScroll: false }}
+      >
+        <CarouselContent className="ml-0 w-full">
           {Array.from({ length: activeBasketCount }, (_, i) => (
             <CarouselItem
               key={i}
-              className="h-full min-h-0 pl-0"
+              className="pl-0"
               style={{ flex: `0 0 ${BASKET_CAROUSEL_SLIDE_SIZE_PERCENT}%` }}
             >
               <TournamentItemBasket
@@ -68,16 +68,14 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
             </CarouselItem>
           ))}
         </CarouselContent>
+      </Carousel>
 
-        <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2">
-          <CarouselIndicator
-            totalCount={activeBasketCount}
-            currentIndex={currentIndex}
-            onSelect={handleIndicatorSelect}
-          />
-        </div>
-      </div>
-    </Carousel>
+      <CarouselIndicator
+        totalCount={activeBasketCount}
+        currentIndex={currentIndex}
+        onSelect={handleIndicatorSelect}
+      />
+    </div>
   );
 }
 
