@@ -19,13 +19,23 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       <div className="flex flex-1 flex-col gap-4 pt-[80px]">
         <TournamentHeader name={tournamentData.name} />
         <InviteFriends />
-        <TournamentItemBasketStatus />
+        <TournamentItemBasketStatus
+          isProcessing={
+            tournamentData.pending?.items.some(item => item.status === 'PROCESSING') ?? false
+          }
+          count={tournamentData.pending?.items.length ?? 0}
+        />
         <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
       </div>
       <div className="pb-8">
         <TournamentStartButton
           count={tournamentData.pending?.items.length ?? 0}
           tournamentId={tournamentId}
+          hasUnreadyItem={
+            tournamentData.pending?.items.some(
+              item => item.status === 'PROCESSING' || item.status === 'FAILED'
+            ) ?? false
+          }
         />
       </div>
     </div>

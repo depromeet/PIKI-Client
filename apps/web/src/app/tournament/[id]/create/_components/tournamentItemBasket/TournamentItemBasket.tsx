@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import basketImg from '@/assets/images/basket-gray.png';
@@ -8,6 +10,7 @@ import type { TournamentItemT } from '@/types/tournament';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasketConsts';
 import AddWishDialog from '../addWishDialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
+import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 import TournamentBasketItem from './TournamentBasketItem';
 
 type TournamentItemBasketProps = {
@@ -16,6 +19,14 @@ type TournamentItemBasketProps = {
 };
 
 function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
+  const router = useRouter();
+  const [failedDrawerOpen, setFailedDrawerOpen] = useState(false);
+
+  const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
+    if (item.status === 'READY') router.push(`/item/${item.tournamentItemId}/edit?type=tournament`);
+    if (item.status === 'FAILED') setFailedDrawerOpen(true);
+  };
+
   return (
     <div className="relative mx-auto aspect-356/464 w-full">
       <Image
@@ -31,7 +42,12 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
             const item = items[slotIndex];
             if (item)
               return (
-                <TournamentBasketItem key={item.tournamentItemId} item={item} index={slotIndex} />
+                <TournamentBasketItem
+                  key={item.tournamentItemId}
+                  item={item}
+                  index={slotIndex}
+                  onClick={() => handleItemClick(item)}
+                />
               );
             return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
           })}
@@ -48,6 +64,10 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
           />
         </div>
       </div>
+      <TournamentItemFailedModal
+        open={failedDrawerOpen}
+        onClose={() => setFailedDrawerOpen(false)}
+      />
     </div>
   );
 }

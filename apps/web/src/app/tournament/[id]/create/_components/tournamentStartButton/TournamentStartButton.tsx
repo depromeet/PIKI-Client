@@ -8,17 +8,19 @@ import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 type TournamentStartButtonProps = {
   count: number;
   tournamentId: string;
+  hasUnreadyItem: boolean;
 };
 
-function TournamentStartButton({ count, tournamentId }: TournamentStartButtonProps) {
-  const { postTournamentStartMutation, isPostTournamentStartPending } =
-    usePostTournamentStart(Number(tournamentId));
+function TournamentStartButton({ count, tournamentId, hasUnreadyItem }: TournamentStartButtonProps) {
+  const { postTournamentStartMutation, isPostTournamentStartPending } = usePostTournamentStart(
+    Number(tournamentId)
+  );
 
   return (
     <Button
       variant="primary"
       size="lg"
-      disabled={count < 2 || isPostTournamentStartPending}
+      disabled={count < 2 || isPostTournamentStartPending || hasUnreadyItem}
       onClick={() => postTournamentStartMutation()}
     >
       {isPostTournamentStartPending ? <Spinner size={20} /> : '토너먼트 시작하기'}

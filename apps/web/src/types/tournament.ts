@@ -1,4 +1,5 @@
 import type { TOURNAMENT_STATUS } from '@/consts/tournament';
+import type { ItemStatusT } from '@/types/item';
 
 export type TournamentStatusT = (typeof TOURNAMENT_STATUS)[keyof typeof TOURNAMENT_STATUS];
 
@@ -9,6 +10,7 @@ export type TournamentItemT = {
   price: number;
   currency: string;
   imageUrl: string | null;
+  status?: ItemStatusT;
 };
 
 export type TournamentMatchHistoryT = {
