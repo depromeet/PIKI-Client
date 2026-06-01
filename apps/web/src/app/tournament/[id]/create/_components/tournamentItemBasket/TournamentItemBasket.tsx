@@ -7,7 +7,7 @@ import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/button';
 import type { TournamentItemT } from '@/types/tournament';
 
-import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasketConsts';
+import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
 import AddWishDialog from '../addWishDialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
 import TournamentItemFailedModal from './TournamentItemFailedDrawer';
@@ -28,7 +28,7 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
   };
 
   return (
-    <div className="relative mx-auto aspect-356/464 w-full">
+    <div className="relative h-full min-h-0 w-full">
       <Image
         src={basketImg}
         alt={`장바구니 ${basketIndex + 1}`}
@@ -37,7 +37,7 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
         className="object-contain"
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative grid w-[45%] grid-cols-2 gap-4">
+        <div className="relative grid grid-cols-2 gap-x-6 gap-y-5">
           {Array.from({ length: ITEMS_PER_BASKET }, (_, slotIndex) => {
             const item = items[slotIndex];
             if (item)
