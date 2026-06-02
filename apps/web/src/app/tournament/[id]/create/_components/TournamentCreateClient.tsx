@@ -1,10 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { useGetTournament } from '../_hooks/useGetTournament';
 import InviteFriends from './invite-friends/InviteFriends';
 import TournamentHeader from './tournament-header/TournamentHeader';
-import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
 import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
+import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
 import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 
 type TournamentCreateClientProps = {
@@ -27,7 +29,9 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
+      <Suspense>
+        <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
+      </Suspense>
 
       <div className="shrink-0 px-5">
         <TournamentStartButton
