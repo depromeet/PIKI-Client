@@ -10,7 +10,7 @@ function EmptyBasketSlot({ slotIndex }: EmptyBasketSlotProps) {
   const imageUrl = EMPTY_BASKET_IMAGES[slotIndex % EMPTY_BASKET_IMAGES.length];
 
   return (
-    <div className="relative box-border size-[68px] shrink-0 overflow-hidden rounded-[16px] border-[3px] border-white bg-gray-50 shadow-[0_0_8px_rgba(0,0,0,0.16)]">
+    <div className="relative aspect-square w-full overflow-hidden rounded-[16px] border-[3px] border-white bg-gray-50 shadow-[0_0_8px_rgba(0,0,0,0.16)]">
       <ProductImage src={imageUrl} size="lg" fill alt="" />
     </div>
   );
