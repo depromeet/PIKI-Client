@@ -23,7 +23,7 @@ function CallbackHandler() {
   const provider = params.provider;
   const isValidProvider = isSocialProvider(provider);
 
-  const { postSocialLoginMutation, isError } = usePostSocialLogin(
+  const { postSocialLoginMutation } = usePostSocialLogin(
     isValidProvider ? provider : 'kakao'
   );
 
@@ -51,23 +51,6 @@ function CallbackHandler() {
     const redirectUri = `${window.location.origin}/auth/callback/${provider}`;
     postSocialLoginMutation({ code, redirectUri, state });
   }, [isValidProvider, postSocialLoginMutation, provider, router, searchParams]);
-
-  if (isError) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 pt-28">
-        <p className="body-1-medium text-text-neutral-secondary">
-          로그인에 실패했습니다. 다시 시도해 주세요.
-        </p>
-        <button
-          type="button"
-          onClick={() => router.replace('/login')}
-          className="cursor-pointer body-2-medium text-text-neutral-secondary underline underline-offset-2"
-        >
-          로그인 페이지로 돌아가기
-        </button>
-      </div>
-    );
-  }
 
   return null;
 }
