@@ -28,9 +28,15 @@ type ReceiptDrawMachineProps = {
   tournamentName: string;
   result: RankedProductT[];
   date: Date;
+  onSharePlayLink?: () => void;
 };
 
-function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachineProps) {
+function ReceiptDrawMachine({
+  tournamentName,
+  result,
+  date,
+  onSharePlayLink,
+}: ReceiptDrawMachineProps) {
   const animationScopeRef = useRef<HTMLDivElement | null>(null);
   const printerFrameRef = useRef<HTMLDivElement | null>(null);
   const receiptPaperRef = useRef<HTMLDivElement | null>(null);
@@ -154,7 +160,12 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
           ref={receiptPaperRef}
           className="pointer-events-auto mx-auto h-fit w-[74%] will-change-transform"
         >
-          <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
+          <ReceiptPaper
+            tournamentName={tournamentName}
+            result={result}
+            date={date}
+            onSharePlayLink={onSharePlayLink}
+          />
         </div>
       </div>
     </div>

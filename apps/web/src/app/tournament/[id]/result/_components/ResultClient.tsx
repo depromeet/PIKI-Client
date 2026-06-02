@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
+import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
 
 type ResultClientProps = {
@@ -15,6 +16,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const router = useRouter();
   const { tournamentData } = useGetTournament(tournamentId);
   const [date] = useState(() => new Date());
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
@@ -32,6 +34,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const tournamentName = tournamentData.name;
   const result = tournamentData.completed.result;
+  const plateUrl = `https://piki.today/tournament/${tournamentId}/plate`;
 
   const handleGoHome = () => {
     router.push('/home');
@@ -40,6 +43,10 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const handleSaveResult = () => {
     // 이미 진행 종료 시점에 서버에서 저장됨 — 명시적 저장 토스트만 노출
     toast.info('보관함에 결과를 저장했어요.');
+  };
+
+  const handleOpenShare = () => {
+    setIsShareDialogOpen(true);
   };
 
   return (
@@ -51,7 +58,12 @@ function ResultClient({ tournamentId }: ResultClientProps) {
       </h1>
 
       <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
-        <ReceiptDrawMachine tournamentName={tournamentName} result={result} date={date} />
+        <ReceiptDrawMachine
+          tournamentName={tournamentName}
+          result={result}
+          date={date}
+          onSharePlayLink={handleOpenShare}
+        />
       </div>
 
       {/* 하단 버튼 */}
@@ -71,6 +83,12 @@ function ResultClient({ tournamentId }: ResultClientProps) {
           결과 저장하기
         </button>
       </div>
+
+      <PlateShareDialog
+        open={isShareDialogOpen}
+        onOpenChange={setIsShareDialogOpen}
+        plateUrl={plateUrl}
+      />
     </main>
   );
 }
