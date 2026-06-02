@@ -1,15 +1,3 @@
-import type { TournamentStatusT } from '@/types/tournament';
-
-export type GetTournamentListResponseT = TournamentT[];
-
-export type TournamentT = {
-  tournamentId: number;
-  name: string;
-  status: TournamentStatusT;
-  createdAt: string;
-  participantProfileImages: string[];
-};
-
 export type PostCreateTournamentRequestT = {
   name: string;
 };

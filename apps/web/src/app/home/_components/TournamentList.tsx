@@ -2,9 +2,7 @@
 
 import TournamentCard from '@/components/common/tournament-card';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
-import { TOURNAMENT_STATUS } from '@/consts/tournament';
-
-import { useGetTournamentList } from '../_hooks/useGetTournamentList';
+import { useGetTournamentList } from '@/hooks/useGetTournamentList';
 
 // TODO: 백엔드가 정식 프사 처리 도입 시 imageUrl 반영
 const toUsers = (imageUrls: string[]): UserT[] =>
@@ -14,10 +12,7 @@ const toUsers = (imageUrls: string[]): UserT[] =>
   }));
 
 function TorunamentList() {
-  const { tournamentListData } = useGetTournamentList([
-    TOURNAMENT_STATUS.PENDING,
-    TOURNAMENT_STATUS.IN_PROGRESS,
-  ]);
+  const { tournamentListData } = useGetTournamentList();
 
   return (
     <section className="flex flex-col gap-3">
@@ -26,7 +21,8 @@ function TorunamentList() {
       {tournamentListData.map(tournament => (
         <TournamentCard
           key={tournament.tournamentId}
-          state={tournament.status}
+          tournamentId={tournament.tournamentId}
+          status={tournament.status}
           name={tournament.name}
           date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
           users={toUsers(tournament.participantProfileImages)}

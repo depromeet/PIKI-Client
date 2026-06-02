@@ -17,6 +17,7 @@ export type GetTournamentItemResponseT = {
       imageUrl: string;
       price: number;
       currency: string;
+      sourceUrl?: string;
     }
   | {
       status: (typeof ITEM_STATUS)['FAILED'];
