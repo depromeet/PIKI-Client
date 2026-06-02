@@ -15,6 +15,7 @@ import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import type { TournamentStatusT } from '@/types/tournament';
 
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from '../popover';
+import TournamentDeleteDialog from './TournamentDeleteDialog';
 
 type MorePopoverProps = {
   status: TournamentStatusT;
@@ -24,6 +25,7 @@ type MorePopoverProps = {
 function MorePopover({ status, tournamentId }: MorePopoverProps) {
   const router = useRouter();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleAddTournamentItem = () => {
     setIsPopoverOpen(false);
@@ -32,66 +34,89 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
     );
   };
 
-  const handleDeleteTournament = () => {};
+  const handleDeleteTournament = () => {
+    setIsPopoverOpen(false);
+    setIsDeleteDialogOpen(true);
+  };
 
-  const handleViewFriendList = () => {};
+  const handleViewFriendList = () => {
+    // TODO: 친구 목록 보기 페이지로 연결
+  };
 
-  const handleShareTournamentResult = () => {};
+  const handleShareTournamentResult = () => {
+    // TODO: 결과 공유하기 기능 연결
+  };
 
   return (
-    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-      <PopoverTrigger asChild>
-        <button type="button" aria-label="더보기" className="cursor-pointer">
-          <ThreeDotHorizontalIconFill className="size-6 text-icon-neutral-secondary" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="p-2" align="end" alignOffset={-24}>
-        <PopoverTitle className="sr-only">더보기</PopoverTitle>
+    <>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <PopoverTrigger asChild>
+          <button type="button" aria-label="더보기" className="cursor-pointer">
+            <ThreeDotHorizontalIconFill className="size-6 text-icon-neutral-secondary" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="p-2" align="end" alignOffset={-24}>
+          <PopoverTitle className="sr-only">더보기</PopoverTitle>
 
-        {status === TOURNAMENT_STATUS.PENDING && (
-          <>
-            <OptionButton
-              Icon={HeartIconFill}
-              label="위시 추가하기"
-              onClick={handleAddTournamentItem}
-            />
-            <OptionButton Icon={TrashIconFill} label="삭제하기" onClick={handleDeleteTournament} />
-          </>
-        )}
+          {status === TOURNAMENT_STATUS.PENDING && (
+            <>
+              <OptionButton
+                Icon={HeartIconFill}
+                label="위시 추가하기"
+                onClick={handleAddTournamentItem}
+              />
+              <OptionButton
+                Icon={TrashIconFill}
+                label="삭제하기"
+                onClick={handleDeleteTournament}
+              />
+            </>
+          )}
 
-        {status === TOURNAMENT_STATUS.IN_PROGRESS && (
-          <>
-            <OptionButton
-              Icon={GroupIconFill}
-              label="친구 목록 보기"
-              onClick={handleViewFriendList}
-            />
-            <OptionButton
-              disabled
-              Icon={TrashIconFill}
-              label="삭제하기"
-              onClick={handleDeleteTournament}
-            />
-          </>
-        )}
+          {status === TOURNAMENT_STATUS.IN_PROGRESS && (
+            <>
+              <OptionButton
+                Icon={GroupIconFill}
+                label="친구 목록 보기"
+                onClick={handleViewFriendList}
+              />
+              <OptionButton
+                disabled
+                Icon={TrashIconFill}
+                label="삭제하기"
+                onClick={handleDeleteTournament}
+              />
+            </>
+          )}
 
-        {status === TOURNAMENT_STATUS.COMPLETED && (
-          <>
-            <OptionButton
-              Icon={GroupIconFill}
-              label="친구 목록 보기"
-              onClick={handleViewFriendList}
-            />
-            <OptionButton
-              Icon={LinkIconFill}
-              label="결과 공유하기"
-              onClick={handleShareTournamentResult}
-            />
-            <OptionButton Icon={TrashIconFill} label="삭제하기" onClick={handleDeleteTournament} />
-          </>
-        )}
-      </PopoverContent>
-    </Popover>
+          {status === TOURNAMENT_STATUS.COMPLETED && (
+            <>
+              <OptionButton
+                Icon={GroupIconFill}
+                label="친구 목록 보기"
+                onClick={handleViewFriendList}
+              />
+              <OptionButton
+                Icon={LinkIconFill}
+                label="결과 공유하기"
+                onClick={handleShareTournamentResult}
+              />
+              <OptionButton
+                Icon={TrashIconFill}
+                label="삭제하기"
+                onClick={handleDeleteTournament}
+              />
+            </>
+          )}
+        </PopoverContent>
+      </Popover>
+
+      <TournamentDeleteDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        tournamentId={tournamentId}
+      />
+    </>
   );
 }
 
