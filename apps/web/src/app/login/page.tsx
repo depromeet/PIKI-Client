@@ -4,7 +4,7 @@ import LoginButtons from './_components/LoginButtons';
 
 function LoginPage() {
   return (
-    <div className="flex flex-col items-center pt-28">
+    <div className="flex min-h-full flex-col items-center bg-gray-50 pt-28">
       <div className="flex flex-col items-center gap-6">
         <PikiLogo aria-label="PIKI" />
         <p className="whitespace-pre-line text-center body-1-bold text-text-neutral-secondary">
@@ -12,7 +12,7 @@ function LoginPage() {
         </p>
       </div>
 
-      <div className="mt-[90px] w-full">
+      <div className="mt-[90px] w-full px-4">
         <LoginButtons />
       </div>
     </div>

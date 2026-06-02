@@ -11,7 +11,7 @@ const socialButtonStyles = cva(
   {
     variants: {
       variant: {
-        google: 'border border-gray-200 bg-white',
+        google: 'border border-[#E5E7EB] bg-white',
         apple: 'bg-[#1A1A1A]',
         kakao: 'bg-[#FEE500]',
       },
