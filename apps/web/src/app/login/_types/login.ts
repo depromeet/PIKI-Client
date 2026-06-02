@@ -1,5 +1,11 @@
 import type { UserT } from '@/types/user';
 
+export type { SocialProviderT } from '@/types/auth';
+
+export type GetAuthUrlResponseT = {
+  url: string;
+};
+
 export type PostGuestLoginResponseT = {
   /** 웹 - null, 웹뷰 - string */
   accessToken: string | null;
