@@ -7,6 +7,8 @@ import {
   DialogTitle,
 } from '@/components/common/dialog';
 
+import ConfirmExitBasket from '../../_assets/confirm-exit-basket.svg';
+
 type ConfirmExitDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -19,16 +21,12 @@ function ConfirmExitDialog({ open, onOpenChange, onConfirm }: ConfirmExitDialogP
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col items-center gap-5 p-6">
-        <div className="flex size-10 items-center justify-center text-text-neutral-secondary">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M13.172 4.943a4 4 0 0 1 5.656 0L24.485 10.6h3.243a1.333 1.333 0 0 1 1.318 1.519l-1.958 13.71A4 4 0 0 1 23.13 29.3H8.87a4 4 0 0 1-3.96-3.469L2.954 12.118a1.333 1.333 0 0 1 1.318-1.519h3.243l5.657-5.656Zm3.77 1.886a1.333 1.333 0 0 0-1.884 0L11.81 10.6h8.38l-3.247-3.771Zm-5.275 9.838c0-.736.597-1.333 1.333-1.333.737 0 1.334.597 1.334 1.333v5.333a1.333 1.333 0 1 1-2.667 0v-5.333Zm5.334-1.333a1.333 1.333 0 0 0-1.333 1.333v5.333a1.333 1.333 0 1 0 2.666 0v-5.333a1.333 1.333 0 0 0-1.333-1.333Zm4 1.333c0-.736.597-1.333 1.333-1.333s1.333.597 1.333 1.333v5.333a1.333 1.333 0 1 1-2.666 0v-5.333Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
+        <ConfirmExitBasket
+          className="text-text-neutral-secondary"
+          width={30}
+          height={29}
+          aria-hidden
+        />
 
         <div className="flex flex-col items-center gap-1">
           <DialogTitle className="text-center heading-1 text-text-neutral-primary">

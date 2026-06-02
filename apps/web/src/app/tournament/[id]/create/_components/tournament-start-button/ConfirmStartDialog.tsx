@@ -7,6 +7,8 @@ import {
   DialogTitle,
 } from '@/components/common/dialog';
 
+import ConfirmStartFace from '../../_assets/confirm-start-face.svg';
+
 type ConfirmStartDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -19,19 +21,7 @@ function ConfirmStartDialog({ open, onOpenChange, onConfirm }: ConfirmStartDialo
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col items-center gap-5 p-6">
-        <div className="flex size-10 items-center justify-center rounded-full bg-gray-100 text-text-neutral-secondary">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-            <circle cx="10" cy="10" r="8.5" stroke="currentColor" strokeWidth="1.5" />
-            <circle cx="7.5" cy="9" r="1" fill="currentColor" />
-            <circle cx="12.5" cy="9" r="1" fill="currentColor" />
-            <path
-              d="M6.5 13.5C7.5 12.5 8.6 12 10 12C11.4 12 12.5 12.5 13.5 13.5"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
+        <ConfirmStartFace className="size-7.75" aria-hidden />
 
         <div className="flex flex-col items-center gap-1">
           <DialogTitle className="text-center heading-1 text-text-neutral-primary">
