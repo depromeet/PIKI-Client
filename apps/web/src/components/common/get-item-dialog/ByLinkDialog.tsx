@@ -72,8 +72,13 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
     if (hasError) setHasError(false);
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) resetState();
+    onOpenChange(nextOpen);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col gap-5 rounded-3xl">
         <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           링크로 담기

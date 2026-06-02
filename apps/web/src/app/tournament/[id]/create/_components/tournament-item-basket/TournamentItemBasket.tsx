@@ -9,7 +9,7 @@ import { parseIdParam } from '@/utils/parseIdParam';
 
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
-import AddWishDialog from '../addWishDialog/AddWishDialog';
+import AddWishDialog from '../add-wish-dialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
 import TournamentBasketItem from './TournamentBasketItem';
 import TournamentItemFailedModal from './TournamentItemFailedDrawer';

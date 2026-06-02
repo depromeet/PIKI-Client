@@ -1,17 +1,19 @@
 'use client';
 
 import { useGetTournament } from '../_hooks/useGetTournament';
-import InviteFriends from './inviteFriends/InviteFriends';
-import TournamentHeader from './tournamentHeader/TournamentHeader';
-import TournamentItemBasketCarousel from './tournamentItemBasket/TournamentItemBasketCarousel';
-import TournamentItemBasketStatus from './tournamentItemBasketStatus/TournamentItemBasketStatus';
-import TournamentStartButton from './tournamentStartButton/TournamentStartButton';
+import { useScrollToLast } from '../_hooks/useScrollToLast';
+import InviteFriends from './invite-friends/InviteFriends';
+import TournamentHeader from './tournament-header/TournamentHeader';
+import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
+import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
+import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 
 type TournamentCreateClientProps = {
   tournamentId: string;
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
+  const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(Number(tournamentId));
 
   return (
@@ -27,7 +29,11 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
+      <TournamentItemBasketCarousel
+        items={tournamentData.pending?.items}
+        scrollToLast={scrollToLast}
+        onScrolled={onScrolled}
+      />
 
       <div className="shrink-0 px-5">
         <TournamentStartButton
