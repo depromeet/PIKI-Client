@@ -1,5 +1,5 @@
 import { ThreeDotHorizontalIconFill } from '@/assets/icons';
-import StateChip from '@/components/common/state-chip';
+import StatusChip from '@/components/common/status-chip';
 import UserProfileGroup from '@/components/common/user-profile-group';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
 import type { TournamentStatusT } from '@/types/tournament';
