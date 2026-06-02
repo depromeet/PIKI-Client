@@ -1,4 +1,7 @@
-import type { ComponentType, SVGProps } from 'react';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { type ComponentType, type SVGProps, useState } from 'react';
 
 import {
   GroupIconFill,
@@ -7,6 +10,7 @@ import {
   ThreeDotHorizontalIconFill,
   TrashIconFill,
 } from '@/assets/icons';
+import { QUERY_ACTION } from '@/consts/queryAction';
 import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import type { TournamentStatusT } from '@/types/tournament';
 
@@ -18,7 +22,15 @@ type MorePopoverProps = {
 };
 
 function MorePopover({ status, tournamentId }: MorePopoverProps) {
-  const handleAddTournamentItem = () => {};
+  const router = useRouter();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const handleAddTournamentItem = () => {
+    setIsPopoverOpen(false);
+    router.push(
+      `/tournament/${tournamentId}/create?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG}`
+    );
+  };
 
   const handleDeleteTournament = () => {};
 
@@ -27,7 +39,7 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
   const handleShareTournamentResult = () => {};
 
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <button type="button" aria-label="더보기" className="cursor-pointer">
           <ThreeDotHorizontalIconFill className="size-6 text-icon-neutral-secondary" />

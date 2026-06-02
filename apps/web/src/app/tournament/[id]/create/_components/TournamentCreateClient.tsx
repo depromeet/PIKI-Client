@@ -1,5 +1,10 @@
 'use client';
 
+import { Dialog } from '@/components/common/dialog';
+import GetItemDialogContent from '@/components/common/get-item-dialog';
+import { QUERY_ACTION } from '@/consts/queryAction';
+import { useQueryAction } from '@/hooks/useQueryAction';
+
 import { useGetTournament } from '../_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import InviteFriends from './invite-friends/InviteFriends';
@@ -15,6 +20,10 @@ type TournamentCreateClientProps = {
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(Number(tournamentId));
+
+  const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
+    action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
+  });
 
   return (
     <div className="flex h-dvh min-h-0 flex-col bg-bg-layer-basement pt-20 pb-8">
@@ -46,6 +55,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           }
         />
       </div>
+
+      <Dialog open={isGetItemDialogOpen} onOpenChange={setIsGetItemDialogOpen}>
+        <GetItemDialogContent type="tournament" />
+      </Dialog>
     </div>
   );
 }

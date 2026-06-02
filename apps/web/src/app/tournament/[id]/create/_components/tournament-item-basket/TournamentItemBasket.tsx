@@ -4,12 +4,13 @@ import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import Button from '@/components/common/button';
+import { Dialog, DialogTrigger } from '@/components/common/dialog';
+import GetItemDialogContent from '@/components/common/get-item-dialog';
 import type { TournamentItemT } from '@/types/tournament';
 import { parseIdParam } from '@/utils/parseIdParam';
 
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
-import AddWishDialog from '../add-wish-dialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
 import TournamentBasketItem from './TournamentBasketItem';
 import TournamentItemFailedModal from './TournamentItemFailedDrawer';
@@ -58,8 +59,9 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
               );
             return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
           })}
-          <AddWishDialog
-            trigger={
+
+          <Dialog>
+            <DialogTrigger asChild>
               <Button
                 icon="only"
                 aria-label="위시 아이템 추가"
@@ -67,8 +69,9 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
               >
                 <AddIcon width={32} height={32} className="text-white" aria-hidden />
               </Button>
-            }
-          />
+            </DialogTrigger>
+            <GetItemDialogContent type="tournament" />
+          </Dialog>
         </div>
       </div>
       {failedItem && tournamentId && (
