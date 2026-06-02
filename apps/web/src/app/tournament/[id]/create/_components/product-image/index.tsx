@@ -15,7 +15,7 @@ import { SIZE_STYLE } from './productImage.const';
 
 type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   src?: ImageProps['src'];
-  /** 이미지 크기. lg: 200×200 / sm: 72×72 */
+  /** 이미지 크기. lg: 200×200 / sm: 68×68 */
   size?: SizeVariantT;
   /** true면 부모 크기에 맞게 꽉 채움 (size prop 무시) */
   fill?: boolean;

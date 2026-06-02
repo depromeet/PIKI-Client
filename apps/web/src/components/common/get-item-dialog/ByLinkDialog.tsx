@@ -2,12 +2,14 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { usePostTournamentItemLink } from '@/app/tournament/[id]/create/_hooks/usePostTournamentItemLink';
 import { LinkIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import Input from '@/components/common/input';
+import { usePostWishLink } from '@/hooks/usePostWishLink';
 import type { ItemTypeT } from '@/types/item';
 
 const URL_PATTERN = /^https?:\/\/.+/i;
@@ -21,6 +23,7 @@ type ByLinkProps = {
 function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
   const router = useRouter();
   const { id: tournamentId } = useParams<{ id: string }>();
+  const { postWishLinkMutation } = usePostWishLink();
   const { postTournamentItemLinkMutation } = usePostTournamentItemLink(Number(tournamentId));
 
   const [url, setUrl] = useState('');
@@ -42,14 +45,26 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
       return;
     }
 
-    if (type === 'tournament') {
-      postTournamentItemLinkMutation(trimmedUrl);
-    } else {
-      router.push('/wishlist');
-    }
-
-    onOpenChange(false);
-    resetState();
+    if (type === 'wish')
+      postWishLinkMutation(trimmedUrl, {
+        onSettled: () => {
+          onOpenChange(false);
+          resetState();
+        },
+        onSuccess: () => {
+          router.push('/wishlist');
+          toast.success('위시에 상품을 담았어요', {
+            classNames: { toast: '!bottom-[122px]' },
+          });
+        },
+      });
+    else
+      postTournamentItemLinkMutation(trimmedUrl, {
+        onSettled: () => {
+          onOpenChange(false);
+          resetState();
+        },
+      });
   };
 
   const handleChange = (value: string) => {

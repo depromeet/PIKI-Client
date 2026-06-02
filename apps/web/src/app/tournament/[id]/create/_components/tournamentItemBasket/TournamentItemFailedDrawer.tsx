@@ -12,17 +12,33 @@ import {
   DialogTitle,
 } from '@/components/common/dialog';
 
+import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';
+
 type TournamentItemFailedModalProps = {
   open: boolean;
+  tournamentId: number;
+  tournamentItemId: number;
   onClose: () => void;
 };
 
-function TournamentItemFailedModal({ open, onClose }: TournamentItemFailedModalProps) {
+function TournamentItemFailedModal({
+  open,
+  tournamentId,
+  tournamentItemId,
+  onClose,
+}: TournamentItemFailedModalProps) {
   const router = useRouter();
+  const { deleteTournamentItemMutation } = useDeleteTournamentItem(tournamentId, tournamentItemId);
 
-  const handleManualInput = () => {
+  const handleDeleteTournamentItem = () => {
+    deleteTournamentItemMutation(void 0, {
+      onSettled: () => onClose(),
+    });
+  };
+
+  const handleEdit = () => {
     onClose();
-    router.push('/item/manual');
+    router.push(`/tournament/${tournamentId}/item/${tournamentItemId}`);
   };
 
   return (
@@ -38,10 +54,15 @@ function TournamentItemFailedModal({ open, onClose }: TournamentItemFailedModalP
           <p className="body-1-medium text-text-neutral-tertiary">서버에서 문제가 발생했어요</p>
         </DialogHeader>
         <DialogFooter className="mt-6 flex-row gap-3">
-          <Button variant="secondary" size="lg" className="flex-1" onClick={onClose}>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            onClick={handleDeleteTournamentItem}
+          >
             삭제하기
           </Button>
-          <Button variant="primary" size="lg" className="flex-1" onClick={handleManualInput}>
+          <Button variant="primary" size="lg" className="flex-1" onClick={handleEdit}>
             직접 입력하기
           </Button>
         </DialogFooter>

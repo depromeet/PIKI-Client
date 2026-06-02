@@ -59,7 +59,7 @@ function ItemEditForm({
     patchWishMutation({
       name: trimmedName,
       currentPrice: parsedPrice,
-      // imageUrl: selectedImage ? URL.createObjectURL(selectedImage) : null, // TODO: 이미지 보내는 방법 확인 필요
+      ...(selectedImage ? { image: selectedImage } : {}), // TODO: url로 보내야함
     });
   };
 
@@ -111,7 +111,7 @@ function ItemEditForm({
           disabled={isDeleteWishPending || !isValid}
           className="flex-1"
         >
-          저장하기
+          {isPatchWishPending ? <Spinner size={20} /> : '저장하기'}
         </Button>
       </BottomCta>
     </>

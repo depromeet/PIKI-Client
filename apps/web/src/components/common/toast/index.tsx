@@ -4,7 +4,7 @@ import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 import { AlertIconFill, CheckCircledIconFill, WarningIconFill } from '@/assets/icons/fill';
 
-const Toaster = ({ mobileOffset, ...props }: ToasterProps) => {
+const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       visibleToasts={1}
@@ -30,7 +30,6 @@ const Toaster = ({ mobileOffset, ...props }: ToasterProps) => {
         bottom: '90px',
         left: '20px',
         right: '20px',
-        ...(typeof mobileOffset === 'object' ? mobileOffset : {}),
       }}
       toastOptions={{
         classNames: {

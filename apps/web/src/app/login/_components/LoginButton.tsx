@@ -13,23 +13,23 @@ type Props = {
 
 // TEMP
 export default function LoginButton({ identityType }: Props) {
-  const { mutate: mutateGuestLogin, isPending: isGuestLoginPending } = usePostGuestLogin();
-  const { mutate: mutateMemberLogin, isPending: isMemberLoginPending } = usePostMemberLogin();
+  const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
+  const { postMemberLoginMutation, isPostMemberLoginPending } = usePostMemberLogin();
 
   const handleButtonClick = () => {
-    if (identityType === 'GUEST') mutateGuestLogin();
-    else mutateMemberLogin();
+    if (identityType === 'GUEST') postGuestLoginMutation();
+    else postMemberLoginMutation();
   };
 
   return (
     <Button
       onClick={handleButtonClick}
-      disabled={isGuestLoginPending || isMemberLoginPending}
+      disabled={isPostGuestLoginPending || isPostMemberLoginPending}
       className="w-32"
     >
-      {identityType === 'GUEST' && (isGuestLoginPending ? <Spinner /> : '게스트 로그인')}
+      {identityType === 'GUEST' && (isPostGuestLoginPending ? <Spinner /> : '게스트 로그인')}
 
-      {identityType === 'MEMBER' && (isMemberLoginPending ? <Spinner /> : '회원 로그인')}
+      {identityType === 'MEMBER' && (isPostMemberLoginPending ? <Spinner /> : '회원 로그인')}
     </Button>
   );
 }

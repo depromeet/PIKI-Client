@@ -5,16 +5,16 @@ import { serverApi } from '@/apis/server';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
-import type { WishlistEntryT } from '../_types/wishTypes';
+import type { WishlistEntryT } from '../_types/wish';
 
 const mapWishlist = (entries: WishlistEntryT[]) =>
   entries.map(({ wish, item }) => ({
     id: wish.id,
     itemId: item.id,
-    status: item.status === 'FAILED' ? ('failed' as const) : ('ok' as const),
+    status: item.status,
     name: item.name ?? '',
     price: item.currentPrice ?? 0,
-    imageUrl: item.imageUrl || void 0,
+    imageUrl: item.imageUrl ?? null,
   }));
 
 export const getWishlist = async () => {

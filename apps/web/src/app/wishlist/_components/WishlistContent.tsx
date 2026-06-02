@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 
-import { Toaster } from '@/components/common/toast';
-
+import { useWishlistDelete } from '../_hooks/useDeleteWishes';
 import { useGetWishlist } from '../_hooks/useGetWishlist';
-import { useWishlistDelete } from '../_hooks/useWishlistDelete';
 import WishAddDialog from './WishAddDialog';
 import WishlistBottomBar from './WishlistBottomBar';
 import WishlistFabArea from './WishlistFabArea';
@@ -15,10 +13,10 @@ function WishlistContent() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const { data: wishlistData } = useGetWishlist();
-  console.log(wishlistData);
   const {
     isDeleteMode,
     selectedIds,
+    isDeleteWishesPending,
     handleEnterDeleteMode,
     handleToggleSelect,
     handleConfirmDelete,
@@ -39,13 +37,13 @@ function WishlistContent() {
 
       <WishlistFabArea
         isDeleteMode={isDeleteMode}
+        isDeleteWishesPending={isDeleteWishesPending}
         isDeleteDisabled={selectedIds.size === 0}
         onAddItem={() => setIsAddDialogOpen(true)}
         onEnterDeleteMode={handleEnterDeleteMode}
         onConfirmDelete={handleConfirmDelete}
       />
 
-      <Toaster mobileOffset={{ bottom: '146px' }} />
       <WishAddDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </>
   );

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import { BASKET_COUNT } from '../_consts/tournamentItemBasketConsts';
+import { BASKET_COUNT } from '../_consts/tournamentItemBasket';
 
 const SWIPE_THRESHOLD = 50;
 

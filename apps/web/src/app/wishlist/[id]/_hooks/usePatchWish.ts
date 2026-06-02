@@ -13,7 +13,14 @@ export const usePatchWish = (wishId: number) => {
   const queryClient = useQueryClient();
 
   const { mutate: patchWishMutation, isPending: isPatchWishPending } = useMutation({
-    mutationFn: (body: PatchWishRequestT) => patchWish(wishId, body),
+    mutationFn: (body: PatchWishRequestT) => {
+      const formData = new FormData();
+      if (body.name) formData.append('name', body.name);
+      if (body.currentPrice) formData.append('currentPrice', String(body.currentPrice));
+      if (body.currency) formData.append('currency', body.currency);
+      if (body.image) formData.append('image', body.image);
+      return patchWish(wishId, formData);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });

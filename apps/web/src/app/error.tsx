@@ -9,12 +9,13 @@ type Props = {
 
 // TODO: 임시 에러 페이지 - 디자인 변경 필요
 export default function Error({ error, reset }: Props) {
+  console.error(error);
   const statusCode = error.statusCode || (error.digest ? parseInt(error.digest) : 500);
   const isClientError = statusCode >= 400 && statusCode < 500;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-8 px-5">
-      <div className="w-full max-w-[400px] text-center">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-8 bg-white px-5">
+      <div className="w-full text-center">
         <p className="title-lg mb-2">
           {isClientError ? '요청 오류가 발생했습니다' : '서버 오류가 발생했습니다'}
         </p>
@@ -44,7 +45,7 @@ export default function Error({ error, reset }: Props) {
         <button
           type="button"
           onClick={reset}
-          className="bg-primary body-lg flex-1 rounded-3xl py-3 text-center font-medium text-white"
+          className="body-lg flex-1 rounded-3xl bg-black py-3 text-center font-medium text-white"
         >
           다시 시도
         </button>

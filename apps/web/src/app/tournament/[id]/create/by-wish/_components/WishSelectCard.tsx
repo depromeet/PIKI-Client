@@ -1,18 +1,23 @@
+import WishCard from '@/app/wishlist/_components/wish-grid/WishCard';
 import CheckboxEmptyIconFill from '@/assets/icons/fill/checkbox-empty.svg';
 import CheckboxSelectedIconFill from '@/assets/icons/fill/checkbox-selected.svg';
-import WishCard from '@/components/common/wish-card';
 
 type WishSelectCardProps = {
   name: string;
   price: number;
-  imageUrl?: string;
+  imageUrl: string | null;
   isSelected: boolean;
   onSelect: () => void;
 };
 
 function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSelectCardProps) {
   return (
-    <button type="button" onClick={onSelect} aria-pressed={isSelected} className="relative h-full w-full text-left">
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={isSelected}
+      className="relative h-full w-full text-left"
+    >
       <WishCard name={name} price={price} imageUrl={imageUrl} />
       <div className="absolute top-2 left-2 z-10">
         {isSelected ? (

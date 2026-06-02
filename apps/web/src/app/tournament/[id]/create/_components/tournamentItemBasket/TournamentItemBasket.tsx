@@ -1,17 +1,18 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
-import basketImg from '@/assets/images/basket-gray.png';
 import Button from '@/components/common/button';
 import type { TournamentItemT } from '@/types/tournament';
+import { parseIdParam } from '@/utils/parseIdParam';
 
-import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasketConsts';
+import basketImg from '../../_assets/basket-gray.png';
+import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
 import AddWishDialog from '../addWishDialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
-import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 import TournamentBasketItem from './TournamentBasketItem';
+import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 
 type TournamentItemBasketProps = {
   basketIndex: number;
@@ -19,12 +20,18 @@ type TournamentItemBasketProps = {
 };
 
 function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
-  const router = useRouter();
-  const [failedDrawerOpen, setFailedDrawerOpen] = useState(false);
+  const { id: _tournamentId } = useParams<{ id: string }>();
+  const tournamentId = parseIdParam(_tournamentId);
+
+  const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
-    if (item.status === 'READY') router.push(`/item/${item.tournamentItemId}/edit?type=tournament`);
-    if (item.status === 'FAILED') setFailedDrawerOpen(true);
+    if (!tournamentId) return;
+
+    // if (item.status === 'READY')
+    // router.push(`/tournament/${tournamentId}/item/${item.tournamentItemId}`); // TODO: 변경된 디자인에 맞춰 수정 필요
+
+    if (item.status === 'FAILED') setFailedItem(item);
   };
 
   return (
@@ -37,7 +44,7 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
         className="object-contain"
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative grid w-[45%] grid-cols-2 gap-4">
+        <div className="relative grid grid-cols-2 gap-x-6 gap-y-5">
           {Array.from({ length: ITEMS_PER_BASKET }, (_, slotIndex) => {
             const item = items[slotIndex];
             if (item)
@@ -64,10 +71,14 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
           />
         </div>
       </div>
-      <TournamentItemFailedModal
-        open={failedDrawerOpen}
-        onClose={() => setFailedDrawerOpen(false)}
-      />
+      {failedItem && tournamentId && (
+        <TournamentItemFailedModal
+          open
+          tournamentId={tournamentId}
+          tournamentItemId={failedItem.tournamentItemId}
+          onClose={() => setFailedItem(null)}
+        />
+      )}
     </div>
   );
 }

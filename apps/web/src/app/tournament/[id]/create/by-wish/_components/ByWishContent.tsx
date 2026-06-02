@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-
 import { toast } from 'sonner';
 
 import { useGetWishlist } from '@/app/wishlist/_hooks/useGetWishlist';
 import Button from '@/components/common/button';
-import { Toaster } from '@/components/common/toast';
 
 import { useGetTournament } from '../../_hooks/useGetTournament';
 import { MAX_SELECT } from '../_consts/selectLimits';
@@ -27,9 +25,14 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
     usePostTournamentItemsByWish(tournamentId);
 
   const existingItemIds = new Set(tournamentData.pending?.items.map(i => i.itemId) ?? []);
-  const items = wishlistData?.filter(
-    item => item.status !== 'failed' && item.itemId != null && !existingItemIds.has(item.itemId)
-  ) ?? [];
+  const items =
+    wishlistData?.filter(
+      item =>
+        item.status !== 'FAILED' &&
+        item.status !== 'PROCESSING' &&
+        item.itemId != null &&
+        !existingItemIds.has(item.itemId)
+    ) ?? [];
 
   useEffect(() => {
     if (!isMaxExceeded) return;
@@ -44,7 +47,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-bg-layer-basement px-5">
       <WishSelectHeader
         selectedCount={selectedIds.length}
         totalCount={items.length}
@@ -67,7 +70,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] px-5 py-3">
+      <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] bg-white px-5 py-3">
         <Button variant="secondary" size="lg" onClick={() => history.back()}>
           뒤로
         </Button>
@@ -80,8 +83,6 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
           다음
         </Button>
       </div>
-
-      <Toaster />
     </div>
   );
 }

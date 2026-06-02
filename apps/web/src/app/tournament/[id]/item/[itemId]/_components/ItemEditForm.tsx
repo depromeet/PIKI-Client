@@ -12,7 +12,7 @@ import type { ItemStatusT } from '@/types/item';
 import { cn } from '@/utils/cn';
 import formatPrice from '@/utils/formatPrice';
 
-import { useDeleteTournamentItem } from '../_hooks/useDeleteTournamentItem';
+import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';
 import ItemImageSection from './ItemImageSection';
 
 type ItemEditFormProps = {

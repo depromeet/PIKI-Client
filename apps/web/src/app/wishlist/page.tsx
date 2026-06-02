@@ -8,7 +8,7 @@ import TournamentHistoryContent from './_components/TournamentHistoryContent';
 import WishlistContent from './_components/WishlistContent';
 import WishlistLayout from './_components/WishlistLayout';
 import WishlistSkeleton from './_components/WishlistSkeleton';
-import type { WishTabT } from './_types/wishTypes';
+import type { WishTabT } from './_types/wish';
 
 type WishlistPageProps = {
   searchParams: Promise<{ tab?: string }>;

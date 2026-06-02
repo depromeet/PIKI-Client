@@ -17,7 +17,7 @@ function EditContent({ tournamentId, tournamentItemId }: EditContentProps) {
   return (
     <div
       className={cn(
-        'hide-scrollbar overflow-y-auto pb-[78px]',
+        'hide-scrollbar min-h-dvh overflow-y-auto px-5 pb-[78px]',
         tournamentItemData.status === 'FAILED' ? 'bg-bg-layer-basement' : 'bg-bg-layer-default'
       )}
     >

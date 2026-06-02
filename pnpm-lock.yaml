@@ -171,6 +171,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      embla-carousel-react:
+        specifier: ^8.6.0
+        version: 8.6.0(react@19.1.0)
       gsap:
         specifier: ^3.15.0
         version: 3.15.0
@@ -190,8 +193,8 @@ importers:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
       shadcn:
-        specifier: ^4.8.0
-        version: 4.8.0(@types/node@22.15.3)(typescript@5.9.2)
+        specifier: ^4.9.0
+        version: 4.9.0(@types/node@22.15.3)(typescript@5.9.2)
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3598,6 +3601,19 @@ packages:
   element-source@0.0.3:
     resolution: {integrity: sha512-o3VMv2BIfY/axhIBKlE9HrR5rNqnhjHN2PEAKxG65O0VCSfONoMi9QMQjY12XVVvMuTzr1cAg/4xLMkvh+/Wlg==}
 
+  embla-carousel-react@8.6.0:
+    resolution: {integrity: sha512-0/PjqU7geVmo6F734pmPqpyHqiM99olvyecY7zdweCw+6tKEXnrE90pBiBbMMU8s5tICemzpQ3hi5EpxzGW+JA==}
+    peerDependencies:
+      react: 19.1.0
+
+  embla-carousel-reactive-utils@8.6.0:
+    resolution: {integrity: sha512-fMVUDUEx0/uIEDM0Mz3dHznDhfX+znCCDCeIophYb1QGVM7YThSWX+wz11zlYwWFOr74b4QLGg0hrGPJeG2s4A==}
+    peerDependencies:
+      embla-carousel: 8.6.0
+
+  embla-carousel@8.6.0:
+    resolution: {integrity: sha512-SjWyZBHJPbqxHOzckOfo8lHisEaJWmwd23XppYFYVh10bU66/Pn5tkVkbkCMZVdbUE5eTCI2nD8OyIP4Z+uwkA==}
+
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
 
@@ -6001,8 +6017,8 @@ packages:
     resolution: {integrity: sha512-TPbeg0b7ylrswdGCji8FRGFAKuqbpQlLbL8SOle3j1iHSs5Ob5mhvMAxWN2UItOjgALAB5Zp3fmMfj8mbWvXKw==}
     engines: {node: '>=10'}
 
-  shadcn@4.8.0:
-    resolution: {integrity: sha512-LAm3I/1FdoU/zu5GVG8Hbna4X9zlzEG5TeeCPXqsopkjvGk8QUF9OFhqeRN8oM6Oh/ynUI/yQHZxQAO3Ymcqsg==}
+  shadcn@4.9.0:
+    resolution: {integrity: sha512-GPrj/bFcxxykkDzHRDNzoJMAS1a6M4IcfSWpxKU7FXx7DzBU7QumZM9roovo0Blw/z6wRRl7moDB6jnreOFFGA==}
     hasBin: true
 
   shallowequal@1.1.0:
@@ -10600,6 +10616,18 @@ snapshots:
     transitivePeerDependencies:
       - react
 
+  embla-carousel-react@8.6.0(react@19.1.0):
+    dependencies:
+      embla-carousel: 8.6.0
+      embla-carousel-reactive-utils: 8.6.0(embla-carousel@8.6.0)
+      react: 19.1.0
+
+  embla-carousel-reactive-utils@8.6.0(embla-carousel@8.6.0):
+    dependencies:
+      embla-carousel: 8.6.0
+
+  embla-carousel@8.6.0: {}
+
   emoji-regex@10.6.0: {}
 
   emoji-regex@8.0.0: {}
@@ -13509,7 +13537,7 @@ snapshots:
 
   sf-symbols-typescript@2.2.0: {}
 
-  shadcn@4.8.0(@types/node@22.15.3)(typescript@5.9.2):
+  shadcn@4.9.0(@types/node@22.15.3)(typescript@5.9.2):
     dependencies:
       '@babel/core': 7.29.0
       '@babel/parser': 7.29.2

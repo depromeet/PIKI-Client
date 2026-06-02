@@ -26,7 +26,7 @@ export type GetWishResponseT = {
 export type PatchWishRequestT = {
   name?: string;
   currentPrice?: number;
-  imageUrl?: string;
+  image?: File;
   currency?: string;
 };
 
