@@ -1,13 +1,12 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
+import { getTournamentList } from '@/apis/getTournamentList';
 import { LoginIconOutline } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
 import { Header, HeaderIcon } from '@/components/common/header';
-import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getTournamentList } from './_apis/getTournamentList';
 import AddWishHomeDialog from './_components/AddWishHomeDialog';
 import CreateTournamentDialog from './_components/CreateTournamentDialog';
 import TorunamentList from './_components/TournamentList';
@@ -16,8 +15,8 @@ async function HomePage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['tournamentList', [TOURNAMENT_STATUS.PENDING, TOURNAMENT_STATUS.IN_PROGRESS]],
-    queryFn: () => getTournamentList([TOURNAMENT_STATUS.PENDING, TOURNAMENT_STATUS.IN_PROGRESS]),
+    queryKey: ['tournamentList', []],
+    queryFn: () => getTournamentList(),
   });
 
   return (

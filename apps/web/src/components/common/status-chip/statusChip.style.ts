@@ -2,20 +2,20 @@ import { type VariantProps, cva } from 'class-variance-authority';
 
 import { TOURNAMENT_STATUS } from '@/consts/tournament';
 
-export const stateChipStyles = cva(
-  'inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1 caption-1-semibold',
+export const statusChipStyles = cva(
+  'inline-flex w-[67px] items-center justify-center gap-1 rounded-lg px-2 py-1 caption-1-semibold',
   {
     variants: {
-      state: {
+      status: {
         [TOURNAMENT_STATUS.PENDING]: 'bg-yellow-50 text-yellow-700',
         [TOURNAMENT_STATUS.IN_PROGRESS]: 'bg-green-50 text-green-700',
         [TOURNAMENT_STATUS.COMPLETED]: 'bg-blue-50 text-blue-700',
       },
     },
     defaultVariants: {
-      state: TOURNAMENT_STATUS.PENDING,
+      status: TOURNAMENT_STATUS.PENDING,
     },
   }
 );
 
-export type StateChipStyleProps = VariantProps<typeof stateChipStyles>;
+export type StatusChipStyleProps = VariantProps<typeof statusChipStyles>;

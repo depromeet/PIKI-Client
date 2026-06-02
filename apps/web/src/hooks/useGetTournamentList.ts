@@ -1,10 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+import { getTournamentList } from '@/apis/getTournamentList';
 import type { TournamentStatusT } from '@/types/tournament';
 
-import { getTournamentList } from '../_apis/getTournamentList';
-
-export const useGetTournamentList = (status?: TournamentStatusT[]) => {
+export const useGetTournamentList = (status: TournamentStatusT[] = []) => {
   const { data: tournamentListData } = useSuspenseQuery({
     queryKey: ['tournamentList', status],
     queryFn: () => getTournamentList(status),
