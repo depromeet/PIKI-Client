@@ -16,19 +16,21 @@ import TournamentItemBasket from './TournamentItemBasket';
 
 type TournamentItemBasketCarouselProps = {
   items?: TournamentItemT[];
+  scrollToLast?: boolean;
+  onScrolled?: () => void;
 };
 
-function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarouselProps) {
+function TournamentItemBasketCarousel({ items = [], scrollToLast = false, onScrolled }: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
 
-  const prevItemCountRef = useRef(items.length);
+  const prevItemCountRef = useRef(scrollToLast ? 0 : items.length);
 
   const isCarouselEnabled = activeBasketCount > 1;
 
-  /** 담기 완료 시 마지막 아이템이 있는 바구니로 이동 */
+  /** 담기 완료 시 마지막 아이템이 있는 바구니로 이동 (링크 담기: 실시간 / 위시 담기: 페이지 재진입) */
   useEffect(() => {
     if (!isCarouselEnabled) {
       prevItemCountRef.current = items.length;
@@ -37,13 +39,13 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
 
     if (!carouselApi) return;
 
-    const prevCount = prevItemCountRef.current;
-    if (items.length > prevCount) {
+    if (items.length > prevItemCountRef.current) {
       carouselApi.scrollTo(getBasketIndexForLastItem(items.length));
+      onScrolled?.();
     }
 
     prevItemCountRef.current = items.length;
-  }, [items.length, carouselApi, isCarouselEnabled]);
+  }, [carouselApi, isCarouselEnabled, items.length, onScrolled]);
 
   /** 초기 이미지 위치 틀어짐 방지 */
   useLayoutEffect(() => {

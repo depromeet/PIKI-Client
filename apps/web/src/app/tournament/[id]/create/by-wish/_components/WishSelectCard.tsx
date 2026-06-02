@@ -21,11 +21,9 @@ function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSel
       <WishCard name={name} price={price} imageUrl={imageUrl} />
       <div className="absolute top-2 left-2 z-10">
         {isSelected ? (
-          <CheckboxSelectedIconFill width={30.317} height={30.317} className="text-icon-accent" />
+          <CheckboxSelectedIconFill width={30.317} height={30.317} className="text-uac-light" />
         ) : (
-          <div className="flex size-[30.317px] items-center justify-center rounded bg-gray-50">
-            <CheckboxEmptyIconFill width={30.317} height={30.317} className="text-gray-200" />
-          </div>
+          <CheckboxEmptyIconFill width={30.317} height={30.317} className="text-[#636366]" />
         )}
       </div>
     </button>
