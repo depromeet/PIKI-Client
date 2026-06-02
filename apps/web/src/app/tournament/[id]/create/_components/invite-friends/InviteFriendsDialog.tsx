@@ -1,5 +1,7 @@
 'use client';
 
+import { toast } from 'sonner';
+
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
 import Button from '@/components/common/button';
 import {
@@ -8,15 +10,29 @@ import {
   DrawerDescription,
   DrawerTitle,
 } from '@/components/common/drawer';
+import { share } from '@/utils/share';
 
 type InviteFriendsDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  inviteUrl?: string;
 };
 
-function InviteFriendsDialog({ open, onOpenChange }: InviteFriendsDialogProps) {
-  const handleSendInviteLink = () => {
-    // TODO: 카카오톡 공유 시트 연동
+function InviteFriendsDialog({ open, onOpenChange, inviteUrl }: InviteFriendsDialogProps) {
+  const handleSendInviteLink = async () => {
+    if (!inviteUrl) {
+      toast.warning('초대 링크를 불러올 수 없어요.');
+      return;
+    }
+
+    const result = await share({
+      title: 'piki 토너먼트 초대',
+      text: '친구와 함께 piki 토너먼트에 담아봐요!',
+      url: inviteUrl,
+    });
+
+    if (result === 'copied') toast.success('초대 링크를 복사했어요.');
+    if (result === 'failed') toast.warning('공유에 실패했어요. 다시 시도해주세요.');
   };
 
   return (

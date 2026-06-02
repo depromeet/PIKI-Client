@@ -29,7 +29,11 @@ function InviteFriends() {
         <AddIconOutline className="h-6 w-6 text-gray-300" />
       </button>
 
-      <InviteFriendsDialog open={isInviteDialogOpen} onOpenChange={setIsInviteDialogOpen} />
+      <InviteFriendsDialog
+        open={isInviteDialogOpen}
+        onOpenChange={setIsInviteDialogOpen}
+        inviteUrl="https://piki.today/invite/temp"
+      />
     </>
   );
 }
