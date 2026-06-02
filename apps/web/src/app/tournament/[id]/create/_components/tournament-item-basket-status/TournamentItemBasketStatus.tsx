@@ -1,4 +1,3 @@
-
 type TournamentItemBasketStatusProps = {
   isProcessing: boolean;
   count: number;

@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 import type { SocialProviderT } from '@/types/auth';
 
@@ -23,9 +22,7 @@ function CallbackHandler() {
   const provider = params.provider;
   const isValidProvider = isSocialProvider(provider);
 
-  const { postSocialLoginMutation } = usePostSocialLogin(
-    isValidProvider ? provider : 'kakao'
-  );
+  const { postSocialLoginMutation } = usePostSocialLogin(isValidProvider ? provider : 'kakao');
 
   useEffect(() => {
     if (hasCalled.current) return;

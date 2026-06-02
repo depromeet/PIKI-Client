@@ -20,7 +20,11 @@ type TournamentItemBasketCarouselProps = {
   onScrolled?: () => void;
 };
 
-function TournamentItemBasketCarousel({ items = [], scrollToLast = false, onScrolled }: TournamentItemBasketCarouselProps) {
+function TournamentItemBasketCarousel({
+  items = [],
+  scrollToLast = false,
+  onScrolled,
+}: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
 

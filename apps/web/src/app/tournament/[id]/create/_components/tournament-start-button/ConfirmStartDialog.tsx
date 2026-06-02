@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 
 import ConfirmStartFace from '../../_assets/confirm-start-face.svg';
 

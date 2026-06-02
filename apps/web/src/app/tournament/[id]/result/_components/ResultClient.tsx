@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
-import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
+import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 
 type ResultClientProps = {
   tournamentId: number;

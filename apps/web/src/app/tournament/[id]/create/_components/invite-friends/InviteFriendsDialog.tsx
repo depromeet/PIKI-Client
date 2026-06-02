@@ -4,12 +4,7 @@ import { toast } from 'sonner';
 
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
 import Button from '@/components/common/button';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from '@/components/common/drawer';
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/common/drawer';
 import { share } from '@/utils/share';
 
 type InviteFriendsDialogProps = {
@@ -55,7 +50,10 @@ function InviteFriendsDialog({ open, onOpenChange, inviteUrl }: InviteFriendsDia
                 <p className="heading-1 text-text-neutral-primary">오늘 13:52까지</p>
               </div>
             </div>
-            <button type="button" className="cursor-pointer body-2-medium text-text-neutral-tertiary underline">
+            <button
+              type="button"
+              className="cursor-pointer body-2-medium text-text-neutral-tertiary underline"
+            >
               변경
             </button>
           </div>
