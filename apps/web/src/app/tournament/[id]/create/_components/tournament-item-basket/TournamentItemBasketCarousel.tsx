@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react';
 
 import { toast } from 'sonner';
 
+import useContainerHeight from '@/hooks/useContainerHeight';
+
 import { Carousel, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
@@ -44,16 +46,22 @@ function TournamentItemBasketCarousel({
     prevBasketCountRef.current = activeBasketCount;
   }, [activeBasketCount]);
 
+  const { ref: containerRef, height: containerHeight } = useContainerHeight();
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const gap = isCarouselEnabled ? 16 : 0;
+  const indicatorHeight = indicatorRef.current?.clientHeight ?? 0;
+  const basketMaxHeight = containerHeight ? containerHeight - indicatorHeight - gap : undefined;
+
   if (!isCarouselEnabled) {
     return (
-      <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
-        <TournamentItemBasket basketIndex={0} items={items} />
+      <div ref={containerRef} className="flex min-h-0 w-full flex-1 flex-col items-center justify-center px-5">
+        <TournamentItemBasket basketIndex={0} items={items} maxHeight={basketMaxHeight} />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4">
+    <div ref={containerRef} className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4">
       <Carousel
         key={activeBasketCount}
         className={cn('relative w-full', !carouselApi && 'invisible')}
@@ -70,17 +78,20 @@ function TournamentItemBasketCarousel({
               <TournamentItemBasket
                 basketIndex={i}
                 items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
+                maxHeight={basketMaxHeight}
               />
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
 
-      <CarouselIndicator
-        totalCount={activeBasketCount}
-        currentIndex={currentIndex}
-        onSelect={handleIndicatorSelect}
-      />
+      <div ref={indicatorRef}>
+        <CarouselIndicator
+          totalCount={activeBasketCount}
+          currentIndex={currentIndex}
+          onSelect={handleIndicatorSelect}
+        />
+      </div>
     </div>
   );
 }
