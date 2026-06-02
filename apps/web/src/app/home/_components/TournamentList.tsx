@@ -2,7 +2,6 @@
 
 import TournamentCard from '@/components/common/tournament-card';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
-import { TOURNAMENT_STATUS } from '@/consts/tournament';
 
 import { useGetTournamentList } from '../_hooks/useGetTournamentList';
 
@@ -14,10 +13,7 @@ const toUsers = (imageUrls: string[]): UserT[] =>
   }));
 
 function TorunamentList() {
-  const { tournamentListData } = useGetTournamentList([
-    TOURNAMENT_STATUS.PENDING,
-    TOURNAMENT_STATUS.IN_PROGRESS,
-  ]);
+  const { tournamentListData } = useGetTournamentList();
 
   return (
     <section className="flex flex-col gap-3">
