@@ -20,10 +20,7 @@ type InviteFriendsDialogProps = {
 
 function InviteFriendsDialog({ open, onOpenChange, inviteUrl }: InviteFriendsDialogProps) {
   const handleSendInviteLink = async () => {
-    if (!inviteUrl) {
-      toast.warning('초대 링크를 불러올 수 없어요.');
-      return;
-    }
+    if (!inviteUrl) return;
 
     const result = await share({
       title: 'piki 토너먼트 초대',
@@ -31,7 +28,9 @@ function InviteFriendsDialog({ open, onOpenChange, inviteUrl }: InviteFriendsDia
       url: inviteUrl,
     });
 
-    if (result === 'copied') toast.success('초대 링크를 복사했어요.');
+    if (result === 'shared' || result === 'copied') {
+      toast.success('링크를 성공적으로 공유했어요.');
+    }
     if (result === 'failed') toast.warning('공유에 실패했어요. 다시 시도해주세요.');
   };
 
