@@ -1,18 +1,18 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 const useContainerHeight = () => {
-  const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>();
+  const observerRef = useRef<ResizeObserver | null>(null);
 
-  useEffect(() => {
-    const el = ref.current;
+  const ref = useCallback((el: HTMLDivElement | null) => {
+    observerRef.current?.disconnect();
+
     if (!el) return;
 
-    const observer = new ResizeObserver(() => setHeight(el.clientHeight));
-    observer.observe(el);
-    return () => observer.disconnect();
+    observerRef.current = new ResizeObserver(() => setHeight(el.clientHeight));
+    observerRef.current.observe(el);
   }, []);
 
   return { ref, height };
