@@ -9,7 +9,7 @@ import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
 function LoginButtons() {
-  const { mutate: guestLoginMutate } = usePostGuestLogin();
+  const { postGuestLoginMutation } = usePostGuestLogin();
 
   const handleKakaoLogin = async () => {
     const { url } = await getAuthUrl('kakao');
@@ -24,7 +24,7 @@ function LoginButtons() {
   const handleAppleLogin = () => {};
 
   const handleGuestLogin = () => {
-    guestLoginMutate();
+    postGuestLoginMutation();
   };
 
   return (
