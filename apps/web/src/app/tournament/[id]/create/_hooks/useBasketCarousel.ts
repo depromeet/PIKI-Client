@@ -30,13 +30,13 @@ export const useBasketCarousel = ({ items, scrollToLast, onScrolled }: UseBasket
 
     if (!carouselApi) return;
 
-    if (items.length > prevItemCountRef.current) {
+    if (scrollToLast && items.length > prevItemCountRef.current) {
       carouselApi.scrollTo(getBasketIndexForLastItem(items.length));
       onScrolled?.();
     }
 
     prevItemCountRef.current = items.length;
-  }, [carouselApi, isCarouselEnabled, items.length, onScrolled]);
+  }, [carouselApi, isCarouselEnabled, items.length, onScrolled, scrollToLast]);
 
   useLayoutEffect(() => {
     if (!carouselApi) return;
