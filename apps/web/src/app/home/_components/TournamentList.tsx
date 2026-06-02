@@ -26,7 +26,8 @@ function TorunamentList() {
       {tournamentListData.map(tournament => (
         <TournamentCard
           key={tournament.tournamentId}
-          state={tournament.status}
+          tournamentId={tournament.tournamentId}
+          status={tournament.status}
           name={tournament.name}
           date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
           users={toUsers(tournament.participantProfileImages)}
