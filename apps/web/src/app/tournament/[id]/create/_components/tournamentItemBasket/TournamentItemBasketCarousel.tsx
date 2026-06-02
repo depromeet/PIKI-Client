@@ -21,6 +21,8 @@ type TournamentItemBasketCarouselProps = {
 function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [carouselAreaHeight, setCarouselAreaHeight] = useState(0);
+  const carouselAreaRef = useRef<HTMLDivElement>(null);
 
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
 
@@ -73,17 +75,37 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
   }, [carouselApi]);
 
   const handleIndicatorSelect = (index: number) => carouselApi?.scrollTo(index);
+  const basketMaxHeight = Math.max(0, carouselAreaHeight - 16);
+
+  useEffect(() => {
+    const element = carouselAreaRef.current;
+    if (!element) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      if (!entry) return;
+      setCarouselAreaHeight(entry.contentRect.height);
+    });
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   if (!isCarouselEnabled) {
     return (
-      <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
-        <TournamentItemBasket basketIndex={0} items={items} />
+      <div
+        ref={carouselAreaRef}
+        className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5"
+      >
+        <TournamentItemBasket basketIndex={0} items={items} maxHeight={carouselAreaHeight} />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4">
+    <div
+      ref={carouselAreaRef}
+      className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-2"
+    >
       <Carousel
         key={activeBasketCount}
         className={cn('relative w-full', !carouselApi && 'invisible')}
@@ -91,15 +113,19 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
         opts={{ loop: false, align: 'center', containScroll: false }}
       >
         <CarouselContent className="ml-0 w-full">
-          {Array.from({ length: activeBasketCount }, (_, i) => (
+          {Array.from({ length: activeBasketCount }, (_, basketIndex) => (
             <CarouselItem
-              key={i}
-              className="shrink-0 grow-0 pl-0"
+              key={basketIndex}
+              className="flex min-w-0 shrink-0 grow-0 items-center justify-center pl-0"
               style={{ flex: `0 0 ${BASKET_CAROUSEL_SLIDE_SIZE_PERCENT}%` }}
             >
               <TournamentItemBasket
-                basketIndex={i}
-                items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
+                basketIndex={basketIndex}
+                items={items.slice(
+                  basketIndex * ITEMS_PER_BASKET,
+                  (basketIndex + 1) * ITEMS_PER_BASKET
+                )}
+                maxHeight={basketMaxHeight}
               />
             </CarouselItem>
           ))}

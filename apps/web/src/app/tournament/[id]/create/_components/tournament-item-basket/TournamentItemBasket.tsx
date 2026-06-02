@@ -18,11 +18,13 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 type TournamentItemBasketProps = {
   basketIndex: number;
   items: TournamentItemT[];
+  maxHeight?: number;
 };
 
-function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
+function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
   const { id: _tournamentId } = useParams<{ id: string }>();
   const tournamentId = parseIdParam(_tournamentId);
+  const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
   const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
 
@@ -36,7 +38,10 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
   };
 
   return (
-    <div className="relative mx-auto aspect-356/464 w-full">
+    <div
+      className="relative mx-auto aspect-356/464 w-full max-w-full"
+      {...(basketMaxWidth ? { style: { maxWidth: basketMaxWidth } } : {})}
+    >
       <Image
         src={basketImg}
         alt={`장바구니 ${basketIndex + 1}`}
