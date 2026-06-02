@@ -1,21 +1,32 @@
 'use client';
 
+import { Dialog } from '@/components/common/dialog';
+import GetItemDialogContent from '@/components/common/get-item-dialog';
+import { QUERY_ACTION } from '@/consts/queryAction';
+import { useQueryAction } from '@/hooks/useQueryAction';
+
 import { useGetTournament } from '../_hooks/useGetTournament';
-import InviteFriends from './inviteFriends/InviteFriends';
-import TournamentHeader from './tournamentHeader/TournamentHeader';
-import TournamentItemBasketCarousel from './tournamentItemBasket/TournamentItemBasketCarousel';
-import TournamentItemBasketStatus from './tournamentItemBasketStatus/TournamentItemBasketStatus';
-import TournamentStartButton from './tournamentStartButton/TournamentStartButton';
+import { useScrollToLast } from '../_hooks/useScrollToLast';
+import InviteFriends from './invite-friends/InviteFriends';
+import TournamentHeader from './tournament-header/TournamentHeader';
+import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
+import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
+import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 
 type TournamentCreateClientProps = {
   tournamentId: string;
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
+  const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(Number(tournamentId));
 
+  const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
+    action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
+  });
+
   return (
-    <div className="flex h-dvh min-h-0 flex-col bg-bg-layer-basement pt-20 pb-8">
+    <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-20 pb-8">
       <div className="space-y-4 px-5">
         <TournamentHeader name={tournamentData.name} />
         <InviteFriends />
@@ -27,7 +38,11 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
+      <TournamentItemBasketCarousel
+        items={tournamentData.pending?.items}
+        scrollToLast={scrollToLast}
+        onScrolled={onScrolled}
+      />
 
       <div className="shrink-0 px-5">
         <TournamentStartButton
@@ -40,6 +55,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           }
         />
       </div>
+
+      <Dialog open={isGetItemDialogOpen} onOpenChange={setIsGetItemDialogOpen}>
+        <GetItemDialogContent type="tournament" />
+      </Dialog>
     </div>
   );
 }

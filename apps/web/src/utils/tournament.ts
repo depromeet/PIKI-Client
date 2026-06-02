@@ -1,4 +1,4 @@
-import type { TournamentT } from '@/app/home/_types/tournament';
+import type { TournamentT } from '@/types/tournament';
 
 export const parseTournamentId = (id: string): TournamentT['tournamentId'] | null => {
   const numberId = Number(id);

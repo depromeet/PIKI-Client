@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getQueryClient } from '@/utils/queryClient';
@@ -20,7 +22,9 @@ async function TournamentCreatePage({ params }: TournamentCreatePageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TournamentCreateClient tournamentId={tournamentId} />
+      <Suspense>
+        <TournamentCreateClient tournamentId={tournamentId} />
+      </Suspense>
     </HydrationBoundary>
   );
 }
