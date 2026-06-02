@@ -47,10 +47,10 @@ function TournamentItemBasketCarousel({
   }, [activeBasketCount]);
 
   const { ref: containerRef, height: containerHeight } = useContainerHeight();
-  const indicatorRef = useRef<HTMLDivElement>(null);
+  const { ref: indicatorRef, height: indicatorHeight } = useContainerHeight();
   const gap = isCarouselEnabled ? 16 : 0;
-  const indicatorHeight = indicatorRef.current?.clientHeight ?? 0;
-  const basketMaxHeight = containerHeight ? containerHeight - indicatorHeight - gap : undefined;
+  const basketMaxHeight =
+    containerHeight != null ? containerHeight - (indicatorHeight ?? 0) - gap : null;
 
   if (!isCarouselEnabled) {
     return (

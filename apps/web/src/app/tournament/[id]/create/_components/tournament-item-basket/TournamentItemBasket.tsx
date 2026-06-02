@@ -18,7 +18,7 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 type TournamentItemBasketProps = {
   basketIndex: number;
   items: TournamentItemT[];
-  maxHeight?: number;
+  maxHeight?: number | null;
 };
 
 function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
