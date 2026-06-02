@@ -2,6 +2,8 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import { toast } from 'sonner';
+
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
@@ -27,8 +29,16 @@ function TournamentItemBasketCarousel({ items = [], scrollToLast = false, onScro
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
 
   const prevItemCountRef = useRef(scrollToLast ? 0 : items.length);
+  const prevBasketCountRef = useRef(activeBasketCount);
 
   const isCarouselEnabled = activeBasketCount > 1;
+
+  useEffect(() => {
+    if (activeBasketCount > prevBasketCountRef.current) {
+      toast.info('카트가 꽉 찼어요! 새 카트를 만들었어요.');
+    }
+    prevBasketCountRef.current = activeBasketCount;
+  }, [activeBasketCount]);
 
   /** 담기 완료 시 마지막 아이템이 있는 바구니로 이동 (링크 담기: 실시간 / 위시 담기: 페이지 재진입) */
   useEffect(() => {
