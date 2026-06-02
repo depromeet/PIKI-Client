@@ -47,10 +47,9 @@ function EditContent({ tournamentId, tournamentItemId }: EditContentProps) {
           initialPrice={tournamentItemData.status === 'READY' ? tournamentItemData.price : 0}
         />
 
-        {/** TODO: 아이템 원본 링크 있는 경우에만 표시할 수 있게 수정 필요 */}
-        {/* {tournamentItemData.status === 'READY' && (
-          <ItemLinkBanner href={tournamentItemData.imageUrl} />
-        )} */}
+        {tournamentItemData.status === 'READY' && tournamentItemData.sourceUrl && (
+          <ItemLinkBanner href={tournamentItemData.sourceUrl} />
+        )}
       </main>
     </div>
   );
