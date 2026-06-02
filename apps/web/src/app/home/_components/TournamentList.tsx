@@ -2,8 +2,7 @@
 
 import TournamentCard from '@/components/common/tournament-card';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
-
-import { useGetTournamentList } from '../_hooks/useGetTournamentList';
+import { useGetTournamentList } from '@/hooks/useGetTournamentList';
 
 // TODO: 백엔드가 정식 프사 처리 도입 시 imageUrl 반영
 const toUsers = (imageUrls: string[]): UserT[] =>

@@ -1,6 +1,7 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { Suspense } from 'react';
 
+import { getTournamentList } from '@/apis/getTournamentList';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getWishlist } from './_apis/getWishlist';
@@ -29,8 +30,11 @@ async function WishlistPage({ searchParams }: WishlistPageProps) {
       queryKey: ['wishlists'],
       queryFn: getWishlist,
     });
-  }
-  // TODO: if (activeTab === '토너먼트 기록') await prefetch tournamentHistory; // API 생기면
+  } else if (activeTab === '토너먼트 기록')
+    await queryClient.prefetchQuery({
+      queryKey: ['tournamentList', []],
+      queryFn: () => getTournamentList(),
+    });
 
   return (
     <WishlistLayout>
