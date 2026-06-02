@@ -2,6 +2,8 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
@@ -19,16 +21,21 @@ type TournamentItemBasketCarouselProps = {
 };
 
 function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarouselProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
 
-  const prevItemCountRef = useRef(items.length);
+  const scrollToLastOnMount = searchParams.get('scrollToLast') === 'true';
+  const prevItemCountRef = useRef(scrollToLastOnMount ? 0 : items.length);
 
   const isCarouselEnabled = activeBasketCount > 1;
 
-  /** 담기 완료 시 마지막 아이템이 있는 바구니로 이동 */
+  /** 담기 완료 시 마지막 아이템이 있는 바구니로 이동 (링크 담기: 실시간 / 위시 담기: 페이지 재진입) */
   useEffect(() => {
     if (!isCarouselEnabled) {
       prevItemCountRef.current = items.length;
@@ -37,13 +44,19 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
 
     if (!carouselApi) return;
 
-    const prevCount = prevItemCountRef.current;
-    if (items.length > prevCount) {
+    if (items.length > prevItemCountRef.current) {
       carouselApi.scrollTo(getBasketIndexForLastItem(items.length));
+
+      if (scrollToLastOnMount) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete('scrollToLast');
+        const qs = params.toString();
+        router.replace(qs ? `${pathname}?${qs}` : pathname);
+      }
     }
 
     prevItemCountRef.current = items.length;
-  }, [items.length, carouselApi, isCarouselEnabled]);
+  }, [carouselApi, isCarouselEnabled, items.length, scrollToLastOnMount, searchParams, router, pathname]);
 
   /** 초기 이미지 위치 틀어짐 방지 */
   useLayoutEffect(() => {
