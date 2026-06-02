@@ -1,4 +1,11 @@
 export const ENDPOINTS = {
+  /** 인증 */
+  AUTH_URL: (provider: string) => `/api/v1/auth/${provider}/url`,
+  AUTH_LOGIN: (provider: string) => `/api/v1/auth/login/${provider}`,
+  AUTH_GUEST: '/api/v1/auth/guest',
+  AUTH_LOGOUT: '/api/v1/auth/logout',
+  AUTH_TOKEN_REFRESH: '/api/v1/auth/token/refresh',
+
   /** 위시리스트 */
   WISHLISTS: '/api/v1/wishlists',
   WISHLIST: (id: number) => `/api/v1/wishlists/${id}`,
