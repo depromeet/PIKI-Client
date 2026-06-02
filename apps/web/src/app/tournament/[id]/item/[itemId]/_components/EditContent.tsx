@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 
 import { useGetTournamentItem } from '../_hooks/useGetTournamentItem';
 import ItemEditForm from './ItemEditForm';
+import ItemLinkBanner from './ItemLinkBanner';
 
 type EditContentProps = {
   tournamentId: number;
