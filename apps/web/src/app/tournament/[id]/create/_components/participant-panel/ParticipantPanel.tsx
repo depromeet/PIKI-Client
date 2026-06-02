@@ -48,7 +48,7 @@ function ParticipantPanel({ participants, inviteUrl }: ParticipantPanelProps) {
             <UserProfileGroup users={users} max={3} />
             <p className="truncate body-1-semibold text-text-neutral-primary">{label}</p>
           </div>
-          <ChevronIcon className="size-6 shrink-0 text-gray-300" />
+          <ChevronIcon className="size-6 shrink-0 text-icon-neutral-secondary" />
         </button>
 
         {isExpanded && (
@@ -62,7 +62,7 @@ function ParticipantPanel({ participants, inviteUrl }: ParticipantPanelProps) {
               className="inline-flex size-9 cursor-pointer items-center justify-center rounded-full border border-border-neutral-muted bg-bg-layer-default"
               aria-label="친구 초대하기"
             >
-              <AddIconOutline className="size-4 text-text-neutral-secondary" />
+              <AddIconOutline className="size-4 text-icon-neutral-primary" />
             </button>
           </div>
         )}

@@ -26,7 +26,7 @@ function InviteFriends() {
             <p className="body-1-semibold">친구와 함께 담아보세요</p>
           </div>
         </div>
-        <AddIconOutline className="h-6 w-6 text-gray-300" />
+        <AddIconOutline className="h-6 w-6 text-icon-neutral-secondary" />
       </button>
 
       <InviteFriendsDialog
