@@ -41,6 +41,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       mobileOffset={{ bottom: TOAST_OFFSET }}
       toastOptions={{
         classNames: {
+          toast: '!border-none',
           title: '!body-2-semibold',
           icon: '!size-6 !ml-0 !mr-0',
         },
