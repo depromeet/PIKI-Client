@@ -2,8 +2,6 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
@@ -18,20 +16,17 @@ import TournamentItemBasket from './TournamentItemBasket';
 
 type TournamentItemBasketCarouselProps = {
   items?: TournamentItemT[];
+  scrollToLast?: boolean;
+  onScrolled?: () => void;
 };
 
-function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarouselProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
+function TournamentItemBasketCarousel({ items = [], scrollToLast = false, onScrolled }: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
 
-  const scrollToLastOnMount = searchParams.get('scrollToLast') === 'true';
-  const prevItemCountRef = useRef(scrollToLastOnMount ? 0 : items.length);
+  const prevItemCountRef = useRef(scrollToLast ? 0 : items.length);
 
   const isCarouselEnabled = activeBasketCount > 1;
 
@@ -46,17 +41,11 @@ function TournamentItemBasketCarousel({ items = [] }: TournamentItemBasketCarous
 
     if (items.length > prevItemCountRef.current) {
       carouselApi.scrollTo(getBasketIndexForLastItem(items.length));
-
-      if (scrollToLastOnMount) {
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete('scrollToLast');
-        const qs = params.toString();
-        router.replace(qs ? `${pathname}?${qs}` : pathname);
-      }
+      onScrolled?.();
     }
 
     prevItemCountRef.current = items.length;
-  }, [carouselApi, isCarouselEnabled, items.length, scrollToLastOnMount, searchParams, router, pathname]);
+  }, [carouselApi, isCarouselEnabled, items.length, onScrolled]);
 
   /** 초기 이미지 위치 틀어짐 방지 */
   useLayoutEffect(() => {

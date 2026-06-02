@@ -1,8 +1,7 @@
 'use client';
 
-import { Suspense } from 'react';
-
 import { useGetTournament } from '../_hooks/useGetTournament';
+import { useScrollToLast } from '../_hooks/useScrollToLast';
 import InviteFriends from './invite-friends/InviteFriends';
 import TournamentHeader from './tournament-header/TournamentHeader';
 import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
@@ -14,6 +13,7 @@ type TournamentCreateClientProps = {
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
+  const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(Number(tournamentId));
 
   return (
@@ -29,9 +29,11 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <Suspense>
-        <TournamentItemBasketCarousel items={tournamentData.pending?.items} />
-      </Suspense>
+      <TournamentItemBasketCarousel
+        items={tournamentData.pending?.items}
+        scrollToLast={scrollToLast}
+        onScrolled={onScrolled}
+      />
 
       <div className="shrink-0 px-5">
         <TournamentStartButton
