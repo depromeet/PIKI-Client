@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Button from '@/components/common/button';
 import Spinner from '@/components/common/spinner';
 
+import { useGetTournament } from '../../_hooks/useGetTournament';
 import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 import ConfirmStartDialog from './ConfirmStartDialog';
 
@@ -12,19 +13,20 @@ type TournamentStartButtonProps = {
   count: number;
   tournamentId: string;
   hasUnreadyItem: boolean;
-  hasFriends: boolean;
 };
 
 function TournamentStartButton({
   count,
   tournamentId,
   hasUnreadyItem,
-  hasFriends,
 }: TournamentStartButtonProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { tournamentData } = useGetTournament(Number(tournamentId));
   const { postTournamentStartMutation, isPostTournamentStartPending } = usePostTournamentStart(
     Number(tournamentId)
   );
+
+  const hasFriends = (tournamentData.pending?.participants.length ?? 0) > 1;
 
   const startTournament = () => postTournamentStartMutation();
 

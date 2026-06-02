@@ -63,7 +63,6 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
               item => item.status === 'PROCESSING' || item.status === 'FAILED'
             ) ?? false
           }
-          hasFriends={MOCK_PARTICIPANTS.length > 1}
         />
       </div>
 
