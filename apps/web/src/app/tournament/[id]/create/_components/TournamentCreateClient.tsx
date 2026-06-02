@@ -1,11 +1,11 @@
 'use client';
 
 import { useGetTournament } from '../_hooks/useGetTournament';
-import InviteFriends from './inviteFriends/InviteFriends';
-import TournamentHeader from './tournamentHeader/TournamentHeader';
-import TournamentItemBasketCarousel from './tournamentItemBasket/TournamentItemBasketCarousel';
-import TournamentItemBasketStatus from './tournamentItemBasketStatus/TournamentItemBasketStatus';
-import TournamentStartButton from './tournamentStartButton/TournamentStartButton';
+import InviteFriends from './invite-friends/InviteFriends';
+import TournamentHeader from './tournament-header/TournamentHeader';
+import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
+import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
+import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 
 type TournamentCreateClientProps = {
   tournamentId: string;
