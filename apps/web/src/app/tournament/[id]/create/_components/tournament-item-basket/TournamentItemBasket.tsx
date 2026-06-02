@@ -50,7 +50,7 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
         className="object-contain"
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative grid grid-cols-2 gap-x-6 gap-y-5">
+        <div className="relative grid w-[45%] grid-cols-2 gap-x-6 gap-y-5">
           {Array.from({ length: ITEMS_PER_BASKET }, (_, slotIndex) => {
             const item = items[slotIndex];
             if (item)
