@@ -132,6 +132,9 @@
   --color-border-neutral-muted: var(--color-gray-100);
 
   --color-icon-accent: var(--color-blue-500);
+
+  /** User Accent Color */
+  --color-uac-light: #0A7AFF;
   --color-icon-warning: var(--color-yellow-600);
   --color-icon-error: var(--color-red-600);
   --color-icon-success: var(--color-green-600);
