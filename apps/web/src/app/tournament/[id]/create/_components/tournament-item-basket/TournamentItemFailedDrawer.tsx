@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import WarningIconFill from '@/assets/icons/outline/warning.svg';
+import { WarningIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import {
   Dialog,

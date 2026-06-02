@@ -15,7 +15,7 @@ export const usePostTournamentItemsByWish = (tournamentId: number) => {
     mutationFn: (itemIds: number[]) => postTournamentItemsByWish(tournamentId, { itemIds }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournament', tournamentId] });
-      router.push(`/tournament/${tournamentId}/create`);
+      router.push(`/tournament/${tournamentId}/create?scrollToLast=true`);
     },
     onError: () => {
       toast.error('위시템 추가에 실패했어요. 잠시 후 다시 시도해주세요.');

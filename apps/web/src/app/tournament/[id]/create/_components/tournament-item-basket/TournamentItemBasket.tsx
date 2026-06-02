@@ -4,12 +4,13 @@ import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import Button from '@/components/common/button';
+import { Dialog, DialogTrigger } from '@/components/common/dialog';
+import GetItemDialogContent from '@/components/common/get-item-dialog';
 import type { TournamentItemT } from '@/types/tournament';
 import { parseIdParam } from '@/utils/parseIdParam';
 
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
-import AddWishDialog from '../addWishDialog/AddWishDialog';
 import EmptyBasketSlot from './EmptyBasketSlot';
 import TournamentBasketItem from './TournamentBasketItem';
 import TournamentItemFailedModal from './TournamentItemFailedDrawer';
@@ -17,11 +18,13 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 type TournamentItemBasketProps = {
   basketIndex: number;
   items: TournamentItemT[];
+  maxHeight?: number;
 };
 
-function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps) {
+function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
   const { id: _tournamentId } = useParams<{ id: string }>();
   const tournamentId = parseIdParam(_tournamentId);
+  const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
   const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
 
@@ -35,7 +38,10 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
   };
 
   return (
-    <div className="relative mx-auto aspect-356/464 w-full">
+    <div
+      className="relative mx-auto aspect-356/464 w-full max-w-full"
+      {...(basketMaxWidth ? { style: { maxWidth: basketMaxWidth } } : {})}
+    >
       <Image
         src={basketImg}
         alt={`장바구니 ${basketIndex + 1}`}
@@ -58,8 +64,9 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
               );
             return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
           })}
-          <AddWishDialog
-            trigger={
+
+          <Dialog>
+            <DialogTrigger asChild>
               <Button
                 icon="only"
                 aria-label="위시 아이템 추가"
@@ -67,8 +74,9 @@ function TournamentItemBasket({ basketIndex, items }: TournamentItemBasketProps)
               >
                 <AddIcon width={32} height={32} className="text-white" aria-hidden />
               </Button>
-            }
-          />
+            </DialogTrigger>
+            <GetItemDialogContent type="tournament" />
+          </Dialog>
         </div>
       </div>
       {failedItem && tournamentId && (

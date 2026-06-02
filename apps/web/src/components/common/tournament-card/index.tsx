@@ -1,28 +1,29 @@
-import { ThreeDotHorizontalIconFill } from '@/assets/icons';
-import StateChip from '@/components/common/state-chip';
+import StatusChip from '@/components/common/status-chip';
 import UserProfileGroup from '@/components/common/user-profile-group';
 import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
 import type { TournamentStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
+import MorePopover from './MorePopover';
+
 type TournamentCardProps = {
-  state: TournamentStatusT;
+  tournamentId: number;
+  status: TournamentStatusT;
   name: string;
   date: string;
   users: UserT[];
   maxProfiles?: number;
   className?: string;
-  onMore?: () => void;
 };
 
 function TournamentCard({
-  state,
+  tournamentId,
+  status,
   name,
   date,
   users,
   maxProfiles = 3,
   className,
-  onMore,
 }: TournamentCardProps) {
   return (
     <article
@@ -33,12 +34,10 @@ function TournamentCard({
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <StateChip state={state} />
+          <StatusChip status={status} />
           <h3 className="heading-1 text-text-neutral-primary">{name}</h3>
         </div>
-        <button type="button" aria-label="더보기" onClick={onMore}>
-          <ThreeDotHorizontalIconFill className="size-6 text-icon-neutral-secondary" />
-        </button>
+        <MorePopover status={status} tournamentId={tournamentId} />
       </div>
       <div className="flex items-end justify-between">
         <span className="body-2-medium text-text-neutral-tertiary">{date}</span>

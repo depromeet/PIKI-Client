@@ -53,9 +53,8 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
         },
         onSuccess: () => {
           router.push('/wishlist');
-          toast.success('위시에 상품을 담았어요', {
-            classNames: { toast: '!bottom-[122px]' },
-          });
+          // 라우팅 완료 후 토스트 노출 (페이지 전환 중 토스트가 잠깐 떴다 사라지는 것 방지)
+          setTimeout(() => toast.success('위시에 상품을 담았어요'), 100);
         },
       });
     else
@@ -72,8 +71,13 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
     if (hasError) setHasError(false);
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) resetState();
+    onOpenChange(nextOpen);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col gap-5 rounded-3xl">
         <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           링크로 담기

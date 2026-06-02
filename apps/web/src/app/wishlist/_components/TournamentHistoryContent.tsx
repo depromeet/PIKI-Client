@@ -1,17 +1,50 @@
+'use client';
+
 import TrophyIconFill from '@/assets/icons/fill/trophy.svg';
 import BottomTabBar from '@/components/common/bottom-tab-bar';
+import TournamentCard from '@/components/common/tournament-card';
+import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import { useGetTournamentList } from '@/hooks/useGetTournamentList';
+
+// TODO: 백엔드가 정식 프사 처리 도입 시 imageUrl 반영
+const toUsers = (imageUrls: string[]): UserT[] =>
+  imageUrls.map((_, index) => ({
+    id: index,
+    profileType: index % 2 === 0 ? 'blue' : 'yellow',
+  }));
 
 function TournamentHistoryContent() {
+  const { tournamentListData } = useGetTournamentList();
+
+  if (tournamentListData.length === 0) {
+    return (
+      <>
+        <main className="flex flex-1 flex-col items-center justify-center gap-3 pb-24">
+          <TrophyIconFill width={32} height={32} className="text-gray-200" />
+          <p className="body-1-semibold text-text-neutral-tertiary">
+            아직 진행한 토너먼트가 없어요
+          </p>
+        </main>
+        <div className="fixed bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+          <BottomTabBar />
+        </div>
+      </>
+    );
+  }
+
   return (
-    <>
-      <main className="flex flex-1 flex-col items-center justify-center gap-3 pb-24">
-        <TrophyIconFill width={32} height={32} className="text-gray-200" />
-        <p className="body-1-semibold text-text-neutral-tertiary">아직 진행한 토너먼트가 없어요</p>
-      </main>
-      <div className="fixed bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
-        <BottomTabBar />
-      </div>
-    </>
+    <main className="hide-scrollbar flex flex-1 flex-col gap-3 overflow-y-auto pb-24">
+      {tournamentListData.map(tournament => (
+        <TournamentCard
+          key={tournament.tournamentId}
+          tournamentId={tournament.tournamentId}
+          status={tournament.status}
+          name={tournament.name}
+          date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
+          users={toUsers(tournament.participantProfileImages)}
+        />
+      ))}
+    </main>
   );
 }
 
