@@ -4,6 +4,13 @@ import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 import { AlertIconFill, CheckCircledIconFill, WarningIconFill } from '@/assets/icons/fill';
 
+/**
+ * 토스트 하단 offset.
+ * sonner의 `offset` prop은 데스크탑/모바일 둘 다 동일하게 적용되어,
+ * `mobileOffset`과 별개로 컨테이너 기본 위치를 제어한다.
+ */
+const TOAST_OFFSET = '90px';
+
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
@@ -23,17 +30,17 @@ const Toaster = ({ ...props }: ToasterProps) => {
           '--normal-bg': 'var(--color-gray-500)',
           '--normal-text': 'var(--color-text-neutral-inverse)',
           '--border-radius': 'var(--radius-xl)',
+          // sonner 컨테이너 width 변수 — 토스트 카드 폭을 결정 (기본 356px)
+          // 앱 max-w-120(480px)에서 좌우 20px 여백 제외한 값
+          '--width': '440px',
         } as React.CSSProperties
       }
       position="bottom-center"
-      mobileOffset={{
-        bottom: '90px',
-        left: '20px',
-        right: '20px',
-      }}
+      // 데스크탑/모바일 동일하게 적용
+      offset={{ bottom: TOAST_OFFSET }}
+      mobileOffset={{ bottom: TOAST_OFFSET }}
       toastOptions={{
         classNames: {
-          toast: '!gap-2 !border-none',
           title: '!body-2-semibold',
           icon: '!size-6 !ml-0 !mr-0',
         },
