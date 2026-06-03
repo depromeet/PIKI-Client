@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Dialog } from '@/components/common/dialog';
 import GetItemDialogContent from '@/components/common/get-item-dialog';
@@ -9,7 +9,10 @@ import { useQueryAction } from '@/hooks/useQueryAction';
 import { MOCK_DEPOSIT_DURATION_MS } from '@/mocks/deposit';
 import { MOCK_PARTICIPANTS } from '@/mocks/participants';
 
-import { consumeJoinWelcome, type JoinWelcomePayloadT } from '../../../join/_utils/joinSession';
+import {
+  consumeJoinWelcomeFor,
+  type JoinWelcomePayloadT,
+} from '../../../join/_utils/joinSession';
 import { useGetTournament } from '../_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import DepositCountdown from './deposit-countdown/DepositCountdown';
@@ -25,19 +28,17 @@ type TournamentCreateClientProps = {
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
+  const numericTournamentId = Number(tournamentId);
   const { scrollToLast, onScrolled } = useScrollToLast();
-  const { tournamentData } = useGetTournament(Number(tournamentId));
+  const { tournamentData } = useGetTournament(numericTournamentId);
   const [depositDeadline] = useState(() => Date.now() + MOCK_DEPOSIT_DURATION_MS);
-  const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(null);
+  const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
+    consumeJoinWelcomeFor(numericTournamentId)
+  );
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
   });
-
-  useEffect(() => {
-    const payload = consumeJoinWelcome();
-    if (payload) setWelcomePayload(payload);
-  }, []);
 
   const handleCloseWelcome = () => setWelcomePayload(null);
 

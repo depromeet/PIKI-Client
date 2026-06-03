@@ -44,6 +44,7 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
         return;
       }
       setJoinWelcome({
+        tournamentId: target.tournamentId,
         nickname: trimmedNickname,
         profileType: DEFAULT_RANDOM_NICKNAME.profileType,
       });
