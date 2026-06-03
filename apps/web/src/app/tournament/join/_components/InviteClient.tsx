@@ -33,9 +33,14 @@ function InviteClient() {
 
   return (
     <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-8">
-      <Header left={<HeaderIcon name="BACK" />} center="코드 입력하기" className="px-5" />
+      <Header
+        left={<HeaderIcon name="BACK" />}
+        center="코드 입력하기"
+        centerClassName="heading-1 text-text-neutral-primary"
+        className="px-5"
+      />
 
-      <section className="mt-8 flex flex-col gap-2 px-5">
+      <section className="mt-8.75 flex flex-col gap-2 px-5">
         <Input
           label="초대 코드"
           placeholder="초대 코드 6글자를 입력해주세요."
