@@ -30,7 +30,6 @@ const processQueue = (error: unknown) => {
 
 export const clientApi = axios.create({
   withCredentials: true,
-  headers: { 'X-Client-Type': 'web' },
 });
 
 clientApi.interceptors.request.use(config => {
