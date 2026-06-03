@@ -7,7 +7,7 @@ import HomeIconFill from '@/assets/icons/fill/home.svg';
 
 const TABS = [
   { label: '홈', icon: HomeIconFill, href: '/home' },
-  { label: '보관', icon: HeartIconFill, href: '/wishlist' },
+  { label: '보관', icon: HeartIconFill, href: '/archive' },
 ] as const;
 
 function BottomTabBar() {

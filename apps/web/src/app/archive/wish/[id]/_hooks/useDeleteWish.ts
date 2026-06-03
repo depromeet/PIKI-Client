@@ -16,7 +16,7 @@ export const useDeleteWish = (wishId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
       queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
-      router.replace(`/wishlist`);
+      router.replace(`/archive`);
     },
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;

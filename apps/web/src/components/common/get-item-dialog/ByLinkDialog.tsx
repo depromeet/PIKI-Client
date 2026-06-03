@@ -52,7 +52,7 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
           resetState();
         },
         onSuccess: () => {
-          router.push('/wishlist');
+          router.push('/archive');
           // 라우팅 완료 후 토스트 노출 (페이지 전환 중 토스트가 잠깐 떴다 사라지는 것 방지)
           setTimeout(() => toast.success('위시에 상품을 담았어요'), 100);
         },

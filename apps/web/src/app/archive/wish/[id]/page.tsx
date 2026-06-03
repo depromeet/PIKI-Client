@@ -35,7 +35,7 @@ async function WishEditPage({ params }: WishEditPageProps) {
       /** 토너먼트 권한 없는 경우 */
       if (status === 403) redirect('/home');
       /** 토너먼트 or 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
-        redirect(`/wishlist`);
+        redirect(`/archive`);
     }
   }
 
@@ -43,7 +43,7 @@ async function WishEditPage({ params }: WishEditPageProps) {
   const wishData = queryClient.getQueryData<GetWishResponseT>(GET_WISH_QUERY_KEY);
   if (wishData?.item.status === 'PROCESSING') {
     // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
-    redirect(`/wishlist`);
+    redirect(`/archive`);
   }
 
   return (

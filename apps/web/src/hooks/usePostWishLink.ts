@@ -18,7 +18,7 @@ export const usePostWishLink = () => {
     mutationFn: (url: string) => postWishLink(url),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
-      router.push('/wishlist');
+      router.push('/archive');
     },
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;

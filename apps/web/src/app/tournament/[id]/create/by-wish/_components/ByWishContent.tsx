@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { useGetWishlist } from '@/app/wishlist/_hooks/useGetWishlist';
+import { useGetWishlist } from '@/app/archive/_hooks/useGetWishlist';
 import Button from '@/components/common/button';
 
 import { useGetTournament } from '../../_hooks/useGetTournament';
