@@ -10,12 +10,15 @@ import { MOCK_DEPOSIT_DURATION_MS } from '@/mocks/deposit';
 import { MOCK_PARTICIPANTS } from '@/mocks/participants';
 
 import {
+  consumeJoinConfirmFor,
   consumeJoinWelcomeFor,
+  type JoinConfirmPayloadT,
   type JoinWelcomePayloadT,
 } from '../../../join/_utils/joinSession';
 import { useGetTournament } from '../_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import DepositCountdown from './deposit-countdown/DepositCountdown';
+import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
 import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
@@ -35,12 +38,16 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
     consumeJoinWelcomeFor(numericTournamentId)
   );
+  const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
+    consumeJoinConfirmFor(numericTournamentId)
+  );
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
   });
 
   const handleCloseWelcome = () => setWelcomePayload(null);
+  const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
     <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-20 pb-8">
@@ -90,6 +97,21 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           nickname={welcomePayload.nickname}
           profileType={welcomePayload.profileType}
           onConfirm={handleCloseWelcome}
+        />
+      )}
+
+      {confirmPayload && (
+        <MemberJoinConfirmDialog
+          open
+          onOpenChange={open => {
+            if (!open) handleCloseConfirm();
+          }}
+          nickname={confirmPayload.nickname}
+          profileType={confirmPayload.profileType}
+          tournamentName={confirmPayload.tournamentName}
+          itemCount={confirmPayload.itemCount}
+          participantCount={confirmPayload.participantCount}
+          onConfirm={handleCloseConfirm}
         />
       )}
     </div>
