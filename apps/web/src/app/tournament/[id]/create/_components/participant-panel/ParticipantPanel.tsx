@@ -36,12 +36,15 @@ function ParticipantPanel({ participants, inviteUrl }: ParticipantPanelProps) {
   const label = getCollapsedLabel(participants);
   const users = participants.map(p => p.user);
 
+  const handleToggleExpand = () => setIsExpanded(prev => !prev);
+  const handleOpenInvite = () => setIsInviteDialogOpen(true);
+
   return (
     <>
       <div className="flex w-full flex-col gap-3 rounded-xl bg-base-50 px-4 py-3">
         <button
           type="button"
-          onClick={() => setIsExpanded(prev => !prev)}
+          onClick={handleToggleExpand}
           className="flex w-full cursor-pointer items-center justify-between gap-3"
         >
           <div className="flex min-w-0 items-center gap-4">
@@ -58,7 +61,7 @@ function ParticipantPanel({ participants, inviteUrl }: ParticipantPanelProps) {
             ))}
             <button
               type="button"
-              onClick={() => setIsInviteDialogOpen(true)}
+              onClick={handleOpenInvite}
               className="inline-flex size-9 cursor-pointer items-center justify-center rounded-full border border-border-neutral-muted bg-bg-layer-default"
               aria-label="친구 초대하기"
             >
