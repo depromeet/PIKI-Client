@@ -28,7 +28,7 @@ function InviteClient() {
       setHasError(true);
       return;
     }
-    router.push(`/tournament/invite/${result.tournamentId}`);
+    router.push(`/tournament/join/${result.tournamentId}`);
   };
 
   return (
