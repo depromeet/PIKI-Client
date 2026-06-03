@@ -2,14 +2,18 @@
 
 import { notFound, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
+import { getTournamentList } from '@/apis/getTournamentList';
 import { EditIconFill } from '@/assets/icons/fill';
 import Button from '@/components/common/button';
 import { Header } from '@/components/common/header';
 import Input from '@/components/common/input';
+import Spinner from '@/components/common/spinner';
 import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';
+import { setJoinWelcome } from '../../_utils/joinSession';
 
 type JoinPreviewClientProps = {
   tournamentId: number | null;
@@ -20,15 +24,34 @@ const MAX_NICKNAME_LENGTH = 12;
 function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
   const router = useRouter();
   const [nickname, setNickname] = useState(DEFAULT_RANDOM_NICKNAME.nickname);
+  const [isJoining, setIsJoining] = useState(false);
 
   if (tournamentId === null) notFound();
 
   const trimmedNickname = nickname.trim();
-  const isComplete = trimmedNickname.length > 0;
+  const isComplete = trimmedNickname.length > 0 && !isJoining;
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!isComplete) return;
-    router.push(`/tournament/${tournamentId}/create`);
+    setIsJoining(true);
+
+    try {
+      const list = await getTournamentList(['PENDING', 'IN_PROGRESS']);
+      const target = list?.[0];
+      if (!target) {
+        toast.warning('참여 가능한 토너먼트를 찾지 못했어요.');
+        setIsJoining(false);
+        return;
+      }
+      setJoinWelcome({
+        nickname: trimmedNickname,
+        profileType: DEFAULT_RANDOM_NICKNAME.profileType,
+      });
+      router.push(`/tournament/${target.tournamentId}/create`);
+    } catch {
+      toast.warning('잠시 후 다시 시도해주세요.');
+      setIsJoining(false);
+    }
   };
 
   return (
@@ -62,7 +85,7 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
 
       <div className="mt-auto px-5">
         <Button size="lg" variant="primary" disabled={!isComplete} onClick={handleConfirm}>
-          참여하기
+          {isJoining ? <Spinner size={20} /> : '참여하기'}
         </Button>
       </div>
     </main>
