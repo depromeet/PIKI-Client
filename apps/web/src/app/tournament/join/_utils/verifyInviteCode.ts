@@ -2,7 +2,7 @@ type VerifyInviteCodeResultT = { ok: true; tournamentId: number } | { ok: false 
 
 export const CODE_LENGTH = 6;
 
-const VALID_INVITE_CODE = 'ab123c';
+const VALID_INVITE_CODE = '111111';
 const MOCK_TOURNAMENT_ID = 1;
 
 /**
