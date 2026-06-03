@@ -42,7 +42,7 @@ function InviteClient() {
           value={code}
           onChange={event => handleChange(event.target.value)}
           aria-invalid={hasError}
-          {...(hasError ? { helperText: '코드가 올바르지 않아요. 다시 입력해주세요.' } : {})}
+          {...(hasError ? { helperText: '초대 코드가 존재하지 않습니다.' } : {})}
           autoFocus
           maxLength={CODE_LENGTH}
           autoCapitalize="off"
