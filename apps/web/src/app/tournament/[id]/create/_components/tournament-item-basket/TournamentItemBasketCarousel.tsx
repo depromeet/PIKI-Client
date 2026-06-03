@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import type { TournamentItemT } from '@/types/tournament';
@@ -124,4 +124,4 @@ function TournamentItemBasketCarousel({
   );
 }
 
-export default TournamentItemBasketCarousel;
+export default memo(TournamentItemBasketCarousel);
