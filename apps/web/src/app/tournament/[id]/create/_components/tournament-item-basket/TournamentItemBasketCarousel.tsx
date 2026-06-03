@@ -18,12 +18,14 @@ type TournamentItemBasketCarouselProps = {
   items?: TournamentItemT[];
   scrollToLast?: boolean;
   onScrolled?: () => void;
+  isDepositClosed?: boolean;
 };
 
 function TournamentItemBasketCarousel({
   items = [],
   scrollToLast = false,
   onScrolled,
+  isDepositClosed = false,
 }: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -83,7 +85,7 @@ function TournamentItemBasketCarousel({
   if (!isCarouselEnabled) {
     return (
       <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
-        <TournamentItemBasket basketIndex={0} items={items} />
+        <TournamentItemBasket basketIndex={0} items={items} isDepositClosed={isDepositClosed} />
       </div>
     );
   }
@@ -106,6 +108,7 @@ function TournamentItemBasketCarousel({
               <TournamentItemBasket
                 basketIndex={i}
                 items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
+                isDepositClosed={isDepositClosed}
               />
             </CarouselItem>
           ))}

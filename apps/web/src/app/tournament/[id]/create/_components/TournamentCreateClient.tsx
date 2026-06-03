@@ -15,6 +15,7 @@ import {
   type JoinConfirmPayloadT,
   type JoinWelcomePayloadT,
 } from '../../../join/_utils/joinSession';
+import { useCountdown } from '../_hooks/useCountdown';
 import { useGetTournament } from '../_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import DepositCountdown from './deposit-countdown/DepositCountdown';
@@ -35,6 +36,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(numericTournamentId);
   const [depositDeadline] = useState(() => Date.now() + MOCK_DEPOSIT_DURATION_MS);
+  const { isExpired: isDepositClosed } = useCountdown(depositDeadline);
   const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
     consumeJoinWelcomeFor(numericTournamentId)
   );
@@ -62,6 +64,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
             tournamentData.pending?.items.some(item => item.status === 'PROCESSING') ?? false
           }
           count={tournamentData.pending?.items.length ?? 0}
+          isDepositClosed={isDepositClosed}
         />
       </div>
 
@@ -69,10 +72,11 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         items={tournamentData.pending?.items}
         scrollToLast={scrollToLast}
         onScrolled={onScrolled}
+        isDepositClosed={isDepositClosed}
       />
 
       <div className="flex shrink-0 flex-col gap-3 px-5">
-        <DepositCountdown deadline={depositDeadline} />
+        {!isDepositClosed && <DepositCountdown deadline={depositDeadline} />}
         <TournamentStartButton
           count={tournamentData.pending?.items.length ?? 0}
           tournamentId={tournamentId}
@@ -81,6 +85,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
               item => item.status === 'PROCESSING' || item.status === 'FAILED'
             ) ?? false
           }
+          isDepositClosed={isDepositClosed}
         />
       </div>
 

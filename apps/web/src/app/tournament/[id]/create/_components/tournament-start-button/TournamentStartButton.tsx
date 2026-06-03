@@ -13,12 +13,14 @@ type TournamentStartButtonProps = {
   count: number;
   tournamentId: string;
   hasUnreadyItem: boolean;
+  isDepositClosed?: boolean;
 };
 
 function TournamentStartButton({
   count,
   tournamentId,
   hasUnreadyItem,
+  isDepositClosed = false,
 }: TournamentStartButtonProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { tournamentData } = useGetTournament(Number(tournamentId));
@@ -48,7 +50,9 @@ function TournamentStartButton({
       <Button
         variant="primary"
         size="lg"
-        disabled={count < 2 || isPostTournamentStartPending || hasUnreadyItem}
+        disabled={
+          isPostTournamentStartPending || (!isDepositClosed && (count < 2 || hasUnreadyItem))
+        }
         onClick={handleClick}
       >
         {isPostTournamentStartPending ? <Spinner size={20} /> : '토너먼트 시작하기'}
