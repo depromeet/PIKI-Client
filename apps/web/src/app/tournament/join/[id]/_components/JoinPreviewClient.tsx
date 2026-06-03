@@ -13,7 +13,7 @@ import Spinner from '@/components/common/spinner';
 import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';
-import { setJoinWelcome } from '../../_utils/joinSession';
+import { markAsParticipant, setJoinWelcome } from '../../_utils/joinSession';
 
 type JoinPreviewClientProps = {
   tournamentId: number | null;
@@ -43,6 +43,7 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
         setIsJoining(false);
         return;
       }
+      markAsParticipant(target.tournamentId);
       setJoinWelcome({
         tournamentId: target.tournamentId,
         nickname: trimmedNickname,

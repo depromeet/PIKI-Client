@@ -13,7 +13,7 @@ import Spinner from '@/components/common/spinner';
 import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../_consts/randomNickname';
-import { setJoinConfirm } from '../_utils/joinSession';
+import { markAsParticipant, setJoinConfirm } from '../_utils/joinSession';
 import { CODE_LENGTH, verifyInviteCode } from '../_utils/verifyInviteCode';
 
 function InviteClient() {
@@ -55,6 +55,7 @@ function InviteClient() {
         return;
       }
 
+      markAsParticipant(target.tournamentId);
       setJoinConfirm({
         tournamentId: target.tournamentId,
         nickname: me.nickname,

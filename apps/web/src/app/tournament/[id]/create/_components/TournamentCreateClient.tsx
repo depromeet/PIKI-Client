@@ -12,6 +12,7 @@ import { MOCK_PARTICIPANTS } from '@/mocks/participants';
 import {
   consumeJoinConfirmFor,
   consumeJoinWelcomeFor,
+  isParticipantOf,
   type JoinConfirmPayloadT,
   type JoinWelcomePayloadT,
 } from '../../../join/_utils/joinSession';
@@ -43,6 +44,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
     consumeJoinConfirmFor(numericTournamentId)
   );
+  // TODO: API 연동 후 tournamentData의 boolean 필드 (예: isHost) 로 교체
+  const [isParticipant] = useState(() => isParticipantOf(numericTournamentId));
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
@@ -86,6 +89,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
             ) ?? false
           }
           isDepositClosed={isDepositClosed}
+          isParticipant={isParticipant}
         />
       </div>
 

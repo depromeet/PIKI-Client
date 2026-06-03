@@ -2,6 +2,7 @@ import type { ProfileTypeT } from '@/components/common/user-profile-group/userPr
 
 const WELCOME_KEY = 'piki:joinWelcome';
 const CONFIRM_KEY = 'piki:joinConfirm';
+const PARTICIPANT_KEY = 'piki:participantTournamentIds';
 
 export type JoinWelcomePayloadT = {
   tournamentId: number;
@@ -52,4 +53,33 @@ export const consumeJoinConfirmFor = (tournamentId: number): JoinConfirmPayloadT
   if (!payload || payload.tournamentId !== tournamentId) return null;
   sessionStorage.removeItem(CONFIRM_KEY);
   return payload;
+};
+
+/**
+ * 참여자(주최자 아님)로 입장한 토너먼트 ID 마킹.
+ * TODO: API 연동 후 서버 응답의 isHost / role 같은 boolean 필드로 판단하도록 교체.
+ *       지금은 클라이언트 localStorage에 임시 저장.
+ */
+export const markAsParticipant = (tournamentId: number) => {
+  if (typeof window === 'undefined') return;
+  const raw = localStorage.getItem(PARTICIPANT_KEY);
+  const ids: number[] = raw ? safeParseIds(raw) : [];
+  if (ids.includes(tournamentId)) return;
+  localStorage.setItem(PARTICIPANT_KEY, JSON.stringify([...ids, tournamentId]));
+};
+
+export const isParticipantOf = (tournamentId: number): boolean => {
+  if (typeof window === 'undefined') return false;
+  const raw = localStorage.getItem(PARTICIPANT_KEY);
+  if (!raw) return false;
+  return safeParseIds(raw).includes(tournamentId);
+};
+
+const safeParseIds = (raw: string): number[] => {
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((id): id is number => typeof id === 'number') : [];
+  } catch {
+    return [];
+  }
 };
