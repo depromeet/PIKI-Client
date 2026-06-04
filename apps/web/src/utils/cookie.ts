@@ -14,10 +14,21 @@ const getCookie = (name: string): string | null => {
 };
 
 /** 쿠키 설정 */
-const setCookie = (name: string, value: string, days: number = 7) => {
+const setCookie = (
+  name: string,
+  value: string,
+  options?: { days?: number; hours?: number; minutes?: number }
+) => {
   if (typeof document === 'undefined') return;
 
-  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  let expires = '';
+  if (options) {
+    const { days = 0, hours = 0, minutes = 0 } = options;
+
+    const time = ((days * 24 + hours) * 60 + minutes) * 60 * 1000;
+    const expiresDate = new Date(Date.now() + time).toUTCString();
+    expires = `; expires=${expiresDate}`;
+  }
   let cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; samesite=lax`;
 
   /** secure 속성은 프로덕션 환경에서만 설정 */

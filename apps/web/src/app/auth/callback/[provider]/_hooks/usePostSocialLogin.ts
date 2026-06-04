@@ -23,11 +23,11 @@ export const usePostSocialLogin = (provider: SocialProviderT) => {
       state: string;
     }) => postSocialLogin(provider, { code, redirectUri, state }),
     onSuccess: data => {
-      setCookie('user_role', data.user.identityType);
+      setCookie('user_role', data.user.identityType, { days: 14 });
 
       if (isWebview() && data.accessToken && data.refreshToken) {
-        setCookie('access_token', data.accessToken);
-        setCookie('refresh_token', data.refreshToken);
+        setCookie('access_token', data.accessToken, { hours: 1 });
+        setCookie('refresh_token', data.refreshToken, { days: 14 });
       }
       router.replace(ROUTES.HOME);
     },

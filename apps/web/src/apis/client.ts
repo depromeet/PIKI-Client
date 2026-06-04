@@ -71,8 +71,8 @@ clientApi.interceptors.response.use(
         /** 웹뷰인 경우 토큰 쿠키에 저장 */
         const { access_token: newAccessToken, refresh_token: newRefreshToken } = data.data;
         if (isWebview() && newAccessToken && newRefreshToken) {
-          setCookie('access_token', newAccessToken);
-          setCookie('refresh_token', newRefreshToken);
+          setCookie('access_token', newAccessToken, { hours: 1 });
+          setCookie('refresh_token', newRefreshToken, { days: 14 });
         }
 
         /** 큐에 대기한 요청들을 일괄 처리 */
