@@ -9,6 +9,7 @@ import { LinkIconFill } from '@/assets/icons';
 import Button from '@/components/common/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import Input from '@/components/common/input';
+import { ROUTES } from '@/consts/route';
 import { usePostWishLink } from '@/hooks/usePostWishLink';
 import type { ItemTypeT } from '@/types/item';
 
@@ -52,7 +53,7 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
           resetState();
         },
         onSuccess: () => {
-          router.push('/archive');
+          router.push(ROUTES.ARCHIVE('wish'));
           // 라우팅 완료 후 토스트 노출 (페이지 전환 중 토스트가 잠깐 떴다 사라지는 것 방지)
           setTimeout(() => toast.success('위시에 상품을 담았어요'), 100);
         },

@@ -3,6 +3,7 @@ import { isAxiosError } from 'axios';
 import { notFound, redirect } from 'next/navigation';
 
 import { getTournamentItem } from '@/app/tournament/[id]/item/[itemId]/_apis/getTournamentItem';
+import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
 import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
@@ -34,9 +35,9 @@ async function TournamentItemEditPage({ params }: TournamentItemEditPageProps) {
       const { status } = state.error.response;
 
       /** 토너먼트 권한 없는 경우 */
-      if (status === 403) redirect('/home');
+      if (status === 403) redirect(ROUTES.HOME);
       /** 토너먼트 or 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
-        redirect(`/tournament/${tournamentId}/create`);
+        redirect(ROUTES.TOURNAMENT_CREATE(tournamentId));
     }
   }
 
@@ -46,7 +47,7 @@ async function TournamentItemEditPage({ params }: TournamentItemEditPageProps) {
   );
   if (tournamentItemData?.status === 'PROCESSING') {
     // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
-    redirect(`/tournament/${tournamentId}/create`);
+    redirect(ROUTES.TOURNAMENT_CREATE(tournamentId));
   }
 
   return (

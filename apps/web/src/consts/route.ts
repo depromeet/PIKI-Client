@@ -1,25 +1,25 @@
 import type { ItemTypeT } from '@/types/item';
 
 export const ROUTES = {
-  /** §2.1 공통 / 퍼블릭 */
+  /** 1. Public */
   ROOT: '/',
   HOME: '/home',
   LOGIN: '/login',
   TOURNAMENT_JOIN_BY_CODE: '/tournament/join',
-  TOURNAMENT_JOIN_BY_LINK: (id: string) => `/tournament/join/${id}`,
+  TOURNAMENT_JOIN_BY_LINK: (id: number) => `/tournament/join/${id}`,
 
-  /** §2.2 보관함 (Member Only) */
-  ARCHIVE: '/archive',
-  ARCHIVE_WITH_TYPE: (type: ItemTypeT) => `/archive?type=${type}`,
-  ARCHIVE_WISH_ID: (wishId: string) => `/archive/wish/${wishId}`,
+  /** 2. Member Only */
+  ARCHIVE_BASE: '/archive',
+  ARCHIVE: (tab: ItemTypeT = 'wish') => `/archive?tab=${tab}`,
+  WISH_EDIT: (wishId: number) => `/archive/wish/${wishId}`,
 
-  /** §2.3 토너먼트 (Authorized Guest or Member) */
-  TOURNAMENT_CREATE: (tournamentId: string) => `/tournament/${tournamentId}/create`,
-  TOURNAMENT_ADD_ITEM_BY_WISH: (tournamentId: string) =>
+  /** 3. Authorized Guest or Member */
+  TOURNAMENT_CREATE: (tournamentId: number) => `/tournament/${tournamentId}/create`,
+  TOURNAMENT_ADD_ITEM_BY_WISH: (tournamentId: number) =>
     `/tournament/${tournamentId}/create/by-wish`,
-  TOURNAMENT_EDIT_ITEM: (tournamentId: string, itemId: string) =>
+  TOURNAMENT_ITEM_EDIT: (tournamentId: number, itemId: number) =>
     `/tournament/${tournamentId}/item/${itemId}`,
-  TOURNAMENT_LOADING: (tournamentId: string) => `/tournament/${tournamentId}/loading`,
-  TOURNAMENT_MATCH: (tournamentId: string) => `/tournament/${tournamentId}/match`,
-  TOURNAMENT_RESULT: (tournamentId: string) => `/tournament/${tournamentId}/result`,
+  TOURNAMENT_LOADING: (tournamentId: number) => `/tournament/${tournamentId}/loading`,
+  TOURNAMENT_MATCH: (tournamentId: number) => `/tournament/${tournamentId}/match`,
+  TOURNAMENT_RESULT: (tournamentId: number) => `/tournament/${tournamentId}/result`,
 } as const;

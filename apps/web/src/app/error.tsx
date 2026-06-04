@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 
+import { ROUTES } from '@/consts/route';
+
 type Props = {
   error: Error & { digest?: string; statusCode?: number };
   reset: () => void;
@@ -45,12 +47,12 @@ export default function Error({ error, reset }: Props) {
         <button
           type="button"
           onClick={reset}
-          className="body-lg flex-1 rounded-3xl bg-black py-3 text-center font-medium text-white"
+          className="body-lg flex-1 rounded-3xl bg-gray-900 py-3 text-center font-medium text-white"
         >
           다시 시도
         </button>
         <Link
-          href="/home"
+          href={ROUTES.HOME}
           className="body-lg flex-1 rounded-3xl bg-gray-100 py-3 text-center font-medium text-gray-900"
         >
           홈으로
