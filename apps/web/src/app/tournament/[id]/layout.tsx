@@ -3,6 +3,7 @@ import { isAxiosError } from 'axios';
 import { notFound, redirect } from 'next/navigation';
 
 import { ROUTES } from '@/consts/route';
+import type { ApiErrorResponseT } from '@/types/api';
 import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
 
@@ -25,7 +26,7 @@ async function TournamentLayout({ children, params }: TournamentLayoutProps) {
     const tournamentData = await getTournament(tournamentId);
     queryClient.setQueryData(['tournament', tournamentId], tournamentData);
   } catch (error) {
-    if (!isAxiosError(error)) throw error;
+    if (!isAxiosError<ApiErrorResponseT>(error)) throw error;
 
     if (error.response?.status === 403) redirect(ROUTES.HOME);
     else if (error.response?.status === 404) notFound(); // TODO: 아직 미정
