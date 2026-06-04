@@ -1,11 +1,10 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { getTournamentItem } from '@/app/tournament/[id]/item/[itemId]/_apis/getTournamentItem';
 import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
-import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
 
 import EditContent from './_components/EditContent';
@@ -16,10 +15,9 @@ type TournamentItemEditPageProps = {
 };
 
 async function TournamentItemEditPage({ params }: TournamentItemEditPageProps) {
-  const { id: _tournamentId, itemId: _tournamentItemId } = await params;
-  const tournamentId = parseIdParam(_tournamentId);
-  const tournamentItemId = parseIdParam(_tournamentItemId);
-  if (!tournamentId || !tournamentItemId) notFound();
+  const { id, itemId } = await params;
+  const tournamentId = Number(id);
+  const tournamentItemId = Number(itemId);
 
   const queryClient = getQueryClient();
   const GET_TOURNAMENT_ITEM_QUERY_KEY = ['tournamentItem', tournamentId, tournamentItemId];
@@ -28,15 +26,14 @@ async function TournamentItemEditPage({ params }: TournamentItemEditPageProps) {
     queryFn: () => getTournamentItem(tournamentId, tournamentItemId),
   });
 
-  /** 에러 처리 TEMP*/
   const state = queryClient.getQueryState(GET_TOURNAMENT_ITEM_QUERY_KEY);
   if (state && state.status === 'error') {
     if (isAxiosError<ApiErrorResponseT>(state.error) && state.error.response) {
       const { status } = state.error.response;
 
-      /** 토너먼트 권한 없는 경우 */
+      /** 토너먼트 아이템 접근 권한 없는 경우 */
       if (status === 403) redirect(ROUTES.HOME);
-      /** 토너먼트 or 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
+      /** 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
         redirect(ROUTES.TOURNAMENT_CREATE(tournamentId));
     }
   }

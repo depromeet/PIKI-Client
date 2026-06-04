@@ -7,14 +7,17 @@ import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 
 type TournamentStartButtonProps = {
   count: number;
-  tournamentId: string;
+  tournamentId: number;
   hasUnreadyItem: boolean;
 };
 
-function TournamentStartButton({ count, tournamentId, hasUnreadyItem }: TournamentStartButtonProps) {
-  const { postTournamentStartMutation, isPostTournamentStartPending } = usePostTournamentStart(
-    Number(tournamentId)
-  );
+function TournamentStartButton({
+  count,
+  tournamentId,
+  hasUnreadyItem,
+}: TournamentStartButtonProps) {
+  const { postTournamentStartMutation, isPostTournamentStartPending } =
+    usePostTournamentStart(tournamentId);
 
   return (
     <Button

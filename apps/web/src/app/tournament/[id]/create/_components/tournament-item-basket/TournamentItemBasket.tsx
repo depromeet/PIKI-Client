@@ -7,7 +7,6 @@ import Button from '@/components/common/button';
 import { Dialog, DialogTrigger } from '@/components/common/dialog';
 import GetItemDialogContent from '@/components/common/get-item-dialog';
 import type { TournamentItemT } from '@/types/tournament';
-import { parseIdParam } from '@/utils/parseIdParam';
 
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
@@ -22,15 +21,14 @@ type TournamentItemBasketProps = {
 };
 
 function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
-  const { id: _tournamentId } = useParams<{ id: string }>();
-  const tournamentId = parseIdParam(_tournamentId);
+  const { id } = useParams<{ id: string }>();
+  const tournamentId = Number(id);
+
   const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
   const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
-    if (!tournamentId) return;
-
     // if (item.status === 'READY')
     // router.push(ROUTES.TOURNAMENT_ITEM_EDIT(String(tournamentId), String(item.tournamentItemId))); // TODO: 변경된 디자인에 맞춰 수정 필요
 
@@ -79,7 +77,7 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
           </Dialog>
         </div>
       </div>
-      {failedItem && tournamentId && (
+      {failedItem && (
         <TournamentItemFailedModal
           open
           tournamentId={tournamentId}
