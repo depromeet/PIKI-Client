@@ -4,10 +4,11 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import HeartIconFill from '@/assets/icons/fill/heart.svg';
 import HomeIconFill from '@/assets/icons/fill/home.svg';
+import { ROUTES } from '@/consts/route';
 
 const TABS = [
-  { label: '홈', icon: HomeIconFill, href: '/home' },
-  { label: '보관', icon: HeartIconFill, href: '/wishlist' },
+  { label: '홈', icon: HomeIconFill, href: ROUTES.HOME },
+  { label: '보관', icon: HeartIconFill, href: ROUTES.ARCHIVE() },
 ] as const;
 
 function BottomTabBar() {
@@ -17,7 +18,10 @@ function BottomTabBar() {
   return (
     <div className="inline-flex items-center rounded-[100px] bg-white p-1 shadow-[0_0_8px_0_rgba(0,0,0,0.04)]">
       {TABS.map(({ label, icon: Icon, href }) => {
-        const isActive = pathname === href || pathname.startsWith(`${href}/`);
+        const isActive =
+          label === '보관'
+            ? pathname.startsWith(ROUTES.ARCHIVE_BASE)
+            : pathname === href || pathname.startsWith(`${href}/`);
         return (
           <button
             key={label}

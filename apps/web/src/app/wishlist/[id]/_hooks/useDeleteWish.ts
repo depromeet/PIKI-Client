@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { deleteWish } from '@/apis/deleteWish';
+import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
 
 /** 위시 단건 삭제 */
@@ -16,7 +17,7 @@ export const useDeleteWish = (wishId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
       queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
-      router.replace(`/wishlist`);
+      router.replace(ROUTES.ARCHIVE());
     },
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;

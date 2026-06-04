@@ -32,7 +32,7 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
     if (!tournamentId) return;
 
     // if (item.status === 'READY')
-    // router.push(`/tournament/${tournamentId}/item/${item.tournamentItemId}`); // TODO: 변경된 디자인에 맞춰 수정 필요
+    // router.push(ROUTES.TOURNAMENT_ITEM_EDIT(String(tournamentId), String(item.tournamentItemId))); // TODO: 변경된 디자인에 맞춰 수정 필요
 
     if (item.status === 'FAILED') setFailedItem(item);
   };

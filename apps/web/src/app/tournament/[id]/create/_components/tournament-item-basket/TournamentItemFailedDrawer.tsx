@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/common/dialog';
+import { ROUTES } from '@/consts/route';
 
 import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';
 
@@ -38,7 +39,7 @@ function TournamentItemFailedModal({
 
   const handleEdit = () => {
     onClose();
-    router.push(`/tournament/${tournamentId}/item/${tournamentItemId}`);
+    router.push(ROUTES.TOURNAMENT_ITEM_EDIT(tournamentId, tournamentItemId));
   };
 
   return (
