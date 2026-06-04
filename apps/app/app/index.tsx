@@ -1,4 +1,4 @@
-import { WEBBRIDGE_MESSAGE_TYPE, type WebBridgeMessageT } from '@piki/core';
+import { WEBBRIDGE_MESSAGE_TYPE, WEBVIEW_UA_TOKEN, type WebBridgeMessageT } from '@piki/core';
 import { useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
@@ -33,6 +33,7 @@ function Page() {
       <Webview
         ref={webviewRef}
         style={{ flex: 1 }}
+        applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
         /**
          * - ios simulator 사용 시: `http://localhost:3000`
          * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
