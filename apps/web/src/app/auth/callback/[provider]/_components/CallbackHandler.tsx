@@ -3,8 +3,8 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-import { ROUTES } from '@/consts/route';
 import type { SocialProviderT } from '@/types/auth';
+import { getLoginPath, isValidLoginRedirectPath } from '@/utils/loginRedirect';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
 
@@ -28,26 +28,34 @@ function CallbackHandler() {
   useEffect(() => {
     if (hasCalled.current) return;
 
+    const redirect = searchParams.get('redirect');
+    const loginPath = getLoginPath(redirect);
+
     if (!isValidProvider) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(loginPath);
       return;
     }
 
     const code = searchParams.get('code');
     if (!code) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(loginPath);
       return;
     }
 
     const state = searchParams.get('state');
     if (!state) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(loginPath);
       return;
     }
 
     hasCalled.current = true;
     const redirectUri = `${window.location.origin}/auth/callback/${provider}`;
-    postSocialLoginMutation({ code, redirectUri, state });
+    postSocialLoginMutation({
+      code,
+      redirect: isValidLoginRedirectPath(redirect) ? redirect : null,
+      redirectUri,
+      state,
+    });
   }, [isValidProvider, postSocialLoginMutation, provider, router, searchParams]);
 
   return null;
