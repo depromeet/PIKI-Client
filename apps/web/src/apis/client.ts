@@ -1,9 +1,11 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { ENDPOINTS } from '@/consts/api';
+import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { ApiErrorResponseT } from '@/types/api';
-import { getCookie } from '@/utils/cookie';
+import { getCookie, setCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
 // 재시도 여부 플래그를 포함한 요청 타입
@@ -62,16 +64,26 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post('/api/v1/auth/token/refresh', null, {
+        /** 토큰 갱신 */
+        const { data } = await axios.post(ENDPOINTS.AUTH_TOKEN_REFRESH, null, {
           withCredentials: true,
         });
+        /** 웹뷰인 경우 토큰 쿠키에 저장 */
+        const { access_token: newAccessToken, refresh_token: newRefreshToken } = data.data;
+        if (isWebview() && newAccessToken && newRefreshToken) {
+          setCookie('access_token', newAccessToken);
+          setCookie('refresh_token', newRefreshToken);
+        }
+
+        /** 큐에 대기한 요청들을 일괄 처리 */
         processQueue(null);
         return clientApi(originalRequest);
+
+        /** refresh 요청 실패 시 로그인 페이지로 리다이렉트 */
       } catch (refreshError) {
         processQueue(refreshError);
-        if (typeof window !== 'undefined') {
-          // window.location.href = '/login';
-        }
+        if (typeof window !== 'undefined') window.location.href = ROUTES.LOGIN;
+
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
