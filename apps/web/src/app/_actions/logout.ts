@@ -18,4 +18,5 @@ export const logout = async () => {
   AUTH_COOKIE_NAMES.forEach(cookieName => {
     if (cookieStore.has(cookieName)) cookieStore.delete(cookieName);
   });
+  if (cookieStore.has('user_role')) cookieStore.delete('user_role');
 };
