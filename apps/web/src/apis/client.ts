@@ -1,6 +1,7 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { ApiErrorResponseT } from '@/types/api';
 import { getCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
@@ -30,14 +31,14 @@ const processQueue = (error: unknown) => {
 
 export const clientApi = axios.create({
   withCredentials: true,
-  headers: { 'X-Client-Type': 'web' },
 });
 
 clientApi.interceptors.request.use(config => {
   const accessToken = getCookie('access_token');
-  if (isWebview() && accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+  const isApp = isWebview();
+  if (isApp && accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
-  config.headers['X-Client-Type'] = isWebview() ? 'app' : 'web';
+  config.headers['X-Client-Type'] = isApp ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB;
 
   return config;
 });
