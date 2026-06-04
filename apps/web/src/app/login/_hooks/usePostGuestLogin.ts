@@ -14,7 +14,6 @@ export const usePostGuestLogin = () => {
     mutationFn: postGuestLogin,
     onSuccess: data => {
       router.push(ROUTES.HOME);
-      setCookie('user_role', data.user.identityType, { days: 14 });
 
       if (isWebview() && data.accessToken && data.refreshToken) {
         setCookie('access_token', data.accessToken, { hours: 1 });
