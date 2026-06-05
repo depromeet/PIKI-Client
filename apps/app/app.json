@@ -26,7 +26,8 @@
             "NSPrivacyAccessedAPITypeReasons": ["C617.1"]
           }
         ]
-      }
+      },,
+      "usesNonExemptEncryption": false
     },
     "android": {
       "package": "day.no30s.piki",
@@ -101,7 +102,8 @@
             "expo-share-intent"
           ]
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

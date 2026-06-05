@@ -28,6 +28,7 @@
     "expo-router": "~6.0.23",
     "expo-share-extension": "^5.0.6",
     "expo-share-intent": "^5.1.1",
+    "expo-secure-store": "~15.0.8",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "expo-symbols": "~1.0.8",
