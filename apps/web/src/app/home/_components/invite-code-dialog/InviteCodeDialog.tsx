@@ -4,12 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import Button from '@/components/common/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
 import Input from '@/components/common/input';
 
 import { CODE_LENGTH, verifyInviteCode } from '../../../tournament/join/_utils/verifyInviteCode';
@@ -77,9 +72,7 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
             value={code}
             onChange={event => handleChange(event.target.value)}
             aria-invalid={showFormatError}
-            {...(showFormatError
-              ? { helperText: '영문 + 숫자 조합의 6자리로 입력해주세요.' }
-              : {})}
+            {...(showFormatError ? { helperText: '영문 + 숫자 조합의 6자리로 입력해주세요.' } : {})}
             maxLength={CODE_LENGTH}
             autoCapitalize="off"
             autoCorrect="off"

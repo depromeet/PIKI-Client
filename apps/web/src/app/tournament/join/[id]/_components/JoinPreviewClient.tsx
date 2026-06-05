@@ -67,7 +67,9 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
       <section className="mt-8.75 flex flex-col gap-2 px-5">
         <p className="body-2-semibold text-text-neutral-primary">초대받은 토너먼트</p>
         <div className="flex flex-col gap-1 rounded-xl bg-gray-50 p-4">
-          <p className="body-1-semibold text-text-neutral-primary">{MOCK_TOURNAMENT_PREVIEW.name}</p>
+          <p className="body-1-semibold text-text-neutral-primary">
+            {MOCK_TOURNAMENT_PREVIEW.name}
+          </p>
           <p className="body-2-medium text-text-neutral-secondary">
             후보 {MOCK_TOURNAMENT_PREVIEW.itemCount}개 · 참여{' '}
             {MOCK_TOURNAMENT_PREVIEW.participantCount}명

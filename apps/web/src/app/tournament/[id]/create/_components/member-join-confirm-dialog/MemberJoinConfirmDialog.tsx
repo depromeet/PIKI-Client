@@ -1,12 +1,7 @@
 'use client';
 
 import Button from '@/components/common/button';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from '@/components/common/drawer';
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/common/drawer';
 import {
   PROFILE_SVG,
   type ProfileTypeT,

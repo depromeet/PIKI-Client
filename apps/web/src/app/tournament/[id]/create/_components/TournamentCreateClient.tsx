@@ -10,11 +10,11 @@ import { MOCK_DEPOSIT_DURATION_MS } from '@/mocks/deposit';
 import { MOCK_PARTICIPANTS } from '@/mocks/participants';
 
 import {
+  type JoinConfirmPayloadT,
+  type JoinWelcomePayloadT,
   consumeJoinConfirmFor,
   consumeJoinWelcomeFor,
   isParticipantOf,
-  type JoinConfirmPayloadT,
-  type JoinWelcomePayloadT,
 } from '../../../join/_utils/joinSession';
 import { useCountdown } from '../_hooks/useCountdown';
 import { useGetTournament } from '../_hooks/useGetTournament';

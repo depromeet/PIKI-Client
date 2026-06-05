@@ -1,13 +1,11 @@
 'use client';
 
 import Button from '@/components/common/button';
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/common/drawer';
 import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from '@/components/common/drawer';
-import { PROFILE_SVG, type ProfileTypeT } from '@/components/common/user-profile-group/userProfile.const';
+  PROFILE_SVG,
+  type ProfileTypeT,
+} from '@/components/common/user-profile-group/userProfile.const';
 
 type WelcomeJoinDialogProps = {
   open: boolean;
