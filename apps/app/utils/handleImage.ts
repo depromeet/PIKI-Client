@@ -38,14 +38,14 @@ const uriToNativeImagePayload = async (
   };
 };
 
-/** OPEN_IMAGE_PICKER 수신 시 앨범 피커 오픈 → Base64 bridge 응답 */
+/** WEB_REQ_OPEN_IMAGE_PICKER 수신 시 앨범 피커 오픈 → Base64 bridge 응답 */
 export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePickerPayloadT) => {
   try {
     /** 갤러리 접근 권한 확인 */
     const permission = await requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
       WebBridge.postMessage({
-        type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR,
+        type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_ERROR,
         payload: {
           requestId,
           detail: '사진 보관함 접근 권한이 필요합니다.',
@@ -64,7 +64,7 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     });
 
     if (result.canceled || result.assets.length === 0) {
-      WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_CANCEL, payload: { requestId } });
+      WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_CANCEL, payload: { requestId } });
       return;
     }
 
@@ -76,7 +76,7 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
 
     if (supportedAssets.length === 0) {
       WebBridge.postMessage({
-        type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR,
+        type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_ERROR,
         payload: {
           requestId,
           detail: '지원하지 않는 형식의 이미지입니다.',
@@ -91,7 +91,7 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
 
     /** 이미지 전송 */
     WebBridge.postMessage({
-      type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS,
+      type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_SUCCESS,
       payload: {
         requestId,
         images,
@@ -100,7 +100,7 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     });
   } catch {
     WebBridge.postMessage({
-      type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR,
+      type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_ERROR,
       payload: {
         requestId,
         detail: '이미지 선택 중 오류가 발생했습니다.',

@@ -3,7 +3,7 @@
 import {
   type ShareIntentPayloadT,
   WEBBRIDGE_MESSAGE_TYPE,
-  WEB_READY_MESSAGE_TYPE,
+  WEB_REQ_READY_PAYLOAD_TYPE,
 } from '@piki/core';
 import { useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
@@ -57,9 +57,9 @@ export const useShareIntentWish = () => {
     if (!isWebview()) return;
 
     WebBridge.postMessage({
-      type: WEBBRIDGE_MESSAGE_TYPE.WEB_READY,
+      type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_READY,
       payload: {
-        type: WEB_READY_MESSAGE_TYPE.SHARE_INTENT,
+        type: WEB_REQ_READY_PAYLOAD_TYPE.SHARE_INTENT,
       },
     });
   }, []);
@@ -67,7 +67,7 @@ export const useShareIntentWish = () => {
   useWebBridgeMessage(
     useCallback(
       message => {
-        if (message.type === WEBBRIDGE_MESSAGE_TYPE.SHARE_INTENT)
+        if (message.type === WEBBRIDGE_MESSAGE_TYPE.APP_RES_SHARE_INTENT)
           handleShareIntent(message.payload);
       },
       [handleShareIntent]
