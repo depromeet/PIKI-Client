@@ -4,7 +4,6 @@ import { notFound, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { getTournamentList } from '@/apis/getTournamentList';
 import { EditIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Header } from '@/components/header';
@@ -14,6 +13,7 @@ import { useGetNicknameCheck } from '@/hooks/useGetNicknameCheck';
 import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';
+import { usePostJoinGuest } from '../../_hooks/usePostJoinGuest';
 import { setJoinWelcome } from '../../_utils/joinSession';
 
 type JoinPreviewClientProps = {
@@ -25,37 +25,36 @@ const MAX_NICKNAME_LENGTH = 10;
 function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
   const router = useRouter();
   const [nickname, setNickname] = useState(DEFAULT_RANDOM_NICKNAME.nickname);
-  const [isJoining, setIsJoining] = useState(false);
 
   if (tournamentId === null) notFound();
 
   const trimmedNickname = nickname.trim();
   const { nicknameCheckData, isNicknameCheckFetching } = useGetNicknameCheck(nickname);
+  const { postJoinGuestMutation, isPostJoinGuestPending } = usePostJoinGuest();
+
   const isNicknameAvailable = nicknameCheckData?.available !== false;
   const isComplete =
-    trimmedNickname.length > 0 && isNicknameAvailable && !isNicknameCheckFetching && !isJoining;
+    trimmedNickname.length > 0 &&
+    isNicknameAvailable &&
+    !isNicknameCheckFetching &&
+    !isPostJoinGuestPending;
 
   const handleConfirm = async () => {
     if (!isComplete) return;
-    setIsJoining(true);
 
     try {
-      const list = await getTournamentList(['PENDING', 'IN_PROGRESS']);
-      const target = list?.[0];
-      if (!target) {
-        toast.warning('참여 가능한 토너먼트를 찾지 못했어요.');
-        setIsJoining(false);
-        return;
-      }
+      const response = await postJoinGuestMutation({
+        tournamentId,
+        body: { nickname: trimmedNickname },
+      });
       setJoinWelcome({
-        tournamentId: target.tournamentId,
-        nickname: trimmedNickname,
+        tournamentId: response.tournamentId,
+        nickname: response.nickname,
         profileType: DEFAULT_RANDOM_NICKNAME.profileType,
       });
-      router.push(`/tournament/${target.tournamentId}/create`);
+      router.push(`/tournament/${response.tournamentId}/create`);
     } catch {
-      toast.warning('잠시 후 다시 시도해주세요.');
-      setIsJoining(false);
+      toast.warning('참여에 실패했어요. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -94,7 +93,7 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
 
       <div className="mt-auto px-5">
         <Button size="lg" variant="primary" disabled={!isComplete} onClick={handleConfirm}>
-          {isJoining ? <Spinner size={20} /> : '참여하기'}
+          {isPostJoinGuestPending ? <Spinner size={20} /> : '참여하기'}
         </Button>
       </div>
     </main>
