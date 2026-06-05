@@ -2,18 +2,20 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { ROUTES } from '@/consts/route';
+import type { ItemTypeT } from '@/types/item';
 import { cn } from '@/utils/cn';
 
 import type { WishTabT } from '../_types/wish';
 
 const TABS: WishTabT[] = ['저장한 위시템', '토너먼트 기록'];
 
-const TAB_PARAM: Record<WishTabT, string> = {
+const TAB_TYPE: Record<WishTabT, ItemTypeT> = {
   '저장한 위시템': 'wish',
   '토너먼트 기록': 'tournament',
 };
 
-const PARAM_TAB: Record<string, WishTabT> = {
+const TYPE_TAB: Record<ItemTypeT, WishTabT> = {
   wish: '저장한 위시템',
   tournament: '토너먼트 기록',
 };
@@ -21,12 +23,12 @@ const PARAM_TAB: Record<string, WishTabT> = {
 function WishTab() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab: WishTabT = PARAM_TAB[searchParams.get('tab') ?? ''] ?? '저장한 위시템';
+  const tabParam = searchParams.get('tab');
+  const activeTab: WishTabT =
+    tabParam === 'wish' || tabParam === 'tournament' ? TYPE_TAB[tabParam] : '저장한 위시템';
 
   const handleTabChange = (tab: WishTabT) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('tab', TAB_PARAM[tab]);
-    router.replace(`?${params.toString()}`);
+    router.replace(ROUTES.ARCHIVE(TAB_TYPE[tab]));
   };
 
   return (

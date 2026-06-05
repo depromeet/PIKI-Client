@@ -11,6 +11,7 @@ import {
   TrashIconFill,
 } from '@/assets/icons';
 import { QUERY_ACTION } from '@/consts/queryAction';
+import { ROUTES } from '@/consts/route';
 import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import type { TournamentStatusT } from '@/types/tournament';
 
@@ -30,7 +31,7 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
   const handleAddTournamentItem = () => {
     setIsPopoverOpen(false);
     router.push(
-      `/tournament/${tournamentId}/create?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG}`
+      `${ROUTES.TOURNAMENT_CREATE(tournamentId)}?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG}`
     );
   };
 

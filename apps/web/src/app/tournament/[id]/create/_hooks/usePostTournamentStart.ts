@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { ROUTES } from '@/consts/route';
+
 import { postTournamentStart } from '../_apis/postTournamentStart';
 
 export const usePostTournamentStart = (tournamentId: number) => {
@@ -10,7 +12,7 @@ export const usePostTournamentStart = (tournamentId: number) => {
     useMutation({
       mutationFn: () => postTournamentStart(tournamentId),
       onSuccess: () => {
-        router.push(`/tournament/${tournamentId}/match`);
+        router.push(ROUTES.TOURNAMENT_MATCH(tournamentId));
       },
     });
 

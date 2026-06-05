@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 import { HeartIconFill, ImageIconFill, LinkIconFill } from '@/assets/icons';
 import { DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
+import { ROUTES } from '@/consts/route';
 import type { ItemTypeT } from '@/types/item';
+import { parseIdParam } from '@/utils/parseIdParam';
 
 import ByImageDialog from './ByImageDialog';
 import ByLinkDialog from './ByLinkDialog';
@@ -18,7 +19,11 @@ type GetItemDialogContentProps = {
 
 function GetItemDialogContent({ type }: GetItemDialogContentProps) {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState<'link' | 'image' | null>(null);
+
   const { id } = useParams<{ id: string }>();
+  const tournamentId = parseIdParam(id);
+
+  if (type === 'tournament' && !tournamentId) return null;
 
   return (
     <>
@@ -33,7 +38,7 @@ function GetItemDialogContent({ type }: GetItemDialogContentProps) {
         <ul className="flex w-full flex-col gap-2">
           {type === 'tournament' && (
             <OptionButton
-              href={`/tournament/${id}/create/by-wish`}
+              href={ROUTES.TOURNAMENT_ADD_ITEM_BY_WISH(tournamentId ?? -1)}
               label="위시에서 가져오기"
               description="내 위시리스트에서 상품을 가져와요"
               Icon={HeartIconFill}
