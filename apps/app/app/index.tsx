@@ -6,12 +6,14 @@ import Webview from 'react-native-webview';
 
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useSocialLogin } from '@/hooks/useSocialLogin';
+import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
   const { handleLogin } = useSocialLogin();
+  const { isSynced } = useWebviewCookieSync();
 
   const onWebviewMessage = useCallback(async (message: WebBridgeMessageT) => {
     if (message.type === WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER) {
@@ -43,7 +45,7 @@ function Page() {
          * - ios simulator 사용 시: `http://localhost:3000`
          * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
          */
-        source={{ uri: process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000' }}
+        source={isSynced ? { uri: process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000' } : undefined}
         onMessage={onMessage}
         allowsBackForwardNavigationGestures
         cacheEnabled
