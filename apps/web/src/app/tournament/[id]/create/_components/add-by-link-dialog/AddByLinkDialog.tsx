@@ -3,9 +3,9 @@
 import { useState } from 'react';
 
 import { LinkIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/common/dialog';
-import Input from '@/components/common/input';
+import Button from '@/components/button';
+import { Dialog, DialogContent, DialogTitle } from '@/components/dialog';
+import Input from '@/components/input';
 
 const URL_PATTERN = /^https?:\/\/.+/i;
 

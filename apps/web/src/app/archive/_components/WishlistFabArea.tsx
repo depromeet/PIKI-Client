@@ -1,5 +1,5 @@
 import TrashIconFill from '@/assets/icons/fill/trash.svg';
-import Spinner from '@/components/common/spinner';
+import Spinner from '@/components/spinner';
 
 import WishFab from './WishFab';
 

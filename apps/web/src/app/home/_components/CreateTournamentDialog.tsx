@@ -3,9 +3,9 @@
 import { useState } from 'react';
 
 import { EditIconFill, TrophyIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/common/dialog';
-import Input from '@/components/common/input';
+import Button from '@/components/button';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/dialog';
+import Input from '@/components/input';
 
 import { usePostCreateTournament } from '../_hooks/usePostCreateTournament';
 

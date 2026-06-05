@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { Header, HeaderIcon } from '@/components/common/header';
+import { Header, HeaderIcon } from '@/components/header';
 
 import WishTab from './WishTab';
 

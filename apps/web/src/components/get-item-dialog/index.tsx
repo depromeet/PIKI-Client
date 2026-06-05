@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { HeartIconFill, ImageIconFill, LinkIconFill } from '@/assets/icons';
-import { DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
+import { DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 import { ROUTES } from '@/consts/route';
 import type { ItemTypeT } from '@/types/item';
 import { parseIdParam } from '@/utils/parseIdParam';

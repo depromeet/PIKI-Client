@@ -1,4 +1,4 @@
-import BottomTabBar from '@/components/common/bottom-tab-bar';
+import BottomTabBar from '@/components/bottom-tab-bar';
 
 type WishlistBottomBarProps = {
   isDeleteMode: boolean;

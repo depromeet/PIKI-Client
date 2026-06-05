@@ -1,9 +1,9 @@
 'use client';
 
 import TrophyIconFill from '@/assets/icons/fill/trophy.svg';
-import BottomTabBar from '@/components/common/bottom-tab-bar';
-import TournamentCard from '@/components/common/tournament-card';
-import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import BottomTabBar from '@/components/bottom-tab-bar';
+import TournamentCard from '@/components/tournament-card';
+import type { UserT } from '@/components/user-profile-group/userProfile.const';
 import { useGetTournamentList } from '@/hooks/useGetTournamentList';
 
 // TODO: 백엔드가 정식 프사 처리 도입 시 imageUrl 반영
