@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.piki.app"
+      "bundleIdentifier": "com.piki.app",
+      "usesNonExemptEncryption": false
     },
     "android": {
       "package": "com.piki.app",
@@ -46,7 +47,8 @@
         {
           "photosPermission": "상품 이미지를 선택하기 위해 사진 보관함 접근 권한이 필요합니다."
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
