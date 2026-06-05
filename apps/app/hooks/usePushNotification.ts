@@ -27,6 +27,9 @@ const getFcmToken = async () => {
   const token = await messaging().getToken();
   const deviceId = await getDeviceId();
 
+  console.warn('[FCM] token:', token);
+  console.warn('[FCM] deviceId:', deviceId);
+
   return { token, deviceId };
 };
 
