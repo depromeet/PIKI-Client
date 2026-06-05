@@ -26,7 +26,7 @@
             "NSPrivacyAccessedAPITypeReasons": ["C617.1"]
           }
         ]
-      },,
+      },
       "usesNonExemptEncryption": false
     },
     "android": {
@@ -61,7 +61,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "상품 이미지를 선택하기 위해 사진 보관함 접근 권한이 필요합니다."
+          "photosPermission": "상품 사진을 가져오고 싶어요."
         }
       ],
       [
