@@ -36,8 +36,8 @@ const nextConfig = {
     ];
   },
 
-  /** NOTE: localhost가 아닌 경우 추가 필요 */
-  allowedDevOrigins: [],
+  /** NOTE: 실기기 테스트 시 LAN IP를 .env.local의 NEXT_PUBLIC_DEV_ORIGIN에 추가 */
+  allowedDevOrigins: process.env.NEXT_PUBLIC_DEV_ORIGIN ? [process.env.NEXT_PUBLIC_DEV_ORIGIN] : [],
 };
 
 export default nextConfig;
