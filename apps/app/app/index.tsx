@@ -6,14 +6,33 @@ import Webview from 'react-native-webview';
 
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { handleOpenImagePicker } from '@/utils/handleImage';
+import { getSecureItem, setSecureItem } from '@/utils/secureStore';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
 
   const onWebviewMessage = useCallback(async (message: WebBridgeMessageT) => {
-    if (message.type === WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER) {
-      await handleOpenImagePicker(message.payload);
+    switch (message.type) {
+      case WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER:
+        await handleOpenImagePicker(message.payload);
+        break;
+
+      case WEBBRIDGE_MESSAGE_TYPE.STORE_TOKEN:
+        if (message.payload.accessToken)
+          await setSecureItem('access_token', message.payload.accessToken);
+        if (message.payload.refreshToken)
+          await setSecureItem('refresh_token', message.payload.refreshToken);
+        break;
+
+      case WEBBRIDGE_MESSAGE_TYPE.WEB_READY_TO_RECEIVE_TOKEN: {
+        const accessToken = await getSecureItem('access_token');
+        const refreshToken = await getSecureItem('refresh_token');
+        WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.SET_APP_TOKEN, {
+          accessToken,
+          refreshToken,
+        });
+      }
     }
   }, []);
 

@@ -3,7 +3,7 @@ import type { UserT } from './user';
 export type SocialProviderT = 'kakao' | 'google';
 
 export type PostSocialLoginResponseT = {
-  accessToken: null;
-  refreshToken: null;
+  accessToken: string | null;
+  refreshToken: string | null;
   user: UserT;
 };

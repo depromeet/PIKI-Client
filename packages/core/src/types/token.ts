@@ -6,8 +6,8 @@ export type StoreTokenMessageT = {
   payload: StoreTokenPayloadT;
 };
 export type StoreTokenPayloadT = {
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | null;
+  refreshToken: string | null;
 };
 
 /** 웹 → 앱 토큰 수신 준비 요청 */
@@ -21,6 +21,6 @@ export type SetAppTokenMessageT = {
   payload: SetAppTokenPayloadT;
 };
 export type SetAppTokenPayloadT = {
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | null;
+  refreshToken: string | null;
 };
