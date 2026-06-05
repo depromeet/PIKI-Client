@@ -9,15 +9,19 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "usesAppleSignIn": true,
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": false,
       "bundleIdentifier": "day.no30s.piki",
       "entitlements": {
+        "aps-environment": "development", // NOTE: 배포할때 'production'으로 변경
         "com.apple.security.application-groups": ["group.day.no30s.piki"]
       },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "AppGroup": "group.day.no30s.piki",
-        "AppGroupIdentifier": "group.day.no30s.piki"
+        "AppGroupIdentifier": "group.day.no30s.piki",
+        "UIBackgroundModes": ["remote-notification"]
       },
       "privacyManifests": {
         "NSPrivacyAccessedAPITypes": [
@@ -31,6 +35,7 @@
     },
     "android": {
       "package": "day.no30s.piki",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -40,7 +45,8 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "permissions": [
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS"
       ]
     },
     "web": {
@@ -118,7 +124,18 @@
           ]
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static",
+            "forceStaticLinking": ["RNFBApp", "RNFBMessaging"]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
