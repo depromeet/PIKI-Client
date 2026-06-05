@@ -4,9 +4,17 @@ import type {
   ImagePickerSuccessMessageT,
   OpenImagePickerMessageT,
 } from './image';
+import type {
+  SetAppTokenMessageT,
+  StoreTokenMessageT,
+  WebReadyToReceiveTokenMessageT,
+} from './token';
 
 export type WebBridgeMessageT =
   | OpenImagePickerMessageT
   | ImagePickerSuccessMessageT
   | ImagePickerCancelMessageT
-  | ImagePickerErrorMessageT;
+  | ImagePickerErrorMessageT
+  | StoreTokenMessageT
+  | WebReadyToReceiveTokenMessageT
+  | SetAppTokenMessageT;

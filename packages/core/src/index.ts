@@ -15,6 +15,11 @@ export type {
   OpenImagePickerMessageT,
   OpenImagePickerPayloadT,
 } from './types/image';
+export type {
+  SetAppTokenMessageT,
+  StoreTokenMessageT,
+  WebReadyToReceiveTokenMessageT,
+} from './types/token';
 export type { WebBridgeMessageT } from './types/webBridge';
 
 /** 유틸 */
