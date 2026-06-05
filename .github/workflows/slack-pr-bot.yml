@@ -106,7 +106,7 @@ jobs:
           echo "initial_reviewers=$INITIAL_REVIEWERS" >> "$GITHUB_OUTPUT"
 
       - name: Post parent message
-        if: steps.find_ts.outputs.ts == '' && (github.event.action == 'opened' || github.event.action == 'reopened') && github.event.pull_request.draft == false
+        if: steps.find_ts.outputs.ts == '' && github.event.pull_request.draft == false
         id: post_parent
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
