@@ -74,7 +74,7 @@ export const useImagePicker = ({
 
   /** 앱 → 웹 이미지 피커 응답 수신 */
   useWebBridgeMessage(message => {
-    if (message.type === WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS) {
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_SUCCESS) {
       const pending = pendingRequestsRef.current.get(message.payload.requestId);
       if (!pending) return;
 
@@ -86,13 +86,13 @@ export const useImagePicker = ({
       return;
     }
 
-    if (message.type === WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_CANCEL) {
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_CANCEL) {
       rejectPendingRequest(message.payload.requestId, new Error('IMAGE_PICKER_CANCELLED'));
       onCancel?.();
       return;
     }
 
-    if (message.type === WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR) {
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_ERROR) {
       rejectPendingRequest(
         message.payload.requestId,
         new Error(message.payload.detail || '이미지 선택 중 오류가 발생했습니다.')
@@ -121,7 +121,7 @@ export const useImagePicker = ({
     setIsPending(true);
 
     WebBridge.postMessage({
-      type: WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER,
+      type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_IMAGE_PICKER,
       payload: {
         requestId,
         maxCount,

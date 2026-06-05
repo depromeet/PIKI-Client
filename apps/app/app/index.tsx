@@ -1,7 +1,7 @@
 import {
   WEBBRIDGE_MESSAGE_TYPE,
   WEBVIEW_UA_TOKEN,
-  WEB_READY_MESSAGE_TYPE,
+  WEB_REQ_READY_PAYLOAD_TYPE,
   type WebBridgeMessageT,
 } from '@piki/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -42,13 +42,13 @@ function Page() {
   const handleWebMessage = useCallback(
     async (message: WebBridgeMessageT) => {
       switch (message.type) {
-        case WEBBRIDGE_MESSAGE_TYPE.WEB_READY: {
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_READY: {
           const { type } = message.payload;
-          if (type === WEB_READY_MESSAGE_TYPE.SHARE_INTENT) sendShareIntent();
+          if (type === WEB_REQ_READY_PAYLOAD_TYPE.SHARE_INTENT) sendShareIntent();
           return;
         }
 
-        case WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER:
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_IMAGE_PICKER:
           await handleOpenImagePicker(message.payload);
           return;
 
