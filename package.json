@@ -34,6 +34,9 @@
       "react-dom": "19.1.0",
       "@types/react": "19.1.17",
       "@types/react-dom": "~19.1.0"
+    },
+    "patchedDependencies": {
+      "xcode@3.0.1": "apps/app/patches/xcode+3.0.1.patch"
     }
   },
   "engines": {
