@@ -30,13 +30,17 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
     onSuccess: data => {
       // 결승 응답에 포함된 result로 결과 페이지의 GET을 건너뛰도록 캐시 선갱신
       if (!data) return;
-      const completed: GetTournamentCompletedResponseT = {
-        tournamentId,
-        name: tournamentName,
-        status: 'COMPLETED',
-        completed: { result: data.result },
-      };
-      queryClient.setQueryData(['tournament', tournamentId], completed);
+      queryClient.setQueryData<GetTournamentCompletedResponseT>(
+        ['tournament', tournamentId],
+        prev => ({
+          tournamentId,
+          name: tournamentName,
+          // 직전 캐시(GET 응답)의 isOwner를 그대로 승계 — 알 수 없으면 false
+          isOwner: prev?.isOwner ?? false,
+          status: 'COMPLETED',
+          completed: { result: data.result },
+        })
+      );
     },
   });
 

@@ -15,6 +15,8 @@ export type TournamentParticipantT = {
 export type GetTournamentPendingResponseT = {
   tournamentId: number;
   name: string;
+  /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
+  isOwner: boolean;
   status: Extract<TournamentStatusT, 'PENDING'>;
   pending: {
     items: Array<Partial<TournamentItemT> & { tournamentItemId: number; itemId: number }>;
@@ -26,6 +28,8 @@ export type GetTournamentPendingResponseT = {
 export type GetTournamentInProgressResponseT = {
   tournamentId: number;
   name: string;
+  /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
+  isOwner: boolean;
   status: Extract<TournamentStatusT, 'IN_PROGRESS'>;
   inProgress: {
     currentRound: number;
@@ -38,6 +42,8 @@ export type GetTournamentInProgressResponseT = {
 export type GetTournamentCompletedResponseT = {
   tournamentId: number;
   name: string;
+  /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
+  isOwner: boolean;
   status: Extract<TournamentStatusT, 'COMPLETED'>;
   completed: {
     result: TournamentRankingT[];

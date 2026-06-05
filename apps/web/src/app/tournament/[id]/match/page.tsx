@@ -38,6 +38,7 @@ async function TournamentPage({ params }: TournamentPageProps) {
       hydratedTournament = {
         tournamentId,
         name: tournamentData.name,
+        isOwner: tournamentData.isOwner,
         status: 'IN_PROGRESS',
         inProgress: {
           currentRound: items.length,

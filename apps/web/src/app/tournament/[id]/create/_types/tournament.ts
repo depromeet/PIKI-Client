@@ -18,6 +18,8 @@ export type WishBasketItemT = {
 export type GetTournamentResponseT = {
   tournamentId: number;
   name: string;
+  /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
+  isOwner: boolean;
   status: TournamentStatusT;
   pending?: {
     items: TournamentItemT[];

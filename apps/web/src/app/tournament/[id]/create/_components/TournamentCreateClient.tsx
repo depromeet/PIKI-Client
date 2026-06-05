@@ -14,7 +14,6 @@ import {
   type JoinWelcomePayloadT,
   consumeJoinConfirmFor,
   consumeJoinWelcomeFor,
-  isParticipantOf,
 } from '../../../join/_utils/joinSession';
 import { useCountdown } from '../_hooks/useCountdown';
 import { useGetTournament } from '../_hooks/useGetTournament';
@@ -44,8 +43,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
     consumeJoinConfirmFor(numericTournamentId)
   );
-  // TODO: API 연동 후 tournamentData의 boolean 필드 (예: isHost) 로 교체
-  const [isParticipant] = useState(() => isParticipantOf(numericTournamentId));
+  const isParticipant = !tournamentData.isOwner;
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
