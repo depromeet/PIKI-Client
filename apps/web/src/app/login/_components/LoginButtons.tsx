@@ -1,8 +1,12 @@
 'use client';
 
+import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+
 import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
+import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
+import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
@@ -10,13 +14,22 @@ import SocialLoginButton from './SocialLoginButton';
 
 function LoginButtons() {
   const { postGuestLoginMutation } = usePostGuestLogin();
+  useNativeLoginResult();
 
   const handleKakaoLogin = async () => {
+    if (isWebview()) {
+      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'kakao' });
+      return;
+    }
     const { url } = await getAuthUrl('kakao');
     window.location.href = url;
   };
 
   const handleGoogleLogin = async () => {
+    if (isWebview()) {
+      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'google' });
+      return;
+    }
     const { url } = await getAuthUrl('google');
     window.location.href = url;
   };

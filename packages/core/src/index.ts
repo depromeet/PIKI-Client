@@ -15,6 +15,15 @@ export type {
   OpenImagePickerMessageT,
   OpenImagePickerPayloadT,
 } from './types/image';
+export type {
+  RequestSocialLoginMessageT,
+  RequestSocialLoginPayloadT,
+  SocialLoginErrorMessageT,
+  SocialLoginErrorPayloadT,
+  SocialLoginSuccessMessageT,
+  SocialLoginSuccessPayloadT,
+  SocialProviderT,
+} from './types/login';
 export type { WebBridgeMessageT } from './types/webBridge';
 
 /** 유틸 */

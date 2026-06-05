@@ -5,17 +5,22 @@ import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
+import { useSocialLogin } from '@/hooks/useSocialLogin';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
+  const { handleLogin } = useSocialLogin();
 
   const onWebviewMessage = useCallback(async (message: WebBridgeMessageT) => {
     if (message.type === WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER) {
       await handleOpenImagePicker(message.payload);
     }
-  }, []);
+    if (message.type === WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN) {
+      await handleLogin(message.payload.provider);
+    }
+  }, [handleLogin]);
 
   const { onMessage } = useWebBridgeMessage(onWebviewMessage);
 
@@ -38,8 +43,7 @@ function Page() {
          * - ios simulator 사용 시: `http://localhost:3000`
          * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
          */
-        // TEMP: URI env에 등록하여 사용 예정
-        source={{ uri: 'http://localhost:3000' }}
+        source={{ uri: process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000' }}
         onMessage={onMessage}
         allowsBackForwardNavigationGestures
         cacheEnabled

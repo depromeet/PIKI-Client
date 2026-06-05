@@ -4,9 +4,17 @@ import type {
   ImagePickerSuccessMessageT,
   OpenImagePickerMessageT,
 } from './image';
+import type {
+  RequestSocialLoginMessageT,
+  SocialLoginErrorMessageT,
+  SocialLoginSuccessMessageT,
+} from './login';
 
 export type WebBridgeMessageT =
   | OpenImagePickerMessageT
   | ImagePickerSuccessMessageT
   | ImagePickerCancelMessageT
-  | ImagePickerErrorMessageT;
+  | ImagePickerErrorMessageT
+  | RequestSocialLoginMessageT
+  | SocialLoginSuccessMessageT
+  | SocialLoginErrorMessageT;
