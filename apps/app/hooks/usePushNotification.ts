@@ -1,5 +1,10 @@
 import messaging from '@react-native-firebase/messaging';
+import Constants from 'expo-constants';
 import { useEffect } from 'react';
+
+import { postFcmToken } from '@/apis/fcmToken';
+
+const getDeviceId = () => Constants.expoConfig?.ios?.bundleIdentifier ?? 'unknown';
 
 const requestPermission = async () => {
   const authStatus = await messaging().requestPermission();
@@ -10,27 +15,28 @@ const requestPermission = async () => {
   return enabled;
 };
 
-const usePushNotification = () => {
+const usePushNotification = (accessToken: string | null) => {
   useEffect(() => {
+    if (!accessToken) return;
+
+    const deviceId = getDeviceId();
+
     const init = async () => {
       const enabled = await requestPermission();
       if (!enabled) return;
 
       await messaging().registerDeviceForRemoteMessages();
-      const fcmToken = await messaging().getToken();
-      // TODO: 서버에 POST /api/v1/fcm/tokens { token: fcmToken } 호출
-      console.warn('FCM Token:', fcmToken);
+      const token = await messaging().getToken();
+
+      await postFcmToken({ token, deviceId }, accessToken);
     };
 
     init();
 
-    // 토큰 갱신 시 재등록
-    const unsubscribeTokenRefresh = messaging().onTokenRefresh(newToken => {
-      // TODO: 서버에 POST /api/v1/fcm/tokens { token: newToken } 호출
-      console.warn('FCM Token 갱신:', newToken);
+    const unsubscribeTokenRefresh = messaging().onTokenRefresh(async newToken => {
+      await postFcmToken({ token: newToken, deviceId }, accessToken);
     });
 
-    // Foreground 메시지 수신
     const unsubscribeForeground = messaging().onMessage(async remoteMessage => {
       console.warn('Foreground FCM message:', remoteMessage);
     });
@@ -39,7 +45,7 @@ const usePushNotification = () => {
       unsubscribeTokenRefresh();
       unsubscribeForeground();
     };
-  }, []);
+  }, [accessToken]);
 };
 
 export default usePushNotification;
