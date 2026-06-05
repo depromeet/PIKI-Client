@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
+import { useGetWishlist } from '../../../hooks/useGetWishlist';
 import { useWishlistDelete } from '../_hooks/useDeleteWishes';
-import { useGetWishlist } from '../_hooks/useGetWishlist';
 import WishAddDialog from './WishAddDialog';
 import WishlistBottomBar from './WishlistBottomBar';
 import WishlistFabArea from './WishlistFabArea';

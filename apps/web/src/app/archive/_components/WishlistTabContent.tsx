@@ -1,4 +1,4 @@
-import WishGrid from '@/app/wishlist/_components/wish-grid';
+import WishGrid from '@/app/archive/_components/wish-grid';
 import HeartIconFill from '@/assets/icons/fill/heart.svg';
 
 import type { WishItemT } from '../_types/wish';

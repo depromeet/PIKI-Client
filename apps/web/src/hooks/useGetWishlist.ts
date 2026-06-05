@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { getWishlist } from '../_apis/getWishlist';
+import { getWishlist } from '../apis/getWishlist';
 
 export const useGetWishlist = () => {
   return useSuspenseQuery({

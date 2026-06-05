@@ -1,5 +1,5 @@
-import WishCard from '@/app/wishlist/_components/wish-grid/WishCard';
-import WishFailedCard from '@/app/wishlist/_components/wish-grid/WishFailedCard';
+import WishCard from '@/app/archive/_components/wish-grid/WishCard';
+import WishFailedCard from '@/app/archive/_components/wish-grid/WishFailedCard';
 import { CheckboxEmptyIconFill, CheckboxSelectedIconFill } from '@/assets/icons';
 
 import type { WishItemT } from '../../_types/wish';

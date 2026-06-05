@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { useGetWishlist } from '@/app/wishlist/_hooks/useGetWishlist';
 import Button from '@/components/button';
+import { useGetWishlist } from '@/hooks/useGetWishlist';
 
 import { useGetTournament } from '../../_hooks/useGetTournament';
 import { MAX_SELECT } from '../_consts/selectLimits';

@@ -1,4 +1,4 @@
-import WishCard from '@/app/wishlist/_components/wish-grid/WishCard';
+import WishCard from '@/app/archive/_components/wish-grid/WishCard';
 import CheckboxEmptyIconFill from '@/assets/icons/fill/checkbox-empty.svg';
 import CheckboxSelectedIconFill from '@/assets/icons/fill/checkbox-selected.svg';
 
