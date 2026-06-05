@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { postWishLink } from '@/apis/postWishLink';
+import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
 
 export const usePostWishLink = () => {
@@ -18,7 +19,7 @@ export const usePostWishLink = () => {
     mutationFn: (url: string) => postWishLink(url),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
-      router.push('/wishlist');
+      router.push(ROUTES.ARCHIVE('wish'));
     },
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;
@@ -30,7 +31,7 @@ export const usePostWishLink = () => {
       if (error.response.status === 400) toast.error(error.response.data.detail);
       else if (error.response.status === 403) {
         toast.error(error.response.data.detail);
-        router.replace('/login');
+        router.replace(ROUTES.LOGIN);
       }
     },
   });

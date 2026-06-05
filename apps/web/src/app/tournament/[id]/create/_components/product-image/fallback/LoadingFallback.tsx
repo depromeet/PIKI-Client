@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import Spinner from '@/components/common/spinner';
+import Spinner from '@/components/spinner';
 
 type LoadingFallbackProps = {
   children?: ReactNode;

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import Skeleton from '@/components/common/skeleton';
+import Skeleton from '@/components/skeleton';
 
 function LoadingFallback() {
   return (

@@ -1,5 +1,5 @@
-import { Header, HeaderIcon } from '@/components/common/header';
-import Spacing from '@/components/common/spacing';
+import { Header, HeaderIcon } from '@/components/header';
+import Spacing from '@/components/spacing';
 
 import NotificationEmptyState from './_components/NotificationEmptyState';
 import NotificationItem from './_components/NotificationItem';

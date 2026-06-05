@@ -3,14 +3,15 @@
 import { useRouter } from 'next/navigation';
 
 import { WarningIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
+import Button from '@/components/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/common/dialog';
+} from '@/components/dialog';
+import { ROUTES } from '@/consts/route';
 
 import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';
 
@@ -38,7 +39,7 @@ function TournamentItemFailedModal({
 
   const handleEdit = () => {
     onClose();
-    router.push(`/tournament/${tournamentId}/item/${tournamentItemId}`);
+    router.push(ROUTES.TOURNAMENT_ITEM_EDIT(tournamentId, tournamentItemId));
   };
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { Header, HeaderIcon } from '@/components/common/header';
+import { Header, HeaderIcon } from '@/components/header';
 import { cn } from '@/utils/cn';
 
 import { useGetTournamentItem } from '../_hooks/useGetTournamentItem';

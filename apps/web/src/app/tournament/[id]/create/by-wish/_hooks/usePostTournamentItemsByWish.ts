@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+import { ROUTES } from '@/consts/route';
+
 import { postTournamentItemsByWish } from '../_apis/postTournamentItemsByWish';
 
 export const usePostTournamentItemsByWish = (tournamentId: number) => {
@@ -15,7 +17,7 @@ export const usePostTournamentItemsByWish = (tournamentId: number) => {
     mutationFn: (itemIds: number[]) => postTournamentItemsByWish(tournamentId, { itemIds }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournament', tournamentId] });
-      router.push(`/tournament/${tournamentId}/create?scrollToLast=true`);
+      router.push(`${ROUTES.TOURNAMENT_CREATE(tournamentId)}?scrollToLast=true`);
     },
     onError: () => {
       toast.error('위시템 추가에 실패했어요. 잠시 후 다시 시도해주세요.');
