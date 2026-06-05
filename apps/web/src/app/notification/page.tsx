@@ -21,7 +21,7 @@ function Notification() {
   const isEmpty = notifications.length === 0;
 
   return (
-    <div className="flex h-dvh flex-col pt-9">
+    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-9">
       <Header left={<HeaderIcon name="BACK" />} center="알림 히스토리" centerClassName="title-1" />
       <Spacing size={16} />
 

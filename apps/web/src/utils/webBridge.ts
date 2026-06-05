@@ -50,7 +50,10 @@ export const isWebview = (userAgentFromServer: string | null = null) => {
  * WebBridge.postMessage('HELLO_FROM_WEB', '안녕 RN!')
  */
 export const WebBridge = {
-  postMessage(type: WebBridgeMessageT['type'], payload?: WebBridgeMessageT['payload']) {
+  postMessage(
+    type: WebBridgeMessageT['type'],
+    payload?: Extract<WebBridgeMessageT, { payload: unknown }>['payload']
+  ) {
     if (typeof window === 'undefined') return;
     if (!isRNWebViewWindow(window)) return;
 

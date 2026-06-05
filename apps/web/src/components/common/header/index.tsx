@@ -79,9 +79,8 @@ function HeaderIcon({
       return <ProfileHeaderIcon onClick={onClick} className={cn(ICON_BASE_STYLE, className)} />;
     case 'ALARM':
       return (
-        // TODO: href 수정 필요
         <Link
-          href="/"
+          href="/notification"
           aria-label="알림"
           className={cn(ICON_BASE_STYLE, className)}
           onClick={onClick}
