@@ -1,10 +1,13 @@
 import messaging from '@react-native-firebase/messaging';
-import Constants from 'expo-constants';
+import * as Application from 'expo-application';
 import { useEffect } from 'react';
 
 import { postFcmToken } from '@/apis/fcmToken';
 
-const getDeviceId = () => Constants.expoConfig?.ios?.bundleIdentifier ?? 'unknown';
+const getDeviceId = async () => {
+  const idfv = await Application.getIosIdForVendorAsync();
+  return idfv ?? 'unknown';
+};
 
 const requestPermission = async () => {
   const authStatus = await messaging().requestPermission();
@@ -19,9 +22,8 @@ const usePushNotification = (accessToken: string | null) => {
   useEffect(() => {
     if (!accessToken) return;
 
-    const deviceId = getDeviceId();
-
     const init = async () => {
+      const deviceId = await getDeviceId();
       const enabled = await requestPermission();
       if (!enabled) return;
 
@@ -34,6 +36,7 @@ const usePushNotification = (accessToken: string | null) => {
     init();
 
     const unsubscribeTokenRefresh = messaging().onTokenRefresh(async newToken => {
+      const deviceId = await getDeviceId();
       await postFcmToken({ token: newToken, deviceId }, accessToken);
     });
 
