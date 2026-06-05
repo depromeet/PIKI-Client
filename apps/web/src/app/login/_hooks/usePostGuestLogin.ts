@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { ROUTES } from '@/consts/route';
 import { setCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
@@ -12,7 +13,7 @@ export const usePostGuestLogin = () => {
   const { mutate: postGuestLoginMutation, isPending: isPostGuestLoginPending } = useMutation({
     mutationFn: postGuestLogin,
     onSuccess: data => {
-      router.push('/home');
+      router.push(ROUTES.HOME);
 
       if (isWebview() && data.accessToken && data.refreshToken) {
         setCookie('access_token', data.accessToken);

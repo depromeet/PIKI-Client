@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type React from 'react';
 
 import { NotificationIconFill } from '@/assets/icons/fill';
+import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
 
 import BackHeaderIcon from './BackHeaderIcon';
@@ -81,7 +82,7 @@ function HeaderIcon({
       return (
         // TODO: href 수정 필요
         <Link
-          href="/"
+          href={ROUTES.ROOT}
           aria-label="알림"
           className={cn(ICON_BASE_STYLE, className)}
           onClick={onClick}

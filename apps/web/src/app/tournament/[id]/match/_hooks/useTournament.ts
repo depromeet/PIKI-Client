@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useSyncExternalStore } from 'react';
 
+import { ROUTES } from '@/consts/route';
 import type { TournamentItemT } from '@/types/tournament';
 
 import { getTournament } from '../../_common/_apis/getTournament';
@@ -93,7 +94,7 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
     // 결승전 — onSuccess(캐시를 COMPLETED로 시드)까지 기다린 후 결과 페이지로 이동
     if (isFinalRound) {
       postRecordMatchMutation(matchBody, {
-        onSuccess: () => router.push(`/tournament/${tournamentId}/result`),
+        onSuccess: () => router.push(ROUTES.TOURNAMENT_RESULT(tournamentId)),
       });
       return;
     }

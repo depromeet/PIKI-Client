@@ -2,6 +2,7 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { notFound, redirect } from 'next/navigation';
 
+import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
 import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
@@ -33,9 +34,9 @@ async function WishEditPage({ params }: WishEditPageProps) {
       const { status } = state.error.response;
 
       /** 토너먼트 권한 없는 경우 */
-      if (status === 403) redirect('/home');
+      if (status === 403) redirect(ROUTES.HOME);
       /** 토너먼트 or 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
-        redirect(`/wishlist`);
+        redirect(ROUTES.ARCHIVE('wish'));
     }
   }
 
@@ -43,7 +44,7 @@ async function WishEditPage({ params }: WishEditPageProps) {
   const wishData = queryClient.getQueryData<GetWishResponseT>(GET_WISH_QUERY_KEY);
   if (wishData?.item.status === 'PROCESSING') {
     // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
-    redirect(`/wishlist`);
+    redirect(ROUTES.ARCHIVE());
   }
 
   return (
