@@ -16,11 +16,10 @@ export const WebBridge = {
   },
 
   /** RN에서 웹으로 메시지 전송 */
-  postMessage(type: WebBridgeMessageT['type'], payload?: WebBridgeMessageT['payload']) {
+  postMessage(message: WebBridgeMessageT) {
     const target = webviewRef?.current;
     if (!target) return console.warn('[WEBVIEW] WebView 참조 없음');
 
-    const message = { type, payload };
     target.postMessage(JSON.stringify(message));
   },
 };

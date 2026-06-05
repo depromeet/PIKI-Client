@@ -31,7 +31,7 @@ export const useShareIntent = ({ onChangeWebviewUri, webviewUri }: Props) => {
     const pending = pendingShareIntentRef.current;
     if (!pending) return;
 
-    WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.SHARE_INTENT, pending);
+    WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.SHARE_INTENT, payload: pending });
     resetShareIntent();
     pendingShareIntentRef.current = null;
   }, [resetShareIntent]);

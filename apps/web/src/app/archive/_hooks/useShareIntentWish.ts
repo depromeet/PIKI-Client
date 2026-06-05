@@ -56,8 +56,11 @@ export const useShareIntentWish = () => {
   useEffect(() => {
     if (!isWebview()) return;
 
-    WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.WEB_READY, {
-      type: WEB_READY_MESSAGE_TYPE.SHARE_INTENT,
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.WEB_READY,
+      payload: {
+        type: WEB_READY_MESSAGE_TYPE.SHARE_INTENT,
+      },
     });
   }, []);
 
