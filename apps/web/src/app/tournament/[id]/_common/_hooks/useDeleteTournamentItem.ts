@@ -3,6 +3,7 @@ import { isAxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
 
 import { deleteTournamentItem } from '../_apis/deleteTournamentItem';
@@ -12,8 +13,6 @@ export const useDeleteTournamentItem = (tournamentId: number, tournamentItemId: 
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  const tournamentCreatePage = `/tournament/${tournamentId}/create`;
-
   const { mutate: deleteTournamentItemMutation, isPending: isDeleteTournamentItemPending } =
     useMutation({
       mutationFn: () => deleteTournamentItem(tournamentId, tournamentItemId),
@@ -22,7 +21,8 @@ export const useDeleteTournamentItem = (tournamentId: number, tournamentItemId: 
         queryClient.invalidateQueries({
           queryKey: ['tournamentItem', tournamentId, tournamentItemId],
         });
-        if (pathname !== tournamentCreatePage) router.replace(tournamentCreatePage);
+        if (pathname !== ROUTES.TOURNAMENT_CREATE(tournamentId))
+          router.replace(ROUTES.TOURNAMENT_CREATE(tournamentId));
       },
       onError: error => {
         if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;
@@ -41,7 +41,8 @@ export const useDeleteTournamentItem = (tournamentId: number, tournamentItemId: 
          */
         if (status === 403 || status === 404 || status === 409) {
           toast.error(clientErrorMessage);
-          if (pathname !== tournamentCreatePage) router.replace(tournamentCreatePage);
+          if (pathname !== ROUTES.TOURNAMENT_CREATE(tournamentId))
+            router.replace(ROUTES.TOURNAMENT_CREATE(tournamentId));
         } else if (status === 500) {
           toast.error('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         }

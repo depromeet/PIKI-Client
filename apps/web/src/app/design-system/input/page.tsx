@@ -1,7 +1,7 @@
 'use client';
 
 import { EditIconFill, LinkIconFill } from '@/assets/icons';
-import Input from '@/components/common/input';
+import Input from '@/components/input';
 
 function InputDocsPage() {
   return (

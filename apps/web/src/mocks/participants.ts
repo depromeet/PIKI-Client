@@ -1,5 +1,5 @@
 import type { TournamentParticipantT } from '@/app/tournament/[id]/_common/_types/tournamentResponse';
-import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import type { UserT } from '@/components/user-profile-group/userProfile.const';
 
 export type MockParticipantT = {
   user: UserT;

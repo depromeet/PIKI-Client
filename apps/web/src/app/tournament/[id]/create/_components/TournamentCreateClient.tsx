@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import { Dialog } from '@/components/common/dialog';
-import GetItemDialogContent from '@/components/common/get-item-dialog';
+import { Dialog } from '@/components/dialog';
+import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { useQueryAction } from '@/hooks/useQueryAction';
 import { MOCK_DEPOSIT_DURATION_MS } from '@/mocks/deposit';

@@ -1,4 +1,4 @@
-import type { ProfileTypeT } from '@/components/common/user-profile-group/userProfile.const';
+import type { ProfileTypeT } from '@/components/user-profile-group/userProfile.const';
 
 const WELCOME_KEY = 'piki:joinWelcome';
 const CONFIRM_KEY = 'piki:joinConfirm';

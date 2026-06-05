@@ -3,6 +3,7 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
+import { ROUTES } from '@/consts/route';
 import type { SocialProviderT } from '@/types/auth';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
@@ -28,19 +29,19 @@ function CallbackHandler() {
     if (hasCalled.current) return;
 
     if (!isValidProvider) {
-      router.replace('/login');
+      router.replace(ROUTES.LOGIN);
       return;
     }
 
     const code = searchParams.get('code');
     if (!code) {
-      router.replace('/login');
+      router.replace(ROUTES.LOGIN);
       return;
     }
 
     const state = searchParams.get('state');
     if (!state) {
-      router.replace('/login');
+      router.replace(ROUTES.LOGIN);
       return;
     }
 

@@ -1,4 +1,4 @@
-import type { ProfileTypeT } from '@/components/common/user-profile-group/userProfile.const';
+import type { ProfileTypeT } from '@/components/user-profile-group/userProfile.const';
 
 export type RandomNicknameT = {
   nickname: string;

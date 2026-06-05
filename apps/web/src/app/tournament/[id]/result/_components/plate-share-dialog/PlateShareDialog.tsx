@@ -3,8 +3,8 @@
 import { toast } from 'sonner';
 
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
-import Button from '@/components/common/button';
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/common/drawer';
+import Button from '@/components/button';
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
 import { share } from '@/utils/share';
 
 type PlateShareDialogProps = {

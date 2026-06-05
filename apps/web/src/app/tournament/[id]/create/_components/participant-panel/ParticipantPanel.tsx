@@ -3,8 +3,8 @@
 import { useState } from 'react';
 
 import { AddIconOutline, ChevronDownIconOutline, ChevronUpIconOutline } from '@/assets/icons';
-import UserProfileGroup from '@/components/common/user-profile-group';
-import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import UserProfileGroup from '@/components/user-profile-group';
+import type { UserT } from '@/components/user-profile-group/userProfile.const';
 
 import InviteFriendsDialog from '../invite-friends/InviteFriendsDialog';
 import ParticipantChip from './ParticipantChip';

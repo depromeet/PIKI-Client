@@ -6,10 +6,10 @@ import { toast } from 'sonner';
 
 import { getTournamentList } from '@/apis/getTournamentList';
 import { EditIconFill } from '@/assets/icons/fill';
-import Button from '@/components/common/button';
-import { Header } from '@/components/common/header';
-import Input from '@/components/common/input';
-import Spinner from '@/components/common/spinner';
+import Button from '@/components/button';
+import { Header } from '@/components/header';
+import Input from '@/components/input';
+import Spinner from '@/components/spinner';
 import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';

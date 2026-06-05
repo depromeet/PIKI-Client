@@ -2,8 +2,8 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getTournamentList } from '@/apis/getTournamentList';
 import PikiLogo from '@/assets/images/piki-logo.svg';
-import BottomTabBar from '@/components/common/bottom-tab-bar';
-import { Header, HeaderIcon } from '@/components/common/header';
+import BottomTabBar from '@/components/bottom-tab-bar';
+import { Header, HeaderIcon } from '@/components/header';
 import { getQueryClient } from '@/utils/queryClient';
 
 import AddWishHomeDialog from './_components/AddWishHomeDialog';

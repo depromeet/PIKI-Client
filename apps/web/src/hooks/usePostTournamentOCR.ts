@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { postTournamentOCR } from '@/apis/postTournamentOCR';
+import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
 
 export const usePostTournamentOCR = (tournamentId: number) => {
@@ -38,7 +39,7 @@ export const usePostTournamentOCR = (tournamentId: number) => {
       if (status === 400) toast.error(clientErrorMessage);
       else if (status === 403 || status === 404 || status === 409) {
         toast.error(clientErrorMessage);
-        router.replace('/home');
+        router.replace(ROUTES.HOME);
       } else if (status === 500) {
         toast.error('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }

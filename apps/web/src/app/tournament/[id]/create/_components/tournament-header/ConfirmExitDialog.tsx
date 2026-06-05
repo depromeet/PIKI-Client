@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 
 import ConfirmExitBasket from '../../_assets/confirm-exit-basket.svg';
 

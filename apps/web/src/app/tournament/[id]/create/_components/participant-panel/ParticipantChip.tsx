@@ -1,5 +1,5 @@
-import UserProfile from '@/components/common/user-profile-group/UserProfile';
-import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import UserProfile from '@/components/user-profile-group/UserProfile';
+import type { UserT } from '@/components/user-profile-group/userProfile.const';
 
 type ParticipantChipProps = {
   user: UserT;

@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { ROUTES } from '@/consts/route';
+
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
 import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
@@ -21,7 +23,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
     if (tournamentData.status === 'COMPLETED') return;
-    router.replace(`/tournament/${tournamentId}/match`);
+    router.replace(ROUTES.TOURNAMENT_MATCH(tournamentId));
   }, [tournamentData.status, router, tournamentId]);
 
   if (tournamentData.status !== 'COMPLETED') {
@@ -37,7 +39,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const plateUrl = `https://piki.today/tournament/${tournamentId}/plate`;
 
   const handleGoHome = () => {
-    router.push('/home');
+    router.push(ROUTES.HOME);
   };
 
   const handleSaveResult = () => {

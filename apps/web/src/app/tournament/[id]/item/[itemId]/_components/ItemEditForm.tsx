@@ -3,11 +3,11 @@
 import { useState } from 'react';
 
 import { EditIconFill } from '@/assets/icons';
-import BottomCta from '@/components/common/bottom-cta';
-import Button from '@/components/common/button';
-import Input from '@/components/common/input';
-import Spacing from '@/components/common/spacing';
-import Spinner from '@/components/common/spinner';
+import BottomCta from '@/components/bottom-cta';
+import Button from '@/components/button';
+import Input from '@/components/input';
+import Spacing from '@/components/spacing';
+import Spinner from '@/components/spinner';
 import type { ItemStatusT } from '@/types/item';
 import { cn } from '@/utils/cn';
 import formatPrice from '@/utils/formatPrice';

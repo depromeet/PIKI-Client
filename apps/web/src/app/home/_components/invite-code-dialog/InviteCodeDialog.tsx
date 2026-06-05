@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import Button from '@/components/common/button';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
-import Input from '@/components/common/input';
+import Button from '@/components/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
+import Input from '@/components/input';
 
 import { CODE_LENGTH, verifyInviteCode } from '../../../tournament/join/_utils/verifyInviteCode';
 import InvalidCodeDialog from './InvalidCodeDialog';
