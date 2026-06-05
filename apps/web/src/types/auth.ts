@@ -1,6 +1,6 @@
 import type { UserT } from './user';
 
-export type SocialProviderT = 'kakao' | 'google';
+export type SocialProviderT = 'kakao' | 'google' | 'apple';
 
 export type PostSocialLoginResponseT = {
   accessToken: string | null;

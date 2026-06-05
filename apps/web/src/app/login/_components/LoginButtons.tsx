@@ -21,7 +21,10 @@ function LoginButtons() {
     window.location.href = url;
   };
 
-  const handleAppleLogin = () => {};
+  const handleAppleLogin = async () => {
+    const { url } = await getAuthUrl('apple');
+    window.location.href = url;
+  };
 
   const handleGuestLogin = () => {
     postGuestLoginMutation();
