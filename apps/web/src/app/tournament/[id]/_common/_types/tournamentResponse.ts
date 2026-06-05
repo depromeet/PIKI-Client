@@ -59,6 +59,9 @@ export type PostStartTournamentResponseT = {
   items: TournamentItemT[];
 };
 
+/** 플레이 링크 생성 응답 — playLinkExpiresAt 문자열만 반환 */
+export type PostPlayLinkResponseT = string;
+
 export type PostRecordMatchRequestT = TournamentMatchHistoryT;
 
 /**

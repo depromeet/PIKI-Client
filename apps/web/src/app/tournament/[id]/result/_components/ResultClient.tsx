@@ -36,7 +36,6 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const tournamentName = tournamentData.name;
   const result = tournamentData.completed.result;
-  const plateUrl = `https://piki.today/tournament/${tournamentId}/plate`;
 
   const handleGoHome = () => {
     router.push(ROUTES.HOME);
@@ -89,7 +88,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
       <PlateShareDialog
         open={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}
-        plateUrl={plateUrl}
+        tournamentId={tournamentId}
       />
     </main>
   );

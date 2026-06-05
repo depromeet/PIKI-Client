@@ -24,4 +24,5 @@ export const ENDPOINTS = {
   TOURNAMENT_OCR: (id: number) => `/api/v1/tournaments/${id}/items/images`,
   TOURNAMENT_ITEM: (id: number, ItemId: number) => `/api/v1/tournaments/${id}/items/${ItemId}`,
   TOURNAMENT_ITEMS_FROM_WISH: (id: number) => `/api/v1/tournaments/${id}/items/wish`,
+  TOURNAMENT_PLAY_LINK: (id: number) => `/api/v1/tournaments/${id}/play-link`,
 } as const;
