@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useGetWishlist } from '../../../hooks/useGetWishlist';
 import { useWishlistDelete } from '../_hooks/useDeleteWishes';
+import { useShareIntentWish } from '../_hooks/useShareIntentWish';
 import WishAddDialog from './WishAddDialog';
 import WishlistBottomBar from './WishlistBottomBar';
 import WishlistFabArea from './WishlistFabArea';
@@ -12,6 +13,7 @@ import WishlistTabContent from './WishlistTabContent';
 function WishlistContent() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
+  useShareIntentWish();
   const { data: wishlistData } = useGetWishlist();
   const {
     isDeleteMode,

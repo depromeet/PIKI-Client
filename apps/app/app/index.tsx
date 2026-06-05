@@ -1,4 +1,9 @@
-import { WEBBRIDGE_MESSAGE_TYPE, WEBVIEW_UA_TOKEN, type WebBridgeMessageT } from '@piki/core';
+import {
+  WEBBRIDGE_MESSAGE_TYPE,
+  WEBVIEW_UA_TOKEN,
+  WEB_READY_MESSAGE_TYPE,
+  type WebBridgeMessageT,
+} from '@piki/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
@@ -34,11 +39,13 @@ function Page() {
 
   /** 웹 → 앱 메시지 처리 */
   const handleWebMessage = useCallback(
-    (message: WebBridgeMessageT) => {
+    async (message: WebBridgeMessageT) => {
       switch (message.type) {
-        case WEBBRIDGE_MESSAGE_TYPE.WEB_READY:
-          sendShareIntent();
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_READY: {
+          const { type } = message.payload;
+          if (type === WEB_READY_MESSAGE_TYPE.SHARE_INTENT) sendShareIntent();
           return;
+        }
 
         case WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER:
           await handleOpenImagePicker(message.payload);

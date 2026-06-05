@@ -5,7 +5,15 @@ import { useCallback, useEffect, useRef } from 'react';
 import { toShareIntentPayload } from '@/utils/serializeShareIntent';
 import { WebBridge } from '@/utils/webBridge';
 
-const SHARE_INTENT_PATH = '/temp';
+const ARCHIVE_PATH = '/archive';
+const ARCHIVE_WISH_TAB = 'wish';
+
+const isArchiveWishTab = (uri: URL) => {
+  if (uri.pathname !== ARCHIVE_PATH) return false;
+
+  const tab = uri.searchParams.get('tab');
+  return tab === null || tab === ARCHIVE_WISH_TAB;
+};
 
 type Props = {
   onChangeWebviewUri: (uri: string) => void;
@@ -38,15 +46,15 @@ export const useShareIntent = ({ onChangeWebviewUri, webviewUri }: Props) => {
     try {
       const nextUri = new URL(webviewUri);
 
-      /** 이미 /temp 페이지: 즉시 전송 */
-      if (nextUri.pathname.startsWith(SHARE_INTENT_PATH)) {
+      /** 이미 아카이브 위시 탭: 즉시 전송 */
+      if (isArchiveWishTab(nextUri)) {
         sendShareIntent();
         return;
       }
 
-      /** 다른 페이지: payload 전송 대기 후 /temp로 이동 -> 웹의 WEB_READY 수신 시점에 전송 */
-      nextUri.pathname = SHARE_INTENT_PATH;
-      nextUri.search = '';
+      /** 다른 페이지: payload 보관 후 아카이브 위시 탭으로 이동 → WEB_READY 수신 시 전송 */
+      nextUri.pathname = ARCHIVE_PATH;
+      nextUri.search = `?tab=${ARCHIVE_WISH_TAB}`;
       nextUri.hash = '';
       onChangeWebviewUri(nextUri.toString());
     } catch {
