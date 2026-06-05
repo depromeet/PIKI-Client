@@ -8,10 +8,13 @@ import { postFcmToken } from '@/apis/postFcmToken';
 
 import { useWebBridgeMessage } from './useWebBridgeMessage';
 
+export const FCM_DEVICE_ID_KEY = 'fcm_device_id';
+
 export function useFcmTokenBridge() {
   useWebBridgeMessage(
     useCallback(async message => {
       if (message.type === WEBBRIDGE_MESSAGE_TYPE.REGISTER_FCM_TOKEN) {
+        sessionStorage.setItem(FCM_DEVICE_ID_KEY, message.payload.deviceId);
         await postFcmToken(message.payload);
       }
 
