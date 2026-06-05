@@ -1,7 +1,7 @@
 'use client';
 
-import Button from '@/components/common/button';
-import Spinner from '@/components/common/spinner';
+import Button from '@/components/button';
+import Spinner from '@/components/spinner';
 
 import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 
@@ -11,7 +11,11 @@ type TournamentStartButtonProps = {
   hasUnreadyItem: boolean;
 };
 
-function TournamentStartButton({ count, tournamentId, hasUnreadyItem }: TournamentStartButtonProps) {
+function TournamentStartButton({
+  count,
+  tournamentId,
+  hasUnreadyItem,
+}: TournamentStartButtonProps) {
   const { postTournamentStartMutation, isPostTournamentStartPending } = usePostTournamentStart(
     Number(tournamentId)
   );

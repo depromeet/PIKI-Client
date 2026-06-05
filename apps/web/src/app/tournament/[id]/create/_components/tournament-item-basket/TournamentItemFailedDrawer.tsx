@@ -3,14 +3,14 @@
 import { useRouter } from 'next/navigation';
 
 import { WarningIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
+import Button from '@/components/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/common/dialog';
+} from '@/components/dialog';
 import { ROUTES } from '@/consts/route';
 
 import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';

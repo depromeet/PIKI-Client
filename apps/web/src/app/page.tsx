@@ -1,5 +1,5 @@
 import { getMe } from '@/apis/getMe';
-import ButtonLink from '@/components/common/button/ButtonLink';
+import ButtonLink from '@/components/button/ButtonLink';
 import { ROUTES } from '@/consts/route';
 
 import LogoutButton from './_components/LogoutButton';
