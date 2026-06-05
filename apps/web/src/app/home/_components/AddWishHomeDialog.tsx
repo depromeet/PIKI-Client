@@ -1,8 +1,8 @@
 'use client';
 
 import { HeartIconFill } from '@/assets/icons';
-import { Dialog, DialogTrigger } from '@/components/common/dialog';
-import GetItemDialogContent from '@/components/common/get-item-dialog';
+import { Dialog, DialogTrigger } from '@/components/dialog';
+import GetItemDialogContent from '@/components/get-item-dialog';
 
 function AddWishHomeDialog() {
   return (

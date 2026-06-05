@@ -1,5 +1,5 @@
 import NotificationIconFill from '@/assets/icons/fill/notification.svg';
-import Button from '@/components/common/button';
+import Button from '@/components/button';
 
 function NotificationEmptyState() {
   return (
