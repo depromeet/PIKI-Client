@@ -37,21 +37,23 @@ function Page() {
       style={{ flex: 1, backgroundColor: 'white' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <Webview
-        ref={webviewRef}
-        style={{ flex: 1 }}
-        applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
-        /**
-         * - ios simulator 사용 시: `http://localhost:3000`
-         * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
-         */
-        source={isSynced ? { uri: process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000' } : undefined}
-        onMessage={onMessage}
-        allowsBackForwardNavigationGestures
-        cacheEnabled
-        webviewDebuggingEnabled={__DEV__}
-        startInLoadingState
-      />
+      {isSynced && (
+        <Webview
+          ref={webviewRef}
+          style={{ flex: 1 }}
+          applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
+          /**
+           * - ios simulator 사용 시: `http://localhost:3000`
+           * - 실기기 사용 시: LAN IP 주소 ex) `http://192.0.0.1:3000`
+           */
+          source={{ uri: process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000' }}
+          onMessage={onMessage}
+          allowsBackForwardNavigationGestures
+          cacheEnabled
+          webviewDebuggingEnabled={__DEV__}
+          startInLoadingState
+        />
+      )}
     </KeyboardAvoidingView>
   );
 }
