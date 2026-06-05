@@ -2,10 +2,7 @@
 
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
-import {
-  PROFILE_SVG,
-  type ProfileTypeT,
-} from '@/components/user-profile-group/userProfile.const';
+import { PROFILE_SVG, type ProfileTypeT } from '@/components/user-profile-group/userProfile.const';
 
 type MemberJoinConfirmDialogProps = {
   open: boolean;
