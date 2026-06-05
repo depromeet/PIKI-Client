@@ -10,6 +10,7 @@ import Button from '@/components/button';
 import { Header } from '@/components/header';
 import Input from '@/components/input';
 import Spinner from '@/components/spinner';
+import { useGetNicknameCheck } from '@/hooks/useGetNicknameCheck';
 import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';
@@ -19,7 +20,7 @@ type JoinPreviewClientProps = {
   tournamentId: number | null;
 };
 
-const MAX_NICKNAME_LENGTH = 12;
+const MAX_NICKNAME_LENGTH = 10;
 
 function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
   const router = useRouter();
@@ -29,7 +30,10 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
   if (tournamentId === null) notFound();
 
   const trimmedNickname = nickname.trim();
-  const isComplete = trimmedNickname.length > 0 && !isJoining;
+  const { nicknameCheckData, isNicknameCheckFetching } = useGetNicknameCheck(nickname);
+  const isNicknameAvailable = nicknameCheckData?.available !== false;
+  const isComplete =
+    trimmedNickname.length > 0 && isNicknameAvailable && !isNicknameCheckFetching && !isJoining;
 
   const handleConfirm = async () => {
     if (!isComplete) return;
@@ -84,6 +88,8 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
           onChange={event => setNickname(event.target.value)}
           right={<EditIconFill className="size-5" />}
           maxLength={MAX_NICKNAME_LENGTH}
+          aria-invalid={!isNicknameAvailable}
+          {...(!isNicknameAvailable ? { helperText: '이미 사용 중인 닉네임이에요.' } : {})}
         />
       </section>
 

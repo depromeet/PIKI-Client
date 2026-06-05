@@ -352,13 +352,20 @@ API 연동 완료 시 일괄 제거 또는 정리:
 
 ## 6. 작업 순서 제안
 
-1. **타입 + ENDPOINTS 상수 정리** (consts/api.ts 누락 endpoint 추가, 타입 정의 일괄)
-2. **`invite-preview` + 회원 join** (가장 짧은 흐름, sessionStorage 패턴 살아있어 영향 적음)
-3. **`join/guest`** (토큰 처리 함께)
-4. **`nickname/check`** (닉네임 페이지에 인라인)
-5. **`isOwner` 분기 교체** (`isParticipantOf` 제거)
-6. **`play-link` 생성/공유** (`PlateShareDialog` 연동)
-7. **mock / 임시 코드 정리** (한 번에 청소)
-8. **(별도 PR)** `play-link-info` + `from-play-link` 진입 흐름
-9. **(별도 PR)** `group-result` 화면
-10. **(별도 PR)** SSE 도입 검토
+기능 단위로 묶고, 각 PR 안에서 필요한 endpoint 상수·타입은 그 PR 이 함께 추가한다.
+(한 번에 모아서 정리하는 사전 작업은 두지 않음 — PR 작게 유지)
+
+1. **초대 코드 검증 + 참여 흐름** — `invite-preview` + `join` + `join/guest`
+   - `InviteCodeDialog`, `InviteClient`, `JoinPreviewClient` 의 mock 일괄 교체
+   - 토큰 처리 (`join/guest` 응답)
+   - 관련 mock (`tournamentPreview.ts`, `verifyInviteCode.ts` 정답 코드) 제거
+2. **닉네임 중복 체크** — `nickname/check`
+   - `JoinPreviewClient` input 인라인 검증
+3. **`isOwner` 기반 주최자 분기 교체**
+   - `joinSession.ts` 의 `isParticipantOf` / `markAsParticipant` / `PARTICIPANT_KEY` 제거
+   - `TournamentCreateClient` 에서 `tournamentData.isOwner` 사용
+4. **플레이 링크 생성/공유** — `play-link`
+   - `PlateShareDialog` 연동, 더미 URL 제거
+5. **(별도 PR)** `play-link-info` + `from-play-link` — 친구 진입 라우트 신규
+6. **(별도 PR)** `group-result` — 그룹 결과 화면 신규 (디자인 시안 필요)
+7. **(별도 PR)** SSE 도입 검토 — 30초 polling 대체 여부
