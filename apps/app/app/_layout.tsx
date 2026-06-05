@@ -3,6 +3,8 @@ import { ShareIntentProvider } from 'expo-share-intent';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
+import PushNotificationProvider from '@/components/PushNotificationProvider';
+
 function RootLayout() {
   return (
     <ShareIntentProvider
@@ -10,6 +12,7 @@ function RootLayout() {
         scheme: 'piki',
       }}
     >
+      <PushNotificationProvider />
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }} />
     </ShareIntentProvider>
