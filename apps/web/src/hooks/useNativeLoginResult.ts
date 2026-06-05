@@ -20,7 +20,9 @@ export const useNativeLoginResult = () => {
         } else if (message.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_ERROR) {
           router.replace('/login');
         }
-      } catch {}
+      } catch (_e) {
+        // JSON.parse 실패 등 유효하지 않은 메시지는 무시
+      }
     };
 
     window.addEventListener('message', handler);
