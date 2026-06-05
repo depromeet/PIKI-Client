@@ -4,14 +4,14 @@ import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 
 // 카카오 네이티브 앱 키로 SDK 초기화 (앱 실행 시 1회)
-initializeKakaoSDK('326734abdf8de5c7e090a2fc72e1dce6');
+initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY ?? '');
 
 // Google Sign-In 설정
 // iosClientId: iOS OAuth 2.0 클라이언트 ID
 // webClientId: 백엔드 토큰 검증용 웹 클라이언트 ID (accessToken 발급에 필요)
 GoogleSignin.configure({
-  iosClientId: '978975594396-mo5b39fe8fqfuukqkf42p63tlqkc4785.apps.googleusercontent.com',
-  webClientId: '978975594396-kgl5nei9occteirhlsk9mep9r65t83bn.apps.googleusercontent.com',
+  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ?? '',
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID ?? '',
 });
 
 export const unstable_settings = {

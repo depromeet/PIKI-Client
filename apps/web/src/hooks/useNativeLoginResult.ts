@@ -1,4 +1,4 @@
-import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+import { WEBBRIDGE_MESSAGE_TYPE, isWebBridgeMessageT } from '@piki/core';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -10,14 +10,15 @@ export const useNativeLoginResult = () => {
   useEffect(() => {
     const handler = (event: MessageEvent) => {
       try {
-        const message = JSON.parse(event.data);
+        const parsed = JSON.parse(event.data);
+        if (!isWebBridgeMessageT(parsed)) return;
 
-        if (message.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_SUCCESS) {
-          const { accessToken, refreshToken } = message.payload;
+        if (parsed.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_SUCCESS) {
+          const { accessToken, refreshToken } = parsed.payload;
           setCookie('access_token', accessToken);
           setCookie('refresh_token', refreshToken);
           router.replace('/home');
-        } else if (message.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_ERROR) {
+        } else if (parsed.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_ERROR) {
           router.replace('/login');
         }
       } catch (_e) {
