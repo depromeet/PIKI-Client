@@ -58,7 +58,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <TournamentHeader name={tournamentData.name} />
         <ParticipantPanel
           participants={MOCK_PARTICIPANTS}
-          inviteUrl="https://piki.today/invite/temp"
+          inviteCode={tournamentData.pending?.inviteCode}
+          inviteExpiresAt={tournamentData.pending?.inviteExpiresAt}
         />
         <TournamentItemBasketStatus
           isProcessing={

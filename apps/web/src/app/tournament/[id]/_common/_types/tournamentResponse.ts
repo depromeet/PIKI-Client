@@ -19,6 +19,10 @@ export type GetTournamentPendingResponseT = {
   isOwner: boolean;
   status: Extract<TournamentStatusT, 'PENDING'>;
   pending: {
+    /** 초대 코드 (영문 대문자 3 + 숫자 3, 서버 패턴: [A-Z]{3}\d{3}) */
+    inviteCode: string;
+    /** 초대 코드 만료 시각 (ISO 8601) */
+    inviteExpiresAt: string;
     items: Array<Partial<TournamentItemT> & { tournamentItemId: number; itemId: number }>;
     participants: TournamentParticipantT[];
   };

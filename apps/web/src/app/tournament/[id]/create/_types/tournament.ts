@@ -22,6 +22,10 @@ export type GetTournamentResponseT = {
   isOwner: boolean;
   status: TournamentStatusT;
   pending?: {
+    /** 초대 코드 (영문 대문자 3 + 숫자 3) */
+    inviteCode: string;
+    /** 초대 코드 만료 시각 (ISO 8601) */
+    inviteExpiresAt: string;
     items: TournamentItemT[];
     participants: TournamentParticipantT[];
   };

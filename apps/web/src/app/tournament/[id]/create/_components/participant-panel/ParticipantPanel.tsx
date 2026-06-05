@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { AddIconOutline, ChevronDownIconOutline, ChevronUpIconOutline } from '@/assets/icons';
@@ -9,6 +10,11 @@ import type { UserT } from '@/components/user-profile-group/userProfile.const';
 import InviteFriendsDialog from '../invite-friends/InviteFriendsDialog';
 import ParticipantChip from './ParticipantChip';
 
+const buildInviteUrl = (tournamentId: string, inviteCode: string) => {
+  if (typeof window === 'undefined') return `/invite/${tournamentId}?code=${inviteCode}`;
+  return `${window.location.origin}/invite/${tournamentId}?code=${inviteCode}`;
+};
+
 type ParticipantT = {
   user: UserT;
   itemCount: number;
@@ -16,7 +22,10 @@ type ParticipantT = {
 
 type ParticipantPanelProps = {
   participants: ParticipantT[];
-  inviteUrl?: string;
+  /** 토너먼트 초대 코드 (PENDING 상태에서만 존재) */
+  inviteCode?: string;
+  /** 초대 코드 만료 시각 (ISO 8601) */
+  inviteExpiresAt?: string;
 };
 
 const PLACEHOLDER_AVATAR_COUNT = 2;
@@ -30,13 +39,19 @@ const getCollapsedLabel = (participants: ParticipantT[]) => {
   return `${head} 외 ${rest}명`;
 };
 
-function ParticipantPanel({ participants, inviteUrl }: ParticipantPanelProps) {
+function ParticipantPanel({
+  participants,
+  inviteCode,
+  inviteExpiresAt,
+}: ParticipantPanelProps) {
+  const { id: tournamentId } = useParams<{ id: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 
   const hasFriends = participants.length > 1;
   const label = getCollapsedLabel(participants);
   const users = participants.map(p => p.user);
+  const inviteUrl = inviteCode ? buildInviteUrl(tournamentId, inviteCode) : '';
 
   const handleToggleExpand = () => setIsExpanded(prev => !prev);
   const handleOpenInvite = () => setIsInviteDialogOpen(true);
@@ -108,6 +123,7 @@ function ParticipantPanel({ participants, inviteUrl }: ParticipantPanelProps) {
         open={isInviteDialogOpen}
         onOpenChange={setIsInviteDialogOpen}
         inviteUrl={inviteUrl}
+        inviteExpiresAt={inviteExpiresAt}
       />
     </>
   );

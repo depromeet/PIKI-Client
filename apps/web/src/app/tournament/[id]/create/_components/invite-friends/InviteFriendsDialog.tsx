@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { toast } from 'sonner';
 
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
@@ -11,9 +12,53 @@ type InviteFriendsDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   inviteUrl?: string;
+  /** ISO 8601 — 초대 코드 만료 시각 */
+  inviteExpiresAt?: string;
 };
 
-function InviteFriendsDialog({ open, onOpenChange, inviteUrl }: InviteFriendsDialogProps) {
+const isSameDay = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+const formatExpiresInfo = (expiresAt: string | undefined) => {
+  if (!expiresAt) return null;
+  const expires = new Date(expiresAt);
+  if (Number.isNaN(expires.getTime())) return null;
+
+  const now = new Date();
+  const remainingMs = expires.getTime() - now.getTime();
+  if (remainingMs <= 0) return { remainingLabel: '마감', absoluteLabel: '만료됨' };
+
+  const totalMinutes = Math.floor(remainingMs / 60_000);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  const remainingLabel = (() => {
+    if (totalMinutes < 60) return `${totalMinutes}분 후 마감`;
+    if (minutes === 0) return `${hours}시간 후 마감`;
+    return `${hours}시간 ${minutes}분 후 마감`;
+  })();
+
+  const hh = String(expires.getHours()).padStart(2, '0');
+  const mm = String(expires.getMinutes()).padStart(2, '0');
+  const dayPrefix = (() => {
+    if (isSameDay(now, expires)) return '오늘';
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (isSameDay(tomorrow, expires)) return '내일';
+    return `${expires.getMonth() + 1}월 ${expires.getDate()}일`;
+  })();
+
+  return { remainingLabel, absoluteLabel: `${dayPrefix} ${hh}:${mm}까지` };
+};
+
+function InviteFriendsDialog({
+  open,
+  onOpenChange,
+  inviteUrl,
+  inviteExpiresAt,
+}: InviteFriendsDialogProps) {
+  const expiresInfo = useMemo(() => formatExpiresInfo(inviteExpiresAt), [inviteExpiresAt]);
+
   const handleSendInviteLink = async () => {
     if (!inviteUrl) return;
 
@@ -40,29 +85,25 @@ function InviteFriendsDialog({ open, onOpenChange, inviteUrl }: InviteFriendsDia
             </DrawerDescription>
           </div>
 
-          <div className="flex w-full items-center justify-between rounded-xl border border-border-neutral-muted bg-bg-layer-default px-4 py-5">
-            <div className="flex items-center gap-4">
-              <div className="flex size-11 items-center justify-center rounded-3xl bg-blue-50">
-                <StopwatchIconFill className="size-6 text-text-accent" />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <p className="body-2-semibold text-text-accent">30분 후 마감</p>
-                <p className="heading-1 text-text-neutral-primary">오늘 13:52까지</p>
+          {expiresInfo && (
+            <div className="flex w-full items-center justify-between rounded-xl border border-border-neutral-muted bg-bg-layer-default px-4 py-5">
+              <div className="flex items-center gap-4">
+                <div className="flex size-11 items-center justify-center rounded-3xl bg-blue-50">
+                  <StopwatchIconFill className="size-6 text-text-accent" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <p className="body-2-semibold text-text-accent">{expiresInfo.remainingLabel}</p>
+                  <p className="heading-1 text-text-neutral-primary">{expiresInfo.absoluteLabel}</p>
+                </div>
               </div>
             </div>
-            <button
-              type="button"
-              className="cursor-pointer body-2-medium text-text-neutral-tertiary underline"
-            >
-              변경
-            </button>
-          </div>
+          )}
 
           <div className="flex w-full flex-col gap-2 rounded-xl bg-gray-50 p-4">
             <div className="flex items-center gap-2">
               <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
               <p className="body-2-medium text-text-neutral-secondary">
-                최대 7명까지 초대할 수 있어요.
+                최대 8명까지 초대할 수 있어요.
               </p>
             </div>
             <div className="flex items-center gap-2">
