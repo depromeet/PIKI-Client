@@ -28,9 +28,12 @@ function Page() {
       case WEBBRIDGE_MESSAGE_TYPE.WEB_READY_TO_RECEIVE_TOKEN: {
         const accessToken = await getSecureItem('access_token');
         const refreshToken = await getSecureItem('refresh_token');
-        WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.SET_APP_TOKEN, {
-          accessToken,
-          refreshToken,
+        WebBridge.postMessage({
+          type: WEBBRIDGE_MESSAGE_TYPE.SET_APP_TOKEN,
+          payload: {
+            accessToken,
+            refreshToken,
+          },
         });
       }
     }

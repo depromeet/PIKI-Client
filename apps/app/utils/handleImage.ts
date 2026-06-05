@@ -44,9 +44,12 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     /** 갤러리 접근 권한 확인 */
     const permission = await requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR, {
-        requestId,
-        detail: '사진 보관함 접근 권한이 필요합니다.',
+      WebBridge.postMessage({
+        type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR,
+        payload: {
+          requestId,
+          detail: '사진 보관함 접근 권한이 필요합니다.',
+        },
       });
       return;
     }
@@ -61,7 +64,10 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     });
 
     if (result.canceled || result.assets.length === 0) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_CANCEL, { requestId });
+      WebBridge.postMessage({
+        type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_CANCEL,
+        payload: { requestId },
+      });
       return;
     }
 
@@ -72,9 +78,12 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     const skippedCount = selectedAssets.length - supportedAssets.length;
 
     if (supportedAssets.length === 0) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR, {
-        requestId,
-        detail: '지원하지 않는 형식의 이미지입니다.',
+      WebBridge.postMessage({
+        type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR,
+        payload: {
+          requestId,
+          detail: '지원하지 않는 형식의 이미지입니다.',
+        },
       });
       return;
     }
@@ -84,15 +93,21 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     );
 
     /** 이미지 전송 */
-    WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS, {
-      requestId,
-      images,
-      skippedCount,
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS,
+      payload: {
+        requestId,
+        images,
+        skippedCount,
+      },
     });
   } catch {
-    WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR, {
-      requestId,
-      detail: '이미지 선택 중 오류가 발생했습니다.',
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR,
+      payload: {
+        requestId,
+        detail: '이미지 선택 중 오류가 발생했습니다.',
+      },
     });
   }
 };

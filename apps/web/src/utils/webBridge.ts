@@ -47,15 +47,16 @@ export const isWebview = (userAgentFromServer: string | null = null) => {
  * Webview 메시지 송신 핸들러
  *
  * @example
- * WebBridge.postMessage('HELLO_FROM_WEB', '안녕 RN!')
+ * WebBridge.postMessage({
+ *   type: 'HELLO_FROM_WEB',
+ *   payload: '안녕 RN!',
+ * })
  */
 export const WebBridge = {
-  postMessage(type: WebBridgeMessageT['type'], payload?: WebBridgeMessageT['payload']) {
+  postMessage(message: WebBridgeMessageT) {
     if (typeof window === 'undefined') return;
     if (!isRNWebViewWindow(window)) return;
 
-    const message = JSON.stringify({ type, payload });
-
-    window.ReactNativeWebView.postMessage(message);
+    window.ReactNativeWebView.postMessage(JSON.stringify(message));
   },
 };
