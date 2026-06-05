@@ -15,6 +15,13 @@ export type {
   OpenImagePickerMessageT,
   OpenImagePickerPayloadT,
 } from './types/image';
+export type {
+  DeleteFcmTokenMessageT,
+  DeleteFcmTokenPayloadT,
+  OpenNotificationSettingsMessageT,
+  RegisterFcmTokenMessageT,
+  RegisterFcmTokenPayloadT,
+} from './types/notification';
 export type { WebBridgeMessageT } from './types/webBridge';
 
 /** 유틸 */

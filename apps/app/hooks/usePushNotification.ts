@@ -1,8 +1,9 @@
 import messaging from '@react-native-firebase/messaging';
+import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import * as Application from 'expo-application';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-import { postFcmToken } from '@/apis/fcmToken';
+import { WebBridge } from '@/utils/webBridge';
 
 const getDeviceId = async () => {
   const idfv = await Application.getIosIdForVendorAsync();
@@ -18,26 +19,51 @@ const requestPermission = async () => {
   return enabled;
 };
 
-const usePushNotification = (accessToken: string | null) => {
+const getFcmToken = async () => {
+  const enabled = await requestPermission();
+  if (!enabled) return null;
+
+  await messaging().registerDeviceForRemoteMessages();
+  const token = await messaging().getToken();
+  const deviceId = await getDeviceId();
+
+  return { token, deviceId };
+};
+
+const usePushNotification = () => {
+  // 웹뷰 로드 전에 토큰이 준비됐을 때 대기시키기 위한 ref
+  const pendingTokenRef = useRef<{ token: string; deviceId: string } | null>(null);
+  const isWebviewReadyRef = useRef(false);
+
+  const sendToken = useCallback((token: string, deviceId: string) => {
+    if (!isWebviewReadyRef.current) {
+      pendingTokenRef.current = { token, deviceId };
+      return;
+    }
+    WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REGISTER_FCM_TOKEN, { token, deviceId });
+  }, []);
+
+  // 웹뷰 로드 완료 시 호출 — index.tsx의 onLoadEnd에서 연결
+  const onWebviewReady = useCallback(() => {
+    isWebviewReadyRef.current = true;
+    if (pendingTokenRef.current) {
+      WebBridge.postMessage(
+        WEBBRIDGE_MESSAGE_TYPE.REGISTER_FCM_TOKEN,
+        pendingTokenRef.current
+      );
+      pendingTokenRef.current = null;
+    }
+  }, []);
+
   useEffect(() => {
-    if (!accessToken) return;
-
-    const init = async () => {
-      const deviceId = await getDeviceId();
-      const enabled = await requestPermission();
-      if (!enabled) return;
-
-      await messaging().registerDeviceForRemoteMessages();
-      const token = await messaging().getToken();
-
-      await postFcmToken({ token, deviceId }, accessToken);
-    };
-
-    init();
+    getFcmToken().then(result => {
+      if (!result) return;
+      sendToken(result.token, result.deviceId);
+    });
 
     const unsubscribeTokenRefresh = messaging().onTokenRefresh(async newToken => {
       const deviceId = await getDeviceId();
-      await postFcmToken({ token: newToken, deviceId }, accessToken);
+      sendToken(newToken, deviceId);
     });
 
     const unsubscribeForeground = messaging().onMessage(async remoteMessage => {
@@ -48,7 +74,9 @@ const usePushNotification = (accessToken: string | null) => {
       unsubscribeTokenRefresh();
       unsubscribeForeground();
     };
-  }, [accessToken]);
+  }, [sendToken]);
+
+  return { onWebviewReady };
 };
 
 export default usePushNotification;

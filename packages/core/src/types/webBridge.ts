@@ -4,9 +4,17 @@ import type {
   ImagePickerSuccessMessageT,
   OpenImagePickerMessageT,
 } from './image';
+import type {
+  DeleteFcmTokenMessageT,
+  OpenNotificationSettingsMessageT,
+  RegisterFcmTokenMessageT,
+} from './notification';
 
 export type WebBridgeMessageT =
   | OpenImagePickerMessageT
   | ImagePickerSuccessMessageT
   | ImagePickerCancelMessageT
-  | ImagePickerErrorMessageT;
+  | ImagePickerErrorMessageT
+  | OpenNotificationSettingsMessageT
+  | RegisterFcmTokenMessageT
+  | DeleteFcmTokenMessageT;

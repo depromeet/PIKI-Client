@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
+import usePushNotification from '@/hooks/usePushNotification';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { WebBridge } from '@/utils/webBridge';
@@ -18,6 +19,8 @@ function Page() {
   }, []);
 
   const { onMessage } = useWebBridgeMessage(onWebviewMessage);
+
+  const { onWebviewReady } = usePushNotification();
 
   useEffect(() => {
     WebBridge.setRef(webviewRef);
@@ -44,6 +47,7 @@ function Page() {
         allowsBackForwardNavigationGestures
         cacheEnabled
         webviewDebuggingEnabled={__DEV__}
+        onLoadEnd={onWebviewReady}
         startInLoadingState
       />
     </KeyboardAvoidingView>
