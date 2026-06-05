@@ -5,20 +5,23 @@ import {
   type WebBridgeMessageT,
 } from '@piki/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Linking, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
 import { useShareIntent } from '@/hooks/useShareIntent';
-import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useSocialLogin } from '@/hooks/useSocialLogin';
+import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
+import { handleRequestPushPermission, syncPushStatusToWeb } from '@/utils/pushNotification';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
-  const [webviewUri, setWebviewUri] = useState(process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000');
+  const [webviewUri, setWebviewUri] = useState(
+    process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000'
+  );
   const { handleLogin } = useSocialLogin();
   const { isSynced } = useWebviewCookieSync();
 
@@ -48,6 +51,19 @@ function Page() {
         case WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN:
           await handleLogin(message.payload.provider);
           return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION_STATUS:
+          await syncPushStatusToWeb();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION:
+          await handleRequestPushPermission();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_NOTIFICATION_SETTINGS:
+          await Linking.openSettings();
+          return;
+
         default:
           return;
       }

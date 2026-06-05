@@ -10,6 +10,13 @@ import type {
   SocialLoginErrorMessageT,
   SocialLoginSuccessMessageT,
 } from './login';
+import type {
+  AppResFcmTokenMessageT,
+  AppResPushPermissionStatusMessageT,
+  WebReqOpenNotificationSettingsMessageT,
+  WebReqPushPermissionMessageT,
+  WebReqPushPermissionStatusMessageT,
+} from './pushNotification';
 import type { ShareIntentMessageT } from './shareIntent';
 
 export type WebBridgeMessageT =
@@ -21,7 +28,12 @@ export type WebBridgeMessageT =
   | SocialLoginSuccessMessageT
   | SocialLoginErrorMessageT
   | ShareIntentMessageT
-  | WebReadyMessageT;
+  | WebReadyMessageT
+  | WebReqPushPermissionStatusMessageT
+  | WebReqPushPermissionMessageT
+  | WebReqOpenNotificationSettingsMessageT
+  | AppResPushPermissionStatusMessageT
+  | AppResFcmTokenMessageT;
 
 export type WebReadyMessageT = {
   type: typeof WEBBRIDGE_MESSAGE_TYPE.WEB_READY;

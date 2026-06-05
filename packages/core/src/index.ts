@@ -25,6 +25,15 @@ export type {
   SocialProviderT,
 } from './types/login';
 export type { ShareIntentFileT, ShareIntentMetaT, ShareIntentPayloadT } from './types/shareIntent';
+export type {
+  AppResFcmTokenMessageT,
+  AppResPushPermissionStatusMessageT,
+  FcmTokenPayloadT,
+  PushPermissionStatusPayloadT,
+  WebReqOpenNotificationSettingsMessageT,
+  WebReqPushPermissionMessageT,
+  WebReqPushPermissionStatusMessageT,
+} from './types/pushNotification';
 export type { WebBridgeMessageT, WebReadyMessageT } from './types/webBridge';
 
 /** 유틸 */
