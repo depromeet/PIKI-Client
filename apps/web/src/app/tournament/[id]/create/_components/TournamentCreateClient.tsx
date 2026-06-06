@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
+import { ROUTES } from '@/consts/route';
 import { useQueryAction } from '@/hooks/useQueryAction';
 
 import {
@@ -30,9 +32,20 @@ type TournamentCreateClientProps = {
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
+  const router = useRouter();
   const numericTournamentId = Number(tournamentId);
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(numericTournamentId);
+
+  // 주최자가 시작한 직후 / 토너먼트가 끝난 직후
+  // — 친구가 polling 으로 status 변화를 감지하면 자동으로 해당 화면으로 보낸다.
+  useEffect(() => {
+    if (tournamentData.status === 'IN_PROGRESS') {
+      router.replace(ROUTES.TOURNAMENT_MATCH(numericTournamentId));
+    } else if (tournamentData.status === 'COMPLETED') {
+      router.replace(ROUTES.TOURNAMENT_RESULT(numericTournamentId));
+    }
+  }, [tournamentData.status, router, numericTournamentId]);
   // 담기 마감 = 초대 코드 만료 시점 (둘은 동일 정책으로 운영)
   // 단, 주최자는 만료 영향 없이 본인 토너먼트에 후보를 담을 수 있다.
   const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
