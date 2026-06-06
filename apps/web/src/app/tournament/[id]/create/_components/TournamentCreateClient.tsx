@@ -6,7 +6,6 @@ import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { useQueryAction } from '@/hooks/useQueryAction';
-import { MOCK_DEPOSIT_DURATION_MS } from '@/mocks/deposit';
 import { MOCK_PARTICIPANTS } from '@/mocks/participants';
 
 import {
@@ -35,7 +34,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const numericTournamentId = Number(tournamentId);
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(numericTournamentId);
-  const [depositDeadline] = useState(() => Date.now() + MOCK_DEPOSIT_DURATION_MS);
+  // 담기 마감 = 초대 코드 만료 시점 (둘은 동일 정책으로 운영)
+  const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
   const { isExpired: isDepositClosed } = useCountdown(depositDeadline);
   const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
     consumeJoinWelcomeFor(numericTournamentId)
