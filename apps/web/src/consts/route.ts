@@ -5,7 +5,6 @@ export const ROUTES = {
   ROOT: '/',
   HOME: '/home',
   LOGIN: '/login',
-  TOURNAMENT_JOIN_BY_CODE: '/tournament/join',
   TOURNAMENT_JOIN_BY_LINK: (id: number) => `/tournament/join/${id}`,
 
   /** 2. Member Only */

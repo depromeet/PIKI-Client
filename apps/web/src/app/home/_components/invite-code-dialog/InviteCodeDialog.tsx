@@ -1,13 +1,20 @@
 'use client';
 
+import { useMutation } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import Button from '@/components/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 import Input from '@/components/input';
+import Spinner from '@/components/spinner';
 
-import { CODE_LENGTH, verifyInviteCode } from '../../../tournament/join/_utils/verifyInviteCode';
+import { getInvitePreviewByCode } from '../../../tournament/join/_apis/getInvitePreviewByCode';
+import {
+  CODE_LENGTH,
+  isValidInviteCodeFormat,
+} from '../../../tournament/join/_utils/verifyInviteCode';
 import InvalidCodeDialog from './InvalidCodeDialog';
 
 type InviteCodeDialogProps = {
@@ -21,7 +28,28 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
   const [showFormatError, setShowFormatError] = useState(false);
   const [isInvalidDialogOpen, setIsInvalidDialogOpen] = useState(false);
 
+  const { mutate: previewMutation, isPending: isPreviewPending } = useMutation({
+    mutationFn: getInvitePreviewByCode,
+    onSuccess: data => {
+      onOpenChange(false);
+      reset();
+      router.push(`/tournament/join/${data.tournamentId}`);
+    },
+    onError: error => {
+      // 400: 코드 없음 / 409: 만료 — 둘 다 사용자에게 InvalidCodeDialog 안내
+      if (isAxiosError(error)) {
+        const status = error.response?.status;
+        if (status === 400 || status === 409) {
+          setIsInvalidDialogOpen(true);
+          return;
+        }
+      }
+      setIsInvalidDialogOpen(true);
+    },
+  });
+
   const isComplete = code.length === CODE_LENGTH;
+  const canSubmit = isComplete && !isPreviewPending;
 
   const reset = () => {
     setCode('');
@@ -34,27 +62,19 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
   };
 
   const handleChange = (next: string) => {
-    setCode(next.slice(0, CODE_LENGTH));
+    setCode(next.slice(0, CODE_LENGTH).toUpperCase());
     if (showFormatError) setShowFormatError(false);
   };
 
   const handleSubmit = () => {
-    if (!isComplete) return;
+    if (!canSubmit) return;
 
-    const result = verifyInviteCode(code);
-    if (result.ok) {
-      onOpenChange(false);
-      reset();
-      router.push(`/tournament/join/${result.tournamentId}`);
-      return;
-    }
-
-    if (result.reason === 'INVALID_FORMAT') {
+    if (!isValidInviteCodeFormat(code)) {
       setShowFormatError(true);
       return;
     }
 
-    setIsInvalidDialogOpen(true);
+    previewMutation(code);
   };
 
   return (
@@ -68,20 +88,22 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
 
           <Input
             label="초대 코드"
-            placeholder="ex. pik123"
+            placeholder="ex. ABC123"
             value={code}
             onChange={event => handleChange(event.target.value)}
             aria-invalid={showFormatError}
-            {...(showFormatError ? { helperText: '영문 + 숫자 조합의 6자리로 입력해주세요.' } : {})}
+            {...(showFormatError
+              ? { helperText: '영문 대문자 3자 + 숫자 3자로 입력해주세요.' }
+              : {})}
             maxLength={CODE_LENGTH}
-            autoCapitalize="off"
+            autoCapitalize="characters"
             autoCorrect="off"
             spellCheck={false}
             autoFocus
           />
 
-          <Button size="lg" variant="primary" disabled={!isComplete} onClick={handleSubmit}>
-            입장하기
+          <Button size="lg" variant="primary" disabled={!canSubmit} onClick={handleSubmit}>
+            {isPreviewPending ? <Spinner size={20} /> : '입장하기'}
           </Button>
         </DialogContent>
       </Dialog>

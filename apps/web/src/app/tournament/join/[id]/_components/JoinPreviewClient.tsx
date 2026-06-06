@@ -10,9 +10,9 @@ import { Header } from '@/components/header';
 import Input from '@/components/input';
 import Spinner from '@/components/spinner';
 import { useGetNicknameCheck } from '@/hooks/useGetNicknameCheck';
-import { MOCK_TOURNAMENT_PREVIEW } from '@/mocks/tournamentPreview';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';
+import { useGetInvitePreview } from '../../_hooks/useGetInvitePreview';
 import { usePostJoinGuest } from '../../_hooks/usePostJoinGuest';
 import { setJoinWelcome } from '../../_utils/joinSession';
 
@@ -28,6 +28,7 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
 
   if (tournamentId === null) notFound();
 
+  const { invitePreviewData } = useGetInvitePreview(tournamentId);
   const trimmedNickname = nickname.trim();
   const { nicknameCheckData, isNicknameCheckFetching } = useGetNicknameCheck(nickname);
   const { postJoinGuestMutation, isPostJoinGuestPending } = usePostJoinGuest();
@@ -70,11 +71,10 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
         <p className="body-2-semibold text-text-neutral-primary">초대받은 토너먼트</p>
         <div className="flex flex-col gap-1 rounded-xl bg-gray-50 p-4">
           <p className="body-1-semibold text-text-neutral-primary">
-            {MOCK_TOURNAMENT_PREVIEW.name}
+            {invitePreviewData.tournamentName}
           </p>
           <p className="body-2-medium text-text-neutral-secondary">
-            후보 {MOCK_TOURNAMENT_PREVIEW.itemCount}개 · 참여{' '}
-            {MOCK_TOURNAMENT_PREVIEW.participantCount}명
+            후보 {invitePreviewData.itemCount}개 · 참여 {invitePreviewData.participantCount}명
           </p>
         </div>
       </section>
