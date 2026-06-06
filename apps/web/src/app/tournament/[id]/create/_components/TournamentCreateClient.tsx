@@ -6,7 +6,6 @@ import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { useQueryAction } from '@/hooks/useQueryAction';
-import { MOCK_PARTICIPANTS } from '@/mocks/participants';
 
 import {
   type JoinConfirmPayloadT,
@@ -39,6 +38,17 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
   const { isExpired } = useCountdown(depositDeadline);
   const isDepositClosed = !tournamentData.isOwner && isExpired;
+  const participants = (tournamentData.pending?.participants ?? []).map(p => ({
+    user: {
+      id: p.userId,
+      name: p.nickname,
+      profileType: 'blue' as const,
+      imageUrl: p.profileImage,
+    },
+    itemCount: 0,
+  }));
+  const hasFriends = participants.length > 1;
+
   const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
     consumeJoinWelcomeFor(numericTournamentId)
   );
@@ -59,7 +69,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       <div className="space-y-4 px-5">
         <TournamentHeader name={tournamentData.name} />
         <ParticipantPanel
-          participants={MOCK_PARTICIPANTS}
+          participants={participants}
           inviteCode={tournamentData.pending?.inviteCode}
           inviteExpiresAt={tournamentData.pending?.inviteExpiresAt}
         />
@@ -80,7 +90,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       />
 
       <div className="flex shrink-0 flex-col gap-3 px-5">
-        {!isDepositClosed && <DepositCountdown deadline={depositDeadline} />}
+        {hasFriends && !isDepositClosed && <DepositCountdown deadline={depositDeadline} />}
         <TournamentStartButton
           count={tournamentData.pending?.items.length ?? 0}
           tournamentId={tournamentId}
