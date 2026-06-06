@@ -39,11 +39,7 @@ const getCollapsedLabel = (participants: ParticipantT[]) => {
   return `${head} 외 ${rest}명`;
 };
 
-function ParticipantPanel({
-  participants,
-  inviteCode,
-  inviteExpiresAt,
-}: ParticipantPanelProps) {
+function ParticipantPanel({ participants, inviteCode, inviteExpiresAt }: ParticipantPanelProps) {
   const { id: tournamentId } = useParams<{ id: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
