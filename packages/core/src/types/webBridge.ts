@@ -5,6 +5,11 @@ import type {
   ImagePickerSuccessMessageT,
   OpenImagePickerMessageT,
 } from './image';
+import type {
+  RequestSocialLoginMessageT,
+  SocialLoginErrorMessageT,
+  SocialLoginSuccessMessageT,
+} from './login';
 import type { ShareIntentMessageT } from './shareIntent';
 
 export type WebBridgeMessageT =
@@ -12,10 +17,12 @@ export type WebBridgeMessageT =
   | ImagePickerSuccessMessageT
   | ImagePickerCancelMessageT
   | ImagePickerErrorMessageT
+  | RequestSocialLoginMessageT
+  | SocialLoginSuccessMessageT
+  | SocialLoginErrorMessageT
   | ShareIntentMessageT
   | WebReadyMessageT;
 
-/** 웹이 페이지 hydrate 완료 후 RN에게 메시지 수신 준비됨을 알리는 메시지 */
 export type WebReadyMessageT = {
   type: typeof WEBBRIDGE_MESSAGE_TYPE.WEB_READY;
   payload: {

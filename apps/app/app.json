@@ -38,7 +38,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
@@ -46,6 +49,18 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "@react-native-kakao/core",
+        {
+          "nativeAppKey": "326734abdf8de5c7e090a2fc72e1dce6"
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.978975594396-mo5b39fe8fqfuukqkf42p63tlqkc4785"
+        }
+      ],
       [
         "expo-splash-screen",
         {

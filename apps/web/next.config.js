@@ -34,8 +34,8 @@ const nextConfig = {
     },
   ],
 
-  /** NOTE: 실기기에서 webview 테스트 시 LAN IP 주소 추가 필요 (ex. `192.168.5.120`) */
-  allowedDevOrigins: [],
+  /** NOTE: 실기기 테스트 시 LAN IP를 .env.local의 NEXT_PUBLIC_DEV_ORIGIN에 추가 */
+  allowedDevOrigins: process.env.NEXT_PUBLIC_DEV_ORIGIN ? [process.env.NEXT_PUBLIC_DEV_ORIGIN] : [],
 };
 
 export default nextConfig;
