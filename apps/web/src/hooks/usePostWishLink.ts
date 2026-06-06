@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { postWishLink } from '@/apis/postWishLink';
@@ -9,6 +9,7 @@ import type { ApiErrorResponseT } from '@/types/api';
 
 export const usePostWishLink = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const queryClient = useQueryClient();
 
   const {
@@ -19,7 +20,8 @@ export const usePostWishLink = () => {
     mutationFn: (url: string) => postWishLink(url),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
-      router.push(ROUTES.ARCHIVE('wish'));
+      if (pathname !== ROUTES.ARCHIVE_BASE || pathname !== ROUTES.ARCHIVE('wish'))
+        router.push(ROUTES.ARCHIVE('wish'));
     },
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;

@@ -1,3 +1,4 @@
+import type { WEBBRIDGE_MESSAGE_TYPE, WEB_READY_MESSAGE_TYPE } from '../consts/webBridge';
 import type {
   ImagePickerCancelMessageT,
   ImagePickerErrorMessageT,
@@ -9,6 +10,7 @@ import type {
   SocialLoginErrorMessageT,
   SocialLoginSuccessMessageT,
 } from './login';
+import type { ShareIntentMessageT } from './shareIntent';
 
 export type WebBridgeMessageT =
   | OpenImagePickerMessageT
@@ -17,4 +19,13 @@ export type WebBridgeMessageT =
   | ImagePickerErrorMessageT
   | RequestSocialLoginMessageT
   | SocialLoginSuccessMessageT
-  | SocialLoginErrorMessageT;
+  | SocialLoginErrorMessageT
+  | ShareIntentMessageT
+  | WebReadyMessageT;
+
+export type WebReadyMessageT = {
+  type: typeof WEBBRIDGE_MESSAGE_TYPE.WEB_READY;
+  payload: {
+    type: typeof WEB_READY_MESSAGE_TYPE.SHARE_INTENT;
+  };
+};

@@ -1,6 +1,8 @@
-// pnpm 워크스페이스 환경에서 Metro가 심링크를 따라가지 못하는 문제를 해결하기 위한 설정
-// node_modules 경로와 심링크 해석을 명시적으로 지정
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { getDefaultConfig } = require('expo/metro-config');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { withShareExtension } = require('expo-share-extension/metro');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
 
 const projectRoot = __dirname;
@@ -15,4 +17,6 @@ config.resolver.nodeModulesPaths = [
 ];
 config.resolver.unstable_enableSymlinks = true;
 
-module.exports = config;
+module.exports = withShareExtension(config, {
+  isCSSEnabled: true,
+});
