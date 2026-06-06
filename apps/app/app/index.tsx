@@ -11,6 +11,7 @@ import Webview from 'react-native-webview';
 
 import { useShareIntent } from '@/hooks/useShareIntent';
 import { useSocialLogin } from '@/hooks/useSocialLogin';
+import { useSplashScreenController } from '@/hooks/useSplashScreenController';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
@@ -78,6 +79,7 @@ function Page() {
   );
 
   const { onMessage } = useWebBridgeMessage(handleWebMessage);
+  const { onWebViewLoadEnd, onWebViewLoadError } = useSplashScreenController();
 
   return (
     <KeyboardAvoidingView
@@ -91,6 +93,8 @@ function Page() {
           applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
           source={{ uri: webviewUri }}
           onMessage={onMessage}
+          onLoadEnd={onWebViewLoadEnd}
+          onError={onWebViewLoadError}
           allowsBackForwardNavigationGestures
           cacheEnabled
           webviewDebuggingEnabled={__DEV__}
