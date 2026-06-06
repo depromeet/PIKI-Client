@@ -5,7 +5,7 @@ import { serverApi } from '@/apis/server';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
-import type { WishlistEntryT } from '../_types/wish';
+import type { WishlistEntryT } from '../app/archive/_types/wish';
 
 const mapWishlist = (entries: WishlistEntryT[]) =>
   entries.map(({ wish, item }) => ({

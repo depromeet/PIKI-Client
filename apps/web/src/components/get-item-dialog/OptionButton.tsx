@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import type { ComponentType, SVGProps } from 'react';
 
-import { DialogClose } from '@/components/common/dialog';
+import { DialogClose } from '@/components/dialog';
 
 type OptionItemBaseT = {
   label: string;

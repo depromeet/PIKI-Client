@@ -31,9 +31,9 @@ async function TournamentItemEditPage({ params }: TournamentItemEditPageProps) {
     if (isAxiosError<ApiErrorResponseT>(state.error) && state.error.response) {
       const { status } = state.error.response;
 
-      /** 토너먼트 아이템 접근 권한 없는 경우 */
+      /** 토너먼트 권한 없는 경우 */
       if (status === 403) redirect(ROUTES.HOME);
-      /** 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
+      /** 토너먼트 or 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
         redirect(ROUTES.TOURNAMENT_CREATE(tournamentId));
     }
   }

@@ -2,9 +2,9 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { Suspense } from 'react';
 
 import { getTournamentList } from '@/apis/getTournamentList';
+import { getWishlist } from '@/apis/getWishlist';
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getWishlist } from './_apis/getWishlist';
 import TournamentHistoryContent from './_components/TournamentHistoryContent';
 import WishlistContent from './_components/WishlistContent';
 import WishlistLayout from './_components/WishlistLayout';

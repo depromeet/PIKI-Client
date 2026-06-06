@@ -1,4 +1,4 @@
-import Button from '@/components/common/button';
+import Button from '@/components/button';
 
 const SIZES = ['sm', 'md', 'lg'] as const;
 const VARIANTS = ['primary', 'secondary'] as const;

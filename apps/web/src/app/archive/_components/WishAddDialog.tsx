@@ -1,7 +1,7 @@
 'use client';
 
-import { Dialog } from '@/components/common/dialog';
-import GetItemDialogContent from '@/components/common/get-item-dialog';
+import { Dialog } from '@/components/dialog';
+import GetItemDialogContent from '@/components/get-item-dialog';
 
 type Props = {
   open: boolean;

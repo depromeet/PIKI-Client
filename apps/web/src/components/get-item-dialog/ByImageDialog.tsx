@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { ImageIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
+import Button from '@/components/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 import { useImagePicker } from '@/hooks/useImagePicker';
 import { usePostTournamentOCR } from '@/hooks/usePostTournamentOCR';
 import { usePostWishOCR } from '@/hooks/usePostWishOCR';

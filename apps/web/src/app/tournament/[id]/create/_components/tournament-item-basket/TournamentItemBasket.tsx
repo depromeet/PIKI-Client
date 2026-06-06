@@ -3,9 +3,9 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
-import Button from '@/components/common/button';
-import { Dialog, DialogTrigger } from '@/components/common/dialog';
-import GetItemDialogContent from '@/components/common/get-item-dialog';
+import Button from '@/components/button';
+import { Dialog, DialogTrigger } from '@/components/dialog';
+import GetItemDialogContent from '@/components/get-item-dialog';
 import type { TournamentItemT } from '@/types/tournament';
 
 import basketImg from '../../_assets/basket-gray.png';

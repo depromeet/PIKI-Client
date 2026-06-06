@@ -1,6 +1,6 @@
-import StatusChip from '@/components/common/status-chip';
-import UserProfileGroup from '@/components/common/user-profile-group';
-import type { UserT } from '@/components/common/user-profile-group/userProfile.const';
+import StatusChip from '@/components/status-chip';
+import UserProfileGroup from '@/components/user-profile-group';
+import type { UserT } from '@/components/user-profile-group/userProfile.const';
 import type { TournamentStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 

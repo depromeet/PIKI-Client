@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import type { ReactNode } from 'react';
 
-import BaseImage from '@/components/common/base-image';
+import BaseImage from '@/components/base-image';
 import type { ItemStatusT } from '@/types/item';
 import { cn } from '@/utils/cn';
 

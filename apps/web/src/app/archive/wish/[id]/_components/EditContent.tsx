@@ -1,6 +1,6 @@
 'use client';
 
-import { Header, HeaderIcon } from '@/components/common/header';
+import { Header, HeaderIcon } from '@/components/header';
 
 import { useGetWish } from '../_hooks/useGetWish';
 import ItemEditForm from './ItemEditForm';

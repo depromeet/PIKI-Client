@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 
 import { usePostTournamentItemLink } from '@/app/tournament/[id]/create/_hooks/usePostTournamentItemLink';
 import { LinkIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/common/dialog';
-import Input from '@/components/common/input';
+import Button from '@/components/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
+import Input from '@/components/input';
 import { ROUTES } from '@/consts/route';
 import { usePostWishLink } from '@/hooks/usePostWishLink';
 import type { ItemTypeT } from '@/types/item';

@@ -1,7 +1,7 @@
 'use client';
 
 import { WarningIconFill } from '@/assets/icons';
-import Button from '@/components/common/button';
+import Button from '@/components/button';
 import {
   Dialog,
   DialogClose,
@@ -9,8 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/common/dialog';
-import Spinner from '@/components/common/spinner';
+} from '@/components/dialog';
+import Spinner from '@/components/spinner';
 import { useDeleteTournament } from '@/hooks/useDeleteTournament';
 
 type TournamentDeleteDialogProps = {
