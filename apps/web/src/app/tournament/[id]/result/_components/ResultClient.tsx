@@ -8,6 +8,7 @@ import { ROUTES } from '@/consts/route';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
+import GroupResultEntryCard from './group-result-entry-card/GroupResultEntryCard';
 import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 
 type ResultClientProps = {
@@ -58,13 +59,17 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         <span className="text-text-neutral-primary">승자는</span>
       </h1>
 
-      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col gap-3 px-5">
         <ReceiptDrawMachine
           tournamentName={tournamentName}
           result={result}
           date={date}
           onSharePlayLink={handleOpenShare}
         />
+
+        {tournamentData.completed.hasGroupResult && (
+          <GroupResultEntryCard tournamentId={tournamentId} />
+        )}
       </div>
 
       {/* 하단 버튼 */}

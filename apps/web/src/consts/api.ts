@@ -31,4 +31,5 @@ export const ENDPOINTS = {
   TOURNAMENT_INVITE_PREVIEW_BY_CODE: '/api/v1/tournaments/by-invite-code',
   TOURNAMENT_FROM_PLAY_LINK: (sourceTournamentId: number) =>
     `/api/v1/tournaments/${sourceTournamentId}/from-play-link`,
+  TOURNAMENT_GROUP_RESULT: (id: number) => `/api/v1/tournaments/${id}/group-result`,
 } as const;
