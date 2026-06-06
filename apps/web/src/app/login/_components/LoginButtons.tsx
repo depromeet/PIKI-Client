@@ -18,7 +18,7 @@ function LoginButtons() {
 
   const handleKakaoLogin = async () => {
     if (isWebview()) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'kakao' });
+      WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'kakao' } });
       return;
     }
     const { url } = await getAuthUrl('kakao');
@@ -27,7 +27,7 @@ function LoginButtons() {
 
   const handleGoogleLogin = async () => {
     if (isWebview()) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'google' });
+      WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'google' } });
       return;
     }
     const { url } = await getAuthUrl('google');

@@ -11,11 +11,6 @@ import type {
   SocialLoginSuccessMessageT,
 } from './login';
 import type {
-  RequestSocialLoginMessageT,
-  SocialLoginErrorMessageT,
-  SocialLoginSuccessMessageT,
-} from './login';
-import type {
   AppReqDeepLinkMessageT,
   AppResFcmTokenMessageT,
   AppResPushPermissionStatusMessageT,
@@ -26,19 +21,13 @@ import type {
 import type { AppResShareIntentMessageT } from './shareIntent';
 
 export type WebBridgeMessageT =
-  | OpenImagePickerMessageT
-  | ImagePickerSuccessMessageT
-  | ImagePickerCancelMessageT
-  | ImagePickerErrorMessageT
-  | RequestSocialLoginMessageT
-  | SocialLoginSuccessMessageT
-  | SocialLoginErrorMessageT
-  | ShareIntentMessageT
-  | WebReadyMessageT
   | WebReqOpenImagePickerMessageT
   | AppResImagePickerSuccessMessageT
   | AppResImagePickerCancelMessageT
   | AppResImagePickerErrorMessageT
+  | RequestSocialLoginMessageT
+  | SocialLoginSuccessMessageT
+  | SocialLoginErrorMessageT
   | AppResShareIntentMessageT
   | WebReqReadyMessageT
   | WebReqPushPermissionStatusMessageT
@@ -48,8 +37,6 @@ export type WebBridgeMessageT =
   | AppResFcmTokenMessageT
   | AppReqDeepLinkMessageT;
 
-export type WebReadyMessageT = {
-  type: typeof WEBBRIDGE_MESSAGE_TYPE.WEB_READY;
 /** 웹이 페이지 hydrate 완료 후 RN에게 메시지 수신 준비됨을 알리는 메시지 */
 export type WebReqReadyMessageT = {
   type: typeof WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_READY;

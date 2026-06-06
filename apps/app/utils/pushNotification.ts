@@ -75,6 +75,11 @@ export const syncPushStatusToWeb = async () => {
   const deviceId =
     Platform.OS === 'ios' ? await Application.getIosIdForVendorAsync() : Application.getAndroidId();
 
+  if (__DEV__) {
+    console.log('[FCM] deviceId:', deviceId);
+    console.log('[FCM] token:', token);
+  }
+
   WebBridge.postMessage({
     type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_PUSH_PERMISSION_STATUS,
     payload: { isEnabled, token, deviceId },
