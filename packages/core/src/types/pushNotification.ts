@@ -23,6 +23,7 @@ export type AppResPushPermissionStatusMessageT = {
 export type PushPermissionStatusPayloadT = {
   isEnabled: boolean;
   token: string | null;
+  deviceId: string | null;
 };
 
 /** 앱 → 웹: FCM 토큰 */
@@ -32,4 +33,5 @@ export type AppResFcmTokenMessageT = {
 };
 export type FcmTokenPayloadT = {
   token: string;
+  deviceId: string | null;
 };

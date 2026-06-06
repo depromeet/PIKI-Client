@@ -17,9 +17,6 @@ export const usePushPermission = () => {
     useCallback(message => {
       if (message.type === WEBBRIDGE_MESSAGE_TYPE.APP_RES_PUSH_PERMISSION_STATUS)
         setIsPushEnabled(message.payload.isEnabled);
-
-      if (message.type === WEBBRIDGE_MESSAGE_TYPE.APP_RES_FCM_TOKEN)
-        console.warn('[FCM] token:', message.payload.token);
     }, [])
   );
 

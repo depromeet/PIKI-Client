@@ -1,13 +1,16 @@
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+import * as Application from 'expo-application';
 import {
   AuthorizationStatus,
   getInitialNotification,
   getMessaging,
   getToken,
   hasPermission,
+  isDeviceRegisteredForRemoteMessages,
   onMessage,
   onNotificationOpenedApp,
   onTokenRefresh,
+  registerDeviceForRemoteMessages,
   requestPermission,
 } from '@react-native-firebase/messaging';
 import { Linking, PermissionsAndroid, Platform } from 'react-native';
@@ -52,6 +55,10 @@ export const getFcmToken = async (): Promise<string | null> => {
     const isEnabled = await checkPushPermission();
     if (!isEnabled) return null;
 
+    if (Platform.OS === 'ios' && !isDeviceRegisteredForRemoteMessages(messaging)) {
+      await registerDeviceForRemoteMessages(messaging);
+    }
+
     const token = await getToken(messaging);
     if (__DEV__ && token) console.log('[FCM] Token:', token);
     return token;
@@ -65,10 +72,14 @@ export const getFcmToken = async (): Promise<string | null> => {
 export const syncPushStatusToWeb = async () => {
   const isEnabled = await checkPushPermission();
   const token = await getFcmToken();
+  const deviceId =
+    Platform.OS === 'ios'
+      ? await Application.getIosIdForVendorAsync()
+      : Application.getAndroidId();
 
   WebBridge.postMessage({
     type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_PUSH_PERMISSION_STATUS,
-    payload: { isEnabled, token },
+    payload: { isEnabled, token, deviceId },
   });
 };
 
@@ -108,7 +119,14 @@ export const setupMessagingListeners = () => {
   });
 
   const unsubscribeTokenRefresh = onTokenRefresh(messaging, async token => {
-    WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_FCM_TOKEN, payload: { token } });
+    const deviceId =
+      Platform.OS === 'ios'
+        ? await Application.getIosIdForVendorAsync()
+        : Application.getAndroidId();
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_FCM_TOKEN,
+      payload: { token, deviceId },
+    });
   });
 
   const unsubscribeOpenedApp = onNotificationOpenedApp(messaging, remoteMessage => {
