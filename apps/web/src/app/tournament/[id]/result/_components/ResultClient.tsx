@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import { ROUTES } from '@/consts/route';
 
@@ -42,11 +41,6 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     router.push(ROUTES.HOME);
   };
 
-  const handleSaveResult = () => {
-    // 이미 진행 종료 시점에 서버에서 저장됨 — 명시적 저장 토스트만 노출
-    toast.info('보관함에 결과를 저장했어요.');
-  };
-
   const handleOpenShare = () => {
     setIsShareDialogOpen(true);
   };
@@ -73,21 +67,14 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         )}
       </div>
 
-      {/* 하단 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center gap-2.5 bg-bg-layer-basement px-5 pt-3 pb-5">
+      {/* 하단 버튼 — 시안상 단일 CTA */}
+      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center bg-bg-layer-basement px-5 pt-3 pb-5">
         <button
           type="button"
           onClick={handleGoHome}
-          className="flex h-[54px] flex-1 cursor-pointer items-center justify-center rounded-xl border border-gray-200 bg-bg-layer-default body-1-semibold text-text-neutral-primary"
+          className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl bg-gray-950 body-1-semibold text-white"
         >
           홈으로 가기
-        </button>
-        <button
-          type="button"
-          onClick={handleSaveResult}
-          className="flex h-[54px] flex-1 cursor-pointer items-center justify-center rounded-xl bg-gray-950 body-1-semibold text-white"
-        >
-          결과 저장하기
         </button>
       </div>
 
