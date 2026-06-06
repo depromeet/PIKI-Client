@@ -35,8 +35,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(numericTournamentId);
   // 담기 마감 = 초대 코드 만료 시점 (둘은 동일 정책으로 운영)
+  // 단, 주최자는 만료 영향 없이 본인 토너먼트에 후보를 담을 수 있다.
   const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
-  const { isExpired: isDepositClosed } = useCountdown(depositDeadline);
+  const { isExpired } = useCountdown(depositDeadline);
+  const isDepositClosed = !tournamentData.isOwner && isExpired;
   const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
     consumeJoinWelcomeFor(numericTournamentId)
   );
