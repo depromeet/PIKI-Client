@@ -42,7 +42,14 @@ export type AppReqDeepLinkMessageT = {
   payload: DeepLinkPayloadT;
 };
 export type PushNotificationTypeT = keyof typeof PUSH_NOTIFICATION_TYPE;
-export type DeepLinkPayloadT = {
-  type: PushNotificationTypeT;
-  refId: number;
-};
+export type DeepLinkPayloadT =
+  | {
+      type: 'TOURNAMENT_JOINED' | 'TOURNAMENT_ITEM_ADDED';
+      refId: number;
+    }
+  | {
+      type: 'ITEM_PARSING_COMPLETED' | 'ITEM_PARSING_FAILED';
+      refId: number;
+      kind: 'WISH' | 'TOURNAMENT';
+      tournamentId?: number;
+    };

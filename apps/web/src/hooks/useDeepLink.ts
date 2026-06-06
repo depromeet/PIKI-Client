@@ -15,8 +15,7 @@ export const useDeepLink = () => {
       message => {
         if (message.type !== WEBBRIDGE_MESSAGE_TYPE.APP_REQ_DEEP_LINK) return;
 
-        const { type, refId } = message.payload;
-        const route = getPushNotificationRoute(type, refId);
+        const route = getPushNotificationRoute(message.payload);
 
         if (route) router.push(route);
       },
