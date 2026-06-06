@@ -1,7 +1,6 @@
 'use client';
 
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
-import { useSearchParams } from 'next/navigation';
 
 import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
@@ -14,21 +13,21 @@ import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
-function LoginButtons() {
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect');
+type Props = {
+  redirect: string | null;
+};
+
+function LoginButtons({ redirect }: Props) {
+  const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
   const { postGuestLoginMutation } = usePostGuestLogin();
-  useNativeLoginResult();
+  useNativeLoginResult(validRedirect);
 
   const handleKakaoLogin = async () => {
     if (isWebview()) {
       WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'kakao' });
       return;
     }
-    const { url } = await getAuthUrl(
-      'kakao',
-      isValidLoginRedirectPath(redirect) ? redirect : null
-    );
+    const { url } = await getAuthUrl('kakao', validRedirect);
     window.location.href = url;
   };
 
@@ -37,10 +36,7 @@ function LoginButtons() {
       WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'google' });
       return;
     }
-    const { url } = await getAuthUrl(
-      'google',
-      isValidLoginRedirectPath(redirect) ? redirect : null
-    );
+    const { url } = await getAuthUrl('google', validRedirect);
     window.location.href = url;
   };
 

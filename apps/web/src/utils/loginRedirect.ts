@@ -1,8 +1,7 @@
 import { ROUTES } from '@/consts/route';
 
-export const isValidLoginRedirectPath = (
-  path: string | null | undefined
-): path is string => !!path && path.startsWith('/') && !path.startsWith('//');
+export const isValidLoginRedirectPath = (path: string | null | undefined): path is string =>
+  !!path && path.startsWith('/') && !path.startsWith('//');
 
 export const getLoginRedirectPath = (path: string | null | undefined): string => {
   if (isValidLoginRedirectPath(path)) return path;

@@ -1,14 +1,12 @@
 import { WEBBRIDGE_MESSAGE_TYPE, isWebBridgeMessageT } from '@piki/core';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { setCookie } from '@/utils/cookie';
 import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
 
-export const useNativeLoginResult = () => {
+export const useNativeLoginResult = (redirect: string | null) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect');
 
   useEffect(() => {
     const handler = (event: MessageEvent) => {
@@ -31,5 +29,5 @@ export const useNativeLoginResult = () => {
 
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
-  }, [router]);
+  }, [redirect, router]);
 };

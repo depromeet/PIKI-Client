@@ -4,9 +4,7 @@ import { toast } from 'sonner';
 
 import { ROUTES } from '@/consts/route';
 import type { SocialProviderT } from '@/types/auth';
-import { setCookie } from '@/utils/cookie';
 import { getLoginRedirectPath } from '@/utils/loginRedirect';
-import { isWebview } from '@/utils/webBridge';
 
 import { postSocialLogin } from '../_apis/postSocialLogin';
 
@@ -25,12 +23,7 @@ export const usePostSocialLogin = (provider: SocialProviderT) => {
       redirectUri: string;
       state: string;
     }) => postSocialLogin(provider, { code, redirectUri, state }),
-    onSuccess: (data, variables) => {
-      if (isWebview() && data.accessToken && data.refreshToken) {
-        setCookie('access_token', data.accessToken, { hours: 1 });
-        setCookie('refresh_token', data.refreshToken, { days: 14 });
-      }
-
+    onSuccess: (_, variables) => {
       router.replace(getLoginRedirectPath(variables.redirect));
     },
     onError: () => {
