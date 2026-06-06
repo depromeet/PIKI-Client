@@ -31,9 +31,10 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
   const { mutate: previewMutation, isPending: isPreviewPending } = useMutation({
     mutationFn: getInvitePreviewByCode,
     onSuccess: data => {
+      const enteredCode = code;
       onOpenChange(false);
       reset();
-      router.push(`/tournament/join/${data.tournamentId}`);
+      router.push(`/tournament/join/${data.tournamentId}?code=${enteredCode}`);
     },
     onError: error => {
       // 400: 코드 없음 / 409: 만료 — 둘 다 사용자에게 InvalidCodeDialog 안내

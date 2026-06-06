@@ -9,10 +9,12 @@ import JoinPreviewClient from './_components/JoinPreviewClient';
 
 type TournamentJoinPageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ code?: string }>;
 };
 
-async function TournamentJoinPage({ params }: TournamentJoinPageProps) {
+async function TournamentJoinPage({ params, searchParams }: TournamentJoinPageProps) {
   const { id } = await params;
+  const { code } = await searchParams;
   const tournamentId = parseIdParam(id);
 
   if (tournamentId === null) notFound();
@@ -25,7 +27,7 @@ async function TournamentJoinPage({ params }: TournamentJoinPageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <JoinPreviewClient tournamentId={tournamentId} />
+      <JoinPreviewClient tournamentId={tournamentId} inviteCode={code ?? ''} />
     </HydrationBoundary>
   );
 }

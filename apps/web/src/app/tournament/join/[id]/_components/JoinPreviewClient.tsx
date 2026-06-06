@@ -18,11 +18,13 @@ import { setJoinWelcome } from '../../_utils/joinSession';
 
 type JoinPreviewClientProps = {
   tournamentId: number | null;
+  /** 친구 초대 코드 — invite 진입 시 query 로 전달됨. 백엔드 join/guest 호출 시 필수 */
+  inviteCode: string;
 };
 
 const MAX_NICKNAME_LENGTH = 10;
 
-function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
+function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps) {
   const router = useRouter();
   const [nickname, setNickname] = useState(DEFAULT_RANDOM_NICKNAME.nickname);
 
@@ -46,7 +48,10 @@ function JoinPreviewClient({ tournamentId }: JoinPreviewClientProps) {
     try {
       const response = await postJoinGuestMutation({
         tournamentId,
-        body: { nickname: trimmedNickname },
+        body: {
+          nickname: trimmedNickname,
+          ...(inviteCode ? { inviteCode } : {}),
+        },
       });
       setJoinWelcome({
         tournamentId: response.tournamentId,

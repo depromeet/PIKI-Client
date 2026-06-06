@@ -41,7 +41,7 @@ function InviteClient({ tournamentId, inviteCode }: InviteClientProps) {
           setState('invalid');
           return;
         }
-        router.replace(ROUTES.TOURNAMENT_JOIN_BY_LINK(tournamentId));
+        router.replace(`${ROUTES.TOURNAMENT_JOIN_BY_LINK(tournamentId)}?code=${inviteCode}`);
       } catch (error) {
         // 400 (코드 불일치) / 409 (만료) — 잘못된 링크로 통합
         if (isAxiosError(error)) {
