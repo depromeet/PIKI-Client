@@ -14,16 +14,20 @@ function UserProfile({ user, className }: UserProfileProps) {
 
   if (user.imageUrl) {
     return (
-      <Image
-        src={user.imageUrl}
-        alt={user.name ?? '사용자 프로필'}
-        width={27}
-        height={27}
+      <span
         className={cn(
-          'size-[27px] shrink-0 overflow-hidden rounded-full border-[1.6px] border-white object-cover',
+          'relative block size-6.75 shrink-0 overflow-hidden rounded-full border-[1.6px] border-white',
           className
         )}
-      />
+      >
+        <Image
+          src={user.imageUrl}
+          alt={user.name ?? '사용자 프로필'}
+          fill
+          sizes="27px"
+          className="object-cover"
+        />
+      </span>
     );
   }
 
