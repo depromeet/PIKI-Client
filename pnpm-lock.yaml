@@ -182,6 +182,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@microsoft/fetch-event-source':
+        specifier: ^2.0.1
+        version: 2.0.1
       '@piki/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -1503,6 +1506,9 @@ packages:
 
   '@medv/finder@4.0.2':
     resolution: {integrity: sha512-RraNY9SCcx4KZV0Dh6BEW6XEW2swkqYca74pkFFRw6hHItSHiy+O/xMnpbofjYbzXj0tSpBGthUF1hHTsr3vIQ==}
+
+  '@microsoft/fetch-event-source@2.0.1':
+    resolution: {integrity: sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==}
 
   '@mj-studio/js-util@1.1.24':
     resolution: {integrity: sha512-WywMAvLpxERifcJlLtz90+leN7slk8WMIrRsMBkguw5CGS0P0LlZmdYAy7m6xIrF+xP5HwKrAlIrlBAdMxbaww==}
@@ -8602,6 +8608,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   '@medv/finder@4.0.2': {}
+
+  '@microsoft/fetch-event-source@2.0.1': {}
 
   '@mj-studio/js-util@1.1.24': {}
 
