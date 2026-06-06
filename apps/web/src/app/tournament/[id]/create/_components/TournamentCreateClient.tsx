@@ -38,12 +38,15 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
   const { isExpired } = useCountdown(depositDeadline);
   const isDepositClosed = !tournamentData.isOwner && isExpired;
+  // 비회원(GUEST) 은 서버가 dicebear 자동 아바타를 내려주는데,
+  // 우리 디자인상 비회원은 기본 SVG 프로필을 노출해야 하므로 무시한다.
+  const isGeneratedAvatar = (url: string) => url.includes('api.dicebear.com');
   const participants = (tournamentData.pending?.participants ?? []).map(p => ({
     user: {
       id: p.userId,
       name: p.nickname,
       profileType: 'blue' as const,
-      imageUrl: p.profileImage,
+      ...(isGeneratedAvatar(p.profileImage) ? {} : { imageUrl: p.profileImage }),
     },
     itemCount: 0,
   }));
