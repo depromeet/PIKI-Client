@@ -15,6 +15,8 @@ type ReceiptPaperProps = {
   tournamentName: string;
   result: RankedProductT[];
   date: Date;
+  /** 주최자(소유자)인지 — 플레이 링크 공유는 주최자만 사용 가능 */
+  isOwner: boolean;
   onSharePlayLink?: () => void;
 };
 
@@ -44,7 +46,7 @@ const PlaceLabel = ({ label }: { label: string }) => (
 );
 
 const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function ReceiptPaper(
-  { tournamentName, result, date, onSharePlayLink },
+  { tournamentName, result, date, isOwner, onSharePlayLink },
   ref
 ) {
   const [first, second, third, fourth] = result;
@@ -133,14 +135,16 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
         <SectionDivider />
       </div>
 
-      {/* 공유 액션 */}
+      {/* 공유 액션 — 플레이 링크 공유는 주최자만 노출 */}
       <div className="flex items-center justify-center gap-5 py-2">
         <ShareAction icon={<ImageIconOutline className="size-3.5" />} label="이미지 공유" />
-        <ShareAction
-          icon={<LinkIconFill className="size-4.5" />}
-          label="플레이 링크 공유"
-          onClick={onSharePlayLink}
-        />
+        {isOwner && (
+          <ShareAction
+            icon={<LinkIconFill className="size-4.5" />}
+            label="플레이 링크 공유"
+            onClick={onSharePlayLink}
+          />
+        )}
       </div>
 
       {/* 영수증 하단 톱니 */}

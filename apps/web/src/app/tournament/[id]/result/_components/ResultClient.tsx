@@ -64,6 +64,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
           tournamentName={tournamentName}
           result={result}
           date={date}
+          isOwner={tournamentData.isOwner}
           onSharePlayLink={handleOpenShare}
         />
 

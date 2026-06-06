@@ -53,16 +53,19 @@ function PlateShareDialog({
 
   const expiresLabel = formatExpiresLabel(new Date(playLinkExpiresAt));
 
-  const handleSendPlayLink = async () => {
-    let nextExpiresAt: string;
-    try {
-      nextExpiresAt = await postPlayLinkMutation();
-    } catch {
-      toast.warning('공유 링크를 생성하지 못했어요. 다시 시도해주세요.');
-      return;
-    }
+  // 이미 만들어진 플레이 링크가 있는지 — 있으면 mutation 건너뛰고 바로 공유
+  const hasExistingPlayLink = Boolean(initialPlayLinkExpiresAt);
 
-    setPlayLinkExpiresAt(nextExpiresAt);
+  const handleSendPlayLink = async () => {
+    if (!hasExistingPlayLink) {
+      try {
+        const nextExpiresAt = await postPlayLinkMutation();
+        setPlayLinkExpiresAt(nextExpiresAt);
+      } catch {
+        toast.warning('공유 링크를 생성하지 못했어요. 다시 시도해주세요.');
+        return;
+      }
+    }
 
     const result = await share({
       title: 'piki 토너먼트 플레이',
@@ -72,6 +75,8 @@ function PlateShareDialog({
 
     if (result === 'shared' || result === 'copied') {
       toast.success('링크를 성공적으로 공유했어요.');
+      onOpenChange(false);
+      return;
     }
     if (result === 'failed') toast.warning('공유에 실패했어요. 다시 시도해주세요.');
   };
