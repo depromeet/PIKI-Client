@@ -1,5 +1,4 @@
-import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
-import * as Application from 'expo-application';
+import { type DeepLinkPayloadT, WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import {
   AuthorizationStatus,
   getInitialNotification,
@@ -13,6 +12,7 @@ import {
   registerDeviceForRemoteMessages,
   requestPermission,
 } from '@react-native-firebase/messaging';
+import * as Application from 'expo-application';
 import { Linking, PermissionsAndroid, Platform } from 'react-native';
 
 import { WebBridge } from '@/utils/webBridge';
@@ -73,9 +73,7 @@ export const syncPushStatusToWeb = async () => {
   const isEnabled = await checkPushPermission();
   const token = await getFcmToken();
   const deviceId =
-    Platform.OS === 'ios'
-      ? await Application.getIosIdForVendorAsync()
-      : Application.getAndroidId();
+    Platform.OS === 'ios' ? await Application.getIosIdForVendorAsync() : Application.getAndroidId();
 
   WebBridge.postMessage({
     type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_PUSH_PERMISSION_STATUS,
@@ -129,12 +127,20 @@ export const setupMessagingListeners = () => {
     });
   });
 
+  const sendDeepLink = (data: Record<string, string> | undefined) => {
+    if (!data?.type || !data?.refId) return;
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.APP_REQ_DEEP_LINK,
+      payload: { type: data.type, refId: Number(data.refId) } as DeepLinkPayloadT,
+    });
+  };
+
   const unsubscribeOpenedApp = onNotificationOpenedApp(messaging, remoteMessage => {
-    console.log('[FCM] Opened from background:', remoteMessage.messageId);
+    sendDeepLink(remoteMessage.data as Record<string, string> | undefined);
   });
 
   void getInitialNotification(messaging).then(remoteMessage => {
-    if (remoteMessage) console.log('[FCM] Opened from quit:', remoteMessage.messageId);
+    if (remoteMessage) sendDeepLink(remoteMessage.data as Record<string, string> | undefined);
   });
 
   return () => {
