@@ -15,6 +15,8 @@ type PlateShareDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   tournamentId: number;
+  /** 서버 응답의 playLinkExpiresAt — 아직 생성 전이면 undefined */
+  initialPlayLinkExpiresAt?: string;
 };
 
 const PLAY_LINK_DURATION_DAYS = 14;
@@ -31,21 +33,36 @@ const buildPlayLinkUrl = (tournamentId: number) => {
   return `${window.location.origin}/play/${tournamentId}`;
 };
 
-function PlateShareDialog({ open, onOpenChange, tournamentId }: PlateShareDialogProps) {
-  const [expiresLabel] = useState(() => {
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + PLAY_LINK_DURATION_DAYS);
-    return formatExpiresLabel(expiresAt);
-  });
+const getEstimatedExpiresAt = () => {
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + PLAY_LINK_DURATION_DAYS);
+  return expiresAt.toISOString();
+};
+
+function PlateShareDialog({
+  open,
+  onOpenChange,
+  tournamentId,
+  initialPlayLinkExpiresAt,
+}: PlateShareDialogProps) {
+  // 응답값이 있으면 그대로, 없으면 클라 추정 (생성 14일 후)
+  const [playLinkExpiresAt, setPlayLinkExpiresAt] = useState(
+    initialPlayLinkExpiresAt ?? getEstimatedExpiresAt()
+  );
   const { postPlayLinkMutation, isPostPlayLinkPending } = usePostPlayLink(tournamentId);
 
+  const expiresLabel = formatExpiresLabel(new Date(playLinkExpiresAt));
+
   const handleSendPlayLink = async () => {
+    let nextExpiresAt: string;
     try {
-      await postPlayLinkMutation();
+      nextExpiresAt = await postPlayLinkMutation();
     } catch {
       toast.warning('공유 링크를 생성하지 못했어요. 다시 시도해주세요.');
       return;
     }
+
+    setPlayLinkExpiresAt(nextExpiresAt);
 
     const result = await share({
       title: 'piki 토너먼트 플레이',

@@ -38,7 +38,12 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
           // 직전 캐시(GET 응답)의 isOwner를 그대로 승계 — 알 수 없으면 false
           isOwner: prev?.isOwner ?? false,
           status: 'COMPLETED',
-          completed: { result: data.result },
+          completed: {
+            result: data.result,
+            // 결승 응답에는 hasGroupResult/playLinkExpiresAt 가 없으므로
+            // result 페이지 진입 시 GET 으로 받은 권위 응답으로 갱신된다.
+            hasGroupResult: false,
+          },
         })
       );
     },

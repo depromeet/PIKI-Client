@@ -51,6 +51,10 @@ export type GetTournamentCompletedResponseT = {
   status: Extract<TournamentStatusT, 'COMPLETED'>;
   completed: {
     result: TournamentRankingT[];
+    /** 참여자 2명 이상이면 true — 친구 토너먼트 결과 보기 버튼 노출용 */
+    hasGroupResult: boolean;
+    /** 플레이 링크 만료 시각 (ISO 8601). 아직 링크 생성 전이면 응답에 없음 */
+    playLinkExpiresAt?: string;
   };
 };
 

@@ -89,6 +89,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         open={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}
         tournamentId={tournamentId}
+        initialPlayLinkExpiresAt={tournamentData.completed.playLinkExpiresAt}
       />
     </main>
   );
