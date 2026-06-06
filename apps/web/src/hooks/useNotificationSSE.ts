@@ -9,7 +9,6 @@ import type { NotificationSsePayloadT } from '@/types/notification';
 import { getCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 const MAX_RETRY_DELAY_MS = 30_000;
 
 const resolveDeepLink = (payload: NotificationSsePayloadT): string | null => {
@@ -55,7 +54,7 @@ export const useNotificationSSE = (enabled: boolean) => {
         if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
       }
 
-      fetchEventSource(`${BASE_URL}${ENDPOINTS.NOTIFICATIONS_SUBSCRIBE}`, {
+      fetchEventSource(ENDPOINTS.NOTIFICATIONS_SUBSCRIBE, {
         headers,
         credentials: 'include',
         signal: controller.signal,
