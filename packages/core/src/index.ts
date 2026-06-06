@@ -1,7 +1,7 @@
 /** 상수 */
 export { WEBVIEW_UA_TOKEN } from './consts/client';
 export { SUPPORTED_IMAGE_MIME_TYPES } from './consts/image';
-export { WEBBRIDGE_MESSAGE_TYPE, WEB_REQ_READY_PAYLOAD_TYPE } from './consts/webBridge';
+export { PUSH_NOTIFICATION_TYPE, WEBBRIDGE_MESSAGE_TYPE, WEB_REQ_READY_PAYLOAD_TYPE } from './consts/webBridge';
 
 /** 타입 */
 export type {
@@ -26,9 +26,12 @@ export type {
 } from './types/login';
 export type { ShareIntentFileT, ShareIntentMetaT, ShareIntentPayloadT } from './types/shareIntent';
 export type {
+  AppReqDeepLinkMessageT,
   AppResFcmTokenMessageT,
   AppResPushPermissionStatusMessageT,
+  DeepLinkPayloadT,
   FcmTokenPayloadT,
+  PushNotificationTypeT,
   PushPermissionStatusPayloadT,
   WebReqOpenNotificationSettingsMessageT,
   WebReqPushPermissionMessageT,
