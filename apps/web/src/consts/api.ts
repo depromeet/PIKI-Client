@@ -29,4 +29,6 @@ export const ENDPOINTS = {
   TOURNAMENT_JOIN_GUEST: (id: number) => `/api/v1/tournaments/${id}/join/guest`,
   TOURNAMENT_INVITE_PREVIEW: (id: number) => `/api/v1/tournaments/${id}/invite-preview`,
   TOURNAMENT_INVITE_PREVIEW_BY_CODE: '/api/v1/tournaments/by-invite-code',
+  TOURNAMENT_FROM_PLAY_LINK: (sourceTournamentId: number) =>
+    `/api/v1/tournaments/${sourceTournamentId}/from-play-link`,
 } as const;
