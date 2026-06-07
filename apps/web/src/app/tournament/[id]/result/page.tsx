@@ -9,11 +9,12 @@ import type { GetTournamentResponseT } from '../_common/_types/tournamentRespons
 import ResultClient from './_components/ResultClient';
 
 type TournamentResultPageProps = {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 };
 
 async function TournamentResultPage({ params }: TournamentResultPageProps) {
-  const { id: tournamentId } = await params;
+  const { id } = await params;
+  const tournamentId = Number(id);
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({

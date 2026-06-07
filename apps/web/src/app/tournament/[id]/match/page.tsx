@@ -11,11 +11,12 @@ import { postStartTournament } from './_apis/postStartTournament';
 import TournamentClient from './_components/TournamentClient';
 
 type TournamentPageProps = {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 };
 
 async function TournamentPage({ params }: TournamentPageProps) {
-  const { id: tournamentId } = await params;
+  const { id } = await params;
+  const tournamentId = Number(id);
 
   const tournamentData = await getTournament(tournamentId);
 
