@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -9,6 +9,7 @@ import { postSocialLogin } from '../_apis/postSocialLogin';
 
 export const usePostSocialLogin = (provider: SocialProviderT) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: postSocialLoginMutation, isPending: isPostSocialLoginPending } = useMutation({
     mutationFn: ({
@@ -21,6 +22,7 @@ export const usePostSocialLogin = (provider: SocialProviderT) => {
       state: string;
     }) => postSocialLogin(provider, { code, redirectUri, state }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       router.replace(ROUTES.HOME);
     },
     onError: () => {
