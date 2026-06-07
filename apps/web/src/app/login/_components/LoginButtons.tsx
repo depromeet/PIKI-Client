@@ -13,11 +13,11 @@ import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
-type Props = {
+type LoginButtonsProps = {
   redirect: string | null;
 };
 
-function LoginButtons({ redirect }: Props) {
+function LoginButtons({ redirect }: LoginButtonsProps) {
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
   const { postGuestLoginMutation } = usePostGuestLogin();
   useNativeLoginResult(validRedirect);
