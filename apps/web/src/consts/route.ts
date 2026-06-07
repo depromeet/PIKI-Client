@@ -7,11 +7,14 @@ export const ROUTES = {
   LOGIN: '/login',
   TOURNAMENT_JOIN_BY_CODE: '/tournament/join',
   TOURNAMENT_JOIN_BY_LINK: (id: number) => `/tournament/join/${id}`,
+  MYPAGE: '/mypage',
+  MYPAGE_EDIT: '/mypage/edit',
 
   /** 2. Member Only */
   ARCHIVE_BASE: '/archive',
   ARCHIVE: (tab: ItemTypeT = 'wish') => `/archive?tab=${tab}`,
   WISH_EDIT: (wishId: number) => `/archive/wish/${wishId}`,
+  MYPAGE_WITHDRAW: '/mypage/withdraw',
 
   /** 3. Authorized Guest or Member */
   TOURNAMENT_CREATE: (tournamentId: number) => `/tournament/${tournamentId}/create`,
