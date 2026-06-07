@@ -3,8 +3,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
+
 import { ENDPOINTS } from '@/consts/api';
 import { ROUTES } from '@/consts/route';
+import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { NotificationSsePayloadT } from '@/types/notification';
 import { getCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
@@ -45,13 +47,16 @@ export const useNotificationSSE = (enabled: boolean) => {
       const controller = new AbortController();
       abortRef.current = controller;
 
+      const accessToken = getCookie('access_token');
+      const isApp = isWebview();
+
       const headers: Record<string, string> = {
         Accept: 'text/event-stream',
+        'X-Client-Type': isApp ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB,
       };
 
-      if (isWebview()) {
-        const accessToken = getCookie('access_token');
-        if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+      if (isApp && accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
       }
 
       fetchEventSource(ENDPOINTS.NOTIFICATIONS_SUBSCRIBE, {
