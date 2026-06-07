@@ -65,9 +65,13 @@ clientApi.interceptors.response.use(
 
       try {
         /** 토큰 갱신 */
-        const { data } = await axios.post(ENDPOINTS.AUTH_TOKEN_REFRESH, null, {
-          withCredentials: true,
-        });
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}${ENDPOINTS.AUTH_TOKEN_REFRESH}`,
+          null,
+          {
+            withCredentials: true,
+          }
+        );
         /** 웹뷰인 경우 토큰 쿠키에 저장 */
         const { access_token: newAccessToken, refresh_token: newRefreshToken } = data.data;
         if (isWebview() && newAccessToken && newRefreshToken) {
