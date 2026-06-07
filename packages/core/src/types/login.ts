@@ -1,6 +1,6 @@
 import type { WEBBRIDGE_MESSAGE_TYPE } from '../consts/webBridge';
 
-export type SocialProviderT = 'kakao' | 'google';
+export type SocialProviderT = 'kakao' | 'google' | 'apple';
 
 /** 웹 → 앱 소셜 로그인 요청 */
 export type RequestSocialLoginMessageT = {

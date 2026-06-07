@@ -8,7 +8,7 @@ import type { SocialProviderT } from '@/types/auth';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
 
-const SUPPORTED_PROVIDERS: SocialProviderT[] = ['kakao', 'google'];
+const SUPPORTED_PROVIDERS: SocialProviderT[] = ['kakao', 'google', 'apple'];
 
 function isSocialProvider(value: string): value is SocialProviderT {
   return (SUPPORTED_PROVIDERS as string[]).includes(value);
