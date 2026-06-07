@@ -3,7 +3,6 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-import { ROUTES } from '@/consts/route';
 import type { SocialProviderT } from '@/types/auth';
 import { getLoginPath, isValidLoginRedirectPath } from '@/utils/loginRedirect';
 
@@ -33,19 +32,19 @@ function CallbackHandler() {
     const loginPath = getLoginPath(redirect);
 
     if (!isValidProvider) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(loginPath);
       return;
     }
 
     const code = searchParams.get('code');
     if (!code) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(loginPath);
       return;
     }
 
     const state = searchParams.get('state');
     if (!state) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(loginPath);
       return;
     }
 
