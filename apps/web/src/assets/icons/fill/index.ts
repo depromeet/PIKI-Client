@@ -24,6 +24,7 @@ export { default as BookmarkIconFill } from './bookmark.svg';
 export { default as BoxIconFill } from './box.svg';
 export { default as CalculatorIconFill } from './calculator.svg';
 export { default as CalenderIconFill } from './calender.svg';
+export { default as CameraIconFill } from './camera.svg';
 export { default as CartIconFill } from './cart.svg';
 export { default as CategoryIconFill } from './category.svg';
 export { default as CheckCircledIconFill } from './check-circled.svg';
