@@ -21,15 +21,15 @@ const setCookie = (
 ) => {
   if (typeof document === 'undefined') return;
 
-  let expires = '';
+  let cookie = `${name}=${encodeURIComponent(value)}`;
   if (options) {
     const { days = 0, hours = 0, minutes = 0 } = options;
 
     const time = ((days * 24 + hours) * 60 + minutes) * 60 * 1000;
     const expiresDate = new Date(Date.now() + time).toUTCString();
-    expires = `; expires=${expiresDate}`;
+    cookie += `; expires=${expiresDate}`;
   }
-  let cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; samesite=lax`;
+  cookie += '; path=/; samesite=lax';
 
   /** secure 속성은 프로덕션 환경에서만 설정 */
   if (process.env.NODE_ENV === 'production') cookie += '; secure';
