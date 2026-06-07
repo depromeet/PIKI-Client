@@ -116,6 +116,7 @@ export { default as RepeatIconFill } from './repeat.svg';
 export { default as RideListIconFill } from './ride-list.svg';
 export { default as RocketIconFill } from './rocket.svg';
 export { default as RulerIconFill } from './ruler.svg';
+export { default as SadIconFill } from './sad.svg';
 export { default as SandTimerIconFill } from './sand-timer.svg';
 export { default as ScheduleIconFill } from './schedule.svg';
 export { default as SearchIconFill } from './search.svg';
