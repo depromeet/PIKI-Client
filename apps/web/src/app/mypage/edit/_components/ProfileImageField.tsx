@@ -44,13 +44,15 @@ function ProfileImageField({ userIdentityType, profileImage, onImageSelect }: Pr
   return (
     <>
       <div className="relative mx-auto size-[90px]">
-        <BaseImage
-          src={displayUrl}
-          alt="프로필 이미지"
-          sizes="90px"
-          className="object-cover"
-          loadingFallback={<Skeleton shape="circle" className="absolute inset-0" />}
-        />
+        <div className="relative size-[90px] overflow-hidden rounded-full">
+          <BaseImage
+            src={displayUrl}
+            alt="프로필 이미지"
+            sizes="90px"
+            className="object-cover"
+            loadingFallback={<Skeleton shape="circle" className="absolute inset-0" />}
+          />
+        </div>
         {userIdentityType === 'MEMBER' && (
           <button
             type="button"
