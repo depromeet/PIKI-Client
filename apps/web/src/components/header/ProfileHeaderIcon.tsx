@@ -27,7 +27,7 @@ function ProfileHeaderIcon({ onClick, className }: ProfileHeaderIconProps) {
           <PersonIconFill className="size-6 text-icon-neutral-secondary" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[184px] p-2" align="end" sideOffset={8} alignOffset={-8}>
+      <PopoverContent className="w-[184px] p-2" align="end" sideOffset={8}>
         <PopoverTitle className="sr-only">마이페이지 메뉴</PopoverTitle>
         <PopoverClose asChild>
           <Link
