@@ -6,5 +6,5 @@ export const getNicknameCheck = async (nickname: string) => {
     `/api/v1/users/nickname/check?nickname=${nickname}`
   );
 
-  return data.data;
+  return { available: data.data.available, detail: data.detail };
 };
