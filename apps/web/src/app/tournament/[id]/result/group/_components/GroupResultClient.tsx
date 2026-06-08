@@ -224,7 +224,9 @@ function OtherPlaceRow({ item }: { item: GroupResultItemT }) {
   return (
     <li className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between gap-3">
-        <p className="flex-1 truncate caption-1-semibold text-text-neutral-secondary">{item.name}</p>
+        <p className="flex-1 truncate caption-1-semibold text-text-neutral-secondary">
+          {item.name}
+        </p>
         <p className="caption-1-semibold text-text-neutral-secondary">{count}명</p>
       </div>
       {firstChooser && (

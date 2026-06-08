@@ -42,12 +42,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
         }
 
         return (
-          <WishCard
-            key={item.id}
-            name={item.name}
-            price={item.price}
-            imageUrl={item.imageUrl}
-          />
+          <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />
         );
       })}
     </div>

@@ -58,9 +58,7 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
       <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
         <div className="flex flex-col items-center gap-3">
           <Spinner size={32} />
-          <p className="body-1-medium text-text-neutral-tertiary">
-            토너먼트를 준비하고 있어요...
-          </p>
+          <p className="body-1-medium text-text-neutral-tertiary">토너먼트를 준비하고 있어요...</p>
         </div>
       </main>
     );

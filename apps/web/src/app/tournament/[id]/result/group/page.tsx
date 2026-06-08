@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getGroupResult } from '../_apis/getGroupResult';
 import { parseTournamentId } from '../../_common/_utils/parseTournamentId';
+import { getGroupResult } from '../_apis/getGroupResult';
 import GroupResultClient from './_components/GroupResultClient';
 
 type GroupResultPageProps = {
