@@ -7,13 +7,15 @@ import { useEffect, useState } from 'react';
 import { CameraIconFill } from '@/assets/icons';
 import UserProfileBlue from '@/assets/images/user-profile-blue.svg';
 import { useImagePicker } from '@/hooks/useImagePicker';
+import type { UserIdentityTypeT } from '@/types/user';
 
 type Props = {
+  userIdentityType: UserIdentityTypeT;
   profileImage: string;
   onImageSelect?: (file: File) => void;
 };
 
-function ProfileImageField({ profileImage, onImageSelect }: Props) {
+function ProfileImageField({ userIdentityType, profileImage, onImageSelect }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const { openPicker, inputRef, handleInputChange, isPending } = useImagePicker({
@@ -55,15 +57,15 @@ function ProfileImageField({ profileImage, onImageSelect }: Props) {
         ) : (
           <UserProfileBlue className="size-[90px]" aria-hidden />
         )}
-        <button
-          type="button"
-          onClick={openPicker}
-          disabled={isPending}
-          aria-label="프로필 이미지 변경"
-          className="absolute top-[54.5px] left-[59px] flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-bg-layer-default disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <CameraIconFill className="size-6 shrink-0 text-icon-neutral-secondary" />
-        </button>
+          <button
+            type="button"
+            onClick={openPicker}
+            disabled={isPending}
+            aria-label="프로필 이미지 변경"
+            className="absolute top-[54.5px] left-[59px] flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-bg-layer-default"
+          >
+            <CameraIconFill className="size-6 shrink-0 text-icon-neutral-secondary" />
+          </button>
       </div>
 
       <input
