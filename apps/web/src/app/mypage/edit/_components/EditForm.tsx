@@ -1,5 +1,6 @@
 'use client';
 
+import { isAxiosError } from 'axios';
 import { type FormEvent, useState } from 'react';
 
 import BottomCta from '@/components/bottom-cta';
@@ -7,6 +8,7 @@ import Button from '@/components/button';
 import Spacing from '@/components/spacing';
 import Spinner from '@/components/spinner';
 import { useGetMe } from '@/hooks/useGetMe';
+import type { ApiErrorResponseT } from '@/types/api';
 
 import { useGetNicknameCheck } from '../_hooks/useGetNicknameCheck';
 import { usePatchMe } from '../_hooks/usePatchMe';
@@ -19,7 +21,7 @@ function EditForm() {
   const { patchMeMutation, isPatchMePending } = usePatchMe();
 
   const [nickname, setNickname] = useState(userData.nickname);
-  const [isNickNameError, setIsNickNameError] = useState(false);
+  const [nicknameErrorText, setNicknameErrorText] = useState<string | null>(null);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
@@ -41,16 +43,21 @@ function EditForm() {
   /** 닉네임 변경 시 */
   const handleNicknameChange = (value: string) => {
     setNickname(value);
-    setIsNickNameError(false);
+    setNicknameErrorText(null);
     setIsNicknameChecked(false);
   };
 
   /** 닉네임 중복 체크 */
   const handleCheckDuplicate = () => {
     getNicknameCheckMutation(trimmedNickname, {
-      onSuccess: ({ available }) => {
-        setIsNickNameError(!available);
+      onSuccess: ({ available, detail }) => {
+        setNicknameErrorText(available ? null : detail);
         setIsNicknameChecked(available);
+      },
+      onError: error => {
+        if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;
+        setNicknameErrorText(error.response.data.detail);
+        setIsNicknameChecked(false);
       },
     });
   };
@@ -82,7 +89,7 @@ function EditForm() {
           onChange={handleNicknameChange}
           onCheckDuplicate={handleCheckDuplicate}
           isChecking={isGetNicknameCheckPending}
-          isError={isNickNameError}
+          {...(nicknameErrorText ? { errorText: nicknameErrorText } : {})}
         />
       </div>
 
