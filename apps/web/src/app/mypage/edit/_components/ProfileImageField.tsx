@@ -1,11 +1,11 @@
 'use client';
 
 import { SUPPORTED_IMAGE_MIME_TYPES } from '@piki/core';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { CameraIconFill } from '@/assets/icons';
-import UserProfileBlue from '@/assets/images/user-profile-blue.svg';
+import BaseImage from '@/components/base-image';
+import Skeleton from '@/components/skeleton';
 import { useImagePicker } from '@/hooks/useImagePicker';
 import type { UserIdentityTypeT } from '@/types/user';
 
@@ -39,24 +39,18 @@ function ProfileImageField({ userIdentityType, profileImage, onImageSelect }: Pr
     [previewUrl]
   );
 
-  const displayUrl = previewUrl ?? (profileImage || null);
+  const displayUrl = previewUrl ?? profileImage;
 
   return (
     <>
       <div className="relative mx-auto size-[90px]">
-        {displayUrl ? (
-          <div className="relative size-[90px] overflow-hidden rounded-full">
-            <Image
-              src={displayUrl}
-              alt="프로필 이미지"
-              width={90}
-              height={90}
-              className="object-cover"
-            />
-          </div>
-        ) : (
-          <UserProfileBlue className="size-[90px]" aria-hidden />
-        )}
+        <BaseImage
+          src={displayUrl}
+          alt="프로필 이미지"
+          sizes="90px"
+          className="object-cover"
+          loadingFallback={<Skeleton shape="circle" className="absolute inset-0" />}
+        />
         {userIdentityType === 'MEMBER' && (
           <button
             type="button"

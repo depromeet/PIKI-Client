@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { EditIconFill } from '@/assets/icons';
-import UserProfileBlue from '@/assets/images/user-profile-blue.svg';
+import BaseImage from '@/components/base-image';
+import Skeleton from '@/components/skeleton';
 import { ROUTES } from '@/consts/route';
 import { useGetMe } from '@/hooks/useGetMe';
 
@@ -17,17 +17,13 @@ function ProfileSection() {
 
       <div className="flex items-center gap-4 rounded-xl bg-bg-layer-default p-5">
         <div className="relative size-8 shrink-0 overflow-hidden rounded-full">
-          {userData.profileImage ? (
-            <Image
-              src={userData.profileImage}
-              alt={`${userData.nickname} 프로필 이미지`}
-              fill
-              className="object-cover"
-              sizes="32px"
-            />
-          ) : (
-            <UserProfileBlue className="size-full" aria-hidden />
-          )}
+          <BaseImage
+            src={userData.profileImage}
+            alt={`${userData.nickname} 프로필 이미지`}
+            sizes="32px"
+            className="object-cover"
+            loadingFallback={<Skeleton shape="circle" className="absolute inset-0" />}
+          />
         </div>
 
         <div className="min-w-0 flex-1">
