@@ -15,19 +15,19 @@ async function MypageEditPage() {
   });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-20">
-        <Header
-          left={<HeaderIcon name="BACK" className="size-7.5" />}
-          center="내 프로필 수정"
-          centerClassName="title-1 text-[#171719]"
-        />
+    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-20">
+      <Header
+        left={<HeaderIcon name="BACK" className="size-7.5" />}
+        center="내 프로필 수정"
+        centerClassName="title-1 text-text-neutral-primary"
+      />
 
-        <Spacing size={60} />
+      <Spacing size={60} />
 
+      <HydrationBoundary state={dehydrate(queryClient)}>
         <EditForm />
-      </div>
-    </HydrationBoundary>
+      </HydrationBoundary>
+    </div>
   );
 }
 

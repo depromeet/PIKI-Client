@@ -5,16 +5,18 @@ import { type FormEvent, useState } from 'react';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Spacing from '@/components/spacing';
+import Spinner from '@/components/spinner';
 import { useGetMe } from '@/hooks/useGetMe';
 
 import { useGetNicknameCheck } from '../_hooks/useGetNicknameCheck';
+import { usePatchMe } from '../_hooks/usePatchMe';
 import NicknameField from './NicknameField';
 import ProfileImageField from './ProfileImageField';
 
 function EditForm() {
   const { userData } = useGetMe();
   const { getNicknameCheckMutation, isGetNicknameCheckPending } = useGetNicknameCheck();
-  // const { patchMeMutation, isPatchMePending } = usePatchMe();
+  const { patchMeMutation, isPatchMePending } = usePatchMe();
 
   const [nickname, setNickname] = useState(userData.nickname);
   const [isNickNameError, setIsNickNameError] = useState(false);
@@ -34,8 +36,7 @@ function EditForm() {
    * - 닉네임이 변경됐는데 중복 체크가 되지 않았을 때
    */
   const isNicknameValid = trimmedNickname.length > 0 && (!isNicknameChanged || isNicknameChecked);
-  const isEditDisabled = !hasChanges || !isNicknameValid;
-  // const isEditDisabled = !hasChanges || !isNicknameValid || isPatchMePending;
+  const isEditDisabled = !hasChanges || !isNicknameValid || isPatchMePending;
 
   /** 닉네임 변경 시 */
   const handleNicknameChange = (value: string) => {
@@ -59,10 +60,10 @@ function EditForm() {
 
     if (isEditDisabled) return;
 
-    // patchMeMutation({
-    //   ...(isNicknameChanged ? { nickname: trimmedNickname } : {}),
-    //   ...(profileImageFile ? { profileImage: profileImageFile } : {}),
-    // });
+    patchMeMutation({
+      ...(isNicknameChanged ? { nickname: trimmedNickname } : {}),
+      ...(profileImageFile ? { profileImage: profileImageFile } : {}),
+    });
   };
 
   return (
@@ -93,8 +94,7 @@ function EditForm() {
           className="w-full"
           disabled={isEditDisabled}
         >
-          수정하기
-          {/* {isPatchMePending ? <Spinner size={20} /> : '수정하기'} */}
+          {isPatchMePending ? <Spinner size={20} /> : '수정하기'}
         </Button>
       </BottomCta>
     </form>
