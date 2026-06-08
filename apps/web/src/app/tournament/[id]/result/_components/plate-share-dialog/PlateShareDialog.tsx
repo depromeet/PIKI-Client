@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
+import { CheckIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
 import Spinner from '@/components/spinner';
@@ -19,24 +18,9 @@ type PlateShareDialogProps = {
   initialPlayLinkExpiresAt?: string;
 };
 
-const PLAY_LINK_DURATION_DAYS = 14;
-
-const formatExpiresLabel = (date: Date) => {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-  return `${yyyy}.${mm}.${dd}까지`;
-};
-
 const buildPlayLinkUrl = (tournamentId: number) => {
   if (typeof window === 'undefined') return `/play/${tournamentId}`;
   return `${window.location.origin}/play/${tournamentId}`;
-};
-
-const getEstimatedExpiresAt = () => {
-  const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + PLAY_LINK_DURATION_DAYS);
-  return expiresAt.toISOString();
 };
 
 function PlateShareDialog({
@@ -45,22 +29,15 @@ function PlateShareDialog({
   tournamentId,
   initialPlayLinkExpiresAt,
 }: PlateShareDialogProps) {
-  // 응답값이 있으면 그대로, 없으면 클라 추정 (생성 14일 후)
-  const [playLinkExpiresAt, setPlayLinkExpiresAt] = useState(
-    initialPlayLinkExpiresAt ?? getEstimatedExpiresAt()
-  );
   const { postPlayLinkMutation, isPostPlayLinkPending } = usePostPlayLink(tournamentId);
 
-  const expiresLabel = formatExpiresLabel(new Date(playLinkExpiresAt));
-
-  // 이미 만들어진 플레이 링크가 있는지 — 있으면 mutation 건너뛰고 바로 공유
+  // 이미 만들어진 플레이 링크가 있으면 mutation 건너뛰고 바로 공유한다.
   const hasExistingPlayLink = Boolean(initialPlayLinkExpiresAt);
 
   const handleSendPlayLink = async () => {
     if (!hasExistingPlayLink) {
       try {
-        const nextExpiresAt = await postPlayLinkMutation();
-        setPlayLinkExpiresAt(nextExpiresAt);
+        await postPlayLinkMutation();
       } catch {
         toast.warning('공유 링크를 생성하지 못했어요. 다시 시도해주세요.');
         return;
@@ -90,35 +67,15 @@ function PlateShareDialog({
               토너먼트 플레이 공유
             </DrawerTitle>
             <DrawerDescription className="body-1-medium text-text-neutral-tertiary">
-              링크를 보내 친구가 플레이 할 수 있어요.
+              링크를 받은 친구는 기한 내에 플레이할 수 있어요.
             </DrawerDescription>
           </div>
 
-          <div className="flex w-full items-center justify-between rounded-xl border border-border-neutral-muted bg-bg-layer-default px-4 py-5">
-            <div className="flex items-center gap-4">
-              <div className="flex size-11 items-center justify-center rounded-3xl bg-blue-50">
-                <StopwatchIconFill className="size-6 text-text-accent" />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <p className="body-2-semibold text-text-accent">14일 후 마감</p>
-                <p className="heading-1 text-text-neutral-primary">{expiresLabel}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex w-full flex-col gap-2 rounded-xl bg-gray-50 p-4">
-            <div className="flex items-center gap-2">
-              <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
-              <p className="body-2-medium text-text-neutral-secondary">
-                기한 안에 언제든 플레이할 수 있어요.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
-              <p className="body-2-medium text-text-neutral-secondary">
-                설정한 기한이 지나면 플레이 할 수 없어요.
-              </p>
-            </div>
+          <div className="flex w-full items-center gap-2 rounded-xl bg-gray-50 px-4 py-3.5">
+            <CheckIconFill className="size-4.5 shrink-0 text-text-neutral-secondary" />
+            <p className="body-2-medium text-text-neutral-secondary">
+              공유 시점으로부터 14일 후 자동 마감돼요.
+            </p>
           </div>
 
           <Button
