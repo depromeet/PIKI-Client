@@ -30,13 +30,24 @@ async function TournamentPage({ params }: TournamentPageProps) {
   }
 
   let hydratedTournament: GetTournamentInProgressResponseT;
+  let playTournamentId = tournamentId;
 
   if (tournamentData.status === 'PENDING') {
     try {
-      const { items } = await postStartTournament(tournamentId);
+      // 응답 tournamentId 활용:
+      // - 주최자(ROOT): 요청 tournamentId 와 동일
+      // - 참여자(CLONE): 새로 생성된 CLONE id (이후 본인 인스턴스로 진행)
+      const { tournamentId: nextTournamentId, items } = await postStartTournament(tournamentId);
+
+      // CLONE 이 생성됐다면 본인 인스턴스 URL 로 이동 (재진입 시 IN_PROGRESS 분기로 흘러감)
+      if (nextTournamentId !== tournamentId) {
+        redirect(ROUTES.TOURNAMENT_MATCH(nextTournamentId));
+      }
+
       // start 후 서버는 IN_PROGRESS로 전환됨 — 클라 캐시도 IN_PROGRESS 형태로 시드
+      playTournamentId = nextTournamentId;
       hydratedTournament = {
-        tournamentId,
+        tournamentId: nextTournamentId,
         name: tournamentData.name,
         isOwner: tournamentData.isOwner,
         status: 'IN_PROGRESS',
@@ -65,12 +76,12 @@ async function TournamentPage({ params }: TournamentPageProps) {
   }
 
   const queryClient = getQueryClient();
-  queryClient.setQueryData(['tournament', tournamentId], hydratedTournament);
+  queryClient.setQueryData(['tournament', playTournamentId], hydratedTournament);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <TournamentClient
-        tournamentId={tournamentId}
+        tournamentId={playTournamentId}
         tournamentName={hydratedTournament.name}
         inProgress={hydratedTournament.inProgress}
       />

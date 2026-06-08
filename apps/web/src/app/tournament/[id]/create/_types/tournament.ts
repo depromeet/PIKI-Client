@@ -35,7 +35,13 @@ export type PostTournamentItemLinkResponseT = {
   tournamentItemId: number;
 };
 
+/**
+ * 시작 응답.
+ * - 주최자(ROOT): 본인 tournamentId 반환
+ * - 참여자(CLONE): 새로 생성된 CLONE tournamentId 반환 (이후 본인 ID 로 진행)
+ */
 export type PostTournamentStartResponseT = {
+  tournamentId: number;
   items: Omit<TournamentItemT, 'itemId'>[];
 };
 
