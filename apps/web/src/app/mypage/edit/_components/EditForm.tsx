@@ -49,6 +49,12 @@ function EditForm() {
 
   /** 닉네임 중복 체크 */
   const handleCheckDuplicate = () => {
+    if (trimmedNickname.startsWith('탈퇴')) {
+      setNicknameErrorText(`'탈퇴'로 시작하는 닉네임은 사용할 수 없습니다.`);
+      setIsNicknameChecked(false);
+      return;
+    }
+
     getNicknameCheckMutation(trimmedNickname, {
       onSuccess: ({ available, detail }) => {
         setNicknameErrorText(available ? null : detail);
