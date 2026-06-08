@@ -37,15 +37,13 @@ function ProfileSection() {
           )}
         </div>
 
-        {userData.identityType === 'MEMBER' && (
-          <Link
-            href={ROUTES.MYPAGE_EDIT}
-            aria-label="프로필 수정"
-            className="shrink-0 cursor-pointer"
-          >
-            <EditIconFill className="size-6 text-icon-neutral-secondary" />
-          </Link>
-        )}
+        <Link
+          href={ROUTES.MYPAGE_EDIT}
+          aria-label="프로필 수정"
+          className="shrink-0 cursor-pointer"
+        >
+          <EditIconFill className="size-6 text-icon-neutral-secondary" />
+        </Link>
       </div>
     </section>
   );
