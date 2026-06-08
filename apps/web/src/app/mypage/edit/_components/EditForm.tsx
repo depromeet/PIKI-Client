@@ -14,6 +14,7 @@ import ProfileImageField from './ProfileImageField';
 function EditForm() {
   const { userData } = useGetMe();
   const { getNicknameCheckMutation, isGetNicknameCheckPending } = useGetNicknameCheck();
+  // const { patchMeMutation, isPatchMePending } = usePatchMe();
 
   const [nickname, setNickname] = useState(userData.nickname);
   const [isNickNameError, setIsNickNameError] = useState(false);
@@ -34,6 +35,7 @@ function EditForm() {
    */
   const isNicknameValid = trimmedNickname.length > 0 && (!isNicknameChanged || isNicknameChecked);
   const isEditDisabled = !hasChanges || !isNicknameValid;
+  // const isEditDisabled = !hasChanges || !isNicknameValid || isPatchMePending;
 
   /** 닉네임 변경 시 */
   const handleNicknameChange = (value: string) => {
@@ -57,12 +59,17 @@ function EditForm() {
 
     if (isEditDisabled) return;
 
+    // patchMeMutation({
+    //   ...(isNicknameChanged ? { nickname: trimmedNickname } : {}),
+    //   ...(profileImageFile ? { profileImage: profileImageFile } : {}),
+    // });
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
       <div className="hide-scrollbar flex flex-1 flex-col overflow-y-auto pb-[98px]">
         <ProfileImageField
+          userIdentityType={userData.identityType}
           profileImage={userData.profileImage}
           onImageSelect={setProfileImageFile}
         />
@@ -87,6 +94,7 @@ function EditForm() {
           disabled={isEditDisabled}
         >
           수정하기
+          {/* {isPatchMePending ? <Spinner size={20} /> : '수정하기'} */}
         </Button>
       </BottomCta>
     </form>

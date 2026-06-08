@@ -57,6 +57,7 @@ function ProfileImageField({ userIdentityType, profileImage, onImageSelect }: Pr
         ) : (
           <UserProfileBlue className="size-[90px]" aria-hidden />
         )}
+        {userIdentityType === 'MEMBER' && (
           <button
             type="button"
             onClick={openPicker}
@@ -66,6 +67,7 @@ function ProfileImageField({ userIdentityType, profileImage, onImageSelect }: Pr
           >
             <CameraIconFill className="size-6 shrink-0 text-icon-neutral-secondary" />
           </button>
+        )}
       </div>
 
       <input
