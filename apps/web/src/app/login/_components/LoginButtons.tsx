@@ -6,7 +6,7 @@ import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
-import { isValidLoginRedirectPath } from '@/utils/loginRedirect';
+import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
 import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
@@ -27,6 +27,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
       WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'kakao' });
       return;
     }
+    setLoginRedirectPath(validRedirect);
     const { url } = await getAuthUrl('kakao', validRedirect);
     window.location.href = url;
   };
@@ -36,6 +37,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
       WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'google' });
       return;
     }
+    setLoginRedirectPath(validRedirect);
     const { url } = await getAuthUrl('google', validRedirect);
     window.location.href = url;
   };

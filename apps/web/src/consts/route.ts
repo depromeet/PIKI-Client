@@ -22,4 +22,7 @@ export const ROUTES = {
   TOURNAMENT_LOADING: (tournamentId: number) => `/tournament/${tournamentId}/loading`,
   TOURNAMENT_MATCH: (tournamentId: number) => `/tournament/${tournamentId}/match`,
   TOURNAMENT_RESULT: (tournamentId: number) => `/tournament/${tournamentId}/result`,
+
+  /** 4. etc */
+  SOCIAL_LOGIN_CALLBACK: (provider: string) => `/auth/callback/${provider}`,
 } as const;

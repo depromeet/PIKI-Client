@@ -3,15 +3,19 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
+import { ROUTES } from '@/consts/route';
 import type { SocialProviderT } from '@/types/auth';
-import { getLoginPath, isValidLoginRedirectPath } from '@/utils/loginRedirect';
+import {
+  clearLoginRedirectPath,
+  getLoginPath,
+  getLoginRedirectPath,
+  isValidLoginRedirectPath,
+} from '@/utils/loginRedirect';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
 
-const SUPPORTED_PROVIDERS: SocialProviderT[] = ['kakao', 'google'];
-
 function isSocialProvider(value: string): value is SocialProviderT {
-  return (SUPPORTED_PROVIDERS as string[]).includes(value);
+  return value === 'kakao' || value === 'google';
 }
 
 function CallbackHandler() {
@@ -28,8 +32,15 @@ function CallbackHandler() {
   useEffect(() => {
     if (hasCalled.current) return;
 
-    const redirect = searchParams.get('redirect');
-    const loginPath = getLoginPath(redirect);
+    /** 로그인 이후 redirect path 확인 */
+    const redirectParam = searchParams.get('redirect');
+    const redirect = getLoginRedirectPath(redirectParam);
+    clearLoginRedirectPath();
+
+    /** /home이 아닌 redirect path가 있으면 해당 path로 리다이렉트 */
+    const loginRedirect =
+      isValidLoginRedirectPath(redirectParam) || redirect !== ROUTES.HOME ? redirect : null;
+    const loginPath = getLoginPath(loginRedirect);
 
     if (!isValidProvider) {
       router.replace(loginPath);
@@ -49,11 +60,10 @@ function CallbackHandler() {
     }
 
     hasCalled.current = true;
-    const redirectUri = `${window.location.origin}/auth/callback/${provider}`;
     postSocialLoginMutation({
       code,
-      redirect: isValidLoginRedirectPath(redirect) ? redirect : null,
-      redirectUri,
+      redirect: loginRedirect,
+      redirectUri: `${window.location.origin}${ROUTES.SOCIAL_LOGIN_CALLBACK(provider)}`,
       state,
     });
   }, [isValidProvider, postSocialLoginMutation, provider, router, searchParams]);
