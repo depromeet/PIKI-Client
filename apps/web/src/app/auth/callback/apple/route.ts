@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  const redirectUri = `${request.nextUrl.origin}/auth/callback/apple`;
+  const redirectUri = `${request.nextUrl.origin}/login`;
 
   try {
     const apiResponse = await fetch(
