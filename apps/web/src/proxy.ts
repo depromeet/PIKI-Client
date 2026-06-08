@@ -4,7 +4,7 @@ import { postGuestLoginServer } from './app/login/_apis/postGuestLogin';
 import { getLoginPath } from './utils/loginRedirect';
 
 const PUBLIC_ROUTES = ['/home', '/login', '/tournament/join'] as const;
-const MEMBER_ROUTES = ['/archive'] as const;
+const MEMBER_ROUTES = ['/archive', '/mypage/edit', '/mypage/withdraw'] as const;
 
 export const proxy = async (request: NextRequest) => {
   const { pathname, search } = request.nextUrl;
@@ -43,5 +43,5 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/home', '/login', '/tournament/join/:path*', '/archive/:path*'],
+  matcher: ['/home', '/login', '/tournament/join/:path*', '/archive/:path*', '/mypage/:path*'],
 };
