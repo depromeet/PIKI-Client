@@ -63,7 +63,12 @@ function ResultClient({ tournamentId }: ResultClientProps) {
           onSharePlayLink={handleOpenShare}
         />
 
-        {tournamentData.completed.hasGroupResult && (
+        {/*
+          ROOT 토너먼트(친구 초대로 참여)에서만 그룹 결과 노출.
+          - 주최자 + 친구 초대(코드/링크) 멤버: ROOT 화면이라 노출
+          - 플레이 링크로만 참여한 게스트: CLONE(isRoot=false) 이라 자동 숨김
+        */}
+        {tournamentData.isRoot && tournamentData.completed.hasGroupResult && (
           <GroupResultEntryCard tournamentId={tournamentId} />
         )}
       </div>
