@@ -62,7 +62,7 @@ function EditForm() {
 
     patchMeMutation({
       ...(isNicknameChanged ? { nickname: trimmedNickname } : {}),
-      ...(profileImageFile ? { profileImage: profileImageFile } : {}),
+      ...(profileImageFile ? { image: profileImageFile } : {}),
     });
   };
 
