@@ -9,6 +9,7 @@ import type {
   RequestSocialLoginMessageT,
   SocialLoginErrorMessageT,
   SocialLoginSuccessMessageT,
+  WebReqLogoutMessageT,
 } from './login';
 import type { ShareIntentMessageT } from './shareIntent';
 
@@ -21,6 +22,7 @@ export type WebBridgeMessageT =
   | SocialLoginSuccessMessageT
   | SocialLoginErrorMessageT
   | ShareIntentMessageT
+  | WebReqLogoutMessageT
   | WebReadyMessageT;
 
 export type WebReadyMessageT = {

@@ -2,8 +2,6 @@ import { getMe } from '@/apis/getMe';
 import ButtonLink from '@/components/button/ButtonLink';
 import { ROUTES } from '@/consts/route';
 
-import LogoutButton from './_components/LogoutButton';
-
 // TEMP
 async function Page() {
   let user;
@@ -56,7 +54,6 @@ async function Page() {
         <ButtonLink href={ROUTES.LOGIN} size="lg">
           로그인
         </ButtonLink>
-        {user && <LogoutButton />}
         <ButtonLink href={ROUTES.HOME} size="lg">
           홈으로
         </ButtonLink>

@@ -11,8 +11,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/dialog';
+import Spinner from '@/components/spinner';
+
+import { usePostLogout } from '../_hooks/usePostLogout';
 
 function LogoutMenuItem() {
+  const { postLogoutMutation, isPostLogoutPending } = usePostLogout();
+
+  const handleLogout = () => {
+    postLogoutMutation();
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -25,20 +34,26 @@ function LogoutMenuItem() {
       </DialogTrigger>
       <DialogContent showCloseButton={false} className="space-y-5 text-center">
         <DialogHeader className="flex flex-col items-center gap-2 py-2">
-          <SadIconFill className="size-9 text-icon-neutral-primary" />
+          <SadIconFill className="size-9 text-icon-neutral-secondary" />
           <DialogTitle className="heading-1 text-text-neutral-primary">
             로그아웃 하시겠어요?
           </DialogTitle>
         </DialogHeader>
         <DialogFooter className="flex-row gap-2.5">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            onClick={handleLogout}
+            disabled={isPostLogoutPending}
+          >
+            {isPostLogoutPending ? <Spinner size={24} /> : '로그아웃'}
+          </Button>
           <DialogClose asChild>
-            <Button variant="secondary" size="lg" className="flex-1">
-              로그아웃
+            <Button variant="primary" size="lg" className="flex-1">
+              유지하기
             </Button>
           </DialogClose>
-          <Button variant="primary" size="lg" className="flex-1">
-            유지하기
-          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
