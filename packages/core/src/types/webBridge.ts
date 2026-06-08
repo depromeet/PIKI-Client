@@ -9,6 +9,7 @@ import type {
   RequestSocialLoginMessageT,
   SocialLoginErrorMessageT,
   SocialLoginSuccessMessageT,
+  WebReqLogoutMessageT,
 } from './login';
 import type {
   AppReqDeepLinkMessageT,
@@ -35,7 +36,8 @@ export type WebBridgeMessageT =
   | WebReqOpenNotificationSettingsMessageT
   | AppResPushPermissionStatusMessageT
   | AppResFcmTokenMessageT
-  | AppReqDeepLinkMessageT;
+  | AppReqDeepLinkMessageT
+  | WebReqLogoutMessageT;
 
 /** 웹이 페이지 hydrate 완료 후 RN에게 메시지 수신 준비됨을 알리는 메시지 */
 export type WebReqReadyMessageT = {

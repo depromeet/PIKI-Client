@@ -15,6 +15,7 @@ import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { handleRequestPushPermission, syncPushStatusToWeb } from '@/utils/pushNotification';
+import { TokenStorage } from '@/utils/tokenStorage';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
@@ -63,6 +64,10 @@ function Page() {
 
         case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_NOTIFICATION_SETTINGS:
           await Linking.openSettings();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT:
+          await TokenStorage.clearTokens();
           return;
 
         default:

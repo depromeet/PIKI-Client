@@ -1,7 +1,7 @@
-import { WEBBRIDGE_MESSAGE_TYPE, type SocialProviderT } from '@piki/core';
-import * as AppleAuthentication from 'expo-apple-authentication';
-import { login as kakaoLogin } from '@react-native-kakao/user';
+import { type SocialProviderT, WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { login as kakaoLogin } from '@react-native-kakao/user';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { useCallback } from 'react';
 
 import { postSocialLogin } from '@/apis/postSocialLogin';
@@ -41,7 +41,10 @@ export const useSocialLogin = () => {
       // SOCIAL_LOGIN_SUCCESS 전에 먼저 쿠키 주입 — WebView가 메시지 처리 전에 API 요청을 보내도 토큰이 있도록
       WebBridge.injectCookies({ access_token: jwtAccessToken, refresh_token: refreshToken });
 
-      WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_SUCCESS, payload: { accessToken: jwtAccessToken, refreshToken } });
+      WebBridge.postMessage({
+        type: WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_SUCCESS,
+        payload: { accessToken: jwtAccessToken, refreshToken },
+      });
     } catch (error) {
       WebBridge.postMessage({
         type: WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_ERROR,
