@@ -58,7 +58,8 @@ function ResultClient({ tournamentId }: ResultClientProps) {
           tournamentName={tournamentName}
           result={result}
           date={date}
-          isOwner={tournamentData.isOwner}
+          // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람)는 제외
+          canSharePlayLink={tournamentData.isRoot && tournamentData.isOwner}
           onSharePlayLink={handleOpenShare}
         />
 

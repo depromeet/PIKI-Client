@@ -38,11 +38,16 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   // 참여자(CLONE 생성 예정)는 ROOT status 변화에 따라 자동 라우팅하지 않고,
   // 본인이 "시작" 버튼을 눌러 CLONE 을 만들고 그 ID 로 매치 화면 진입한다.
   // → status 기반 자동 라우팅이 필요 없다.
-  // 담기 마감 = 초대 코드 만료 시점 (둘은 동일 정책으로 운영)
-  // 단, 주최자는 만료 영향 없이 본인 토너먼트에 후보를 담을 수 있다.
+
+  // 주최자가 ROOT 를 시작한 후(ownerStarted=true) 에는 초대 기간이 이미 종료된 상태라
+  // inviteExpiresAt 이 null 이고 담기 마감 카운트다운도 의미 없다.
+  const ownerStarted = tournamentData.pending?.ownerStarted ?? false;
   const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
   const { isExpired } = useCountdown(depositDeadline);
-  const isDepositClosed = !tournamentData.isOwner && isExpired;
+  // 담기 마감 = 초대 코드 만료 시점 (둘은 동일 정책으로 운영).
+  // 단, 주최자는 만료 영향 없이 본인 토너먼트에 후보를 담을 수 있다.
+  // ownerStarted 면 어차피 시작 흐름으로 넘어가야 하므로 마감 처리하지 않는다.
+  const isDepositClosed = !tournamentData.isOwner && !ownerStarted && isExpired;
   // 비회원(GUEST) 은 서버가 dicebear 자동 아바타를 내려주는데,
   // 우리 디자인상 비회원은 기본 SVG 프로필을 노출해야 하므로 무시한다.
   const isGeneratedAvatar = (url: string) => url.includes('api.dicebear.com');
@@ -78,8 +83,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <TournamentHeader name={tournamentData.name} />
         <ParticipantPanel
           participants={participants}
-          inviteCode={tournamentData.pending?.inviteCode}
-          inviteExpiresAt={tournamentData.pending?.inviteExpiresAt}
+          inviteCode={tournamentData.pending?.inviteCode ?? ''}
+          inviteExpiresAt={tournamentData.pending?.inviteExpiresAt ?? ''}
         />
         <TournamentItemBasketStatus
           isProcessing={
@@ -98,7 +103,9 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       />
 
       <div className="flex shrink-0 flex-col gap-3 px-5">
-        {hasFriends && !isDepositClosed && <DepositCountdown deadline={depositDeadline} />}
+        {hasFriends && !ownerStarted && !isDepositClosed && (
+          <DepositCountdown deadline={depositDeadline} />
+        )}
         <TournamentStartButton
           count={tournamentData.pending?.items.length ?? 0}
           tournamentId={tournamentId}

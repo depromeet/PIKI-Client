@@ -35,8 +35,9 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
         prev => ({
           tournamentId,
           name: tournamentName,
-          // 직전 캐시(GET 응답)의 isOwner를 그대로 승계 — 알 수 없으면 false
+          // 직전 캐시(GET 응답)의 isOwner/isRoot 를 그대로 승계 — 알 수 없으면 안전한 false
           isOwner: prev?.isOwner ?? false,
+          isRoot: prev?.isRoot ?? false,
           status: 'COMPLETED',
           completed: {
             result: data.result,
@@ -83,7 +84,7 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
     const next = await getTournament(tournamentId);
     queryClient.setQueryData(['tournament', tournamentId], next);
 
-    if (next.status !== 'IN_PROGRESS') return;
+    if (next.status !== 'IN_PROGRESS' || !next.inProgress) return;
     setCurrentRound(next.inProgress.currentRound);
     setRemainingItems(next.inProgress.remainingItems);
   };

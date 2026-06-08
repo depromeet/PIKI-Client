@@ -20,12 +20,20 @@ export type GetTournamentResponseT = {
   name: string;
   /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
   isOwner: boolean;
+  /** ROOT(원본)이면 true, CLONE(플레이 링크/멤버 시작으로 복제된 인스턴스)이면 false */
+  isRoot: boolean;
   status: TournamentStatusT;
   pending?: {
-    /** 초대 코드 (영문 대문자 3 + 숫자 3) */
-    inviteCode: string;
-    /** 초대 코드 만료 시각 (ISO 8601) */
-    inviteExpiresAt: string;
+    /**
+     * 주최자가 ROOT 토너먼트를 시작했는지 여부.
+     * - false (status=PENDING): "주최자가 시작해야..." 안내
+     * - true (status=IN_PROGRESS): 참여자도 본인 CLONE 시작 가능
+     */
+    ownerStarted: boolean;
+    /** 초대 코드. `ownerStarted=true` 이면 이미 초대 기간이 종료돼 null */
+    inviteCode: string | null;
+    /** 초대 코드 만료 시각 (ISO 8601). `ownerStarted=true` 이면 null */
+    inviteExpiresAt: string | null;
     items: TournamentItemT[];
     participants: TournamentParticipantT[];
   };

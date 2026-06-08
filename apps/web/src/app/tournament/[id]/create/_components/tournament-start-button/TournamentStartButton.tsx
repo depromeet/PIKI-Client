@@ -32,9 +32,10 @@ function TournamentStartButton({
     Number(tournamentId)
   );
 
-  // 참여자는 주최자가 ROOT 를 시작한 후(IN_PROGRESS) 부터 본인 CLONE 시작 가능.
-  // PENDING 상태에서는 시작 불가 (대신 "주최자가 시작해야..." 툴팁).
-  const isWaitingForOwnerStart = isParticipant && tournamentData.status === 'PENDING';
+  // 참여자는 주최자가 ROOT 를 시작한 후(ownerStarted=true) 부터 본인 CLONE 시작 가능.
+  // ownerStarted=false 면 아직 주최자 시작 전 — "주최자가 시작해야..." 툴팁 노출.
+  const isWaitingForOwnerStart =
+    isParticipant && tournamentData.pending?.ownerStarted === false;
 
   const [isTooltipVisible, setIsTooltipVisible] = useState(isWaitingForOwnerStart);
 
@@ -73,10 +74,7 @@ function TournamentStartButton({
   const isDisabled =
     isWaitingForOwnerStart ||
     isPostTournamentStartPending ||
-    // 주최자만 클라에서 아이템 수/상태 검증.
-    // 참여자는 ROOT 이 IN_PROGRESS 가 되면 응답에 pending 정보가 없어 아이템 수를 셀 수 없고,
-    // 백엔드도 CLONE 생성 시 ROOT 의 아이템을 참조하므로 클라 검증이 불필요하다.
-    (!isParticipant && !isDepositClosed && (count < 2 || hasUnreadyItem));
+    (!isDepositClosed && (count < 2 || hasUnreadyItem));
 
   return (
     <>

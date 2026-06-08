@@ -15,8 +15,12 @@ type ReceiptPaperProps = {
   tournamentName: string;
   result: RankedProductT[];
   date: Date;
-  /** 주최자(소유자)인지 — 플레이 링크 공유는 주최자만 사용 가능 */
-  isOwner: boolean;
+  /**
+   * 플레이 링크 공유 가능 여부.
+   * ROOT 토너먼트의 소유자(isRoot && isOwner)만 노출.
+   * CLONE 의 소유자(친구 초대로 참여 → CLONE 생성한 사람) 는 노출하지 않는다.
+   */
+  canSharePlayLink: boolean;
   onSharePlayLink?: () => void;
 };
 
@@ -46,7 +50,7 @@ const PlaceLabel = ({ label }: { label: string }) => (
 );
 
 const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function ReceiptPaper(
-  { tournamentName, result, date, isOwner, onSharePlayLink },
+  { tournamentName, result, date, canSharePlayLink, onSharePlayLink },
   ref
 ) {
   const [first, second, third, fourth] = result;
@@ -138,7 +142,7 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
       {/* 공유 액션 — 플레이 링크 공유는 주최자만 노출 */}
       <div className="flex items-center justify-center gap-5 py-2">
         <ShareAction icon={<ImageIconOutline className="size-3.5" />} label="이미지 공유" />
-        {isOwner && (
+        {canSharePlayLink && (
           <ShareAction
             icon={<LinkIconFill className="size-4.5" />}
             label="플레이 링크 공유"

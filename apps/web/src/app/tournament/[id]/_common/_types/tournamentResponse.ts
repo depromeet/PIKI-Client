@@ -11,30 +11,62 @@ export type TournamentParticipantT = {
   profileImage: string;
 };
 
-/** PENDING — 토너먼트 아이템 담는 중 */
+/**
+ * `pending` 필드 페이로드.
+ * status=PENDING 또는 status=IN_PROGRESS (참여자 대기 케이스) 일 때 내려온다.
+ */
+type TournamentPendingPayloadT = {
+  /**
+   * 주최자가 ROOT 토너먼트를 시작했는지 여부.
+   * - false (status=PENDING): "주최자가 시작해야..." 안내
+   * - true (status=IN_PROGRESS): 참여자도 본인 CLONE 시작 가능
+   */
+  ownerStarted: boolean;
+  /** 초대 코드. `ownerStarted=true` 이면 이미 초대 기간이 종료돼 null */
+  inviteCode: string | null;
+  /** 초대 코드 만료 시각 (ISO 8601). `ownerStarted=true` 이면 null */
+  inviteExpiresAt: string | null;
+  items: Array<Partial<TournamentItemT> & { tournamentItemId: number; itemId: number }>;
+  participants: TournamentParticipantT[];
+};
+
+/** PENDING — 토너먼트 아이템 담는 중. */
 export type GetTournamentPendingResponseT = {
   tournamentId: number;
   name: string;
   /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
   isOwner: boolean;
+  /** ROOT(원본)이면 true, CLONE(플레이 링크/멤버 시작으로 복제된 인스턴스)이면 false */
+  isRoot: boolean;
   status: Extract<TournamentStatusT, 'PENDING'>;
-  pending: {
-    /** 초대 코드 (영문 대문자 3 + 숫자 3, 서버 패턴: [A-Z]{3}\d{3}) */
-    inviteCode: string;
-    /** 초대 코드 만료 시각 (ISO 8601) */
-    inviteExpiresAt: string;
-    items: Array<Partial<TournamentItemT> & { tournamentItemId: number; itemId: number }>;
-    participants: TournamentParticipantT[];
-  };
+  pending: TournamentPendingPayloadT;
 };
 
-/** IN_PROGRESS — 진행 중 (재진입 시 복원용) */
+/**
+ * IN_PROGRESS — 참여자가 본인 매치를 아직 시작하지 않은 대기 상태.
+ * 주최자가 ROOT 를 시작했지만 참여자(isOwner=false)는 본인 CLONE 시작 전.
+ * 응답은 PENDING 과 동일한 `pending` 페이로드를 받지만 `ownerStarted=true`.
+ */
+export type GetTournamentMemberWaitingResponseT = {
+  tournamentId: number;
+  name: string;
+  isOwner: boolean;
+  isRoot: boolean;
+  status: Extract<TournamentStatusT, 'IN_PROGRESS'>;
+  pending: TournamentPendingPayloadT;
+  inProgress?: undefined;
+};
+
+/** IN_PROGRESS — 본인 인스턴스의 매치가 진행 중 (재진입 시 복원용). */
 export type GetTournamentInProgressResponseT = {
   tournamentId: number;
   name: string;
   /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
   isOwner: boolean;
+  /** ROOT(원본)이면 true, CLONE 이면 false */
+  isRoot: boolean;
   status: Extract<TournamentStatusT, 'IN_PROGRESS'>;
+  pending?: undefined;
   inProgress: {
     currentRound: number;
     lastHistory: TournamentMatchHistoryT | null;
@@ -48,6 +80,8 @@ export type GetTournamentCompletedResponseT = {
   name: string;
   /** 요청자가 토너먼트 소유자(주최자)인지 여부 */
   isOwner: boolean;
+  /** ROOT(원본)이면 true, CLONE 이면 false */
+  isRoot: boolean;
   status: Extract<TournamentStatusT, 'COMPLETED'>;
   completed: {
     result: TournamentRankingT[];
@@ -60,6 +94,7 @@ export type GetTournamentCompletedResponseT = {
 
 export type GetTournamentResponseT =
   | GetTournamentPendingResponseT
+  | GetTournamentMemberWaitingResponseT
   | GetTournamentInProgressResponseT
   | GetTournamentCompletedResponseT;
 
