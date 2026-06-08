@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 
-  const redirectUri = `${request.nextUrl.origin}/login`;
+  const redirectUri = `${request.nextUrl.origin}/auth/callback/apple`;
 
   try {
     const apiResponse = await fetch(
