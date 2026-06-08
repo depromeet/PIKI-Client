@@ -15,7 +15,10 @@ function ProfileSection() {
     <section className="flex w-full flex-col gap-3">
       <h2 className="body-1-bold text-text-neutral-primary">프로필</h2>
 
-      <div className="flex items-center gap-4 rounded-xl bg-bg-layer-default p-5">
+      <Link
+        href={ROUTES.MYPAGE_EDIT}
+        className="flex items-center gap-4 rounded-xl bg-bg-layer-default p-5"
+      >
         <div className="relative size-8 shrink-0 overflow-hidden rounded-full">
           <BaseImage
             src={userData.profileImage}
@@ -33,14 +36,8 @@ function ProfileSection() {
           )}
         </div>
 
-        <Link
-          href={ROUTES.MYPAGE_EDIT}
-          aria-label="프로필 수정"
-          className="shrink-0 cursor-pointer"
-        >
-          <EditIconFill className="size-6 text-icon-neutral-secondary" />
-        </Link>
-      </div>
+        <EditIconFill className="size-6 text-icon-neutral-secondary" />
+      </Link>
     </section>
   );
 }
