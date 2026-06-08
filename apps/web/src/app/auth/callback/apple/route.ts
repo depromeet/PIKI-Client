@@ -5,11 +5,13 @@ export async function POST(request: NextRequest) {
   const code = formData.get('code') as string | null;
   const state = formData.get('state') as string | null;
 
+  const loginUrl = new URL('/login', request.url);
+
   if (!code || !state) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(loginUrl, { status: 302 });
   }
 
-  const redirectUri = `${request.nextUrl.origin}/auth/callback/apple`;
+  const redirectUri = `${request.nextUrl.origin}/login`;
 
   try {
     const apiResponse = await fetch(
@@ -22,7 +24,7 @@ export async function POST(request: NextRequest) {
     );
 
     if (!apiResponse.ok) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(loginUrl, { status: 302 });
     }
 
     const redirect = NextResponse.redirect(new URL('/home', request.url));
@@ -32,6 +34,6 @@ export async function POST(request: NextRequest) {
 
     return redirect;
   } catch {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(loginUrl, { status: 302 });
   }
 }
