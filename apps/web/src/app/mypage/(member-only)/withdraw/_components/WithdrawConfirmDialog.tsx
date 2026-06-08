@@ -1,5 +1,8 @@
 'use client';
 
+import { isAxiosError } from 'axios';
+import { useState } from 'react';
+
 import { WarningIconFill } from '@/assets/icons';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
@@ -12,13 +15,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/dialog';
+import Spinner from '@/components/spinner';
+import type { ApiErrorResponseT } from '@/types/api';
+
+import { useDeleteMe } from '../_hooks/useDeleteMe';
 
 function WithdrawConfirmDialog() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { deleteMeMutation, isDeleteMePending } = useDeleteMe();
+
+  const handleWithdraw = () => {
+    if (isDeleteMePending) return;
+
+    deleteMeMutation(void 0, {
+      onError: error => {
+        const detail = isAxiosError<ApiErrorResponseT>(error) ? error.response?.data?.detail : null;
+        console.log(detail);
+        setIsOpen(false);
+      },
+    });
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <BottomCta className="bg-bg-layer-basement pb-8">
         <DialogTrigger asChild>
-          <Button variant="secondary" size="lg" className="w-full">
+          <Button variant="secondary" size="lg" className="w-full" disabled={isDeleteMePending}>
             탈퇴하기
           </Button>
         </DialogTrigger>
@@ -31,8 +54,14 @@ function WithdrawConfirmDialog() {
           </DialogTitle>
         </DialogHeader>
         <DialogFooter className="flex-row gap-2.5">
-          <Button variant="secondary" size="lg" className="flex-1">
-            탈퇴하기
+          <Button
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            onClick={handleWithdraw}
+            disabled={isDeleteMePending}
+          >
+            {isDeleteMePending ? <Spinner size={24} /> : '탈퇴하기'}
           </Button>
           <DialogClose asChild>
             <Button variant="primary" size="lg" className="flex-1">
