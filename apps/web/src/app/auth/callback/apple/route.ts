@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
   const loginUrl = new URL('/login', request.url);
 
   if (!code || !state) {
-    loginUrl.searchParams.set('error', 'no_code');
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 
@@ -25,7 +24,6 @@ export async function POST(request: NextRequest) {
     );
 
     if (!apiResponse.ok) {
-      loginUrl.searchParams.set('error', `api_${apiResponse.status}`);
       return NextResponse.redirect(loginUrl, { status: 302 });
     }
 
@@ -35,8 +33,7 @@ export async function POST(request: NextRequest) {
     cookies.forEach(cookie => redirect.headers.append('set-cookie', cookie));
 
     return redirect;
-  } catch (e) {
-    loginUrl.searchParams.set('error', `exception_${e instanceof Error ? e.message : 'unknown'}`);
+  } catch {
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 }
