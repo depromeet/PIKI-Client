@@ -1,7 +1,7 @@
 import { clientApi } from '@/apis/client';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
-import type { SocialProviderT } from '@/types/auth';
+import type { SocialProviderT } from '@piki/core';
 
 import type { GetAuthUrlResponseT } from '../_types/login';
 

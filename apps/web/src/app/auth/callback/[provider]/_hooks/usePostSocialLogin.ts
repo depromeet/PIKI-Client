@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { ROUTES } from '@/consts/route';
-import type { SocialProviderT } from '@/types/auth';
+import type { SocialProviderT } from '@piki/core';
 
 import { postSocialLogin } from '../_apis/postSocialLogin';
 

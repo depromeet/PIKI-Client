@@ -4,7 +4,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { ROUTES } from '@/consts/route';
-import type { SocialProviderT } from '@/types/auth';
+import type { SocialProviderT } from '@piki/core';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
 
