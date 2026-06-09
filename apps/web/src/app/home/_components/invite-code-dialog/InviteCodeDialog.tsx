@@ -10,11 +10,9 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/compone
 import Input from '@/components/input';
 import Spinner from '@/components/spinner';
 
-import { getInvitePreviewByCode } from '../../../tournament/join/_apis/getInvitePreviewByCode';
-import {
-  CODE_LENGTH,
-  isValidInviteCodeFormat,
-} from '../../../tournament/join/_utils/verifyInviteCode';
+import { getInvitePreviewByCode } from '@/app/tournament/join/_apis/getInvitePreviewByCode';
+import { CODE_LENGTH, isValidInviteCodeFormat } from '@/app/tournament/join/_utils/verifyInviteCode';
+
 import InvalidCodeDialog from './InvalidCodeDialog';
 
 type InviteCodeDialogProps = {

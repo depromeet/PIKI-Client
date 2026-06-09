@@ -9,7 +9,7 @@ import Button from '@/components/button';
 import Spinner from '@/components/spinner';
 import { ROUTES } from '@/consts/route';
 
-import { getInvitePreviewByCode } from '../../../tournament/join/_apis/getInvitePreviewByCode';
+import { getInvitePreviewByCode } from '@/app/tournament/join/_apis/getInvitePreviewByCode';
 
 type InviteClientProps = {
   tournamentId: number;
