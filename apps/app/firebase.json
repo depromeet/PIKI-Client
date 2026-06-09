@@ -1,5 +1,5 @@
 {
   "react-native": {
-    "messaging_ios_foreground_presentation_options": ["badge", "sound", "banner", "list"]
+    "messaging_ios_foreground_presentation_options": ["badge"]
   }
 }
