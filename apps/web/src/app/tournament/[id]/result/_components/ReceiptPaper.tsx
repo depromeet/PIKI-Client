@@ -15,6 +15,13 @@ type ReceiptPaperProps = {
   tournamentName: string;
   result: RankedProductT[];
   date: Date;
+  /**
+   * 플레이 링크 공유 가능 여부.
+   * ROOT 토너먼트의 소유자(isRoot && isOwner)만 노출.
+   * CLONE 의 소유자(친구 초대로 참여 → CLONE 생성한 사람) 는 노출하지 않는다.
+   */
+  canSharePlayLink: boolean;
+  onSharePlayLink?: () => void;
 };
 
 const formatDate = (date: Date) => {
@@ -43,7 +50,7 @@ const PlaceLabel = ({ label }: { label: string }) => (
 );
 
 const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function ReceiptPaper(
-  { tournamentName, result, date },
+  { tournamentName, result, date, canSharePlayLink, onSharePlayLink },
   ref
 ) {
   const [first, second, third, fourth] = result;
@@ -132,10 +139,16 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
         <SectionDivider />
       </div>
 
-      {/* 공유 액션 */}
+      {/* 공유 액션 — 플레이 링크 공유는 주최자만 노출 */}
       <div className="flex items-center justify-center gap-5 py-2">
         <ShareAction icon={<ImageIconOutline className="size-3.5" />} label="이미지 공유" />
-        <ShareAction icon={<LinkIconFill className="size-[18px]" />} label="플레이 링크 공유" />
+        {canSharePlayLink && (
+          <ShareAction
+            icon={<LinkIconFill className="size-4.5" />}
+            label="플레이 링크 공유"
+            onClick={onSharePlayLink}
+          />
+        )}
       </div>
 
       {/* 영수증 하단 톱니 */}
@@ -200,11 +213,12 @@ function RankedRowSmall({ product, index }: RankedRowProps) {
 type ShareActionProps = {
   icon: React.ReactNode;
   label: string;
+  onClick?: () => void;
 };
 
-function ShareAction({ icon, label }: ShareActionProps) {
+function ShareAction({ icon, label, onClick }: ShareActionProps) {
   return (
-    <button type="button" className="flex items-center gap-2">
+    <button type="button" onClick={onClick} className="flex cursor-pointer items-center gap-2">
       <span className="flex size-[34px] items-center justify-center rounded-full border border-border-neutral-muted text-icon-neutral-primary">
         {icon}
       </span>

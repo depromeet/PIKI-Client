@@ -24,7 +24,9 @@ function WishSelectHeader({
 
     return (
       <p className="whitespace-pre-line">
-        <span className="heading-2 text-text-neutral-secondary">{tournamentCandidateCount}개가</span>
+        <span className="heading-2 text-text-neutral-secondary">
+          {tournamentCandidateCount}개가
+        </span>
         <span className="heading-2-medium text-text-neutral-secondary">
           {' 담겨있어요\n더 추가하고 싶은 상품을 골라보세요.'}
         </span>

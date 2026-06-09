@@ -2,12 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import { ROUTES } from '@/consts/route';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
+import GroupResultEntryCard from './group-result-entry-card/GroupResultEntryCard';
+import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 
 type ResultClientProps = {
   tournamentId: number;
@@ -17,6 +18,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const router = useRouter();
   const { tournamentData } = useGetTournament(tournamentId);
   const [date] = useState(() => new Date());
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
@@ -39,9 +41,8 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     router.push(ROUTES.HOME);
   };
 
-  const handleSaveResult = () => {
-    // 이미 진행 종료 시점에 서버에서 저장됨 — 명시적 저장 토스트만 노출
-    toast.info('보관함에 결과를 저장했어요.');
+  const handleOpenShare = () => {
+    setIsShareDialogOpen(true);
   };
 
   return (
@@ -52,27 +53,41 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         <span className="text-text-neutral-primary">승자는</span>
       </h1>
 
-      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col">
-        <ReceiptDrawMachine tournamentName={tournamentName} result={result} date={date} />
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col gap-3 px-5">
+        <ReceiptDrawMachine
+          tournamentName={tournamentName}
+          result={result}
+          date={date}
+          // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람)는 제외
+          canSharePlayLink={tournamentData.isRoot && tournamentData.isOwner}
+          onSharePlayLink={handleOpenShare}
+        />
+
+        {/*
+          ROOT 토너먼트(친구 초대로 진행)에서는 무조건 진입 카드 노출.
+          - 친구 유무는 클릭 시 group-result API 응답으로 판단 (캐시 의존 X)
+          - 플레이 링크 게스트(CLONE) 는 노출 안 함 — 백엔드가 403 으로 막는다
+        */}
+        {tournamentData.isRoot && <GroupResultEntryCard tournamentId={tournamentId} />}
       </div>
 
-      {/* 하단 버튼 */}
-      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center gap-2.5 bg-bg-layer-basement px-5 pt-3 pb-5">
+      {/* 하단 버튼 — 시안상 단일 CTA */}
+      <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center bg-bg-layer-basement px-5 pt-3 pb-5">
         <button
           type="button"
           onClick={handleGoHome}
-          className="flex h-[54px] flex-1 cursor-pointer items-center justify-center rounded-xl border border-gray-200 bg-bg-layer-default body-1-semibold text-text-neutral-primary"
+          className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl bg-gray-950 body-1-semibold text-white"
         >
           홈으로 가기
         </button>
-        <button
-          type="button"
-          onClick={handleSaveResult}
-          className="flex h-[54px] flex-1 cursor-pointer items-center justify-center rounded-xl bg-gray-950 body-1-semibold text-white"
-        >
-          결과 저장하기
-        </button>
       </div>
+
+      <PlateShareDialog
+        open={isShareDialogOpen}
+        onOpenChange={setIsShareDialogOpen}
+        tournamentId={tournamentId}
+        initialPlayLinkExpiresAt={tournamentData.completed.playLinkExpiresAt}
+      />
     </main>
   );
 }

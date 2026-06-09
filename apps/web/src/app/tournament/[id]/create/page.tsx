@@ -1,6 +1,5 @@
-import { Suspense } from 'react';
-
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { Suspense } from 'react';
 
 import { getQueryClient } from '@/utils/queryClient';
 

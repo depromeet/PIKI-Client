@@ -76,11 +76,15 @@ function LoginButtons() {
         비회원으로 시작하기
       </button>
 
-      <p className="mt-9 text-center text-[11px] font-medium leading-[150%] tracking-[-0.232px] [font-feature-settings:'ss10'_on] text-text-neutral-tertiary">
+      <p className="mt-9 text-center [font-feature-settings:'ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
         가입 시{' '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">이용약관</span>
+        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+          이용약관
+        </span>
         {' 및 '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">개인정보 처리방침</span>
+        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+          개인정보 처리방침
+        </span>
         에 동의하게 됩니다.
       </p>
     </div>

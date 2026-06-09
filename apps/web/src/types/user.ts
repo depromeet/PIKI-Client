@@ -12,3 +12,8 @@ export type UserT = {
   /** 유저 식별 타입 */
   identityType: UserIdentityTypeT;
 };
+
+/** 닉네임 중복 체크 응답 */
+export type GetNicknameCheckResponseT = {
+  available: boolean;
+};

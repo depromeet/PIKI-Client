@@ -62,9 +62,14 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post('/api/v1/auth/token/refresh', null, {
-          withCredentials: true,
-        });
+        // body 없는 POST 라도 빈 객체로 보내야 일부 백엔드가 Content-Type 인식 후 처리한다 (415 방지).
+        await axios.post(
+          '/api/v1/auth/token/refresh',
+          {},
+          {
+            withCredentials: true,
+          }
+        );
         processQueue(null);
         return clientApi(originalRequest);
       } catch (refreshError) {

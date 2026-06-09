@@ -18,10 +18,16 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 type TournamentItemBasketProps = {
   basketIndex: number;
   items: TournamentItemT[];
-  maxHeight?: number | null;
+  maxHeight?: number;
+  isDepositClosed?: boolean;
 };
 
-function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
+function TournamentItemBasket({
+  basketIndex,
+  items,
+  maxHeight,
+  isDepositClosed = false,
+}: TournamentItemBasketProps) {
   const { id: _tournamentId } = useParams<{ id: string }>();
   const tournamentId = parseIdParam(_tournamentId);
   const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
@@ -62,16 +68,22 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
                   onClick={() => handleItemClick(item)}
                 />
               );
-            return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
+            return (
+              <EmptyBasketSlot
+                key={`empty-${slotIndex}`}
+                slotIndex={slotIndex}
+                isDepositClosed={isDepositClosed}
+              />
+            );
           })}
 
-          {items.length < ITEMS_PER_BASKET && (
+          {!isDepositClosed && (
             <Dialog>
               <DialogTrigger asChild>
                 <Button
                   icon="only"
                   aria-label="위시 아이템 추가"
-                  className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
+                  className="absolute top-1/2 left-1/2 size-15 -translate-x-1/2 -translate-y-1/2 shadow-lg"
                 >
                   <AddIcon width={32} height={32} className="text-white" aria-hidden />
                 </Button>
