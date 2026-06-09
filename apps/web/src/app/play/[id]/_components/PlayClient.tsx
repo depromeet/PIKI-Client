@@ -60,13 +60,13 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
     const run = async () => {
       try {
         const newTournamentId = await postFromPlayLink(sourceTournamentId);
-        goToTournament(newTournamentId);
+        await goToTournament(newTournamentId);
       } catch (error) {
         if (isUnauthenticated(error)) {
           try {
             await postGuestLogin();
             const newTournamentId = await postFromPlayLink(sourceTournamentId);
-            goToTournament(newTournamentId);
+            await goToTournament(newTournamentId);
             return;
           } catch {
             setState('expired');
