@@ -30,8 +30,9 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
 
   const { mutate: previewMutation, isPending: isPreviewPending } = useMutation({
     mutationFn: getInvitePreviewByCode,
-    onSuccess: data => {
-      const enteredCode = code;
+    // mutation 진행 중 사용자가 input 을 바꿀 수 있으므로
+    // 검증에 사용한 변수 (variables) 를 그대로 라우팅에 쓴다 — state 의 code 를 다시 읽지 않는다.
+    onSuccess: (data, enteredCode) => {
       onOpenChange(false);
       reset();
       router.push(`/tournament/join/${data.tournamentId}?code=${enteredCode}`);
