@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { getInvitePreviewByCode } from '@/app/tournament/join/_apis/getInvitePreviewByCode';
 import Button from '@/components/button';
 import Spinner from '@/components/spinner';
 import { ROUTES } from '@/consts/route';
-
-import { getInvitePreviewByCode } from '@/app/tournament/join/_apis/getInvitePreviewByCode';
 
 type InviteClientProps = {
   tournamentId: number;

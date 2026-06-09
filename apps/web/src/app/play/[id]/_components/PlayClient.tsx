@@ -5,12 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { postGuestLogin } from '@/app/login/_apis/postGuestLogin';
+import { getTournament } from '@/app/tournament/[id]/_common/_apis/getTournament';
 import Button from '@/components/button';
 import Spinner from '@/components/spinner';
 import { ROUTES } from '@/consts/route';
-
-import { getTournament } from '@/app/tournament/[id]/_common/_apis/getTournament';
-import { postGuestLogin } from '@/app/login/_apis/postGuestLogin';
 
 import { postFromPlayLink } from '../../_apis/postFromPlayLink';
 
