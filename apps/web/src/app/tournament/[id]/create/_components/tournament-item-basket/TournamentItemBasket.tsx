@@ -18,7 +18,7 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 type TournamentItemBasketProps = {
   basketIndex: number;
   items: TournamentItemT[];
-  maxHeight?: number;
+  maxHeight?: number | null;
 };
 
 function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
@@ -65,18 +65,20 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
             return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
           })}
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                icon="only"
-                aria-label="위시 아이템 추가"
-                className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
-              >
-                <AddIcon width={32} height={32} className="text-white" aria-hidden />
-              </Button>
-            </DialogTrigger>
-            <GetItemDialogContent type="tournament" />
-          </Dialog>
+          {items.length < ITEMS_PER_BASKET && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  icon="only"
+                  aria-label="위시 아이템 추가"
+                  className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
+                >
+                  <AddIcon width={32} height={32} className="text-white" aria-hidden />
+                </Button>
+              </DialogTrigger>
+              <GetItemDialogContent type="tournament" />
+            </Dialog>
+          )}
         </div>
       </div>
       {failedItem && tournamentId && (
