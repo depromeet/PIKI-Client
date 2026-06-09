@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
-import Button from '@/components/common/button';
+import Button from '@/components/button';
+import { ROUTES } from '@/consts/route';
 
 import { logout } from '../_actions/logout';
 
@@ -11,7 +12,7 @@ function LogoutButton() {
 
   const handleLogout = async () => {
     await logout();
-    router.refresh();
+    router.replace(ROUTES.LOGIN);
   };
 
   return (

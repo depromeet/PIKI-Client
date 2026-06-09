@@ -1,5 +1,6 @@
 import { getMe } from '@/apis/getMe';
-import ButtonLink from '@/components/common/button/ButtonLink';
+import ButtonLink from '@/components/button/ButtonLink';
+import { ROUTES } from '@/consts/route';
 
 import LogoutButton from './_components/LogoutButton';
 
@@ -52,11 +53,11 @@ async function Page() {
       )}
 
       <div className="flex w-full max-w-sm flex-col gap-2">
-        <ButtonLink href="/login" size="lg">
+        <ButtonLink href={ROUTES.LOGIN} size="lg">
           로그인
         </ButtonLink>
         {user && <LogoutButton />}
-        <ButtonLink href="/home" size="lg">
+        <ButtonLink href={ROUTES.HOME} size="lg">
           홈으로
         </ButtonLink>
       </div>

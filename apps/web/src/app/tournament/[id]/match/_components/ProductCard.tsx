@@ -1,4 +1,4 @@
-import BaseImage from '@/components/common/base-image';
+import BaseImage from '@/components/base-image';
 
 import type { ProductT } from '../../_common/_types/tournament';
 

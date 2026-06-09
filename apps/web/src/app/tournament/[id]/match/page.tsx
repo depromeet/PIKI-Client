@@ -2,6 +2,7 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { notFound, redirect } from 'next/navigation';
 
+import { ROUTES } from '@/consts/route';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from '../_common/_apis/getTournament';
@@ -25,7 +26,7 @@ async function TournamentPage({ params }: TournamentPageProps) {
   const tournamentData = await getTournament(tournamentId);
 
   if (tournamentData.status === 'COMPLETED') {
-    redirect(`/tournament/${tournamentId}/result`);
+    redirect(ROUTES.TOURNAMENT_RESULT(tournamentId));
   }
 
   let hydratedTournament: GetTournamentInProgressResponseT;
@@ -50,7 +51,7 @@ async function TournamentPage({ params }: TournamentPageProps) {
 
       const latest = await getTournament(tournamentId);
       if (latest.status === 'COMPLETED') {
-        redirect(`/tournament/${tournamentId}/result`);
+        redirect(ROUTES.TOURNAMENT_RESULT(tournamentId));
       }
       if (latest.status === 'PENDING') {
         // 409이면서 여전히 PENDING — 예상 밖, 그대로 던짐

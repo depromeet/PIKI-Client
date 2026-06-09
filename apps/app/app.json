@@ -9,11 +9,28 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.piki.app"
+      "supportsTablet": false,
+      "bundleIdentifier": "day.no30s.piki",
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.day.no30s.piki"]
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "AppGroup": "group.day.no30s.piki",
+        "AppGroupIdentifier": "group.day.no30s.piki"
+      },
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["C617.1"]
+          }
+        ]
+      },
+      "usesNonExemptEncryption": false
     },
     "android": {
-      "package": "com.piki.app",
+      "package": "day.no30s.piki",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -21,7 +38,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
@@ -29,6 +49,18 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "@react-native-kakao/core",
+        {
+          "nativeAppKey": "326734abdf8de5c7e090a2fc72e1dce6"
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.978975594396-mo5b39fe8fqfuukqkf42p63tlqkc4785"
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -44,13 +76,75 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "상품 이미지를 선택하기 위해 사진 보관함 접근 권한이 필요합니다."
+          "photosPermission": "상품 사진을 가져오고 싶어요."
         }
-      ]
+      ],
+      [
+        "expo-share-intent",
+        {
+          "disableIOS": true,
+          "androidIntentFilters": ["text/*", "image/*"],
+          "androidMultiIntentFilters": ["image/*"]
+        }
+      ],
+      [
+        "expo-share-extension",
+        {
+          "height": 298,
+          "backgroundColor": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 0
+          },
+          "activationRules": [
+            {
+              "type": "image",
+              "max": 1
+            },
+            {
+              "type": "text"
+            },
+            {
+              "type": "url",
+              "max": 1
+            }
+          ],
+          "excludedPackages": [
+            "expo-dev-client",
+            "expo-splash-screen",
+            "expo-updates",
+            "expo-share-intent"
+          ]
+        }
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "576644de-9cba-4457-82a2-562f7dd89d92",
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "PIKIShareExtension",
+                  "bundleIdentifier": "day.no30s.piki.ShareExtension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": ["group.day.no30s.piki"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "owner": "no-30s"
   }
 }
