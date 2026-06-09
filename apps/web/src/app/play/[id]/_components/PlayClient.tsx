@@ -45,7 +45,8 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
             return;
           }
         }
-        // 404 (없음) / 409 (만료 또는 이미 생성) — 만료 안내로 통합
+        // 404 (없음) / 409 (만료) — 만료 안내로 통합.
+        // 같은 사용자의 재진입은 백엔드가 idempotent 로 처리해 200 + 기존 CLONE id 반환한다.
         setState('expired');
       }
     };
