@@ -9,6 +9,7 @@ import Button from '@/components/button';
 import Spinner from '@/components/spinner';
 import { ROUTES } from '@/consts/route';
 
+import { getTournament } from '../../../tournament/[id]/_common/_apis/getTournament';
 import { postGuestLogin } from '../../../login/_apis/postGuestLogin';
 import { postFromPlayLink } from '../../_apis/postFromPlayLink';
 
@@ -28,11 +29,22 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
     if (hasRunRef.current) return;
     hasRunRef.current = true;
 
-    // /match 페이지의 status 가드가 자동으로 적절한 화면으로 라우팅한다:
-    // - PENDING: 자동 start 후 매치 진행
-    // - IN_PROGRESS + pending 페이로드: create 로 리다이렉트
-    // - COMPLETED: result 로 리다이렉트 (재진입 사용자의 경우)
-    const goToTournament = (id: number) => router.replace(ROUTES.TOURNAMENT_MATCH(id));
+    // CLONE 의 status 에 따라 적절한 화면으로 라우팅한다.
+    // - PENDING: 아직 본인 매치를 시작 안 한 상태 → create (바구니 미리보기 + 시작 버튼)
+    // - IN_PROGRESS: 매치 진행 중 → match 로 이어서
+    // - COMPLETED: 이미 끝낸 토너먼트 (재진입) → result 로 결과 다시 보기
+    const goToTournament = async (id: number) => {
+      const data = await getTournament(id);
+      if (data.status === 'COMPLETED') {
+        router.replace(ROUTES.TOURNAMENT_RESULT(id));
+        return;
+      }
+      if (data.status === 'IN_PROGRESS' && !data.pending) {
+        router.replace(ROUTES.TOURNAMENT_MATCH(id));
+        return;
+      }
+      router.replace(ROUTES.TOURNAMENT_CREATE(id));
+    };
 
     /**
      * 인증 누락으로 인한 실패인지 판단.
