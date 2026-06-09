@@ -31,14 +31,22 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
     const run = async () => {
       try {
         const newTournamentId = await postFromPlayLink(sourceTournamentId);
-        router.replace(ROUTES.TOURNAMENT_CREATE(newTournamentId));
+        // /match 페이지의 status 가드가 자동으로 적절한 화면으로 라우팅한다:
+// - PENDING: 자동 start 후 매치 진행
+// - IN_PROGRESS + pending 페이로드: create 로 리다이렉트
+// - COMPLETED: result 로 리다이렉트 (재진입 사용자의 경우)
+router.replace(ROUTES.TOURNAMENT_MATCH(newTournamentId));
       } catch (error) {
         // 401: 미인증 → 게스트 자동 발급 후 재시도
         if (isAxiosError(error) && error.response?.status === 401) {
           try {
             await postGuestLogin();
             const newTournamentId = await postFromPlayLink(sourceTournamentId);
-            router.replace(ROUTES.TOURNAMENT_CREATE(newTournamentId));
+            // /match 페이지의 status 가드가 자동으로 적절한 화면으로 라우팅한다:
+// - PENDING: 자동 start 후 매치 진행
+// - IN_PROGRESS + pending 페이로드: create 로 리다이렉트
+// - COMPLETED: result 로 리다이렉트 (재진입 사용자의 경우)
+router.replace(ROUTES.TOURNAMENT_MATCH(newTournamentId));
             return;
           } catch {
             setState('expired');
