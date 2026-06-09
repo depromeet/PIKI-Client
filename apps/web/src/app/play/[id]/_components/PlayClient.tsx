@@ -28,25 +28,33 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
     if (hasRunRef.current) return;
     hasRunRef.current = true;
 
+    // /match 페이지의 status 가드가 자동으로 적절한 화면으로 라우팅한다:
+    // - PENDING: 자동 start 후 매치 진행
+    // - IN_PROGRESS + pending 페이로드: create 로 리다이렉트
+    // - COMPLETED: result 로 리다이렉트 (재진입 사용자의 경우)
+    const goToTournament = (id: number) => router.replace(ROUTES.TOURNAMENT_MATCH(id));
+
+    /**
+     * 인증 누락으로 인한 실패인지 판단.
+     * 비로그인 상태에서는 백엔드가 401 을 던지지만, axios interceptor 가 자동 refresh 를 시도하다가
+     * refresh 도 실패해서 400 (refresh 토큰 없음) 으로 변환돼서 올라온다. 둘 다 게스트 발급으로 회복 시도.
+     */
+    const isUnauthenticated = (error: unknown) => {
+      if (!isAxiosError(error)) return false;
+      const status = error.response?.status;
+      return status === 401 || status === 400;
+    };
+
     const run = async () => {
       try {
         const newTournamentId = await postFromPlayLink(sourceTournamentId);
-        // /match 페이지의 status 가드가 자동으로 적절한 화면으로 라우팅한다:
-// - PENDING: 자동 start 후 매치 진행
-// - IN_PROGRESS + pending 페이로드: create 로 리다이렉트
-// - COMPLETED: result 로 리다이렉트 (재진입 사용자의 경우)
-router.replace(ROUTES.TOURNAMENT_MATCH(newTournamentId));
+        goToTournament(newTournamentId);
       } catch (error) {
-        // 401: 미인증 → 게스트 자동 발급 후 재시도
-        if (isAxiosError(error) && error.response?.status === 401) {
+        if (isUnauthenticated(error)) {
           try {
             await postGuestLogin();
             const newTournamentId = await postFromPlayLink(sourceTournamentId);
-            // /match 페이지의 status 가드가 자동으로 적절한 화면으로 라우팅한다:
-// - PENDING: 자동 start 후 매치 진행
-// - IN_PROGRESS + pending 페이로드: create 로 리다이렉트
-// - COMPLETED: result 로 리다이렉트 (재진입 사용자의 경우)
-router.replace(ROUTES.TOURNAMENT_MATCH(newTournamentId));
+            goToTournament(newTournamentId);
             return;
           } catch {
             setState('expired');
