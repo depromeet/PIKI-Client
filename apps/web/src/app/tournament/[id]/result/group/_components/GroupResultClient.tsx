@@ -54,10 +54,40 @@ const PlaceLabel = ({ label }: { label: string }) => (
 function GroupResultClient({ tournamentId }: GroupResultClientProps) {
   const router = useRouter();
   const { tournamentData } = useGetTournament(tournamentId);
-  const { groupResultData } = useGetGroupResult(tournamentId);
+  const { groupResultData, isGroupResultPending, isGroupResultError } =
+    useGetGroupResult(tournamentId);
 
   const date = new Date();
   const tournamentName = tournamentData.name;
+
+  // 친구가 아직 본인 매치를 시작 안 했거나, 권한 없음 등으로 데이터를 받지 못한 경우.
+  if (isGroupResultPending || isGroupResultError || !groupResultData) {
+    return (
+      <main className="flex min-h-dvh flex-col bg-bg-layer-basement pt-15 pb-8">
+        <header className="relative flex h-7.5 w-full shrink-0 items-center px-5">
+          <button
+            type="button"
+            aria-label="뒤로가기"
+            onClick={() => router.back()}
+            className="cursor-pointer p-0.75"
+          >
+            <ChevronBackwardIconFill className="size-6 text-icon-neutral-secondary" />
+          </button>
+          <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 heading-1 text-text-neutral-primary">
+            친구 토너먼트 결과
+          </h1>
+        </header>
+        <div className="flex flex-1 flex-col items-center justify-center gap-2 px-5">
+          <p className="heading-1 text-text-neutral-primary">아직 친구 결과가 없어요</p>
+          <p className="text-center body-1-medium text-text-neutral-tertiary">
+            친구가 토너먼트를 완료하면
+            <br />
+            결과를 비교해볼 수 있어요.
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   const sortedItems = [...groupResultData.items].sort((a, b) => a.rank - b.rank);
   const firstItem = sortedItems.find(item => item.rank === 1);
