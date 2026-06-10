@@ -44,6 +44,8 @@ async function TournamentItemLayout({ children, params }: TournamentItemLayoutPr
     if (error.response?.status === 403) redirect(ROUTES.HOME);
     /** 토너먼트 아이템이 존재하지 않는 경우 */ else if (error.response?.status === 404)
       redirect(ROUTES.TOURNAMENT_CREATE(tournamentId));
+
+    throw error;
   }
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;

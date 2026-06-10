@@ -30,6 +30,8 @@ async function TournamentLayout({ children, params }: TournamentLayoutProps) {
 
     if (error.response?.status === 403) redirect(ROUTES.HOME);
     else if (error.response?.status === 404) notFound(); // TODO: 아직 미정
+
+    throw error;
   }
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
