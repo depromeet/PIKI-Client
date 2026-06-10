@@ -1,5 +1,8 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
@@ -17,9 +20,28 @@ type TournamentCreateClientProps = {
   tournamentId: string;
 };
 
+const SSE_FALLBACK_TIMEOUT_MS = 60_000;
+
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
+  const numericTournamentId = Number(tournamentId);
   const { scrollToLast, onScrolled } = useScrollToLast();
-  const { tournamentData } = useGetTournament(Number(tournamentId));
+  const { tournamentData } = useGetTournament(numericTournamentId);
+  const queryClient = useQueryClient();
+
+  const hasPendingItem =
+    tournamentData.pending?.items.some(
+      item => item.status === 'PENDING' || item.status === 'PROCESSING'
+    ) ?? false;
+
+  // SSE 이벤트가 오지 않는 경우를 대비한 fallback: PENDING/PROCESSING 아이템이 있으면
+  // 60초 후 tournament 쿼리를 강제로 한 번 refetch한다.
+  useEffect(() => {
+    if (!hasPendingItem) return;
+    const timer = setTimeout(() => {
+      queryClient.invalidateQueries({ queryKey: ['tournament', numericTournamentId] });
+    }, SSE_FALLBACK_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [hasPendingItem, numericTournamentId, queryClient]);
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
@@ -31,11 +53,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <TournamentHeader name={tournamentData.name} />
         <InviteFriends />
         <TournamentItemBasketStatus
-          isProcessing={
-            tournamentData.pending?.items.some(
-              item => item.status === 'PENDING' || item.status === 'PROCESSING'
-            ) ?? false
-          }
+          isProcessing={hasPendingItem}
           count={tournamentData.pending?.items.length ?? 0}
         />
       </div>
@@ -51,12 +69,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           count={tournamentData.pending?.items.length ?? 0}
           tournamentId={tournamentId}
           hasUnreadyItem={
-            tournamentData.pending?.items.some(
-              item =>
-                item.status === 'PENDING' ||
-                item.status === 'PROCESSING' ||
-                item.status === 'FAILED'
-            ) ?? false
+            hasPendingItem ||
+            (tournamentData.pending?.items.some(item => item.status === 'FAILED') ?? false)
           }
         />
       </div>
