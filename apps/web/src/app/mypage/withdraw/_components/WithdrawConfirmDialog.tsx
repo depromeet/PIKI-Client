@@ -2,6 +2,7 @@
 
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { WarningIconFill } from '@/assets/icons';
 import BottomCta from '@/components/bottom-cta';
@@ -30,9 +31,10 @@ function WithdrawConfirmDialog() {
 
     deleteMeMutation(void 0, {
       onError: error => {
-        const detail = isAxiosError<ApiErrorResponseT>(error) ? error.response?.data?.detail : null;
-        console.log(detail);
+        if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;
+
         setIsOpen(false);
+        toast.error('알 수 없는 오류가 발생했어요.');
       },
     });
   };
