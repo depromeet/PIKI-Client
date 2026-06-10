@@ -1,7 +1,9 @@
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { useSSEFallback } from '@/hooks/useSSEFallback';
+import { hasParsingItems } from '@/utils/item';
 
 import { useGetWishlist } from '../../../hooks/useGetWishlist';
 import { useWishlistDelete } from '../_hooks/useDeleteWishes';
@@ -16,21 +18,10 @@ function WishlistContent() {
 
   useShareIntentWish();
   const { data: wishlistData } = useGetWishlist();
-  const queryClient = useQueryClient();
 
-  const hasPendingItem = wishlistData.some(
-    item => item.status === 'PENDING' || item.status === 'PROCESSING'
-  );
+  const hasPendingItem = hasParsingItems(wishlistData);
 
-  // SSE 이벤트가 오지 않는 경우를 대비한 fallback: PENDING/PROCESSING 아이템이 있으면
-  // 60초 후 wishlists 쿼리를 강제로 한 번 refetch한다.
-  useEffect(() => {
-    if (!hasPendingItem) return;
-    const timer = setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['wishlists'] });
-    }, 60_000);
-    return () => clearTimeout(timer);
-  }, [hasPendingItem, queryClient]);
+  useSSEFallback(['wishlists'], hasPendingItem);
   const {
     isDeleteMode,
     selectedIds,

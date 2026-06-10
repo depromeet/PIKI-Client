@@ -1,12 +1,11 @@
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { useQueryAction } from '@/hooks/useQueryAction';
+import { useSSEFallback } from '@/hooks/useSSEFallback';
+import { hasParsingItems } from '@/utils/item';
 
 import { useGetTournament } from '../_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
@@ -20,28 +19,14 @@ type TournamentCreateClientProps = {
   tournamentId: string;
 };
 
-const SSE_FALLBACK_TIMEOUT_MS = 60_000;
-
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const numericTournamentId = Number(tournamentId);
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(numericTournamentId);
-  const queryClient = useQueryClient();
 
-  const hasPendingItem =
-    tournamentData.pending?.items.some(
-      item => item.status === 'PENDING' || item.status === 'PROCESSING'
-    ) ?? false;
+  const hasPendingItem = hasParsingItems(tournamentData.pending?.items ?? []);
 
-  // SSE 이벤트가 오지 않는 경우를 대비한 fallback: PENDING/PROCESSING 아이템이 있으면
-  // 60초 후 tournament 쿼리를 강제로 한 번 refetch한다.
-  useEffect(() => {
-    if (!hasPendingItem) return;
-    const timer = setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['tournament', numericTournamentId] });
-    }, SSE_FALLBACK_TIMEOUT_MS);
-    return () => clearTimeout(timer);
-  }, [hasPendingItem, numericTournamentId, queryClient]);
+  useSSEFallback(['tournament', numericTournamentId], hasPendingItem);
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
