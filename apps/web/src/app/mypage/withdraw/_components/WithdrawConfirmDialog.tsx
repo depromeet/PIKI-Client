@@ -1,6 +1,5 @@
 'use client';
 
-import { isAxiosError } from 'axios';
 import { useState } from 'react';
 
 import { WarningIconFill } from '@/assets/icons';
@@ -16,7 +15,6 @@ import {
   DialogTrigger,
 } from '@/components/dialog';
 import Spinner from '@/components/spinner';
-import type { ApiErrorResponseT } from '@/types/api';
 
 import { useDeleteMe } from '../_hooks/useDeleteMe';
 
@@ -29,11 +27,7 @@ function WithdrawConfirmDialog() {
     if (isDeleteMePending) return;
 
     deleteMeMutation(void 0, {
-      onError: error => {
-        const detail = isAxiosError<ApiErrorResponseT>(error) ? error.response?.data?.detail : null;
-        console.log(detail);
-        setIsOpen(false);
-      },
+      onError: () => setIsOpen(false),
     });
   };
 
