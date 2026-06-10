@@ -5,7 +5,7 @@ import { type FormEvent, useState } from 'react';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Spacing from '@/components/spacing';
-import Spinner from '@/components/spinner';
+
 import { useGetMe } from '@/hooks/useGetMe';
 
 import { useNicknameValidation } from '../_hooks/useNicknameValidation';
@@ -70,9 +70,10 @@ function EditForm() {
           variant="primary"
           size="lg"
           className="w-full"
+          isLoading={isPatchMePending}
           disabled={isEditDisabled}
         >
-          {isPatchMePending ? <Spinner size={20} /> : '수정하기'}
+          수정하기
         </Button>
       </BottomCta>
     </form>

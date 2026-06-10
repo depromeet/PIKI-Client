@@ -62,7 +62,7 @@ function TournamentItemFailedModal({
             variant="secondary"
             size="lg"
             className="flex-1"
-            disabled={isDeleteTournamentItemPending}
+            isLoading={isDeleteTournamentItemPending}
             onClick={handleDeleteTournamentItem}
           >
             삭제하기
