@@ -4,11 +4,11 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { ROUTES } from '@/consts/route';
-import type { SocialProviderT } from '@/types/auth';
+import type { SocialProviderT } from '@piki/core';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
 
-const SUPPORTED_PROVIDERS: SocialProviderT[] = ['kakao', 'google'];
+const SUPPORTED_PROVIDERS: SocialProviderT[] = ['kakao', 'google', 'apple'];
 
 function isSocialProvider(value: string): value is SocialProviderT {
   return (SUPPORTED_PROVIDERS as string[]).includes(value);

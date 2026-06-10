@@ -41,7 +41,14 @@ function LoginButtons() {
     getAuthUrl('google').then(({ url }) => { window.location.href = url; });
   };
 
-  const handleAppleLogin = () => {};
+  const handleAppleLogin = async () => {
+    if (isWebview()) {
+      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'apple' });
+      return;
+    }
+    const { url } = await getAuthUrl('apple');
+    window.location.href = url;
+  };
 
   const handleGuestLogin = () => {
     postGuestLoginMutation();

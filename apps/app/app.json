@@ -50,6 +50,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-apple-authentication",
       [
         "@react-native-kakao/core",
         {
