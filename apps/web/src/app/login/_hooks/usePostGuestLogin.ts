@@ -21,9 +21,7 @@ export const usePostGuestLogin = () => {
         // TODO: 웹뷰로 로그인 정보 전송
       }
 
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('[DEV] accessToken:', data.accessToken);
-      }
+
     },
   });
 

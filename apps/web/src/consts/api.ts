@@ -23,5 +23,4 @@ export const ENDPOINTS = {
 
   /** FCM */
   FCM_TOKENS: '/api/v1/fcm/tokens',
-  FCM_PUSH: '/api/v1/dev/fcm/push',
 } as const;
