@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
-
 import { ENDPOINTS } from '@/consts/api';
 import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
@@ -87,13 +86,20 @@ export const useNotificationSSE = (enabled: boolean) => {
             try {
               const payload = JSON.parse(event.data) as NotificationSsePayloadT;
               const deepLink = resolveDeepLink(payload);
+              const action = deepLink
+                ? { label: '바로가기', onClick: () => router.push(deepLink) }
+                : undefined;
 
-              toast(payload.title, {
-                description: payload.body,
-                action: deepLink
-                  ? { label: '바로가기', onClick: () => router.push(deepLink) }
-                  : undefined,
-              });
+              switch (payload.type) {
+                case 'ITEM_PARSING_COMPLETED':
+                  toast.success(payload.title, { description: payload.body });
+                  break;
+                case 'ITEM_PARSING_FAILED':
+                  toast.error(payload.title, { description: payload.body, action });
+                  break;
+                default:
+                  toast.info(payload.title, { description: payload.body, action });
+              }
             } catch {
               // malformed JSON — 무시
             }
