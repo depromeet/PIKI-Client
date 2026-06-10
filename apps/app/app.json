@@ -92,7 +92,6 @@
       [
         "expo-share-extension",
         {
-          "height": 298,
           "backgroundColor": {
             "red": 255,
             "green": 255,

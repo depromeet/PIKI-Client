@@ -1,6 +1,6 @@
 import type { InitialProps as ShareExtensionProps } from 'expo-share-extension';
 import { close } from 'expo-share-extension';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { postWishLinkFromShare } from '@/utils/postWishLinkFromShare';
@@ -42,7 +42,7 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
 
   if (sheetStatus === 'loading')
     return (
-      <View style={styles.sheet}>
+      <SheetContainer>
         <View style={styles.handle} />
 
         <Text allowFontScaling={false} style={styles.title}>
@@ -57,17 +57,17 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
 
           <LoadingDots />
         </View>
-      </View>
+      </SheetContainer>
     );
 
   // TODO: 에러 ui 스타일 변경 필요
   if (sheetStatus === 'error')
     return (
-      <View style={styles.sheet}>
+      <SheetContainer>
         <View style={styles.handle} />
 
         <Text allowFontScaling={false} style={styles.title}>
-          위시 담기에 실패했어요
+          위시템을 저장하지 못했어요
         </Text>
 
         <Text allowFontScaling={false} style={styles.errorMessage}>
@@ -79,15 +79,15 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
             닫기
           </Text>
         </Pressable>
-      </View>
+      </SheetContainer>
     );
 
   return (
-    <View style={styles.sheet}>
+    <SheetContainer>
       <View style={styles.handle} />
 
       <Text allowFontScaling={false} style={styles.title}>
-        위시 저장 완료!
+        위시템을 저장 했어요
       </Text>
 
       <View style={styles.productContainer}>
@@ -111,6 +111,18 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
           위시 보러가기
         </Text>
       </Pressable>
+    </SheetContainer>
+  );
+}
+
+type Props = {
+  children: ReactNode;
+};
+
+function SheetContainer({ children }: Props) {
+  return (
+    <View style={styles.wrapper}>
+      <View style={styles.sheet}>{children}</View>
     </View>
   );
 }
@@ -149,6 +161,11 @@ function LoadingDots() {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'transparent',
+  },
   sheet: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
@@ -157,7 +174,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingHorizontal: 20,
     alignItems: 'center',
-    flex: 1,
+    width: '100%',
   },
   handle: {
     height: 4,
@@ -237,7 +254,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 'auto',
   },
   buttonText: {
     color: '#FFFFFF',
