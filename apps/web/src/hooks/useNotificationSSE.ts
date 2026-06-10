@@ -100,6 +100,8 @@ export const useNotificationSSE = (enabled: boolean) => {
                     queryClient.invalidateQueries({
                       queryKey: ['tournament', payload.tournamentId],
                     });
+                  } else if (payload.kind === 'WISH') {
+                    queryClient.invalidateQueries({ queryKey: ['wishlists'] });
                   }
                   toast.success(payload.title, { description: payload.body || void 0 });
                   break;
@@ -108,6 +110,8 @@ export const useNotificationSSE = (enabled: boolean) => {
                     queryClient.invalidateQueries({
                       queryKey: ['tournament', payload.tournamentId],
                     });
+                  } else if (payload.kind === 'WISH') {
+                    queryClient.invalidateQueries({ queryKey: ['wishlists'] });
                   }
                   toast.error(payload.title, {
                     description: payload.body || void 0,
