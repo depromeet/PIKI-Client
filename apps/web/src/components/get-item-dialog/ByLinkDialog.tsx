@@ -24,14 +24,16 @@ type ByLinkProps = {
 function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
   const router = useRouter();
   const { id: tournamentId } = useParams<{ id: string }>();
-  const { postWishLinkMutation } = usePostWishLink();
-  const { postTournamentItemLinkMutation } = usePostTournamentItemLink(Number(tournamentId));
+  const { postWishLinkMutation, isPostWishLinkPending } = usePostWishLink();
+  const { postTournamentItemLinkMutation, isPostTournamentItemLinkPending } =
+    usePostTournamentItemLink(Number(tournamentId));
 
   const [url, setUrl] = useState('');
   const [hasError, setHasError] = useState(false);
 
   const trimmedUrl = url.trim();
   const isEmpty = trimmedUrl.length === 0;
+  const isPending = isPostWishLinkPending || isPostTournamentItemLinkPending;
 
   const resetState = () => {
     setUrl('');
@@ -96,7 +98,7 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
             autoFocus
             inputMode="url"
           />
-          <Button size="lg" variant="primary" disabled={isEmpty} onClick={handleSubmit}>
+          <Button size="lg" variant="primary" disabled={isEmpty || isPending} onClick={handleSubmit}>
             {type === 'wish' && '위시리스트에 담기'}
             {type === 'tournament' && '후보 바구니에 담기'}
           </Button>
