@@ -3,6 +3,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+if (!API_URL) {
+  throw new Error('NEXT_PUBLIC_API_URL environment variable is not defined');
+}
+
 async function handler(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   const { path } = await params;
   const url = new URL(request.url);
