@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -16,7 +16,13 @@ type BaseImageProps = Omit<ImageProps, 'src' | 'fill'> & {
   errorFallback?: ReactNode;
 };
 
-function BaseImage({
+const getSrcKey = (src: ImageProps['src']) => {
+  if (typeof src === 'string') return src;
+  if (src && 'src' in src) return src.src;
+  return '';
+};
+
+function BaseImageContent({
   src,
   alt,
   loadingFallback,
@@ -39,7 +45,7 @@ function BaseImage({
 
       return () => clearTimeout(timer);
     }
-  }, [src]);
+  }, []);
 
   const handleLoad = (e: ImgEvent) => {
     setState('success');
@@ -51,12 +57,8 @@ function BaseImage({
     onError?.(e);
   };
 
-  let fragmentKey = '';
-  if (typeof src === 'string') fragmentKey = src;
-  else if (src && 'src' in src) fragmentKey = src.src;
-
   return (
-    <React.Fragment key={fragmentKey}>
+    <>
       {state === 'loading' && loadingFallback}
       {state === 'error' && errorFallback}
       <Image
@@ -74,8 +76,12 @@ function BaseImage({
           className
         )}
       />
-    </React.Fragment>
+    </>
   );
+}
+
+function BaseImage(props: BaseImageProps) {
+  return <BaseImageContent key={getSrcKey(props.src)} {...props} />;
 }
 
 export default BaseImage;
