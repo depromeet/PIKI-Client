@@ -6,7 +6,6 @@ import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
-import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
@@ -16,29 +15,42 @@ function LoginButtons() {
   const { postGuestLoginMutation } = usePostGuestLogin();
   useNativeLoginResult();
 
-  const handleKakaoLogin = async () => {
-    if (isWebview()) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'kakao' });
+  const handleKakaoLogin = () => {
+    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+
+    if (rnWebView) {
+      rnWebView.postMessage(
+        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'kakao' } })
+      );
       return;
     }
-    const { url } = await getAuthUrl('kakao');
-    window.location.href = url;
+
+    getAuthUrl('kakao').then(({ url }) => { window.location.href = url; });
   };
 
-  const handleGoogleLogin = async () => {
-    if (isWebview()) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'google' });
+  const handleGoogleLogin = () => {
+    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+
+    if (rnWebView) {
+      rnWebView.postMessage(
+        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'google' } })
+      );
       return;
     }
-    const { url } = await getAuthUrl('google');
-    window.location.href = url;
+
+    getAuthUrl('google').then(({ url }) => { window.location.href = url; });
   };
 
   const handleAppleLogin = async () => {
-    if (isWebview()) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'apple' });
+    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+
+    if (rnWebView) {
+      rnWebView.postMessage(
+        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'apple' } })
+      );
       return;
     }
+
     const { url } = await getAuthUrl('apple');
     window.location.href = url;
   };
