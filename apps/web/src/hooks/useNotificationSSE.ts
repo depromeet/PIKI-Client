@@ -95,10 +95,10 @@ export const useNotificationSSE = (enabled: boolean) => {
                   toast.success(payload.title, { description: payload.body });
                   break;
                 case 'ITEM_PARSING_FAILED':
-                  toast.error(payload.title, { description: payload.body, action });
+                  toast.error(payload.title, { description: payload.body, action, duration: 5000 });
                   break;
                 default:
-                  toast.info(payload.title, { description: payload.body, action });
+                  toast.info(payload.title, { description: payload.body, action, duration: 5000 });
               }
             } catch {
               // malformed JSON — 무시
