@@ -1,9 +1,11 @@
 import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
+import { ENDPOINTS } from '@/consts/api';
+import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
-import type { ApiErrorResponseT } from '@/types/api';
-import { getCookie } from '@/utils/cookie';
+import type { ApiErrorResponseT, ApiResponseT } from '@/types/api';
+import { getCookie, setCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
 // 재시도 여부 플래그를 포함한 요청 타입
@@ -63,16 +65,28 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post('/api/v1/auth/token/refresh', null, {
-          withCredentials: true,
-        });
+        const isApp = isWebview();
+        const refreshBody = isApp ? { refreshToken: getCookie('refresh_token') } : null;
+        const { data } = await axios.post<ApiResponseT<{ accessToken: string | null; refreshToken: string | null }>>(
+          ENDPOINTS.AUTH_TOKEN_REFRESH,
+          refreshBody,
+          {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Client-Type': isApp ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB,
+            },
+          }
+        );
+        if (isApp && data.data.accessToken && data.data.refreshToken) {
+          setCookie('access_token', data.data.accessToken);
+          setCookie('refresh_token', data.data.refreshToken, 14);
+        }
         processQueue(null);
         return clientApi(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
-        if (typeof window !== 'undefined') {
-          // window.location.href = '/login';
-        }
+        if (typeof window !== 'undefined') window.location.href = ROUTES.LOGIN;
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
