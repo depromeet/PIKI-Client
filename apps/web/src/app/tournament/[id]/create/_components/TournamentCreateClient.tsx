@@ -32,7 +32,9 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <InviteFriends />
         <TournamentItemBasketStatus
           isProcessing={
-            tournamentData.pending?.items.some(item => item.status === 'PROCESSING') ?? false
+            tournamentData.pending?.items.some(
+              item => item.status === 'PENDING' || item.status === 'PROCESSING'
+            ) ?? false
           }
           count={tournamentData.pending?.items.length ?? 0}
         />
@@ -50,7 +52,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           tournamentId={tournamentId}
           hasUnreadyItem={
             tournamentData.pending?.items.some(
-              item => item.status === 'PROCESSING' || item.status === 'FAILED'
+              item =>
+                item.status === 'PENDING' ||
+                item.status === 'PROCESSING' ||
+                item.status === 'FAILED'
             ) ?? false
           }
         />
