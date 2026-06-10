@@ -1,6 +1,6 @@
 import type { UserT } from '@/types/user';
 
-export type { SocialProviderT } from '@/types/auth';
+export type { SocialProviderT } from '@piki/core';
 
 export type GetAuthUrlResponseT = {
   url: string;

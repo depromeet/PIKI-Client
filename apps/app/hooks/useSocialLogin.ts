@@ -1,4 +1,5 @@
 import { WEBBRIDGE_MESSAGE_TYPE, type SocialProviderT } from '@piki/core';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { login as kakaoLogin } from '@react-native-kakao/user';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useCallback } from 'react';
@@ -15,12 +16,21 @@ export const useSocialLogin = () => {
       if (provider === 'kakao') {
         const result = await kakaoLogin();
         accessToken = result.accessToken;
-      } else {
+      } else if (provider === 'google') {
         await GoogleSignin.hasPlayServices();
         await GoogleSignin.signIn();
         const { accessToken: googleAccessToken } = await GoogleSignin.getTokens();
         if (!googleAccessToken) throw new Error('Google Access Token을 받지 못했습니다.');
         accessToken = googleAccessToken;
+      } else {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          ],
+        });
+        if (!credential.identityToken) throw new Error('Apple Identity Token을 받지 못했습니다.');
+        accessToken = credential.identityToken;
       }
 
       const body = { accessToken };

@@ -1,8 +1,8 @@
+import type { SocialProviderT } from '@piki/core';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import type { SocialProviderT } from '@/types/auth';
 import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
 
 import { postSocialLogin } from '../_apis/postSocialLogin';
