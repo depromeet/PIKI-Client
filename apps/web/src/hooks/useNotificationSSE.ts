@@ -1,4 +1,5 @@
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
@@ -34,6 +35,7 @@ const resolveDeepLink = (payload: NotificationSsePayloadT): string | null => {
 
 export const useNotificationSSE = (enabled: boolean) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const retryDelayRef = useRef(1_000);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -94,10 +96,30 @@ export const useNotificationSSE = (enabled: boolean) => {
 
               switch (payload.type) {
                 case 'ITEM_PARSING_COMPLETED':
+                  if (payload.kind === 'TOURNAMENT' && payload.tournamentId != null) {
+                    queryClient.invalidateQueries({
+                      queryKey: ['tournament', payload.tournamentId],
+                    });
+                  }
                   toast.success(payload.title, { description: payload.body || void 0 });
                   break;
                 case 'ITEM_PARSING_FAILED':
+                  if (payload.kind === 'TOURNAMENT' && payload.tournamentId != null) {
+                    queryClient.invalidateQueries({
+                      queryKey: ['tournament', payload.tournamentId],
+                    });
+                  }
                   toast.error(payload.title, {
+                    description: payload.body || void 0,
+                    action,
+                    duration: 5000,
+                  });
+                  break;
+                case 'TOURNAMENT_STARTED':
+                case 'TOURNAMENT_JOINED':
+                case 'TOURNAMENT_ITEM_ADDED':
+                  queryClient.invalidateQueries({ queryKey: ['tournament', payload.refId] });
+                  toast.info(payload.title, {
                     description: payload.body || void 0,
                     action,
                     duration: 5000,
@@ -136,5 +158,5 @@ export const useNotificationSSE = (enabled: boolean) => {
       cancelled = true;
       abortRef.current?.abort();
     };
-  }, [enabled, router]);
+  }, [enabled, router, queryClient]);
 };
