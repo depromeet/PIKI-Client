@@ -14,7 +14,8 @@
       "bundleIdentifier": "day.no30s.piki",
       "entitlements": {
         "aps-environment": "development", // NOTE: 배포할때 'production'으로 변경
-        "com.apple.security.application-groups": ["group.day.no30s.piki"]
+        "com.apple.security.application-groups": ["group.day.no30s.piki"],
+        "keychain-access-groups": ["$(AppIdentifierPrefix)group.day.no30s.piki"]
       },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -132,7 +133,8 @@
             "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]
           }
         }
-      ]
+      ],
+      "./plugins/withShareExtensionKeychain.js"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -150,7 +152,8 @@
                   "targetName": "PIKIShareExtension",
                   "bundleIdentifier": "day.no30s.piki.ShareExtension",
                   "entitlements": {
-                    "com.apple.security.application-groups": ["group.day.no30s.piki"]
+                    "com.apple.security.application-groups": ["group.day.no30s.piki"],
+                    "keychain-access-groups": ["$(AppIdentifierPrefix)group.day.no30s.piki"]
                   }
                 }
               ]
