@@ -4,7 +4,7 @@ import {
   type WebBridgeMessageT,
 } from '@piki/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Linking, Platform } from 'react-native';
+import { Linking } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
@@ -84,10 +84,7 @@ function Page() {
   const { onWebViewLoadEnd, onWebViewLoadError } = useSplashScreenController();
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: 'white' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <>
       {isSynced && (
         <Webview
           ref={webviewRef}
@@ -103,7 +100,7 @@ function Page() {
           startInLoadingState
         />
       )}
-    </KeyboardAvoidingView>
+    </>
   );
 }
 
