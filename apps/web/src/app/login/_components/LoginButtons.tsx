@@ -47,7 +47,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
       WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'apple' });
       return;
     }
-    const { url } = await getAuthUrl('apple');
+    const { url } = await getAuthUrl('apple', validRedirect);
     window.location.href = url;
   };
 

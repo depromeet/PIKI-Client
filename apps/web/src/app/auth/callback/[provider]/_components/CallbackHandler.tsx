@@ -15,7 +15,7 @@ import {
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
 
 function isSocialProvider(value: string): value is SocialProviderT {
-  return value === 'kakao' || value === 'google';
+  return value === 'kakao' || value === 'google' || value === 'apple';
 }
 
 function CallbackHandler() {
