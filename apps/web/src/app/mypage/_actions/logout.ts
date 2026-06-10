@@ -21,7 +21,7 @@ export const logout = async () => {
   }
 
   try {
-    await serverApi.post(ENDPOINTS.AUTH_LOGOUT);
+    await serverApi.post(ENDPOINTS.AUTH_LOGOUT); //  TODO: 중복 호출 수정하기
   } catch {
     // 백엔드 실패해도 로컬 쿠키는 삭제
   }
