@@ -1,19 +1,19 @@
 /** 상수 */
 export { WEBVIEW_UA_TOKEN } from './consts/client';
 export { SUPPORTED_IMAGE_MIME_TYPES } from './consts/image';
-export { WEB_READY_MESSAGE_TYPE, WEBBRIDGE_MESSAGE_TYPE } from './consts/webBridge';
+export { PUSH_NOTIFICATION_TYPE, WEBBRIDGE_MESSAGE_TYPE, WEB_REQ_READY_PAYLOAD_TYPE } from './consts/webBridge';
 
 /** 타입 */
 export type {
-  ImagePickerCancelMessageT,
-  ImagePickerErrorMessageT,
+  AppResImagePickerCancelMessageT,
+  AppResImagePickerErrorMessageT,
+  AppResImagePickerSuccessMessageT,
   ImagePickerErrorPayloadT,
   ImagePickerRequestPayloadT,
-  ImagePickerSuccessMessageT,
   ImagePickerSuccessPayloadT,
   NativeImagePayloadT,
-  OpenImagePickerMessageT,
   OpenImagePickerPayloadT,
+  WebReqOpenImagePickerMessageT,
 } from './types/image';
 export type {
   RequestSocialLoginMessageT,
@@ -25,7 +25,19 @@ export type {
   SocialProviderT,
 } from './types/login';
 export type { ShareIntentFileT, ShareIntentMetaT, ShareIntentPayloadT } from './types/shareIntent';
-export type { WebBridgeMessageT, WebReadyMessageT } from './types/webBridge';
+export type {
+  AppReqDeepLinkMessageT,
+  AppResFcmTokenMessageT,
+  AppResPushPermissionStatusMessageT,
+  DeepLinkPayloadT,
+  FcmTokenPayloadT,
+  PushNotificationTypeT,
+  PushPermissionStatusPayloadT,
+  WebReqOpenNotificationSettingsMessageT,
+  WebReqPushPermissionMessageT,
+  WebReqPushPermissionStatusMessageT,
+} from './types/pushNotification';
+export type { WebBridgeMessageT, WebReqReadyMessageT } from './types/webBridge';
 
 /** 유틸 */
 export { isWebBridgeMessageT } from './utils/webBridge';

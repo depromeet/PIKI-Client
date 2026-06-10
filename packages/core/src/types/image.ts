@@ -1,8 +1,8 @@
 import type { WEBBRIDGE_MESSAGE_TYPE } from '../consts/webBridge';
 
 /** 웹 → 앱 이미지 피커 오픈 요청 */
-export type OpenImagePickerMessageT = {
-  type: typeof WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER;
+export type WebReqOpenImagePickerMessageT = {
+  type: typeof WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_IMAGE_PICKER;
   payload: OpenImagePickerPayloadT;
 };
 export type OpenImagePickerPayloadT = {
@@ -11,8 +11,8 @@ export type OpenImagePickerPayloadT = {
 };
 
 /** 앱 → 웹 이미지 선택 성공 시 */
-export type ImagePickerSuccessMessageT = {
-  type: typeof WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_SUCCESS;
+export type AppResImagePickerSuccessMessageT = {
+  type: typeof WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_SUCCESS;
   payload: ImagePickerSuccessPayloadT;
 };
 export type ImagePickerSuccessPayloadT = {
@@ -29,8 +29,8 @@ export type NativeImagePayloadT = {
 };
 
 /** 앱 → 웹 이미지 선택 취소 시 */
-export type ImagePickerCancelMessageT = {
-  type: typeof WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_CANCEL;
+export type AppResImagePickerCancelMessageT = {
+  type: typeof WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_CANCEL;
   payload: ImagePickerRequestPayloadT;
 };
 export type ImagePickerRequestPayloadT = {
@@ -38,8 +38,8 @@ export type ImagePickerRequestPayloadT = {
 };
 
 /** 앱 → 웹 이미지 선택 실패 시 */
-export type ImagePickerErrorMessageT = {
-  type: typeof WEBBRIDGE_MESSAGE_TYPE.IMAGE_PICKER_ERROR;
+export type AppResImagePickerErrorMessageT = {
+  type: typeof WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_ERROR;
   payload: ImagePickerErrorPayloadT;
 };
 export type ImagePickerErrorPayloadT = {

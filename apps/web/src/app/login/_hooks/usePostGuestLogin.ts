@@ -14,7 +14,7 @@ export const usePostGuestLogin = () => {
     mutationFn: postGuestLogin,
     onSuccess: data => {
       if (isWebview() && data.accessToken && data.refreshToken) {
-        setCookie('access_token', data.accessToken, { hours: 1 });
+        setCookie('access_token', data.accessToken, { minutes: 15 });
         setCookie('refresh_token', data.refreshToken, { days: 14 });
         // TODO: 웹뷰로 로그인 정보 전송
       }
