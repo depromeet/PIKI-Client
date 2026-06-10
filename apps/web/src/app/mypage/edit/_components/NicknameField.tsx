@@ -2,14 +2,14 @@ import { EditIconFill } from '@/assets/icons';
 import Input from '@/components/input';
 import Spinner from '@/components/spinner';
 
-type Props = {
+type NicknameFieldProps = {
   value: string;
   onChange: (value: string) => void;
   isChecking: boolean;
   errorText?: string;
 };
 
-function NicknameField({ value, onChange, isChecking, errorText }: Props) {
+function NicknameField({ value, onChange, isChecking, errorText }: NicknameFieldProps) {
   const isError = !!errorText;
 
   return (
