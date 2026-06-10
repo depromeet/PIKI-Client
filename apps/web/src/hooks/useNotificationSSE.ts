@@ -16,6 +16,8 @@ const resolveDeepLink = (payload: NotificationSsePayloadT): string | null => {
   const { type, refId, kind, tournamentId } = payload;
 
   switch (type) {
+    case 'TOURNAMENT_STARTED':
+      return ROUTES.TOURNAMENT_CREATE(refId);
     case 'TOURNAMENT_JOINED':
     case 'TOURNAMENT_ITEM_ADDED':
       return `${ROUTES.TOURNAMENT_CREATE(refId)}?scrollToLast=true`;
