@@ -20,8 +20,8 @@ export const usePatchMe = () => {
 
       return patchMe(formData);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['me'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['me'] });
       router.replace(ROUTES.MYPAGE);
     },
     onError: error => {
