@@ -65,6 +65,8 @@ export type GetTournamentInProgressResponseT = {
   isOwner: boolean;
   /** ROOT(원본)이면 true, CLONE 이면 false */
   isRoot: boolean;
+  /** CLONE 일 때만 존재 — 원본(ROOT) 토너먼트 id. group-result 호출 등에서 사용. */
+  sourceTournamentId?: number;
   status: Extract<TournamentStatusT, 'IN_PROGRESS'>;
   pending?: undefined;
   inProgress: {
@@ -82,6 +84,8 @@ export type GetTournamentCompletedResponseT = {
   isOwner: boolean;
   /** ROOT(원본)이면 true, CLONE 이면 false */
   isRoot: boolean;
+  /** CLONE 일 때만 존재 — 원본(ROOT) 토너먼트 id. group-result 호출 등에서 사용. */
+  sourceTournamentId?: number;
   status: Extract<TournamentStatusT, 'COMPLETED'>;
   completed: {
     result: TournamentRankingT[];

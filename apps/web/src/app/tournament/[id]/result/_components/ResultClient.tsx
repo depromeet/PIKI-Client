@@ -64,11 +64,19 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         />
 
         {/*
-          ROOT 토너먼트(친구 초대로 진행)에서는 무조건 진입 카드 노출.
-          - 친구 유무는 클릭 시 group-result API 응답으로 판단 (캐시 의존 X)
-          - 플레이 링크 게스트(CLONE) 는 노출 안 함 — 백엔드가 403 으로 막는다
+          친구 토너먼트 결과보기 카드 노출 + 라우팅.
+          - 그룹 결과 조회는 ROOT 토너먼트 id 로만 가능 (백엔드 정책)
+          - ROOT 사용자(주최자 / 친구 초대 멤버): 본인 id 가 ROOT 라 그대로 사용
+          - CLONE 사용자(플레이 링크 게스트): 응답의 sourceTournamentId 로 ROOT 지정
+          - 친구 유무는 클릭 시 group-result API 응답으로 판단한다 (캐시 의존 X)
         */}
-        {tournamentData.isRoot && <GroupResultEntryCard tournamentId={tournamentId} />}
+        <GroupResultEntryCard
+          tournamentId={
+            tournamentData.isRoot
+              ? tournamentId
+              : (tournamentData.sourceTournamentId ?? tournamentId)
+          }
+        />
       </div>
 
       {/* 하단 버튼 — 시안상 단일 CTA */}
