@@ -16,6 +16,7 @@ async function handler(request: NextRequest, { params }: { params: Promise<{ pat
   const forwardHeaders = new Headers(request.headers);
   forwardHeaders.set('Cookie', cookieStore.toString());
   forwardHeaders.delete('host');
+  forwardHeaders.delete('transfer-encoding');
   forwardHeaders.delete('origin');
   forwardHeaders.delete('referer');
 
