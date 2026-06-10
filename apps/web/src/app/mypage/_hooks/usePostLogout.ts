@@ -19,7 +19,7 @@ export const usePostLogout = () => {
         deleteCookie('access_token');
         deleteCookie('refresh_token');
 
-        WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT);
+        WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT });
       }
 
       queryClient.clear();
