@@ -42,10 +42,15 @@ function LoginButtons() {
   };
 
   const handleAppleLogin = async () => {
-    if (isWebview()) {
-      WebBridge.postMessage(WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, { provider: 'apple' });
+    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+
+    if (rnWebView) {
+      rnWebView.postMessage(
+        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'apple' } })
+      );
       return;
     }
+
     const { url } = await getAuthUrl('apple');
     window.location.href = url;
   };
