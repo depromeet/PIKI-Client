@@ -90,22 +90,22 @@ export const useNotificationSSE = (enabled: boolean) => {
               const deepLink = resolveDeepLink(payload);
               const action = deepLink
                 ? { label: '바로가기', onClick: () => router.push(deepLink) }
-                : undefined;
+                : void 0;
 
               switch (payload.type) {
                 case 'ITEM_PARSING_COMPLETED':
-                  toast.success(payload.title, { description: payload.body || undefined });
+                  toast.success(payload.title, { description: payload.body || void 0 });
                   break;
                 case 'ITEM_PARSING_FAILED':
                   toast.error(payload.title, {
-                    description: payload.body || undefined,
+                    description: payload.body || void 0,
                     action,
                     duration: 5000,
                   });
                   break;
                 default:
                   toast.info(payload.title, {
-                    description: payload.body || undefined,
+                    description: payload.body || void 0,
                     action,
                     duration: 5000,
                   });
