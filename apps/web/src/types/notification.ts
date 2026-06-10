@@ -18,4 +18,6 @@ export type NotificationSsePayloadT = {
   kind?: NotificationKindT;
   /** kind === 'TOURNAMENT' 일 때만 존재 */
   tournamentId?: number;
+  /** kind === 'TOURNAMENT' 일 때만 존재 */
+  tournamentItemId?: number;
 };

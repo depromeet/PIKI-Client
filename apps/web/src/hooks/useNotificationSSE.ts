@@ -18,11 +18,11 @@ const resolveDeepLink = (payload: NotificationSsePayloadT): string | null => {
   switch (type) {
     case 'TOURNAMENT_JOINED':
     case 'TOURNAMENT_ITEM_ADDED':
-      return ROUTES.TOURNAMENT_CREATE(refId);
+      return `${ROUTES.TOURNAMENT_CREATE(refId)}?scrollToLast=true`;
     case 'ITEM_PARSING_COMPLETED':
     case 'ITEM_PARSING_FAILED':
       if (kind === 'TOURNAMENT' && tournamentId != null) {
-        return ROUTES.TOURNAMENT_CREATE(tournamentId);
+        return `${ROUTES.TOURNAMENT_CREATE(tournamentId)}?scrollToLast=true`;
       }
       return ROUTES.ARCHIVE_BASE;
     default:
@@ -92,13 +92,21 @@ export const useNotificationSSE = (enabled: boolean) => {
 
               switch (payload.type) {
                 case 'ITEM_PARSING_COMPLETED':
-                  toast.success(payload.title, { description: payload.body });
+                  toast.success(payload.title, { description: payload.body || undefined });
                   break;
                 case 'ITEM_PARSING_FAILED':
-                  toast.error(payload.title, { description: payload.body, action, duration: 5000 });
+                  toast.error(payload.title, {
+                    description: payload.body || undefined,
+                    action,
+                    duration: 5000,
+                  });
                   break;
                 default:
-                  toast.info(payload.title, { description: payload.body, action, duration: 5000 });
+                  toast.info(payload.title, {
+                    description: payload.body || undefined,
+                    action,
+                    duration: 5000,
+                  });
               }
             } catch {
               // malformed JSON — 무시
