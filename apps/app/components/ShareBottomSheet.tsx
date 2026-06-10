@@ -17,6 +17,10 @@ export default function ShareBottomSheet(props: ShareExtensionProps) {
 function ShareBottomSheetContent({ url }: ShareExtensionProps) {
   const [sheetStatus, setSheetStatus] = useState<'loading' | 'success' | 'error'>('loading');
 
+  const handleOpenWishlist = () => {
+    /** openHostApp path 규칙: `/{path}?{query}` — `web=...`만 넘기면 `/web=...` 라우트로 해석됨 */
+    openHostApp(`/?web=${encodeURIComponent('/archive?tab=wish')}`);
+  };
 
   useEffect(() => {
     if (!url) {

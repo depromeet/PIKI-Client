@@ -1,4 +1,4 @@
-import { AUTH_KEYS, getSecureItem, setSecureItem } from '@/utils/secureStore';
+import { TokenStorage } from './tokenStorage';
 
 type PostWishLinkFromShareResultT = { ok: true } | { ok: false; message: string };
 
@@ -30,8 +30,8 @@ export const postWishLinkFromShare = async (
   if (!process.env.EXPO_PUBLIC_API_URL)
     return { ok: false, message: 'API 주소가 설정되지 않았어요' };
 
-  const accessToken = await getSecureItem(AUTH_KEYS.ACCESS_TOKEN);
-  const refreshToken = await getSecureItem(AUTH_KEYS.REFRESH_TOKEN);
+  const accessToken = await TokenStorage.getAccessToken();
+  const refreshToken = await TokenStorage.getRefreshToken();
 
   if (!accessToken) return { ok: false, message: '로그인이 필요해요' };
 
@@ -49,10 +49,7 @@ export const postWishLinkFromShare = async (
       const refreshBody = (await refreshResponse.json()) as {
         data: { accessToken: string; refreshToken: string };
       };
-      await Promise.all([
-        setSecureItem(AUTH_KEYS.ACCESS_TOKEN, refreshBody.data.accessToken),
-        setSecureItem(AUTH_KEYS.REFRESH_TOKEN, refreshBody.data.refreshToken),
-      ]);
+      await TokenStorage.setTokens(refreshBody.data.accessToken, refreshBody.data.refreshToken);
 
       /** 위시 등록 재시도 */
       postWishResponse = await postWishLink(productUrl, refreshBody.data.accessToken);
