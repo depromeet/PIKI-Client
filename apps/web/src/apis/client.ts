@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { ApiErrorResponseT } from '@/types/api';
-import { getCookie } from '@/utils/cookie';
+import { getCookie, setCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
 // 재시도 여부 플래그를 포함한 요청 타입
@@ -63,9 +63,13 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post('/api/v1/auth/token/refresh', null, {
+        const { data } = await axios.post('/api/v1/auth/token/refresh', null, {
           withCredentials: true,
         });
+        // 웹뷰 환경은 Bearer 토큰 방식이므로 refresh 후 새 토큰을 쿠키에 저장
+        if (isWebview() && data?.data?.accessToken) {
+          setCookie('access_token', data.data.accessToken);
+        }
         processQueue(null);
         return clientApi(originalRequest);
       } catch (refreshError) {
