@@ -12,7 +12,7 @@ import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
 function LoginButtons() {
-  const { postGuestLoginMutation } = usePostGuestLogin();
+  const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
   useNativeLoginResult();
 
   const handleKakaoLogin = () => {
@@ -82,6 +82,7 @@ function LoginButtons() {
 
       <button
         type="button"
+        disabled={isPostGuestLoginPending}
         onClick={handleGuestLogin}
         className="mt-7 cursor-pointer body-2-medium text-text-neutral-secondary underline underline-offset-2"
       >

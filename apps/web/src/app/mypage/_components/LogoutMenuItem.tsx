@@ -11,8 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/dialog';
-import Spinner from '@/components/spinner';
-
 import { usePostLogout } from '../_hooks/usePostLogout';
 
 function LogoutMenuItem() {
@@ -44,10 +42,10 @@ function LogoutMenuItem() {
             variant="secondary"
             size="lg"
             className="flex-1"
+            isLoading={isPostLogoutPending}
             onClick={handleLogout}
-            disabled={isPostLogoutPending}
           >
-            {isPostLogoutPending ? <Spinner size={24} /> : '로그아웃'}
+            로그아웃
           </Button>
           <DialogClose asChild>
             <Button variant="primary" size="lg" className="flex-1">

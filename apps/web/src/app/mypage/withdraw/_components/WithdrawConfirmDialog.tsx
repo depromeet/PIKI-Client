@@ -14,7 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/dialog';
-import Spinner from '@/components/spinner';
 
 import { useDeleteMe } from '../_hooks/useDeleteMe';
 
@@ -35,7 +34,7 @@ function WithdrawConfirmDialog() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <BottomCta className="bg-bg-layer-basement pb-8">
         <DialogTrigger asChild>
-          <Button variant="secondary" size="lg" className="w-full" disabled={isDeleteMePending}>
+          <Button variant="secondary" size="lg" className="w-full">
             탈퇴하기
           </Button>
         </DialogTrigger>
@@ -52,10 +51,10 @@ function WithdrawConfirmDialog() {
             variant="secondary"
             size="lg"
             className="flex-1"
+            isLoading={isDeleteMePending}
             onClick={handleWithdraw}
-            disabled={isDeleteMePending}
           >
-            {isDeleteMePending ? <Spinner size={24} /> : '탈퇴하기'}
+            탈퇴하기
           </Button>
           <DialogClose asChild>
             <Button variant="primary" size="lg" className="flex-1">
