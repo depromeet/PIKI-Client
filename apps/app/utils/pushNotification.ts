@@ -116,8 +116,7 @@ export const initializePushNotification = async () => {
 
 /** 앱 백그라운드/포그라운드 FCM 메시지 수신 처리 */
 export const setupMessagingListeners = () => {
-  const unsubscribeOnMessage = onMessage(messaging, async remoteMessage => {
-    console.log('[FCM] Foreground message:', remoteMessage.messageId);
+  const unsubscribeOnMessage = onMessage(messaging, async _remoteMessage => {
     // 💡 나중에 Notifee가 들어오면 바로 여기에 Notifee.displayNotification() 코드를 넣으면 됩니다!
   });
 

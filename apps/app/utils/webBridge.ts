@@ -33,6 +33,5 @@ export const WebBridge = {
       .join('\n');
 
     target.injectJavaScript(`${js}\ntrue;`);
-    console.log('[WEBVIEW] 쿠키 주입 완료:', Object.keys(cookies).join(', '));
   },
 };
