@@ -7,6 +7,7 @@ export const ROUTES = {
   LOGIN: '/login',
   TOURNAMENT_JOIN_BY_CODE: '/tournament/join',
   TOURNAMENT_JOIN_BY_LINK: (id: number) => `/tournament/join/${id}`,
+  NOTIFICATION: '/notification',
   MYPAGE: '/mypage',
   MYPAGE_EDIT: '/mypage/edit',
 

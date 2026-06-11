@@ -19,8 +19,8 @@ export type ShareIntentMetaT = Record<string, string | undefined> & {
   title?: string;
 };
 
-export type ShareIntentMessageT = {
-  type: typeof WEBBRIDGE_MESSAGE_TYPE.SHARE_INTENT;
+export type AppResShareIntentMessageT = {
+  type: typeof WEBBRIDGE_MESSAGE_TYPE.APP_RES_SHARE_INTENT;
   payload: ShareIntentPayloadT;
 };
 export type ShareIntentPayloadT = {

@@ -1,6 +1,10 @@
-import { WEBBRIDGE_MESSAGE_TYPE, WEB_READY_MESSAGE_TYPE, type WebBridgeMessageT } from '@piki/core';
+import {
+  WEBBRIDGE_MESSAGE_TYPE,
+  WEB_REQ_READY_PAYLOAD_TYPE,
+  type WebBridgeMessageT,
+} from '@piki/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Linking, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
@@ -10,6 +14,7 @@ import { useSocialLogin } from '@/hooks/useSocialLogin';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
+import { handleRequestPushPermission, syncPushStatusToWeb } from '@/utils/pushNotification';
 import { TokenStorage } from '@/utils/tokenStorage';
 import { WebBridge } from '@/utils/webBridge';
 
@@ -36,17 +41,31 @@ function Page() {
   const handleWebMessage = useCallback(
     async (message: WebBridgeMessageT) => {
       switch (message.type) {
-        case WEBBRIDGE_MESSAGE_TYPE.WEB_READY: {
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_READY: {
           const { type } = message.payload;
-          if (type === WEB_READY_MESSAGE_TYPE.SHARE_INTENT) sendShareIntent();
+          if (type === WEB_REQ_READY_PAYLOAD_TYPE.SHARE_INTENT) sendShareIntent();
           return;
         }
-        case WEBBRIDGE_MESSAGE_TYPE.OPEN_IMAGE_PICKER:
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_IMAGE_PICKER:
           await handleOpenImagePicker(message.payload);
           return;
         case WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN:
           await handleLogin(message.payload.provider);
           return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION_STATUS:
+          await syncPushStatusToWeb();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION:
+          await handleRequestPushPermission();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_NOTIFICATION_SETTINGS:
+          await Linking.openSettings();
+          return;
+
         case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT:
           await TokenStorage.clearTokens();
           return;

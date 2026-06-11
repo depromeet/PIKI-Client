@@ -24,8 +24,10 @@ function LoginButtons() {
       });
       return;
     }
-    const { url } = await getAuthUrl('kakao');
-    window.location.href = url;
+
+    getAuthUrl('kakao').then(({ url }) => {
+      window.location.href = url;
+    });
   };
 
   const handleGoogleLogin = async () => {
@@ -36,8 +38,10 @@ function LoginButtons() {
       });
       return;
     }
-    const { url } = await getAuthUrl('google');
-    window.location.href = url;
+
+    getAuthUrl('google').then(({ url }) => {
+      window.location.href = url;
+    });
   };
 
   const handleAppleLogin = async () => {
@@ -48,6 +52,7 @@ function LoginButtons() {
       });
       return;
     }
+
     const { url } = await getAuthUrl('apple');
     window.location.href = url;
   };

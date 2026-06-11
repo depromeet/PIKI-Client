@@ -47,7 +47,7 @@ export const isWebview = (userAgentFromServer: string | null = null) => {
  * Webview 메시지 송신 핸들러
  *
  * @example
- * WebBridge.postMessage('HELLO_FROM_WEB', '안녕 RN!')
+ * WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION, payload: ... })
  */
 export const WebBridge = {
   postMessage(message: WebBridgeMessageT) {

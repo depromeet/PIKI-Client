@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -45,7 +45,7 @@ function BaseImageContent({
 
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [src]);
 
   const handleLoad = (e: ImgEvent) => {
     setState('success');
@@ -57,8 +57,12 @@ function BaseImageContent({
     onError?.(e);
   };
 
+  let fragmentKey = '';
+  if (typeof src === 'string') fragmentKey = src;
+  else if (src && 'src' in src) fragmentKey = src.src;
+
   return (
-    <>
+    <Fragment key={fragmentKey}>
       {state === 'loading' && loadingFallback}
       {state === 'error' && errorFallback}
       <Image
@@ -76,7 +80,7 @@ function BaseImageContent({
           className
         )}
       />
-    </>
+    </Fragment>
   );
 }
 

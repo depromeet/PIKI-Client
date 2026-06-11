@@ -80,9 +80,8 @@ function HeaderIcon({
       );
     case 'ALARM':
       return (
-        // TODO: href 수정 필요
         <Link
-          href={ROUTES.ROOT}
+          href={ROUTES.NOTIFICATION}
           aria-label="알림"
           className={cn('cursor-pointer p-[3px]', className)}
           onClick={onClick}

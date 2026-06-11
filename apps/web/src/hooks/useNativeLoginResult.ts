@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { setCookie } from '@/utils/cookie';
+import { WebBridge } from '@/utils/webBridge';
 
 export const useNativeLoginResult = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ export const useNativeLoginResult = () => {
           const { accessToken, refreshToken } = parsed.payload;
           setCookie('access_token', accessToken);
           setCookie('refresh_token', refreshToken);
+          // 쿠키 세팅 후 FCM 토큰 재등록 — 로그인 전 첫 시도는 인증 없어서 실패하기 때문
+          WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION_STATUS });
           router.replace('/home');
         } else if (parsed.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_ERROR) {
           router.replace('/login');

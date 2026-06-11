@@ -31,7 +31,7 @@ export const useShareIntent = ({ onChangeWebviewUri, webviewUri }: Props) => {
     const pending = pendingShareIntentRef.current;
     if (!pending) return;
 
-    WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.SHARE_INTENT, payload: pending });
+    WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_SHARE_INTENT, payload: pending });
     resetShareIntent();
     pendingShareIntentRef.current = null;
   }, [resetShareIntent]);
@@ -52,7 +52,7 @@ export const useShareIntent = ({ onChangeWebviewUri, webviewUri }: Props) => {
         return;
       }
 
-      /** 다른 페이지: payload 보관 후 아카이브 위시 탭으로 이동 → WEB_READY 수신 시 전송 */
+      /** 다른 페이지: payload 보관 후 아카이브 위시 탭으로 이동 → WEB_REQ_READY 수신 시 전송 */
       nextUri.pathname = ARCHIVE_PATH;
       nextUri.search = `?tab=${ARCHIVE_WISH_TAB}`;
       nextUri.hash = '';
