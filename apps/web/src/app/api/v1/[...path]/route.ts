@@ -28,6 +28,11 @@ async function handler(request: NextRequest, { params }: { params: Promise<{ pat
     body = buffer.byteLength > 0 ? buffer : null;
   }
 
+  // body가 없는데 Content-Type이 전달되면 백엔드가 415를 반환하므로 제거
+  if (!body) {
+    forwardHeaders.delete('content-type');
+  }
+
   const response = await fetch(backendUrl, {
     method: request.method,
     headers: forwardHeaders,
