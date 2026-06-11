@@ -14,17 +14,11 @@ const parseWebVersionFromRef = ref => {
 };
 
 const getWebVersion = () => {
-  const fromVercelRef = parseWebVersionFromRef(process.env.VERCEL_GIT_COMMIT_REF);
-  if (fromVercelRef) {
-    console.log(fromVercelRef);
-    return fromVercelRef;
-  }
-
   try {
-    const tag = execSync(
-      `git describe --tags --match "${WEB_VERSION_TAG_PREFIX}*" --abbrev=0`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
-    ).trim();
+    const tag = execSync(`git describe --tags --match "${WEB_VERSION_TAG_PREFIX}*" --abbrev=0`, {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'ignore'],
+    }).trim();
     const fromGitTag = parseWebVersionFromRef(tag);
     if (fromGitTag) {
       console.log(fromGitTag);
