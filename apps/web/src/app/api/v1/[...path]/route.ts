@@ -20,11 +20,19 @@ async function handler(request: NextRequest, { params }: { params: Promise<{ pat
   forwardHeaders.delete('origin');
   forwardHeaders.delete('referer');
 
+  // request.body(ReadableStream)를 직접 전달하면 undici가 "expected non-null body source" 에러를 던질 수 있음
+  const isBodyMethod = !['GET', 'HEAD'].includes(request.method);
+  let body: ArrayBuffer | null = null;
+  if (isBodyMethod) {
+    const buffer = await request.arrayBuffer();
+    body = buffer.byteLength > 0 ? buffer : null;
+  }
+
   const response = await fetch(backendUrl, {
     method: request.method,
     headers: forwardHeaders,
-    body: ['GET', 'HEAD'].includes(request.method) ? null : request.body,
-    duplex: 'half',
+    body,
+    ...(body ? { duplex: 'half' } : {}),
   } as RequestInit);
 
   return new NextResponse(response.body, {
