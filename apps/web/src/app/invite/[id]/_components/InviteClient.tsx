@@ -1,6 +1,5 @@
 'use client';
 
-import { isAxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -41,12 +40,8 @@ function InviteClient({ tournamentId, inviteCode }: InviteClientProps) {
           return;
         }
         router.replace(`${ROUTES.TOURNAMENT_JOIN_BY_LINK(tournamentId)}?code=${inviteCode}`);
-      } catch (error) {
-        // 400 (코드 불일치) / 409 (만료) — 잘못된 링크로 통합
-        if (isAxiosError(error)) {
-          setState('invalid');
-          return;
-        }
+      } catch {
+        // 400 (코드 불일치) / 409 (만료) / 네트워크 등 — 모두 "잘못된 링크" 안내로 통합한다.
         setState('invalid');
       }
     };
