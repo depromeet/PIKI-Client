@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 import { setCookie } from '@/utils/cookie';
 import { WebBridge } from '@/utils/webBridge';
 
-type UseNativeLoginResultOptions = {
+type UseNativeLoginResultOptionsT = {
   onSettled?: () => void;
 };
 
-export const useNativeLoginResult = ({ onSettled }: UseNativeLoginResultOptions = {}) => {
+export const useNativeLoginResult = ({ onSettled }: UseNativeLoginResultOptionsT = {}) => {
   const router = useRouter();
 
   useEffect(() => {

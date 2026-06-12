@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 
@@ -20,7 +20,8 @@ function LoginButtons() {
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
   const [nativePendingProvider, setNativePendingProvider] = useState<NativePendingProviderT>(null);
 
-  useNativeLoginResult({ onSettled: () => setNativePendingProvider(null) });
+  const handleNativeLoginSettled = useCallback(() => setNativePendingProvider(null), []);
+  useNativeLoginResult({ onSettled: handleNativeLoginSettled });
 
   const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
 
