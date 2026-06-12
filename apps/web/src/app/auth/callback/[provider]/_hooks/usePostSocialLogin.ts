@@ -1,6 +1,5 @@
 import type { SocialProviderT } from '@piki/core';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
@@ -8,8 +7,6 @@ import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
 import { postSocialLogin } from '../_apis/postSocialLogin';
 
 export const usePostSocialLogin = (provider: SocialProviderT) => {
-  const router = useRouter();
-
   const { mutate: postSocialLoginMutation, isPending: isPostSocialLoginPending } = useMutation({
     mutationFn: ({
       code,
@@ -23,11 +20,11 @@ export const usePostSocialLogin = (provider: SocialProviderT) => {
       state: string;
     }) => postSocialLogin(provider, { code, redirectUri, state }),
     onSuccess: (_, variables) => {
-      router.replace(getLoginRedirectPath(variables.redirect));
+      window.location.replace(getLoginRedirectPath(variables.redirect));
     },
     onError: (_, variables) => {
       toast.error('로그인에 실패했습니다. 다시 시도해 주세요.');
-      router.replace(getLoginPath(variables.redirect));
+      window.location.replace(getLoginPath(variables.redirect));
     },
   });
 
