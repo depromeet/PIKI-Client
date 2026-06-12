@@ -14,7 +14,7 @@ import { usePostWishOCR } from '@/hooks/usePostWishOCR';
 import type { ItemTypeT } from '@/types/item';
 
 import Spacing from '../spacing';
-import Spinner from '../spinner';
+
 
 const MAX_IMAGE_COUNT = 5;
 
@@ -98,15 +98,10 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
         <Button
           size="lg"
           variant="primary"
+          isLoading={isImagePickerPending || isPostWishOCRPending || isPostTournamentOCRPending}
           onClick={openPicker}
-          disabled={isImagePickerPending || isPostWishOCRPending || isPostTournamentOCRPending}
         >
-          {/** TODO: spinner size 임의값. 변경 필요 */}
-          {isImagePickerPending || isPostWishOCRPending || isPostTournamentOCRPending ? (
-            <Spinner size={20} />
-          ) : (
-            '사진 선택하기'
-          )}
+          사진 선택하기
         </Button>
 
         <input

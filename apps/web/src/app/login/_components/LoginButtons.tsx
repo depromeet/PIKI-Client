@@ -18,7 +18,7 @@ type LoginButtonsProps = {
 
 function LoginButtons({ redirect }: LoginButtonsProps) {
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
-  const { postGuestLoginMutation } = usePostGuestLogin();
+  const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
   useNativeLoginResult(validRedirect);
 
   const handleKakaoLogin = async () => {
@@ -107,6 +107,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
 
       <button
         type="button"
+        disabled={isPostGuestLoginPending}
         onClick={handleGuestLogin}
         className="mt-7 cursor-pointer body-2-medium text-text-neutral-secondary underline underline-offset-2"
       >

@@ -29,7 +29,10 @@ function TournamentItemFailedModal({
   onClose,
 }: TournamentItemFailedModalProps) {
   const router = useRouter();
-  const { deleteTournamentItemMutation } = useDeleteTournamentItem(tournamentId, tournamentItemId);
+  const { deleteTournamentItemMutation, isDeleteTournamentItemPending } = useDeleteTournamentItem(
+    tournamentId,
+    tournamentItemId
+  );
 
   const handleDeleteTournamentItem = () => {
     deleteTournamentItemMutation(void 0, {
@@ -59,6 +62,7 @@ function TournamentItemFailedModal({
             variant="secondary"
             size="lg"
             className="flex-1"
+            isLoading={isDeleteTournamentItemPending}
             onClick={handleDeleteTournamentItem}
           >
             삭제하기
