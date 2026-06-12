@@ -19,17 +19,43 @@ const handleGuestLogin = async () => {
 const handleTokenRefresh = async (request: NextRequest) => {
   const { pathname, search } = request.nextUrl;
 
+  const cookieMap = new Map(
+    request.cookies.getAll().map(cookie => [cookie.name, cookie.value] as const)
+  );
+
   try {
-    const response = await postTokenRefreshServer();
+    const response = await postTokenRefreshServer(
+      [...cookieMap.entries()].map(([name, value]) => `${name}=${value}`).join('; ')
+    );
+
+    /**
+     * 페이지 요청에서는 쿠키 옵션을 필요로 하지 않음
+     * 쿠키 옵션 제거 후 key, value만 추출하여 페이지로 전달
+     */
+    const setCookieHeaders = response.headers['set-cookie'] ?? [];
+    setCookieHeaders.forEach(setCookie => {
+      const nameValue = setCookie.split(';')[0] ?? '';
+      const separatorIndex = nameValue.indexOf('=');
+      if (separatorIndex === -1) return;
+
+      const name = nameValue.slice(0, separatorIndex).trim();
+      const value = nameValue.slice(separatorIndex + 1).trim();
+      cookieMap.set(name, value);
+    });
 
     const requestHeaders = new Headers(request.headers);
+    requestHeaders.set(
+      'cookie',
+      [...cookieMap.entries()].map(([name, value]) => `${name}=${value}`).join('; ')
+    );
+
     if (getRouteType(pathname) === 'MEMBER_ONLY')
       requestHeaders.set('x-redirect-path', `${pathname}${search}`);
 
     const nextResponse = NextResponse.next({ request: { headers: requestHeaders } });
 
-    const setCookieHeader = response.headers['set-cookie'];
-    setCookieHeader?.forEach(cookie => nextResponse.headers.append('set-cookie', cookie));
+    /** 서버에서 받아온 쿠키 브라우저에 저장 */
+    setCookieHeaders.forEach(cookie => nextResponse.headers.append('set-cookie', cookie));
 
     return nextResponse;
   } catch {
@@ -50,6 +76,7 @@ export const proxy = async (request: NextRequest) => {
   /** 멤버 및 게스트 공통 영역 */
   const accessToken = request.cookies.get('access_token');
   const refreshToken = request.cookies.get('refresh_token');
+
   if (routeType === 'MEMBER_AND_GUEST' || routeType === 'AUTHORIZED') {
     /** access(O): 통과 */
     if (accessToken && isTokenValid(accessToken.value)) return NextResponse.next();
