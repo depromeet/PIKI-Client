@@ -24,6 +24,10 @@ const handleTokenRefresh = async (request: NextRequest) => {
   );
 
   try {
+    /**
+     * 토큰 갱신 요청
+     * - 쿠키 옵션 제거 후 key, value만 추출하여 페이지로 전달
+     */
     const response = await postTokenRefreshServer(
       [...cookieMap.entries()].map(([name, value]) => `${name}=${value}`).join('; ')
     );
@@ -52,6 +56,7 @@ const handleTokenRefresh = async (request: NextRequest) => {
     if (getRouteType(pathname) === 'MEMBER_ONLY')
       requestHeaders.set('x-redirect-path', `${pathname}${search}`);
 
+    /** 갱신된 쿠키 페이지 요청에 전달 */
     const nextResponse = NextResponse.next({ request: { headers: requestHeaders } });
 
     /** 서버에서 받아온 쿠키 브라우저에 저장 */
@@ -77,7 +82,7 @@ export const proxy = async (request: NextRequest) => {
   const accessToken = request.cookies.get('access_token');
   const refreshToken = request.cookies.get('refresh_token');
 
-  if (routeType === 'MEMBER_AND_GUEST' || routeType === 'AUTHORIZED') {
+  if (routeType === 'MEMBER_AND_GUEST') {
     /** access(O): 통과 */
     if (accessToken && isTokenValid(accessToken.value)) return NextResponse.next();
 
@@ -88,7 +93,7 @@ export const proxy = async (request: NextRequest) => {
     return await handleGuestLogin();
   }
 
-  if (routeType === 'MEMBER_ONLY') {
+  if (routeType === 'MEMBER_ONLY' || routeType === 'AUTHORIZED') {
     /** access(O): 통과, 헤더에 쿼리파라미터까지 포함된 이동 경로 주입 */
     if (accessToken && isTokenValid(accessToken.value)) {
       const headers = new Headers(request.headers);
