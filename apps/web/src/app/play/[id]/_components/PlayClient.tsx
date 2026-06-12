@@ -11,7 +11,7 @@ import Button from '@/components/button';
 import Spinner from '@/components/spinner';
 import { ROUTES } from '@/consts/route';
 
-import { postFromPlayLink } from '../../_apis/postFromPlayLink';
+import { postFromPlayLink } from '../_apis/postFromPlayLink';
 
 type PlayClientProps = {
   sourceTournamentId: number;
