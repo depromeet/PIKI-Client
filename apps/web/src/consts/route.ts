@@ -5,6 +5,7 @@ export const ROUTES = {
   /** 1. Public (Anonymous) */
   ROOT: '/',
   LOGIN: '/login',
+  SOCIAL_LOGIN_CALLBACK: (provider: string) => `/auth/callback/${provider}`,
 
   /** 2. Member & Guest */
   HOME: '/home',
@@ -18,7 +19,6 @@ export const ROUTES = {
   ARCHIVE_BASE: '/archive',
   ARCHIVE: (tab: ItemTypeT = 'wish') => `/archive?tab=${tab}`,
   WISH_EDIT: (wishId: number) => `/archive/wish/${wishId}`,
-  SOCIAL_LOGIN_CALLBACK: (provider: string) => `/auth/callback/${provider}`,
   MYPAGE_WITHDRAW: '/mypage/withdraw',
 
   /** 4. Authorized Guest or Member */
