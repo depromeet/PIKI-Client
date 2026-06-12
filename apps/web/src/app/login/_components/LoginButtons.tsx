@@ -1,56 +1,51 @@
 'use client';
 
+import { useState } from 'react';
+
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 
 import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
+import Spinner from '@/components/spinner';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
+type NativePendingProviderT = 'kakao' | 'google' | 'apple' | null;
+
 function LoginButtons() {
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
-  useNativeLoginResult();
+  const [nativePendingProvider, setNativePendingProvider] = useState<NativePendingProviderT>(null);
+
+  useNativeLoginResult({ onSettled: () => setNativePendingProvider(null) });
+
+  const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
+
+  const postNativeMessage = (provider: 'kakao' | 'google' | 'apple') => {
+    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+    if (!rnWebView) return false;
+    setNativePendingProvider(provider);
+    rnWebView.postMessage(
+      JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider } })
+    );
+    return true;
+  };
 
   const handleKakaoLogin = () => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
-
-    if (rnWebView) {
-      rnWebView.postMessage(
-        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'kakao' } })
-      );
-      return;
-    }
-
+    if (postNativeMessage('kakao')) return;
     getAuthUrl('kakao').then(({ url }) => { window.location.href = url; });
   };
 
   const handleGoogleLogin = () => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
-
-    if (rnWebView) {
-      rnWebView.postMessage(
-        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'google' } })
-      );
-      return;
-    }
-
+    if (postNativeMessage('google')) return;
     getAuthUrl('google').then(({ url }) => { window.location.href = url; });
   };
 
   const handleAppleLogin = async () => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
-
-    if (rnWebView) {
-      rnWebView.postMessage(
-        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'apple' } })
-      );
-      return;
-    }
-
+    if (postNativeMessage('apple')) return;
     const { url } = await getAuthUrl('apple');
     window.location.href = url;
   };
@@ -65,27 +60,34 @@ function LoginButtons() {
         variant="google"
         icon={<GoogleIcon width={20} height={20} aria-hidden />}
         label="구글 계정으로 시작하기"
+        isLoading={nativePendingProvider === 'google'}
+        disabled={isAnyPending && nativePendingProvider !== 'google'}
         onClick={handleGoogleLogin}
       />
       <SocialLoginButton
         variant="apple"
         icon={<AppleIcon width={20} height={20} aria-hidden />}
         label="Apple로 시작하기"
+        isLoading={nativePendingProvider === 'apple'}
+        disabled={isAnyPending && nativePendingProvider !== 'apple'}
         onClick={handleAppleLogin}
       />
       <SocialLoginButton
         variant="kakao"
         icon={<KakaoIcon width={20} height={20} aria-hidden />}
         label="카카오로 시작하기"
+        isLoading={nativePendingProvider === 'kakao'}
+        disabled={isAnyPending && nativePendingProvider !== 'kakao'}
         onClick={handleKakaoLogin}
       />
 
       <button
         type="button"
-        disabled={isPostGuestLoginPending}
+        disabled={isAnyPending}
         onClick={handleGuestLogin}
-        className="mt-7 cursor-pointer body-2-medium text-text-neutral-secondary underline underline-offset-2"
+        className="mt-7 flex cursor-pointer items-center gap-1.5 body-2-medium text-text-neutral-secondary underline underline-offset-2 disabled:opacity-50"
       >
+        {isPostGuestLoginPending ? <Spinner size={16} /> : null}
         비회원으로 시작하기
       </button>
 

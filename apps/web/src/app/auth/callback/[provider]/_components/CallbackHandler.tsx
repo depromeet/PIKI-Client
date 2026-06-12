@@ -4,6 +4,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { ROUTES } from '@/consts/route';
+import Spinner from '@/components/spinner';
 import type { SocialProviderT } from '@piki/core';
 
 import { usePostSocialLogin } from '../_hooks/usePostSocialLogin';
@@ -50,7 +51,12 @@ function CallbackHandler() {
     postSocialLoginMutation({ code, redirectUri, state });
   }, [isValidProvider, postSocialLoginMutation, provider, router, searchParams]);
 
-  return null;
+  return (
+    <div className="flex h-dvh flex-col items-center justify-center gap-3">
+      <Spinner size={32} />
+      <p className="text-sm text-text-neutral-secondary">로그인 중...</p>
+    </div>
+  );
 }
 
 export default CallbackHandler;
