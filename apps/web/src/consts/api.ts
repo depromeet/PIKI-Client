@@ -2,6 +2,7 @@ export const ENDPOINTS = {
   /** 유저 */
   USER: '/api/v1/users/me',
   USER_PROFILE_IMAGE: '/api/v1/users/me/profile-image',
+  USER_NICKNAME_CHECK: '/api/v1/users/nickname/check',
 
   /** 인증 */
   AUTH_URL: (provider: string) => `/api/v1/auth/${provider}/url`,
@@ -15,6 +16,10 @@ export const ENDPOINTS = {
   WISHLIST: (id: number) => `/api/v1/wishlists/${id}`,
   WISH_OCR: '/api/v1/wishlists/images',
 
+  /** 유저 */
+  USERS_ME: '/api/v1/users/me',
+  USERS_NICKNAME_CHECK: '/api/v1/users/nickname/check',
+
   /** 토너먼트 */
   TOURNAMENTS: '/api/v1/tournaments',
   TOURNAMENT: (id: number) => `/api/v1/tournaments/${id}`,
@@ -24,6 +29,17 @@ export const ENDPOINTS = {
   TOURNAMENT_OCR: (id: number) => `/api/v1/tournaments/${id}/items/images`,
   TOURNAMENT_ITEM: (id: number, ItemId: number) => `/api/v1/tournaments/${id}/items/${ItemId}`,
   TOURNAMENT_ITEMS_FROM_WISH: (id: number) => `/api/v1/tournaments/${id}/items/wish`,
+  TOURNAMENT_PLAY_LINK: (id: number) => `/api/v1/tournaments/${id}/play-link`,
+  TOURNAMENT_JOIN: (id: number) => `/api/v1/tournaments/${id}/join`,
+  TOURNAMENT_JOIN_GUEST: (id: number) => `/api/v1/tournaments/${id}/join/guest`,
+  TOURNAMENT_INVITE_PREVIEW: (id: number) => `/api/v1/tournaments/${id}/invite-preview`,
+  TOURNAMENT_INVITE_PREVIEW_BY_CODE: '/api/v1/tournaments/by-invite-code',
+  TOURNAMENT_FROM_PLAY_LINK: (sourceTournamentId: number) =>
+    `/api/v1/tournaments/${sourceTournamentId}/from-play-link`,
+  TOURNAMENT_GROUP_RESULT: (id: number) => `/api/v1/tournaments/${id}/group-result`,
+
+  /** 알림 */
+  NOTIFICATIONS_SUBSCRIBE: '/api/v1/notifications/subscribe',
 
   /** FCM */
   FCM_TOKENS: '/api/v1/fcm/tokens',

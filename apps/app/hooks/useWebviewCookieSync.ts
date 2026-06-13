@@ -22,11 +22,19 @@ export const useWebviewCookieSync = () => {
       const useWebKit = Platform.OS === 'ios';
 
       if (accessToken) {
-        await CookieManager.set(WEB_URL, { name: 'access_token', value: accessToken, path: '/' }, useWebKit);
+        await CookieManager.set(
+          WEB_URL,
+          { name: 'access_token', value: accessToken, path: '/' },
+          useWebKit
+        );
       }
 
       if (refreshToken) {
-        await CookieManager.set(WEB_URL, { name: 'refresh_token', value: refreshToken, path: '/' }, useWebKit);
+        await CookieManager.set(
+          WEB_URL,
+          { name: 'refresh_token', value: refreshToken, path: '/' },
+          useWebKit
+        );
       }
 
       setIsSynced(true);

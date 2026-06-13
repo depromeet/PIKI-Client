@@ -9,45 +9,63 @@ import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import Spinner from '@/components/spinner';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
+import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
+import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
+type LoginButtonsProps = {
+  redirect: string | null;
+};
+
 type NativePendingProviderT = 'kakao' | 'google' | 'apple' | null;
 
-function LoginButtons() {
+function LoginButtons({ redirect }: LoginButtonsProps) {
+  const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
   const [nativePendingProvider, setNativePendingProvider] = useState<NativePendingProviderT>(null);
 
   const handleNativeLoginSettled = useCallback(() => setNativePendingProvider(null), []);
-  useNativeLoginResult({ onSettled: handleNativeLoginSettled });
+  useNativeLoginResult({ redirect: validRedirect, onSettled: handleNativeLoginSettled });
 
   const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
 
   const postNativeMessage = (provider: 'kakao' | 'google' | 'apple') => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
-    if (!rnWebView) return false;
+    if (!isWebview()) return false;
+
     setNativePendingProvider(provider);
-    rnWebView.postMessage(
-      JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider } })
-    );
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
+      payload: { provider },
+    });
     return true;
   };
 
   const handleKakaoLogin = () => {
     if (postNativeMessage('kakao')) return;
-    getAuthUrl('kakao').then(({ url }) => { window.location.href = url; });
+
+    setLoginRedirectPath(validRedirect);
+    getAuthUrl('kakao', validRedirect).then(({ url }) => {
+      window.location.href = url;
+    });
   };
 
   const handleGoogleLogin = () => {
     if (postNativeMessage('google')) return;
-    getAuthUrl('google').then(({ url }) => { window.location.href = url; });
+
+    setLoginRedirectPath(validRedirect);
+    getAuthUrl('google', validRedirect).then(({ url }) => {
+      window.location.href = url;
+    });
   };
 
   const handleAppleLogin = async () => {
     if (postNativeMessage('apple')) return;
-    const { url } = await getAuthUrl('apple');
+
+    setLoginRedirectPath(validRedirect);
+    const { url } = await getAuthUrl('apple', validRedirect);
     window.location.href = url;
   };
 
@@ -92,11 +110,15 @@ function LoginButtons() {
         비회원으로 시작하기
       </button>
 
-      <p className="mt-9 text-center text-[11px] font-medium leading-[150%] tracking-[-0.232px] [font-feature-settings:'ss10'_on] text-text-neutral-tertiary">
+      <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
         가입 시{' '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">이용약관</span>
+        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+          이용약관
+        </span>
         {' 및 '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">개인정보 처리방침</span>
+        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+          개인정보 처리방침
+        </span>
         에 동의하게 됩니다.
       </p>
     </div>

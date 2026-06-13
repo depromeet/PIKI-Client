@@ -24,6 +24,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         ),
         info: <AlertIconFill className="size-6 text-gray-300" width={24} height={24} />,
         warning: <WarningIconFill className="size-6 text-icon-warning" width={24} height={24} />,
+        error: <WarningIconFill className="size-6 text-red-300" width={24} height={24} />,
       }}
       style={
         {

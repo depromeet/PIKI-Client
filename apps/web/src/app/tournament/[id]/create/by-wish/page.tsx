@@ -1,7 +1,3 @@
-import { notFound } from 'next/navigation';
-
-import { parseIdParam } from '@/utils/parseIdParam';
-
 import ByWishContent from './_components/ByWishContent';
 
 type ByWishPageProps = {
@@ -9,10 +5,8 @@ type ByWishPageProps = {
 };
 
 async function ByWishPage({ params }: ByWishPageProps) {
-  const { id: _tournamentId } = await params;
-  const tournamentId = parseIdParam(_tournamentId);
-
-  if (!tournamentId) notFound();
+  const { id } = await params;
+  const tournamentId = Number(id);
 
   return <ByWishContent tournamentId={tournamentId} />;
 }

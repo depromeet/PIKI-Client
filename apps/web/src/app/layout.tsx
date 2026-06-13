@@ -1,9 +1,8 @@
+import { WEBVIEW_UA_TOKEN } from '@piki/core';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { headers } from 'next/headers';
 import React from 'react';
-
-import { WEBVIEW_UA_TOKEN } from '@piki/core';
 
 import { cn } from '@/utils/cn';
 
@@ -63,7 +62,7 @@ async function RootLayout({
           </>
         )}
       </head>
-      <body className="h-full overflow-hidden">
+      <body className="h-full overflow-hidden" suppressHydrationWarning>
         <Providers>
           {/** TEMP: max width 임시 값 */}
           <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] [scrollbar-gutter:stable]">

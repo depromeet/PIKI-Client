@@ -2,8 +2,6 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'sonner';
-
 import { usePostTournamentItemLink } from '@/app/tournament/[id]/create/_hooks/usePostTournamentItemLink';
 import { LinkIconFill } from '@/assets/icons';
 import Button from '@/components/button';
@@ -56,8 +54,6 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
         },
         onSuccess: () => {
           router.push(ROUTES.ARCHIVE('wish'));
-          // 라우팅 완료 후 토스트 노출 (페이지 전환 중 토스트가 잠깐 떴다 사라지는 것 방지)
-          setTimeout(() => toast.success('위시에 상품을 담았어요'), 100);
         },
       });
     else
@@ -98,7 +94,13 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
             autoFocus
             inputMode="url"
           />
-          <Button size="lg" variant="primary" disabled={isEmpty} isLoading={isPending} onClick={handleSubmit}>
+          <Button
+            size="lg"
+            variant="primary"
+            disabled={isEmpty}
+            isLoading={isPending}
+            onClick={handleSubmit}
+          >
             {type === 'wish' && '위시리스트에 담기'}
             {type === 'tournament' && '후보 바구니에 담기'}
           </Button>
