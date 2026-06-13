@@ -37,6 +37,9 @@ export const ENDPOINTS = {
     `/api/v1/tournaments/${sourceTournamentId}/from-play-link`,
   TOURNAMENT_GROUP_RESULT: (id: number) => `/api/v1/tournaments/${id}/group-result`,
 
+  /** 알림 */
+  NOTIFICATIONS_SUBSCRIBE: '/api/v1/notifications/subscribe',
+
   /** FCM */
   FCM_TOKENS: '/api/v1/fcm/tokens',
 } as const;

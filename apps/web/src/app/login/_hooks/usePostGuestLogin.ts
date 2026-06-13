@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import { ROUTES } from '@/consts/route';
@@ -9,10 +9,13 @@ import { postGuestLogin } from '../_apis/postGuestLogin';
 
 export const usePostGuestLogin = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: postGuestLoginMutation, isPending: isPostGuestLoginPending } = useMutation({
     mutationFn: postGuestLogin,
     onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+
       if (isWebview() && data.accessToken && data.refreshToken) {
         setCookie('access_token', data.accessToken, { minutes: 15 });
         setCookie('refresh_token', data.refreshToken, { days: 14 });
