@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -17,7 +17,7 @@ import { usePostJoinGuest } from '../../_hooks/usePostJoinGuest';
 import { setJoinWelcome } from '../../_utils/joinSession';
 
 type JoinPreviewClientProps = {
-  tournamentId: number | null;
+  tournamentId: number;
   /** 친구 초대 코드 — invite 진입 시 query 로 전달됨. 백엔드 join/guest 호출 시 필수 */
   inviteCode: string;
 };
@@ -27,8 +27,6 @@ const MAX_NICKNAME_LENGTH = 10;
 function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps) {
   const router = useRouter();
   const [nickname, setNickname] = useState(DEFAULT_RANDOM_NICKNAME.nickname);
-
-  if (tournamentId === null) notFound();
 
   const { invitePreviewData } = useGetInvitePreview(tournamentId);
   const trimmedNickname = nickname.trim();
