@@ -1,13 +1,16 @@
 'use client';
 
+import { useCallback, useState } from 'react';
+
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 
 import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
+import Spinner from '@/components/spinner';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
 import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
-import { WebBridge } from '@/utils/webBridge';
+import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
@@ -17,39 +20,51 @@ type LoginButtonsProps = {
   redirect: string | null;
 };
 
+type NativePendingProviderT = 'kakao' | 'google' | 'apple' | null;
+
 function LoginButtons({ redirect }: LoginButtonsProps) {
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
-  useNativeLoginResult(validRedirect);
+  const [nativePendingProvider, setNativePendingProvider] = useState<NativePendingProviderT>(null);
 
-  const handleKakaoLogin = async () => {
+  const handleNativeLoginSettled = useCallback(() => setNativePendingProvider(null), []);
+  useNativeLoginResult({ redirect: validRedirect, onSettled: handleNativeLoginSettled });
+
+  const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
+
+  const postNativeMessage = (provider: 'kakao' | 'google' | 'apple') => {
+    if (!isWebview()) return false;
+
+    setNativePendingProvider(provider);
     WebBridge.postMessage({
       type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
-      payload: { provider: 'kakao' },
+      payload: { provider },
     });
-
-    setLoginRedirectPath(validRedirect);
-    const { url } = await getAuthUrl('kakao', validRedirect);
-    window.location.href = url;
+    return true;
   };
 
-  const handleGoogleLogin = async () => {
-    WebBridge.postMessage({
-      type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
-      payload: { provider: 'google' },
-    });
+  const handleKakaoLogin = () => {
+    if (postNativeMessage('kakao')) return;
 
     setLoginRedirectPath(validRedirect);
-    const { url } = await getAuthUrl('google', validRedirect);
-    window.location.href = url;
+    getAuthUrl('kakao', validRedirect).then(({ url }) => {
+      window.location.href = url;
+    });
+  };
+
+  const handleGoogleLogin = () => {
+    if (postNativeMessage('google')) return;
+
+    setLoginRedirectPath(validRedirect);
+    getAuthUrl('google', validRedirect).then(({ url }) => {
+      window.location.href = url;
+    });
   };
 
   const handleAppleLogin = async () => {
-    WebBridge.postMessage({
-      type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
-      payload: { provider: 'apple' },
-    });
+    if (postNativeMessage('apple')) return;
 
+    setLoginRedirectPath(validRedirect);
     const { url } = await getAuthUrl('apple', validRedirect);
     window.location.href = url;
   };
@@ -64,27 +79,34 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
         variant="google"
         icon={<GoogleIcon width={20} height={20} aria-hidden />}
         label="구글 계정으로 시작하기"
+        isLoading={nativePendingProvider === 'google'}
+        disabled={isAnyPending && nativePendingProvider !== 'google'}
         onClick={handleGoogleLogin}
       />
       <SocialLoginButton
         variant="apple"
         icon={<AppleIcon width={20} height={20} aria-hidden />}
         label="Apple로 시작하기"
+        isLoading={nativePendingProvider === 'apple'}
+        disabled={isAnyPending && nativePendingProvider !== 'apple'}
         onClick={handleAppleLogin}
       />
       <SocialLoginButton
         variant="kakao"
         icon={<KakaoIcon width={20} height={20} aria-hidden />}
         label="카카오로 시작하기"
+        isLoading={nativePendingProvider === 'kakao'}
+        disabled={isAnyPending && nativePendingProvider !== 'kakao'}
         onClick={handleKakaoLogin}
       />
 
       <button
         type="button"
-        disabled={isPostGuestLoginPending}
+        disabled={isAnyPending}
         onClick={handleGuestLogin}
-        className="mt-7 cursor-pointer body-2-medium text-text-neutral-secondary underline underline-offset-2"
+        className="mt-7 flex cursor-pointer items-center gap-1.5 body-2-medium text-text-neutral-secondary underline underline-offset-2 disabled:opacity-50"
       >
+        {isPostGuestLoginPending ? <Spinner size={16} /> : null}
         비회원으로 시작하기
       </button>
 
