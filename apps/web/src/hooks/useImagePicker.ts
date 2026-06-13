@@ -122,10 +122,7 @@ export const useImagePicker = ({
 
     WebBridge.postMessage({
       type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_OPEN_IMAGE_PICKER,
-      payload: {
-        requestId,
-        maxCount,
-      },
+      payload: { requestId, maxCount },
     });
 
     void pendingPromise

@@ -1,6 +1,5 @@
 import {
   WEBBRIDGE_MESSAGE_TYPE,
-  WEBVIEW_UA_TOKEN,
   WEB_REQ_READY_PAYLOAD_TYPE,
   type WebBridgeMessageT,
 } from '@piki/core';
@@ -9,6 +8,7 @@ import { KeyboardAvoidingView, Linking, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
+import { USER_AGENT } from '@/constants/userAgent';
 import { useShareIntent } from '@/hooks/useShareIntent';
 import { useSocialLogin } from '@/hooks/useSocialLogin';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
@@ -88,7 +88,7 @@ function Page() {
         <Webview
           ref={webviewRef}
           style={{ flex: 1 }}
-          applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
+          applicationNameForUserAgent={USER_AGENT}
           source={{ uri: webviewUri }}
           onMessage={onMessage}
           allowsBackForwardNavigationGestures
