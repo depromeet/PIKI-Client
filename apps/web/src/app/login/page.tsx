@@ -2,7 +2,13 @@ import PikiLogo from '@/assets/images/piki-logo.svg';
 
 import LoginButtons from './_components/LoginButtons';
 
-function LoginPage() {
+type LoginPageProps = {
+  searchParams: Promise<{ redirect?: string }>;
+};
+
+async function LoginPage({ searchParams }: LoginPageProps) {
+  const { redirect } = await searchParams;
+
   return (
     <div className="flex min-h-full flex-col items-center bg-gray-50 pt-28">
       <div className="flex flex-col items-center gap-6">
@@ -13,7 +19,7 @@ function LoginPage() {
       </div>
 
       <div className="mt-[90px] w-full px-4">
-        <LoginButtons />
+        <LoginButtons redirect={redirect ?? null} />
       </div>
     </div>
   );

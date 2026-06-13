@@ -10,8 +10,11 @@ export const serverApi = axios.create({
 
 serverApi.interceptors.request.use(async config => {
   const { cookies, headers } = await import('next/headers');
-  const cookieStore = await cookies();
-  config.headers.Cookie = cookieStore.toString();
+
+  if (!config.headers.Cookie) {
+    const cookieStore = await cookies();
+    config.headers.Cookie = cookieStore.toString();
+  }
 
   const headerStore = await headers();
   const userAgent = headerStore.get('user-agent');

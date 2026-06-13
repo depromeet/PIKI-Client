@@ -1,13 +1,12 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { ROUTES } from '@/consts/route';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from '../_common/_apis/getTournament';
 import type { GetTournamentInProgressResponseT } from '../_common/_types/tournamentResponse';
-import { parseTournamentId } from '../_common/_utils/parseTournamentId';
 import { postStartTournament } from './_apis/postStartTournament';
 import TournamentClient from './_components/TournamentClient';
 
@@ -17,11 +16,7 @@ type TournamentPageProps = {
 
 async function TournamentPage({ params }: TournamentPageProps) {
   const { id } = await params;
-  const tournamentId = parseTournamentId(id);
-
-  if (tournamentId === null) {
-    notFound();
-  }
+  const tournamentId = Number(id);
 
   const tournamentData = await getTournament(tournamentId);
 

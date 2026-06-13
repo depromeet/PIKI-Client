@@ -26,13 +26,12 @@ import TournamentStartButton from './tournament-start-button/TournamentStartButt
 import WelcomeJoinDialog from './welcome-join-dialog/WelcomeJoinDialog';
 
 type TournamentCreateClientProps = {
-  tournamentId: string;
+  tournamentId: number;
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
-  const numericTournamentId = Number(tournamentId);
   const { scrollToLast, onScrolled } = useScrollToLast();
-  const { tournamentData } = useGetTournament(numericTournamentId);
+  const { tournamentData } = useGetTournament(tournamentId);
 
   // 주최자(ROOT)는 시작/완료 시점에 mutation/페이지에서 직접 라우팅한다.
   // 참여자(CLONE 생성 예정)는 ROOT status 변화에 따라 자동 라우팅하지 않고,
@@ -67,10 +66,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const hasFriends = participants.length > 1;
 
   const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
-    consumeJoinWelcomeFor(numericTournamentId)
+    consumeJoinWelcomeFor(tournamentId)
   );
   const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
-    consumeJoinConfirmFor(numericTournamentId)
+    consumeJoinConfirmFor(tournamentId)
   );
   const isParticipant = !tournamentData.isOwner;
   // 참여자는 주최자가 ROOT 를 시작한 후(ownerStarted=true) 부터 본인 CLONE 시작 가능.

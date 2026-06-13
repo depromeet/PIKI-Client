@@ -6,7 +6,6 @@ import AddIcon from '@/assets/icons/fill/add.svg';
 import Button from '@/components/button';
 import { Dialog, DialogTrigger } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
-import { parseIdParam } from '@/utils/parseIdParam';
 
 import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
 
@@ -30,14 +29,13 @@ function TournamentItemBasket({
   isDepositClosed = false,
 }: TournamentItemBasketProps) {
   const { id } = useParams<{ id: string }>();
-  const tournamentId = parseIdParam(id);
+  const tournamentId = Number(id);
+
   const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
   const [failedItem, setFailedItem] = useState<TournamentPendingItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
-    if (!tournamentId) return;
-
     // if (item.status === 'READY')
     // router.push(ROUTES.TOURNAMENT_ITEM_EDIT(String(tournamentId), String(item.tournamentItemId))); // TODO: 변경된 디자인에 맞춰 수정 필요
 
@@ -94,7 +92,7 @@ function TournamentItemBasket({
           )}
         </div>
       </div>
-      {failedItem && tournamentId && (
+      {failedItem && (
         <TournamentItemFailedModal
           open
           tournamentId={tournamentId}

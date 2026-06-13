@@ -11,7 +11,7 @@ const PARTICIPANT_TOOLTIP_DURATION_MS = 3_000;
 
 type TournamentStartButtonProps = {
   count: number;
-  tournamentId: string;
+  tournamentId: number;
   hasUnreadyItem: boolean;
   hasFriends: boolean;
   isWaitingForOwnerStart: boolean;
@@ -29,9 +29,8 @@ function TournamentStartButton({
   isParticipant = false,
 }: TournamentStartButtonProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { postTournamentStartMutation, isPostTournamentStartPending } = usePostTournamentStart(
-    Number(tournamentId)
-  );
+  const { postTournamentStartMutation, isPostTournamentStartPending } =
+    usePostTournamentStart(tournamentId);
 
   const [isTooltipVisible, setIsTooltipVisible] = useState(isWaitingForOwnerStart);
 

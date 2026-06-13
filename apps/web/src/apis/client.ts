@@ -1,30 +1,27 @@
-import type { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import type { AxiosError } from 'axios';
 import axios from 'axios';
 
+import { ENDPOINTS } from '@/consts/api';
 import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { ApiErrorResponseT } from '@/types/api';
-import { getCookie } from '@/utils/cookie';
+import { getCookie, setCookie } from '@/utils/cookie';
+import { getLoginPath } from '@/utils/loginRedirect';
 import { isWebview } from '@/utils/webBridge';
 
-// 재시도 여부 플래그를 포함한 요청 타입
-type RetryableRequest = InternalAxiosRequestConfig & { _retry?: boolean };
-
-// refresh 진행 중 여부
+/** refresh 진행 중 여부 */
 let isRefreshing = false;
-// refresh 완료를 기다리는 요청 큐
+
+/** refresh 완료를 기다리는 요청 큐 */
 let failedQueue: Array<{
   resolve: () => void;
   reject: (reason?: unknown) => void;
 }> = [];
 
-// 큐에 쌓인 요청들을 일괄 처리
+/** 큐에 쌓인 요청들을 일괄 처리 */
 const processQueue = (error: unknown) => {
-  failedQueue.forEach(prom => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve();
-    }
+  failedQueue.forEach(pendingRequest => {
+    if (error) pendingRequest.reject(error);
+    else pendingRequest.resolve();
   });
   failedQueue = [];
 };
@@ -47,10 +44,11 @@ clientApi.interceptors.request.use(config => {
 clientApi.interceptors.response.use(
   response => response,
   async (error: AxiosError<ApiErrorResponseT>) => {
-    const originalRequest = error.config as RetryableRequest | undefined;
+    const originalRequest = error.config;
+    const hasRetried = originalRequest?.headers.get('x-retry-attempted') === 'true';
 
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
-      // refresh 진행 중이면 큐에 대기
+    if (error.response?.status === 401 && originalRequest && !hasRetried) {
+      /** refresh 진행 중이면 큐에 대기 */
       if (isRefreshing) {
         return new Promise<void>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -59,25 +57,37 @@ clientApi.interceptors.response.use(
           .catch(err => Promise.reject(err));
       }
 
-      originalRequest._retry = true;
+      originalRequest.headers.set('x-retry-attempted', 'true');
       isRefreshing = true;
 
       try {
-        // body 없는 POST 라도 빈 객체로 보내야 일부 백엔드가 Content-Type 인식 후 처리한다 (415 방지).
-        await axios.post(
-          '/api/v1/auth/token/refresh',
+        /** 토큰 갱신 — body 없는 POST 라도 빈 객체로 보내야 일부 백엔드가 415 안 던진다. */
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}${ENDPOINTS.AUTH_TOKEN_REFRESH}`,
           {},
           {
             withCredentials: true,
           }
         );
+        /** 웹뷰인 경우 토큰 쿠키에 저장 */
+        const { access_token: newAccessToken, refresh_token: newRefreshToken } = data.data;
+        if (isWebview() && newAccessToken && newRefreshToken) {
+          setCookie('access_token', newAccessToken, { hours: 1 });
+          setCookie('refresh_token', newRefreshToken, { days: 14 });
+        }
+
+        /** 큐에 대기한 요청들을 일괄 처리 */
         processQueue(null);
         return clientApi(originalRequest);
+
+        /** refresh 요청 실패 시 로그인 페이지로 리다이렉트 */
       } catch (refreshError) {
         processQueue(refreshError);
-        if (typeof window !== 'undefined') {
-          // window.location.href = '/login';
-        }
+        if (typeof window !== 'undefined')
+          window.location.href = getLoginPath(
+            `${window.location.pathname}${window.location.search}`
+          );
+
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

@@ -13,15 +13,13 @@ export const usePostGuestLogin = () => {
   const { mutate: postGuestLoginMutation, isPending: isPostGuestLoginPending } = useMutation({
     mutationFn: postGuestLogin,
     onSuccess: data => {
-      router.push(ROUTES.HOME);
-
       if (isWebview() && data.accessToken && data.refreshToken) {
-        setCookie('access_token', data.accessToken);
-        setCookie('refresh_token', data.refreshToken);
+        setCookie('access_token', data.accessToken, { minutes: 15 });
+        setCookie('refresh_token', data.refreshToken, { days: 14 });
         // TODO: 웹뷰로 로그인 정보 전송
       }
 
-
+      router.replace(ROUTES.HOME);
     },
   });
 
