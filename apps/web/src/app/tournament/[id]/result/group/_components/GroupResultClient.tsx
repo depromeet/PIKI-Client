@@ -12,27 +12,13 @@ import { cn } from '@/utils/cn';
 import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
 import { useGetGroupResult } from '../../_hooks/useGetGroupResult';
 import type { GroupResultItemT, GroupResultParticipantT } from '../../_types/groupResult';
+import { formatDate, formatPrice, formatTime } from '../../_utils/formatReceipt';
 
 const kodeMono = Kode_Mono({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 type GroupResultClientProps = {
   tournamentId: number;
 };
-
-const formatDate = (date: Date) => {
-  const dd = String(date.getDate()).padStart(2, '0');
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const yyyy = date.getFullYear();
-  return `${dd}/${mm}/${yyyy}`;
-};
-
-const formatTime = (date: Date) => {
-  const hh = String(date.getHours()).padStart(2, '0');
-  const mm = String(date.getMinutes()).padStart(2, '0');
-  return `${hh}:${mm}`;
-};
-
-const formatPrice = (price: number) => `${price.toLocaleString('ko-KR')}원`;
 
 const buildChosenByLabel = (chosenBy: GroupResultParticipantT[]) => {
   const [first, ...rest] = chosenBy;
