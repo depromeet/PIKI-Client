@@ -6,8 +6,9 @@ import AddIcon from '@/assets/icons/fill/add.svg';
 import Button from '@/components/button';
 import { Dialog, DialogTrigger } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
-import type { TournamentItemT } from '@/types/tournament';
 import { parseIdParam } from '@/utils/parseIdParam';
+
+import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
 
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
@@ -17,7 +18,7 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 
 type TournamentItemBasketProps = {
   basketIndex: number;
-  items: TournamentItemT[];
+  items: TournamentPendingItemT[];
   maxHeight?: number;
   isDepositClosed?: boolean;
 };
@@ -32,7 +33,7 @@ function TournamentItemBasket({
   const tournamentId = parseIdParam(_tournamentId);
   const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
-  const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
+  const [failedItem, setFailedItem] = useState<TournamentPendingItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
     if (!tournamentId) return;

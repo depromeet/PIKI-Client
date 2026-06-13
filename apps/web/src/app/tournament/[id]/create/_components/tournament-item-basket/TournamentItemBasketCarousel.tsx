@@ -3,8 +3,9 @@
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
-import type { TournamentItemT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
+
+import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
 
 import {
   BASKET_CAROUSEL_SLIDE_SIZE_PERCENT,
@@ -15,7 +16,7 @@ import CarouselIndicator from './CarouselIndicator';
 import TournamentItemBasket from './TournamentItemBasket';
 
 type TournamentItemBasketCarouselProps = {
-  items?: TournamentItemT[];
+  items?: TournamentPendingItemT[];
   scrollToLast?: boolean;
   onScrolled?: () => void;
   isDepositClosed?: boolean;

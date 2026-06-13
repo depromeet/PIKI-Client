@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { ChevronBackwardIconFill } from '@/assets/icons/fill';
 
-import { useGetTournament } from '../../_hooks/useGetTournament';
+import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
 import ConfirmExitDialog from './ConfirmExitDialog';
 
 type TournamentHeaderProps = {
@@ -18,7 +18,8 @@ function TournamentHeader({ name }: TournamentHeaderProps) {
   const { tournamentData } = useGetTournament(Number(tournamentId));
   const [isExitConfirmOpen, setIsExitConfirmOpen] = useState(false);
 
-  const hasFriends = (tournamentData.pending?.participants.length ?? 0) > 1;
+  const pending = 'pending' in tournamentData ? tournamentData.pending : null;
+  const hasFriends = (pending?.participants.length ?? 0) > 1;
 
   const handleBackClick = () => {
     if (hasFriends) {

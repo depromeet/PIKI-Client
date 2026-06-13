@@ -14,7 +14,7 @@ import {
   consumeJoinWelcomeFor,
 } from '../../../join/_utils/joinSession';
 import { useCountdown } from '../_hooks/useCountdown';
-import { useGetTournament } from '../_hooks/useGetTournament';
+import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import DepositCountdown from './deposit-countdown/DepositCountdown';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
@@ -39,10 +39,14 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   // 본인이 "시작" 버튼을 눌러 CLONE 을 만들고 그 ID 로 매치 화면 진입한다.
   // → status 기반 자동 라우팅이 필요 없다.
 
+  // create 화면은 pending payload 가 있는 상태(PENDING / IN_PROGRESS-MemberWaiting) 만 다룬다.
+  // 그 외 상태는 RSC/match·result 페이지에서 라우팅되므로 여기서는 빈 값으로 안전 처리.
+  const pending = 'pending' in tournamentData ? tournamentData.pending : null;
+
   // 주최자가 ROOT 를 시작한 후(ownerStarted=true) 에는 초대 기간이 이미 종료된 상태라
   // inviteExpiresAt 이 null 이고 담기 마감 카운트다운도 의미 없다.
-  const ownerStarted = tournamentData.pending?.ownerStarted ?? false;
-  const depositDeadline = tournamentData.pending?.inviteExpiresAt ?? '';
+  const ownerStarted = pending?.ownerStarted ?? false;
+  const depositDeadline = pending?.inviteExpiresAt ?? '';
   const { isExpired } = useCountdown(depositDeadline);
   // 담기 마감 = 초대 코드 만료 시점 (둘은 동일 정책으로 운영).
   // 단, 주최자는 만료 영향 없이 본인 토너먼트에 후보를 담을 수 있다.
@@ -51,7 +55,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   // 비회원(GUEST) 은 서버가 dicebear 자동 아바타를 내려주는데,
   // 우리 디자인상 비회원은 기본 SVG 프로필을 노출해야 하므로 무시한다.
   const isGeneratedAvatar = (url: string) => url.includes('api.dicebear.com');
-  const participants = (tournamentData.pending?.participants ?? []).map(p => ({
+  const participants = (pending?.participants ?? []).map(p => ({
     user: {
       id: p.userId,
       name: p.nickname,
@@ -83,20 +87,18 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <TournamentHeader name={tournamentData.name} />
         <ParticipantPanel
           participants={participants}
-          inviteCode={tournamentData.pending?.inviteCode ?? ''}
-          inviteExpiresAt={tournamentData.pending?.inviteExpiresAt ?? ''}
+          inviteCode={pending?.inviteCode ?? ''}
+          inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
         />
         <TournamentItemBasketStatus
-          isProcessing={
-            tournamentData.pending?.items.some(item => item.status === 'PROCESSING') ?? false
-          }
-          count={tournamentData.pending?.items.length ?? 0}
+          isProcessing={pending?.items.some(item => item.status === 'PROCESSING') ?? false}
+          count={pending?.items.length ?? 0}
           isDepositClosed={isDepositClosed}
         />
       </div>
 
       <TournamentItemBasketCarousel
-        items={tournamentData.pending?.items}
+        items={pending?.items}
         scrollToLast={scrollToLast}
         onScrolled={onScrolled}
         isDepositClosed={isDepositClosed}
@@ -107,10 +109,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           <DepositCountdown deadline={depositDeadline} />
         )}
         <TournamentStartButton
-          count={tournamentData.pending?.items.length ?? 0}
+          count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
           hasUnreadyItem={
-            tournamentData.pending?.items.some(
+            pending?.items.some(
               item => item.status === 'PROCESSING' || item.status === 'FAILED'
             ) ?? false
           }

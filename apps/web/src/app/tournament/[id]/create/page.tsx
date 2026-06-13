@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getTournament } from './_apis/getTournament';
+import { getTournament } from '../_common/_apis/getTournament';
 import TournamentCreateClient from './_components/TournamentCreateClient';
 
 type TournamentCreatePageProps = {
