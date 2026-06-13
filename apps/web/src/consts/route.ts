@@ -30,4 +30,7 @@ export const ROUTES = {
   TOURNAMENT_LOADING: (tournamentId: number) => `/tournament/${tournamentId}/loading`,
   TOURNAMENT_MATCH: (tournamentId: number) => `/tournament/${tournamentId}/match`,
   TOURNAMENT_RESULT: (tournamentId: number) => `/tournament/${tournamentId}/result`,
+  TOURNAMENT_GROUP_RESULT: (tournamentId: number) => `/tournament/${tournamentId}/result/group`,
+  /** 플레이 링크 진입 — 친구가 받은 URL 클릭 시 */
+  PLAY_FROM_LINK: (sourceTournamentId: number) => `/play/${sourceTournamentId}`,
 } as const;

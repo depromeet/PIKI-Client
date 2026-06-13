@@ -1,0 +1,128 @@
+'use client';
+
+import { useMemo } from 'react';
+import { toast } from 'sonner';
+
+import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
+import Button from '@/components/button';
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
+import { share } from '@/utils/share';
+
+type InviteFriendsDialogProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  inviteUrl?: string;
+  /** ISO 8601 — 초대 코드 만료 시각 */
+  inviteExpiresAt?: string;
+};
+
+const isSameDay = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate();
+
+const formatExpiresInfo = (expiresAt: string | undefined) => {
+  if (!expiresAt) return null;
+  const expires = new Date(expiresAt);
+  if (Number.isNaN(expires.getTime())) return null;
+
+  const now = new Date();
+  const remainingMs = expires.getTime() - now.getTime();
+  if (remainingMs <= 0) return { remainingLabel: '마감', absoluteLabel: '만료됨' };
+
+  const totalMinutes = Math.floor(remainingMs / 60_000);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  const remainingLabel = (() => {
+    if (totalMinutes < 60) return `${totalMinutes}분 후 마감`;
+    if (minutes === 0) return `${hours}시간 후 마감`;
+    return `${hours}시간 ${minutes}분 후 마감`;
+  })();
+
+  const hh = String(expires.getHours()).padStart(2, '0');
+  const mm = String(expires.getMinutes()).padStart(2, '0');
+  const dayPrefix = (() => {
+    if (isSameDay(now, expires)) return '오늘';
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (isSameDay(tomorrow, expires)) return '내일';
+    return `${expires.getMonth() + 1}월 ${expires.getDate()}일`;
+  })();
+
+  return { remainingLabel, absoluteLabel: `${dayPrefix} ${hh}:${mm}까지` };
+};
+
+function InviteFriendsDialog({
+  open,
+  onOpenChange,
+  inviteUrl,
+  inviteExpiresAt,
+}: InviteFriendsDialogProps) {
+  const expiresInfo = useMemo(() => formatExpiresInfo(inviteExpiresAt), [inviteExpiresAt]);
+
+  const handleSendInviteLink = async () => {
+    if (!inviteUrl) return;
+
+    const result = await share({
+      title: 'piki 토너먼트 초대',
+      text: '친구와 함께 piki 토너먼트에 담아봐요!',
+      url: inviteUrl,
+    });
+
+    if (result === 'shared' || result === 'copied') {
+      toast.success('링크를 성공적으로 공유했어요.');
+    }
+    if (result === 'failed') toast.warning('공유에 실패했어요. 다시 시도해주세요.');
+  };
+
+  return (
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerContent>
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-1">
+            <DrawerTitle className="heading-1 text-text-neutral-primary">친구 초대하기</DrawerTitle>
+            <DrawerDescription className="body-1-medium text-text-neutral-tertiary">
+              초대 링크를 보내 친구와 함께 담을 수 있어요.
+            </DrawerDescription>
+          </div>
+
+          {expiresInfo && (
+            <div className="flex w-full items-center justify-between rounded-xl border border-border-neutral-muted bg-bg-layer-default px-4 py-5">
+              <div className="flex items-center gap-4">
+                <div className="flex size-11 items-center justify-center rounded-3xl bg-blue-50">
+                  <StopwatchIconFill className="size-6 text-text-accent" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <p className="body-2-semibold text-text-accent">{expiresInfo.remainingLabel}</p>
+                  <p className="heading-1 text-text-neutral-primary">{expiresInfo.absoluteLabel}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex w-full flex-col gap-2 rounded-xl bg-gray-50 p-4">
+            <div className="flex items-center gap-2">
+              <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
+              <p className="body-2-medium text-text-neutral-secondary">
+                최대 8명까지 초대할 수 있어요.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
+              <p className="body-2-medium text-text-neutral-secondary">
+                설정한 기한이 지나면 후보를 담을 수 없어요.
+              </p>
+            </div>
+          </div>
+
+          <Button size="lg" variant="primary" className="w-full" onClick={handleSendInviteLink}>
+            초대 링크 보내기
+          </Button>
+        </div>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+
+export default InviteFriendsDialog;

@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/dialog';
+
 import { usePostLogout } from '../_hooks/usePostLogout';
 
 function LogoutMenuItem() {

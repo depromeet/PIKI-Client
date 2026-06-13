@@ -26,3 +26,8 @@ type BaseUserT = {
   /** 유저 프로필 이미지 URL */
   profileImage: string;
 };
+
+/** 닉네임 중복 체크 응답 */
+export type GetNicknameCheckResponseT = {
+  available: boolean;
+};

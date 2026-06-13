@@ -19,7 +19,9 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
         if (item.status === 'FAILED') return <WishFailedCard key={item.id} wishId={item.id} />;
         else if (item.status === 'PROCESSING') return <WishProcessingCard key={item.id} />;
 
-        const card = <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />;
+        const card = (
+          <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />
+        );
 
         if (isDeleteMode) {
           const isSelected = selectedIds?.has(item.id) ?? false;
@@ -31,7 +33,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
               aria-pressed={isSelected}
               className="relative text-left transition-opacity active:opacity-80"
             >
-              {card}
+              <WishCard name={item.name} price={item.price} imageUrl={item.imageUrl} />
               <span className="pointer-events-none absolute top-3 left-3 z-10 size-6">
                 {isSelected ? (
                   <CheckboxSelectedIconFill className="size-6 text-uac-light" />

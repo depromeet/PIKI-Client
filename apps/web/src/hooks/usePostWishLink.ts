@@ -33,9 +33,7 @@ export const usePostWishLink = () => {
       if (error.response.status === 400) toast.error(error.response.data.detail);
       else if (error.response.status === 403) {
         toast.error(error.response.data.detail);
-        router.replace(
-          getLoginPath(`${window.location.pathname}${window.location.search}`)
-        );
+        router.replace(getLoginPath(`${window.location.pathname}${window.location.search}`));
       }
     },
   });

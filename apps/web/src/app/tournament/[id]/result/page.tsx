@@ -17,17 +17,12 @@ async function TournamentResultPage({ params }: TournamentResultPageProps) {
   const tournamentId = Number(id);
 
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ['tournament', tournamentId],
-    queryFn: () => getTournament(tournamentId),
-  });
+  // prefetchQuery 가 아닌 직접 fetch — 매치 결승 직후 시드(hasGroupResult=false 등)는
+  // 결과 페이지에서는 권위 응답으로 반드시 덮어써야 한다.
+  const tournamentData = await getTournament(tournamentId);
+  queryClient.setQueryData<GetTournamentResponseT>(['tournament', tournamentId], tournamentData);
 
-  const tournamentData = queryClient.getQueryData<GetTournamentResponseT>([
-    'tournament',
-    tournamentId,
-  ]);
-
-  if (tournamentData && tournamentData.status !== 'COMPLETED') {
+  if (tournamentData.status !== 'COMPLETED') {
     redirect(ROUTES.TOURNAMENT_MATCH(tournamentId));
   }
 

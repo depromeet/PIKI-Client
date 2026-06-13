@@ -2,10 +2,10 @@ import { clientApi } from '@/apis/client';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
-import type { PostTournamentStartResponseT } from '../_types/tournament';
+import type { PostStartTournamentResponseT } from '../../_common/_types/tournamentResponse';
 
 export const postTournamentStart = async (tournamentId: number) => {
-  const { data } = await clientApi.post<ApiResponseT<PostTournamentStartResponseT>>(
+  const { data } = await clientApi.post<ApiResponseT<PostStartTournamentResponseT>>(
     ENDPOINTS.TOURNAMENT_START(Number(tournamentId))
   );
 

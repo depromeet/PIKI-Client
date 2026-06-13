@@ -61,10 +61,10 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        /** 토큰 갱신 */
+        /** 토큰 갱신 — body 없는 POST 라도 빈 객체로 보내야 일부 백엔드가 415 안 던진다. */
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}${ENDPOINTS.AUTH_TOKEN_REFRESH}`,
-          null,
+          {},
           {
             withCredentials: true,
           }

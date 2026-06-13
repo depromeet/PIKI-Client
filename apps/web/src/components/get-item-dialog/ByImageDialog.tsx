@@ -15,7 +15,6 @@ import type { ItemTypeT } from '@/types/item';
 
 import Spacing from '../spacing';
 
-
 const MAX_IMAGE_COUNT = 5;
 
 type Props = {

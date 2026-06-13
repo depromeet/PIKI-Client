@@ -7,7 +7,6 @@ import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Input from '@/components/input';
 import Spacing from '@/components/spacing';
-
 import type { ItemStatusT } from '@/types/item';
 import { cn } from '@/utils/cn';
 import formatPrice from '@/utils/formatPrice';
