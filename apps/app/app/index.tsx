@@ -21,7 +21,9 @@ import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
   const webviewRef = useRef<WebView | null>(null);
-  const [webviewUri, setWebviewUri] = useState(process.env.EXPO_PUBLIC_WEB_URL);
+  const [webviewUri, setWebviewUri] = useState(
+    process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000'
+  );
 
   const { handleLogin } = useSocialLogin();
   const { isSynced } = useWebviewCookieSync();
