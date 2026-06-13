@@ -12,6 +12,7 @@ import { USER_AGENT } from '@/constants/userAgent';
 import { useShareIntent } from '@/hooks/useShareIntent';
 import { useSocialLogin } from '@/hooks/useSocialLogin';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
+import { useWebDeepLink } from '@/hooks/useWebDeepLink';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { handleRequestPushPermission, syncPushStatusToWeb } from '@/utils/pushNotification';
@@ -23,15 +24,18 @@ function Page() {
   const [webviewUri, setWebviewUri] = useState(
     process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000'
   );
+
   const { handleLogin } = useSocialLogin();
   const { isSynced } = useWebviewCookieSync();
+
+  const handleWebviewUriChange = useCallback((uri: string) => setWebviewUri(uri), []);
+
+  useWebDeepLink(handleWebviewUriChange);
 
   useEffect(() => {
     WebBridge.setRef(webviewRef);
     return () => WebBridge.clearRef(webviewRef);
   }, []);
-
-  const handleWebviewUriChange = useCallback((uri: string) => setWebviewUri(uri), []);
 
   const { sendShareIntent } = useShareIntent({
     onChangeWebviewUri: handleWebviewUriChange,
