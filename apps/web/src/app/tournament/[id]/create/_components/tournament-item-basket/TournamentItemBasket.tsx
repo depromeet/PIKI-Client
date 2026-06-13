@@ -6,9 +6,8 @@ import AddIcon from '@/assets/icons/fill/add.svg';
 import Button from '@/components/button';
 import { Dialog, DialogTrigger } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
-import type { TournamentItemT } from '@/types/tournament';
-import { parseIdParam } from '@/utils/parseIdParam';
 
+import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
 import EmptyBasketSlot from './EmptyBasketSlot';
@@ -17,20 +16,25 @@ import TournamentItemFailedModal from './TournamentItemFailedDrawer';
 
 type TournamentItemBasketProps = {
   basketIndex: number;
-  items: TournamentItemT[];
-  maxHeight?: number | null;
+  items: TournamentPendingItemT[];
+  maxHeight?: number;
+  isDepositClosed?: boolean;
 };
 
-function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemBasketProps) {
-  const { id: _tournamentId } = useParams<{ id: string }>();
-  const tournamentId = parseIdParam(_tournamentId);
+function TournamentItemBasket({
+  basketIndex,
+  items,
+  maxHeight,
+  isDepositClosed = false,
+}: TournamentItemBasketProps) {
+  const { id } = useParams<{ id: string }>();
+  const tournamentId = Number(id);
+
   const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
-  const [failedItem, setFailedItem] = useState<TournamentItemT | null>(null);
+  const [failedItem, setFailedItem] = useState<TournamentPendingItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
-    if (!tournamentId) return;
-
     // if (item.status === 'READY')
     // router.push(ROUTES.TOURNAMENT_ITEM_EDIT(String(tournamentId), String(item.tournamentItemId))); // TODO: 변경된 디자인에 맞춰 수정 필요
 
@@ -62,16 +66,22 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
                   onClick={() => handleItemClick(item)}
                 />
               );
-            return <EmptyBasketSlot key={`empty-${slotIndex}`} slotIndex={slotIndex} />;
+            return (
+              <EmptyBasketSlot
+                key={`empty-${slotIndex}`}
+                slotIndex={slotIndex}
+                isDepositClosed={isDepositClosed}
+              />
+            );
           })}
 
-          {items.length < ITEMS_PER_BASKET && (
+          {!isDepositClosed && (
             <Dialog>
               <DialogTrigger asChild>
                 <Button
                   icon="only"
                   aria-label="위시 아이템 추가"
-                  className="absolute top-1/2 left-1/2 size-[60px] -translate-x-1/2 -translate-y-1/2 shadow-lg"
+                  className="absolute top-1/2 left-1/2 size-15 -translate-x-1/2 -translate-y-1/2 shadow-lg"
                 >
                   <AddIcon width={32} height={32} className="text-white" aria-hidden />
                 </Button>
@@ -81,7 +91,7 @@ function TournamentItemBasket({ basketIndex, items, maxHeight }: TournamentItemB
           )}
         </div>
       </div>
-      {failedItem && tournamentId && (
+      {failedItem && (
         <TournamentItemFailedModal
           open
           tournamentId={tournamentId}

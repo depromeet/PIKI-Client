@@ -1,8 +1,11 @@
 'use client';
 
-import { PersonIconFill } from '@/assets/icons/fill';
+import Link from 'next/link';
 
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../dialog';
+import { PersonIconFill, SettingsIconFill } from '@/assets/icons/fill';
+import { ROUTES } from '@/consts/route';
+
+import { Popover, PopoverClose, PopoverContent, PopoverTitle, PopoverTrigger } from '../popover';
 
 type ProfileHeaderIconProps = {
   onClick?: () => void;
@@ -18,17 +21,31 @@ type ProfileHeaderIconProps = {
  */
 function ProfileHeaderIcon({ onClick, className }: ProfileHeaderIconProps) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button type="button" aria-label="마이페이지" className={className} onClick={onClick}>
+    <Popover>
+      <PopoverTrigger asChild>
+        <button type="button" aria-label="마이페이지" className={className}>
           <PersonIconFill className="size-6 text-icon-neutral-secondary" />
         </button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogTitle>프로필 다이얼로그 구현 전</DialogTitle>
-        <DialogDescription className="sr-only">마이페이지 내용</DialogDescription>
-      </DialogContent>
-    </Dialog>
+      </PopoverTrigger>
+      <PopoverContent className="w-[184px] p-2" align="end" sideOffset={8}>
+        <PopoverTitle className="sr-only">마이페이지 메뉴</PopoverTitle>
+        <PopoverClose asChild>
+          <Link
+            href={ROUTES.MYPAGE}
+            className="flex w-full cursor-pointer items-center gap-3 px-4 py-3"
+          >
+            <SettingsIconFill className="size-6 shrink-0 text-icon-neutral-primary" aria-hidden />
+            <span className="body-1-semibold text-text-neutral-primary">설정</span>
+          </Link>
+        </PopoverClose>
+
+        {/** TODO: 버튼 액션 정해지면 활성화 예정. 작동하지 않는 버튼 보이지 않게 하기 위해 주석처리 함 */}
+        {/* <button type="button" className={profileMenuItemClassName}>
+          <MessageIconFill className="size-6 shrink-0 text-icon-neutral-primary" aria-hidden />
+          <span className="body-1-semibold text-text-neutral-primary">의견 보내기</span>
+        </button> */}
+      </PopoverContent>
+    </Popover>
   );
 }
 

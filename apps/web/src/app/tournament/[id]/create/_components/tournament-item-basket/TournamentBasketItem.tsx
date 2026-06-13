@@ -1,9 +1,10 @@
 import ProductImage from '@/app/tournament/[id]/create/_components/product-image';
-import type { TournamentItemT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
+import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
+
 type TournamentBasketItemProps = {
-  item: TournamentItemT;
+  item: TournamentPendingItemT;
   index: number;
   onClick?: () => void;
 };

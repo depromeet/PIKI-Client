@@ -4,13 +4,16 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "predev": "node scripts/prebuild.mjs",
     "dev": "next dev --port 3000",
+    "prebuild": "node scripts/prebuild.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
     "@piki/core": "workspace:*",
     "@tanstack/react-query": "^5.96.2",
     "@tanstack/react-query-devtools": "^5.96.2",

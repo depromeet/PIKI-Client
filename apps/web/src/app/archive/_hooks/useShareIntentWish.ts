@@ -45,9 +45,7 @@ export const useShareIntentWish = () => {
       }
 
       hasProcessedRef.current = true;
-      postWishLinkMutation(url, {
-        onSuccess: () => toast.success('위시에 상품을 담았어요'),
-      });
+      postWishLinkMutation(url);
     },
     [postWishLinkMutation]
   );

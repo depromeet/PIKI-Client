@@ -3,12 +3,11 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
 type ImgEvent = SyntheticEvent<HTMLImageElement>;
-
 type ImageState = 'loading' | 'success' | 'error';
 
 type BaseImageProps = Omit<ImageProps, 'src' | 'fill'> & {
@@ -28,12 +27,19 @@ function BaseImage({
   ...imageProps
 }: BaseImageProps) {
   const [state, setState] = useState<ImageState>('loading');
-  const [prevSrc, setPrevSrc] = useState(src);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  if (prevSrc !== src) {
-    setPrevSrc(src);
-    setState('loading');
-  }
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      const isError = imgRef.current.naturalWidth === 0;
+
+      const timer = setTimeout(() => {
+        setState(isError ? 'error' : 'success');
+      }, 0);
+
+      return () => clearTimeout(timer);
+    }
+  }, [src]);
 
   const handleLoad = (e: ImgEvent) => {
     setState('success');
@@ -45,12 +51,17 @@ function BaseImage({
     onError?.(e);
   };
 
+  let fragmentKey = '';
+  if (typeof src === 'string') fragmentKey = src;
+  else if (src && 'src' in src) fragmentKey = src.src;
+
   return (
-    <>
+    <React.Fragment key={fragmentKey}>
       {state === 'loading' && loadingFallback}
       {state === 'error' && errorFallback}
       <Image
         {...imageProps}
+        ref={imgRef}
         src={src}
         alt={alt}
         fill
@@ -63,7 +74,7 @@ function BaseImage({
           className
         )}
       />
-    </>
+    </React.Fragment>
   );
 }
 

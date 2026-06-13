@@ -19,7 +19,7 @@ type ProductImageProps = Omit<ImageProps, 'width' | 'height' | 'src'> & {
   size?: SizeVariantT;
   /** true면 부모 크기에 맞게 꽉 채움 (size prop 무시) */
   fill?: boolean;
-  /** 파싱 상태. PROCESSING이면 스피너, FAILED이면 경고 아이콘 표시 */
+  /** 파싱 상태. PENDING·PROCESSING이면 스피너, FAILED이면 경고 아이콘 표시 */
   parsingStatus?: ItemStatusT;
   /** 로딩 중 표시할 커스텀 UI */
   loadingFallback?: ReactNode;
@@ -51,7 +51,7 @@ function ProductImage({
         className={containerClass}
         {...(!fill ? { style: { width: dimension, height: dimension } } : {})}
       >
-        {parsingStatus === 'PROCESSING' && <LoadingFallback />}
+        {(parsingStatus === 'PENDING' || parsingStatus === 'PROCESSING') && <LoadingFallback />}
         {parsingStatus === 'FAILED' &&
           (size === 'lg' ? <LgErrorFallback radius={radius} /> : <SmErrorFallback />)}
       </div>

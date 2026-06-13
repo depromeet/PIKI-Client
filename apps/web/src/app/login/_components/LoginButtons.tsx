@@ -6,52 +6,51 @@ import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
+import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
+import { WebBridge } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
 import { usePostGuestLogin } from '../_hooks/usePostGuestLogin';
 import SocialLoginButton from './SocialLoginButton';
 
-function LoginButtons() {
-  const { postGuestLoginMutation } = usePostGuestLogin();
-  useNativeLoginResult();
+type LoginButtonsProps = {
+  redirect: string | null;
+};
 
-  const handleKakaoLogin = () => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+function LoginButtons({ redirect }: LoginButtonsProps) {
+  const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
+  const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
+  useNativeLoginResult(validRedirect);
 
-    if (rnWebView) {
-      rnWebView.postMessage(
-        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'kakao' } })
-      );
-      return;
-    }
+  const handleKakaoLogin = async () => {
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
+      payload: { provider: 'kakao' },
+    });
 
-    getAuthUrl('kakao').then(({ url }) => { window.location.href = url; });
+    setLoginRedirectPath(validRedirect);
+    const { url } = await getAuthUrl('kakao', validRedirect);
+    window.location.href = url;
   };
 
-  const handleGoogleLogin = () => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+  const handleGoogleLogin = async () => {
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
+      payload: { provider: 'google' },
+    });
 
-    if (rnWebView) {
-      rnWebView.postMessage(
-        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'google' } })
-      );
-      return;
-    }
-
-    getAuthUrl('google').then(({ url }) => { window.location.href = url; });
+    setLoginRedirectPath(validRedirect);
+    const { url } = await getAuthUrl('google', validRedirect);
+    window.location.href = url;
   };
 
   const handleAppleLogin = async () => {
-    const rnWebView = (window as Window & { ReactNativeWebView?: { postMessage: (msg: string) => void } }).ReactNativeWebView;
+    WebBridge.postMessage({
+      type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN,
+      payload: { provider: 'apple' },
+    });
 
-    if (rnWebView) {
-      rnWebView.postMessage(
-        JSON.stringify({ type: WEBBRIDGE_MESSAGE_TYPE.REQUEST_SOCIAL_LOGIN, payload: { provider: 'apple' } })
-      );
-      return;
-    }
-
-    const { url } = await getAuthUrl('apple');
+    const { url } = await getAuthUrl('apple', validRedirect);
     window.location.href = url;
   };
 
@@ -82,17 +81,22 @@ function LoginButtons() {
 
       <button
         type="button"
+        disabled={isPostGuestLoginPending}
         onClick={handleGuestLogin}
         className="mt-7 cursor-pointer body-2-medium text-text-neutral-secondary underline underline-offset-2"
       >
         비회원으로 시작하기
       </button>
 
-      <p className="mt-9 text-center text-[11px] font-medium leading-[150%] tracking-[-0.232px] [font-feature-settings:'ss10'_on] text-text-neutral-tertiary">
+      <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
         가입 시{' '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">이용약관</span>
+        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+          이용약관
+        </span>
         {' 및 '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">개인정보 처리방침</span>
+        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+          개인정보 처리방침
+        </span>
         에 동의하게 됩니다.
       </p>
     </div>

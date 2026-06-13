@@ -1,8 +1,8 @@
+import type { SocialProviderT } from '@piki/core';
+
 import { clientApi } from '@/apis/client';
 import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
-import type { SocialProviderT } from '@piki/core';
-
 import type { PostSocialLoginResponseT } from '@/types/auth';
 
 type PostSocialLoginRequestT = {

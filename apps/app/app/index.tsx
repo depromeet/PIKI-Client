@@ -1,6 +1,5 @@
 import {
   WEBBRIDGE_MESSAGE_TYPE,
-  WEBVIEW_UA_TOKEN,
   WEB_REQ_READY_PAYLOAD_TYPE,
   type WebBridgeMessageT,
 } from '@piki/core';
@@ -9,6 +8,7 @@ import { KeyboardAvoidingView, Linking, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
+import { USER_AGENT } from '@/constants/userAgent';
 import { useShareIntent } from '@/hooks/useShareIntent';
 import { useSocialLogin } from '@/hooks/useSocialLogin';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
@@ -16,6 +16,7 @@ import { useWebDeepLink } from '@/hooks/useWebDeepLink';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { handleRequestPushPermission, syncPushStatusToWeb } from '@/utils/pushNotification';
+import { TokenStorage } from '@/utils/tokenStorage';
 import { WebBridge } from '@/utils/webBridge';
 
 function Page() {
@@ -67,6 +68,10 @@ function Page() {
           await Linking.openSettings();
           return;
 
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT:
+          await TokenStorage.clearTokens();
+          return;
+
         default:
           return;
       }
@@ -85,7 +90,7 @@ function Page() {
         <Webview
           ref={webviewRef}
           style={{ flex: 1 }}
-          applicationNameForUserAgent={WEBVIEW_UA_TOKEN}
+          applicationNameForUserAgent={USER_AGENT}
           source={{ uri: webviewUri }}
           onMessage={onMessage}
           allowsBackForwardNavigationGestures

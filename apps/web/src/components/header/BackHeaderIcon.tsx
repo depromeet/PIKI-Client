@@ -26,7 +26,7 @@ function BackHeaderIcon({ onClick, className }: BackHeaderIconProps) {
       onClick={onClick ?? router.back}
       className={className}
     >
-      <ChevronBackwardIconFill className="size-6 text-icon-neutral-secondary" />
+      <ChevronBackwardIconFill className="size-7.5 text-icon-neutral-secondary" />
     </button>
   );
 }
