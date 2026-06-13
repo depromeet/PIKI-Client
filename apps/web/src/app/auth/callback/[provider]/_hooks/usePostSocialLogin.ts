@@ -1,5 +1,5 @@
 import type { SocialProviderT } from '@piki/core';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
@@ -7,6 +7,8 @@ import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
 import { postSocialLogin } from '../_apis/postSocialLogin';
 
 export const usePostSocialLogin = (provider: SocialProviderT) => {
+  const queryClient = useQueryClient();
+
   const { mutate: postSocialLoginMutation, isPending: isPostSocialLoginPending } = useMutation({
     mutationFn: ({
       code,
@@ -20,6 +22,7 @@ export const usePostSocialLogin = (provider: SocialProviderT) => {
       state: string;
     }) => postSocialLogin(provider, { code, redirectUri, state }),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       window.location.replace(getLoginRedirectPath(variables.redirect));
     },
     onError: (_, variables) => {
