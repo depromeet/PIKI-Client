@@ -16,11 +16,23 @@ export const WebBridge = {
   },
 
   /** RN에서 웹으로 메시지 전송 */
-  postMessage(type: WebBridgeMessageT['type'], payload?: WebBridgeMessageT['payload']) {
+  postMessage(message: WebBridgeMessageT) {
     const target = webviewRef?.current;
     if (!target) return console.warn('[WEBVIEW] WebView 참조 없음');
 
-    const message = { type, payload };
     target.postMessage(JSON.stringify(message));
+  },
+
+  /** WebView document.cookie에 직접 주입 — WKHTTPCookieStore에 즉시 반영 */
+  injectCookies(cookies: Record<string, string>) {
+    const target = webviewRef?.current;
+    if (!target) return console.warn('[WEBVIEW] WebView 참조 없음 (injectCookies)');
+
+    const js = Object.entries(cookies)
+      .map(([k, v]) => `document.cookie = "${k}=${encodeURIComponent(v)}; path=/; samesite=lax;";`)
+      .join('\n');
+
+    target.injectJavaScript(`${js}\ntrue;`);
+    console.log('[WEBVIEW] 쿠키 주입 완료:', Object.keys(cookies).join(', '));
   },
 };

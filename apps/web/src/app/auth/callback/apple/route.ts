@@ -14,14 +14,11 @@ export async function POST(request: NextRequest) {
   const redirectUri = `${request.nextUrl.origin}/auth/callback/apple`;
 
   try {
-    const apiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login/apple`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, redirectUri, state }),
-      }
-    );
+    const apiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login/apple`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, redirectUri, state }),
+    });
 
     if (!apiResponse.ok) {
       return NextResponse.redirect(loginUrl, { status: 302 });

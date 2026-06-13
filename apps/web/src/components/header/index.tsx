@@ -64,8 +64,6 @@ function Header({
   );
 }
 
-const ICON_BASE_STYLE = 'p-[3px] cursor-pointer';
-
 function HeaderIcon({
   name,
   className,
@@ -77,21 +75,22 @@ function HeaderIcon({
 }) {
   switch (name) {
     case 'PROFILE':
-      return <ProfileHeaderIcon onClick={onClick} className={cn(ICON_BASE_STYLE, className)} />;
+      return (
+        <ProfileHeaderIcon onClick={onClick} className={cn('cursor-pointer p-[3px]', className)} />
+      );
     case 'ALARM':
       return (
-        // TODO: href 수정 필요
         <Link
-          href={ROUTES.ROOT}
+          href={ROUTES.NOTIFICATION}
           aria-label="알림"
-          className={cn(ICON_BASE_STYLE, className)}
+          className={cn('cursor-pointer p-[3px]', className)}
           onClick={onClick}
         >
           <NotificationIconFill className="size-6 text-icon-neutral-secondary" />
         </Link>
       );
     case 'BACK':
-      return <BackHeaderIcon onClick={onClick} className={cn(ICON_BASE_STYLE, className)} />;
+      return <BackHeaderIcon onClick={onClick} className={cn('cursor-pointer', className)} />;
     default:
       return null;
   }

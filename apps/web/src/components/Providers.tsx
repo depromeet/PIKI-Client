@@ -6,13 +6,27 @@ import { type ReactNode } from 'react';
 
 import NotificationSSEProvider from '@/components/notification-sse-provider';
 import { Toaster } from '@/components/toast';
+import { useDeepLink } from '@/hooks/useDeepLink';
+import { useFcmTokenSync } from '@/hooks/useFcmTokenSync';
 import { getQueryClient } from '@/utils/queryClient';
+
+function FcmTokenSyncer() {
+  useFcmTokenSync();
+  return null;
+}
+
+function DeepLinkHandler() {
+  useDeepLink();
+  return null;
+}
 
 function Providers({ children }: Readonly<{ children: ReactNode }>) {
   const queryClient = getQueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <FcmTokenSyncer />
+      <DeepLinkHandler />
       {children}
       <NotificationSSEProvider />
       <Toaster />

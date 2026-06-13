@@ -1,8 +1,7 @@
 'use client';
 
-import type { ReactNode } from 'react';
-
 import { cva } from 'class-variance-authority';
+import type { ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -19,18 +18,15 @@ const socialButtonStyles = cva(
   }
 );
 
-const labelStyles = cva(
-  'text-[16px] font-semibold leading-6 tracking-[-0.312px]',
-  {
-    variants: {
-      variant: {
-        google: 'text-text-neutral-primary',
-        apple: 'text-white',
-        kakao: 'text-text-neutral-primary',
-      },
+const labelStyles = cva('text-[16px] font-semibold leading-6 tracking-[-0.312px]', {
+  variants: {
+    variant: {
+      google: 'text-text-neutral-primary',
+      apple: 'text-white',
+      kakao: 'text-text-neutral-primary',
     },
-  }
-);
+  },
+});
 
 type SocialLoginButtonProps = {
   variant: 'google' | 'apple' | 'kakao';

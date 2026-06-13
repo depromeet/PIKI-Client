@@ -1,36 +1,7 @@
-import type { StaticImageData } from 'next/image';
-
 import type { ItemStatusT } from '@/types/item';
-import type { TournamentItemT, TournamentStatusT } from '@/types/tournament';
-
-export type TournamentParticipantT = {
-  userId: string;
-  nickname: string;
-  profileImage: string;
-};
-
-export type WishBasketItemT = {
-  tournamentItemId: number | string;
-  imageUrl: string | StaticImageData | null;
-  status?: ItemStatusT;
-};
-
-export type GetTournamentResponseT = {
-  tournamentId: number;
-  name: string;
-  status: TournamentStatusT;
-  pending?: {
-    items: TournamentItemT[];
-    participants: TournamentParticipantT[];
-  };
-};
 
 export type PostTournamentItemLinkResponseT = {
   tournamentItemId: number;
-};
-
-export type PostTournamentStartResponseT = {
-  items: Omit<TournamentItemT, 'itemId'>[];
 };
 
 export type GetTournamentItemResponseT = {

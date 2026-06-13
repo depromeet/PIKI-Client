@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 
-import { useGetWishlist } from '../../../hooks/useGetWishlist';
+import { useGetWishlist } from '@/hooks/useGetWishlist';
+
 import { useWishlistDelete } from '../_hooks/useDeleteWishes';
 import { useShareIntentWish } from '../_hooks/useShareIntentWish';
 import WishAddDialog from './WishAddDialog';

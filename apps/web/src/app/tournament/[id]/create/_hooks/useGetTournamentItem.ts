@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-
 import type { Query } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 import { getTournamentItem } from '../_apis/getTournamentItem';
 import type { GetTournamentItemResponseT } from '../_types/tournament';

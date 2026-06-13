@@ -1,7 +1,11 @@
-import NotificationIconFill from '@/assets/icons/fill/notification.svg';
+import { NotificationIconFill } from '@/assets/icons';
 import Button from '@/components/button';
 
-function NotificationEmptyState() {
+type NotificationEmptyStateProps = {
+  onOpenNotificationSettings: () => void;
+};
+
+function NotificationEmptyState({ onOpenNotificationSettings }: NotificationEmptyStateProps) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-[15px] px-6">
       <NotificationIconFill width={90} height={90} className="text-gray-100" aria-hidden />
@@ -13,7 +17,7 @@ function NotificationEmptyState() {
           친구를 초대해서 소식을 받아보세요
         </p>
       </div>
-      <Button variant="secondary" size="md">
+      <Button variant="secondary" size="md" onClick={onOpenNotificationSettings}>
         기기 알림 설정
       </Button>
     </div>
