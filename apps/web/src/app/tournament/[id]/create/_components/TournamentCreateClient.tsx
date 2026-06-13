@@ -14,12 +14,12 @@ import TournamentItemBasketCarousel from './tournament-item-basket/TournamentIte
 import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 
 type TournamentCreateClientProps = {
-  tournamentId: string;
+  tournamentId: number;
 };
 
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { scrollToLast, onScrolled } = useScrollToLast();
-  const { tournamentData } = useGetTournament(Number(tournamentId));
+  const { tournamentData } = useGetTournament(tournamentId);
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,

@@ -1,16 +1,17 @@
 import { clientApi } from '@/apis/client';
 import { ENDPOINTS } from '@/consts/api';
+import { ROUTES } from '@/consts/route';
 import type { ApiResponseT } from '@/types/api';
 import type { SocialProviderT } from '@piki/core';
 
 import type { GetAuthUrlResponseT } from '../_types/login';
 
-export const getAuthUrl = async (provider: SocialProviderT) => {
-  const redirectUri = `${window.location.origin}/auth/callback/${provider}`;
+export const getAuthUrl = async (provider: SocialProviderT, redirect: string | null) => {
+  const redirectUri = `${window.location.origin}${ROUTES.SOCIAL_LOGIN_CALLBACK(provider)}`;
 
   const { data } = await clientApi.get<ApiResponseT<GetAuthUrlResponseT>>(
     ENDPOINTS.AUTH_URL(provider),
-    { params: { redirectUri } }
+    { params: { redirect, redirectUri } }
   );
 
   return data.data;

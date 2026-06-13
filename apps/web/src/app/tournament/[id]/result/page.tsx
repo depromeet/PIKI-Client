@@ -1,12 +1,11 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { ROUTES } from '@/consts/route';
 import { getQueryClient } from '@/utils/queryClient';
 
 import { getTournament } from '../_common/_apis/getTournament';
 import type { GetTournamentResponseT } from '../_common/_types/tournamentResponse';
-import { parseTournamentId } from '../_common/_utils/parseTournamentId';
 import ResultClient from './_components/ResultClient';
 
 type TournamentResultPageProps = {
@@ -15,11 +14,7 @@ type TournamentResultPageProps = {
 
 async function TournamentResultPage({ params }: TournamentResultPageProps) {
   const { id } = await params;
-  const tournamentId = parseTournamentId(id);
-
-  if (tournamentId === null) {
-    notFound();
-  }
+  const tournamentId = Number(id);
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
