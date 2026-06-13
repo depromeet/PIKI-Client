@@ -1,25 +1,20 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { ChevronBackwardIconFill } from '@/assets/icons/fill';
 
-import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
 import ConfirmExitDialog from './ConfirmExitDialog';
 
 type TournamentHeaderProps = {
   name: string;
+  hasFriends: boolean;
 };
 
-function TournamentHeader({ name }: TournamentHeaderProps) {
+function TournamentHeader({ name, hasFriends }: TournamentHeaderProps) {
   const router = useRouter();
-  const { id: tournamentId } = useParams<{ id: string }>();
-  const { tournamentData } = useGetTournament(Number(tournamentId));
   const [isExitConfirmOpen, setIsExitConfirmOpen] = useState(false);
-
-  const pending = 'pending' in tournamentData ? tournamentData.pending : null;
-  const hasFriends = (pending?.participants.length ?? 0) > 1;
 
   const handleBackClick = () => {
     if (hasFriends) {

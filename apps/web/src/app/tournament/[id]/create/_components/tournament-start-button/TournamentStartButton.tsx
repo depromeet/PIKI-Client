@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Button from '@/components/button';
 import Spinner from '@/components/spinner';
 
-import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
 import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 import ConfirmStartDialog from './ConfirmStartDialog';
 
@@ -15,6 +14,8 @@ type TournamentStartButtonProps = {
   count: number;
   tournamentId: string;
   hasUnreadyItem: boolean;
+  hasFriends: boolean;
+  isWaitingForOwnerStart: boolean;
   isDepositClosed?: boolean;
   isParticipant?: boolean;
 };
@@ -23,19 +24,15 @@ function TournamentStartButton({
   count,
   tournamentId,
   hasUnreadyItem,
+  hasFriends,
+  isWaitingForOwnerStart,
   isDepositClosed = false,
   isParticipant = false,
 }: TournamentStartButtonProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { tournamentData } = useGetTournament(Number(tournamentId));
   const { postTournamentStartMutation, isPostTournamentStartPending } = usePostTournamentStart(
     Number(tournamentId)
   );
-
-  const pending = 'pending' in tournamentData ? tournamentData.pending : null;
-  // 참여자는 주최자가 ROOT 를 시작한 후(ownerStarted=true) 부터 본인 CLONE 시작 가능.
-  // ownerStarted=false 면 아직 주최자 시작 전 — "주최자가 시작해야..." 툴팁 노출.
-  const isWaitingForOwnerStart = isParticipant && pending?.ownerStarted === false;
 
   const [isTooltipVisible, setIsTooltipVisible] = useState(isWaitingForOwnerStart);
 
@@ -47,8 +44,6 @@ function TournamentStartButton({
     );
     return () => window.clearTimeout(timeoutId);
   }, [isWaitingForOwnerStart]);
-
-  const hasFriends = (pending?.participants.length ?? 0) > 1;
 
   const startTournament = () => postTournamentStartMutation();
 

@@ -73,6 +73,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
     consumeJoinConfirmFor(numericTournamentId)
   );
   const isParticipant = !tournamentData.isOwner;
+  // 참여자는 주최자가 ROOT 를 시작한 후(ownerStarted=true) 부터 본인 CLONE 시작 가능.
+  const isWaitingForOwnerStart = isParticipant && pending?.ownerStarted === false;
 
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
@@ -84,7 +86,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   return (
     <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-20 pb-8">
       <div className="space-y-4 px-5">
-        <TournamentHeader name={tournamentData.name} />
+        <TournamentHeader name={tournamentData.name} hasFriends={hasFriends} />
         <ParticipantPanel
           participants={participants}
           inviteCode={pending?.inviteCode ?? ''}
@@ -116,6 +118,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
               item => item.status === 'PROCESSING' || item.status === 'FAILED'
             ) ?? false
           }
+          hasFriends={hasFriends}
+          isWaitingForOwnerStart={isWaitingForOwnerStart}
           isDepositClosed={isDepositClosed}
           isParticipant={isParticipant}
         />
