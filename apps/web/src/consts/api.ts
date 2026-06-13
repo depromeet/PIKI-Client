@@ -1,4 +1,8 @@
 export const ENDPOINTS = {
+  /** 유저 */
+  USER: '/api/v1/users/me',
+  USER_PROFILE_IMAGE: '/api/v1/users/me/profile-image',
+
   /** 인증 */
   AUTH_URL: (provider: string) => `/api/v1/auth/${provider}/url`,
   AUTH_LOGIN: (provider: string) => `/api/v1/auth/login/${provider}`,
@@ -32,4 +36,7 @@ export const ENDPOINTS = {
   TOURNAMENT_FROM_PLAY_LINK: (sourceTournamentId: number) =>
     `/api/v1/tournaments/${sourceTournamentId}/from-play-link`,
   TOURNAMENT_GROUP_RESULT: (id: number) => `/api/v1/tournaments/${id}/group-result`,
+
+  /** FCM */
+  FCM_TOKENS: '/api/v1/fcm/tokens',
 } as const;

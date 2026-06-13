@@ -25,8 +25,8 @@ async function HomePage() {
       <Header
         right={
           <>
-            <HeaderIcon name="PROFILE" />
             <HeaderIcon name="ALARM" />
+            <HeaderIcon name="PROFILE" />
           </>
         }
       />

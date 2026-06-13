@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import Button from '@/components/button';
-import Spinner from '@/components/spinner';
 
 import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
 import ConfirmStartDialog from './ConfirmStartDialog';
@@ -67,9 +66,7 @@ function TournamentStartButton({
   };
 
   const isDisabled =
-    isWaitingForOwnerStart ||
-    isPostTournamentStartPending ||
-    (!isDepositClosed && (count < 2 || hasUnreadyItem));
+    isWaitingForOwnerStart || (!isDepositClosed && (count < 2 || hasUnreadyItem));
 
   return (
     <>
@@ -85,8 +82,14 @@ function TournamentStartButton({
         </div>
       )}
 
-      <Button variant="primary" size="lg" disabled={isDisabled} onClick={handleClick}>
-        {isPostTournamentStartPending ? <Spinner size={20} /> : '토너먼트 시작하기'}
+      <Button
+        variant="primary"
+        size="lg"
+        disabled={isDisabled}
+        isLoading={isPostTournamentStartPending}
+        onClick={handleClick}
+      >
+        토너먼트 시작하기
       </Button>
 
       <ConfirmStartDialog

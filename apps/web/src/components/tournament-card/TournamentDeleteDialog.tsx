@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/dialog';
-import Spinner from '@/components/spinner';
 import { useDeleteTournament } from '@/hooks/useDeleteTournament';
 
 type TournamentDeleteDialogProps = {
@@ -65,10 +64,10 @@ function TournamentDeleteDialog({ open, onOpenChange, tournamentId }: Tournament
             variant="primary"
             size="lg"
             className="flex-1"
+            isLoading={isDeleteTournamentPending}
             onClick={handleDeleteTournament}
-            disabled={isDeleteTournamentPending}
           >
-            {isDeleteTournamentPending ? <Spinner size={20} /> : '삭제하기'}
+            삭제하기
           </Button>
         </DialogFooter>
       </DialogContent>

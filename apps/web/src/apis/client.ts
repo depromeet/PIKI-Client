@@ -36,6 +36,7 @@ export const clientApi = axios.create({
 clientApi.interceptors.request.use(config => {
   const accessToken = getCookie('access_token');
   const isApp = isWebview();
+
   if (isApp && accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
   config.headers['X-Client-Type'] = isApp ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB;

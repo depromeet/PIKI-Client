@@ -9,15 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "usesAppleSignIn": true,
       "supportsTablet": false,
       "bundleIdentifier": "day.no30s.piki",
       "entitlements": {
+        "aps-environment": "development", // NOTE: 배포할때 'production'으로 변경
         "com.apple.security.application-groups": ["group.day.no30s.piki"]
       },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "AppGroup": "group.day.no30s.piki",
-        "AppGroupIdentifier": "group.day.no30s.piki"
+        "AppGroupIdentifier": "group.day.no30s.piki",
+        "UIBackgroundModes": ["remote-notification"]
       },
       "privacyManifests": {
         "NSPrivacyAccessedAPITypes": [
@@ -39,9 +42,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO", "android.permission.POST_NOTIFICATIONS"]
     },
     "web": {
       "output": "static",
@@ -119,7 +120,21 @@
           ]
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static",
+            "forceStaticLinking": ["RNFBApp", "RNFBMessaging"]
+          },
+          "android": {
+            "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

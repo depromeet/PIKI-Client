@@ -78,7 +78,8 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
         <Button
           variant="primary"
           size="lg"
-          disabled={selectedIds.length === 0 || isPostTournamentItemsByWishPending}
+          disabled={selectedIds.length === 0}
+          isLoading={isPostTournamentItemsByWishPending}
           onClick={handleNext}
         >
           다음

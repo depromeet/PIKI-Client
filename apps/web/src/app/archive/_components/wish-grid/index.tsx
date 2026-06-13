@@ -19,6 +19,10 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
         if (item.status === 'FAILED') return <WishFailedCard key={item.id} wishId={item.id} />;
         else if (item.status === 'PROCESSING') return <WishProcessingCard key={item.id} />;
 
+        const card = (
+          <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />
+        );
+
         if (isDeleteMode) {
           const isSelected = selectedIds?.has(item.id) ?? false;
           return (
@@ -41,9 +45,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
           );
         }
 
-        return (
-          <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />
-        );
+        return card;
       })}
     </div>
   );

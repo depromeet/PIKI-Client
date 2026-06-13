@@ -1,20 +1,24 @@
-import ChevronForwardIcon from '@/assets/icons/fill/chevron-forward.svg';
-import NotificationIconFill from '@/assets/icons/fill/notification.svg';
+import { ChevronForwardIconFill, NotificationIconFill } from '@/assets/icons';
 
-function PushDisabledBanner() {
+type Props = {
+  onOpenNotificationSettings: () => void;
+};
+
+function PushDisabledBanner({ onOpenNotificationSettings }: Props) {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-gray-75 px-4 py-4">
+    <button
+      type="button"
+      onClick={onOpenNotificationSettings}
+      className="flex w-full cursor-pointer items-center justify-between rounded-2xl bg-gray-75 px-4 py-4 text-left"
+    >
       <div className="flex h-6 items-center gap-3">
         <NotificationIconFill className="size-6 text-icon-neutral-secondary" aria-hidden />
         <span className="body-2-medium text-text-neutral-secondary">
           휴대폰의 앱 알림이 꺼져있어요
         </span>
       </div>
-      <ChevronForwardIcon
-        className="size-6 cursor-pointer text-icon-neutral-secondary"
-        aria-hidden
-      />
-    </div>
+      <ChevronForwardIconFill className="size-6 text-icon-neutral-secondary" aria-hidden />
+    </button>
   );
 }
 
