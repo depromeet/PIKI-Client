@@ -29,8 +29,8 @@ function TournamentItemBasket({
   maxHeight,
   isDepositClosed = false,
 }: TournamentItemBasketProps) {
-  const { id: _tournamentId } = useParams<{ id: string }>();
-  const tournamentId = parseIdParam(_tournamentId);
+  const { id } = useParams<{ id: string }>();
+  const tournamentId = parseIdParam(id);
   const basketMaxWidth = maxHeight ? (maxHeight * 356) / 464 : null;
 
   const [failedItem, setFailedItem] = useState<TournamentPendingItemT | null>(null);
