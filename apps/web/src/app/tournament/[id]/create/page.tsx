@@ -12,11 +12,12 @@ type TournamentCreatePageProps = {
 
 async function TournamentCreatePage({ params }: TournamentCreatePageProps) {
   const { id: tournamentId } = await params;
+  const numericTournamentId = Number(tournamentId);
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['tournament', tournamentId],
-    queryFn: () => getTournament(Number(tournamentId)),
+    queryKey: ['tournament', numericTournamentId],
+    queryFn: () => getTournament(numericTournamentId),
   });
 
   return (
