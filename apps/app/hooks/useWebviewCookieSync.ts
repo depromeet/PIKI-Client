@@ -1,5 +1,6 @@
 import CookieManager from '@react-native-cookies/cookies';
 import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
 import { TokenStorage } from '@/utils/tokenStorage';
 
@@ -17,20 +18,23 @@ export const useWebviewCookieSync = () => {
       const accessToken = await TokenStorage.getAccessToken();
       const refreshToken = await TokenStorage.getRefreshToken();
 
+      // iOS WKWebView는 WKHTTPCookieStore를 사용하므로 useWebKit: true 필요
+      const useWebKit = Platform.OS === 'ios';
+
       if (accessToken) {
-        await CookieManager.set(WEB_URL, {
-          name: 'access_token',
-          value: accessToken,
-          path: '/',
-        });
+        await CookieManager.set(
+          WEB_URL,
+          { name: 'access_token', value: accessToken, path: '/' },
+          useWebKit
+        );
       }
 
       if (refreshToken) {
-        await CookieManager.set(WEB_URL, {
-          name: 'refresh_token',
-          value: refreshToken,
-          path: '/',
-        });
+        await CookieManager.set(
+          WEB_URL,
+          { name: 'refresh_token', value: refreshToken, path: '/' },
+          useWebKit
+        );
       }
 
       setIsSynced(true);

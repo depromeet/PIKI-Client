@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { postWishOCR } from '@/apis/postWishOCR';
 import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
+import { getLoginPath } from '@/utils/loginRedirect';
 
 export const usePostWishOCR = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ export const usePostWishOCR = () => {
       if (error.response.status === 400) toast.error(error.response.data.detail);
       else if (error.response.status === 403) {
         toast.error(error.response.data.detail);
-        router.replace(ROUTES.LOGIN);
+        router.replace(getLoginPath(`${window.location.pathname}${window.location.search}`));
       }
     },
   });

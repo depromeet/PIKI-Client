@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 
+import { useGetWishlist } from '@/hooks/useGetWishlist';
 import { useSSEFallback } from '@/hooks/useSSEFallback';
 import { hasParsingItems } from '@/utils/item';
 
-import { useGetWishlist } from '../../../hooks/useGetWishlist';
 import { useWishlistDelete } from '../_hooks/useDeleteWishes';
 import { useShareIntentWish } from '../_hooks/useShareIntentWish';
 import WishAddDialog from './WishAddDialog';
