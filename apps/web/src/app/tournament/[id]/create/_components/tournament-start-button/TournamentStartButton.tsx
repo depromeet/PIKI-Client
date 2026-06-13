@@ -64,8 +64,7 @@ function TournamentStartButton({
     startTournament();
   };
 
-  const isDisabled =
-    isWaitingForOwnerStart || (!isDepositClosed && (count < 2 || hasUnreadyItem));
+  const isDisabled = isWaitingForOwnerStart || (!isDepositClosed && (count < 2 || hasUnreadyItem));
 
   return (
     <>

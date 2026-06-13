@@ -98,7 +98,13 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
             autoFocus
             inputMode="url"
           />
-          <Button size="lg" variant="primary" disabled={isEmpty} isLoading={isPending} onClick={handleSubmit}>
+          <Button
+            size="lg"
+            variant="primary"
+            disabled={isEmpty}
+            isLoading={isPending}
+            onClick={handleSubmit}
+          >
             {type === 'wish' && '위시리스트에 담기'}
             {type === 'tournament' && '후보 바구니에 담기'}
           </Button>

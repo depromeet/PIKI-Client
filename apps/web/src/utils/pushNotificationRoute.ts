@@ -1,4 +1,4 @@
-import { PUSH_NOTIFICATION_TYPE, type DeepLinkPayloadT } from '@piki/core';
+import { type DeepLinkPayloadT, PUSH_NOTIFICATION_TYPE } from '@piki/core';
 
 import { ROUTES } from '@/consts/route';
 

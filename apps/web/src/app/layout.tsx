@@ -1,9 +1,8 @@
+import { WEBVIEW_UA_TOKEN } from '@piki/core';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { headers } from 'next/headers';
 import React from 'react';
-
-import { WEBVIEW_UA_TOKEN } from '@piki/core';
 
 import { cn } from '@/utils/cn';
 

@@ -5,7 +5,6 @@ import { type FormEvent, useState } from 'react';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Spacing from '@/components/spacing';
-
 import { useGetMe } from '@/hooks/useGetMe';
 
 import { useNicknameValidation } from '../_hooks/useNicknameValidation';

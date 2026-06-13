@@ -8,7 +8,6 @@ import { Dialog, DialogTrigger } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 
 import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
-
 import basketImg from '../../_assets/basket-gray.png';
 import { ITEMS_PER_BASKET } from '../../_consts/tournamentItemBasket';
 import EmptyBasketSlot from './EmptyBasketSlot';

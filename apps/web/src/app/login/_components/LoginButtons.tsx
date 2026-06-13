@@ -115,7 +115,6 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
       </button>
 
       <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
-
         가입 시{' '}
         <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
           이용약관

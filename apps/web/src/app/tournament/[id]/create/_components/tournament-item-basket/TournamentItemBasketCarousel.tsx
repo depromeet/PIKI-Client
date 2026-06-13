@@ -6,7 +6,6 @@ import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/com
 import { cn } from '@/utils/cn';
 
 import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
-
 import {
   BASKET_CAROUSEL_SLIDE_SIZE_PERCENT,
   ITEMS_PER_BASKET,

@@ -13,8 +13,8 @@ import {
   consumeJoinConfirmFor,
   consumeJoinWelcomeFor,
 } from '../../../join/_utils/joinSession';
-import { useCountdown } from '../_hooks/useCountdown';
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
+import { useCountdown } from '../_hooks/useCountdown';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import DepositCountdown from './deposit-countdown/DepositCountdown';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
@@ -113,9 +113,8 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
           hasUnreadyItem={
-            pending?.items.some(
-              item => item.status === 'PROCESSING' || item.status === 'FAILED'
-            ) ?? false
+            pending?.items.some(item => item.status === 'PROCESSING' || item.status === 'FAILED') ??
+            false
           }
           hasFriends={hasFriends}
           isWaitingForOwnerStart={isWaitingForOwnerStart}
