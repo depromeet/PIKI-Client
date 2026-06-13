@@ -6,6 +6,8 @@ import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { useQueryAction } from '@/hooks/useQueryAction';
+import { useSSEFallback } from '@/hooks/useSSEFallback';
+import { hasParsingItems } from '@/utils/item';
 
 import {
   type JoinConfirmPayloadT,
@@ -41,6 +43,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   // create 화면은 pending payload 가 있는 상태(PENDING / IN_PROGRESS-MemberWaiting) 만 다룬다.
   // 그 외 상태는 RSC/match·result 페이지에서 라우팅되므로 여기서는 빈 값으로 안전 처리.
   const pending = 'pending' in tournamentData ? tournamentData.pending : null;
+
+  // 아이템 파싱 중이면 SSE 로 실시간 업데이트 (연결 실패 시 polling fallback).
+  const hasPendingItem = hasParsingItems(pending?.items ?? []);
+  useSSEFallback(['tournament', tournamentId], hasPendingItem);
 
   // 주최자가 ROOT 를 시작한 후(ownerStarted=true) 에는 초대 기간이 이미 종료된 상태라
   // inviteExpiresAt 이 null 이고 담기 마감 카운트다운도 의미 없다.
@@ -92,7 +98,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
         />
         <TournamentItemBasketStatus
-          isProcessing={pending?.items.some(item => item.status === 'PROCESSING') ?? false}
+          isProcessing={hasPendingItem}
           count={pending?.items.length ?? 0}
           isDepositClosed={isDepositClosed}
         />
@@ -113,8 +119,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
           hasUnreadyItem={
-            pending?.items.some(item => item.status === 'PROCESSING' || item.status === 'FAILED') ??
-            false
+            hasPendingItem || (pending?.items.some(item => item.status === 'FAILED') ?? false)
           }
           hasFriends={hasFriends}
           isWaitingForOwnerStart={isWaitingForOwnerStart}

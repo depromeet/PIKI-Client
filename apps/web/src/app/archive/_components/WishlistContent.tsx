@@ -3,6 +3,8 @@
 import { useState } from 'react';
 
 import { useGetWishlist } from '@/hooks/useGetWishlist';
+import { useSSEFallback } from '@/hooks/useSSEFallback';
+import { hasParsingItems } from '@/utils/item';
 
 import { useWishlistDelete } from '../_hooks/useDeleteWishes';
 import { useShareIntentWish } from '../_hooks/useShareIntentWish';
@@ -16,6 +18,10 @@ function WishlistContent() {
 
   useShareIntentWish();
   const { data: wishlistData } = useGetWishlist();
+
+  const hasPendingItem = hasParsingItems(wishlistData);
+
+  useSSEFallback(['wishlists'], hasPendingItem);
   const {
     isDeleteMode,
     selectedIds,
