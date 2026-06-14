@@ -15,13 +15,13 @@ export type GetNotificationsRequestT = {
   size?: number;
 };
 
-export const getNotifications = async ({ cursor, size = 20 }: GetNotificationsRequestT = {}) => {
+export const getNotifications = async ({ cursor, size = 10 }: GetNotificationsRequestT = {}) => {
   const params = new URLSearchParams();
   if (cursor) params.set('cursor', cursor);
   params.set('size', String(size));
 
   const { data } = await clientApi.get<GetNotificationsResponseT>(
-    `${ENDPOINTS.NOTIFICATIONS}?${params.toString()}`,
+    `${ENDPOINTS.NOTIFICATIONS}?${params.toString()}`
   );
 
   return {
