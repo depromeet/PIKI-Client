@@ -40,6 +40,7 @@ export const ENDPOINTS = {
 
   /** 알림 */
   NOTIFICATIONS_SUBSCRIBE: '/api/v1/notifications/subscribe',
+  NOTIFICATIONS: '/api/v1/notifications',
 
   /** FCM */
   FCM_TOKENS: '/api/v1/fcm/tokens',
