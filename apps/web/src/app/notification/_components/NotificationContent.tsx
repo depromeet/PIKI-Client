@@ -6,6 +6,7 @@ import { formatTimeKo } from '@/utils/formatDate';
 import { isWebview } from '@/utils/webBridge';
 
 import { useGetNotifications } from '../_hooks/useGetNotifications';
+import useIntersectionObserver from '../_hooks/useIntersectionObserver';
 import { usePushPermission } from '../_hooks/usePushPermission';
 import { getNotificationRoute } from '../_utils/getNotificationRoute';
 import NotificationEmptyState from './NotificationEmptyState';
@@ -14,8 +15,11 @@ import PushDisabledBanner from './PushDisabledBanner';
 
 function NotificationContent() {
   const { openNotificationSettings, isPushEnabled } = usePushPermission();
-  const { notificationsData, isPending } = useGetNotifications();
+  const { notificationsData, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetNotifications();
   const isEmpty = !isPending && notificationsData.length === 0;
+
+  const bottomRef = useIntersectionObserver(fetchNextPage, !!hasNextPage && !isFetchingNextPage);
 
   return (
     <div className="flex h-dvh flex-col bg-gray-50 px-7 pt-20">
@@ -47,6 +51,7 @@ function NotificationContent() {
                 ))}
               </ul>
             </div>
+            <div ref={bottomRef} />
           </div>
         )}
       </div>
