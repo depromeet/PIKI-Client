@@ -54,7 +54,7 @@ async function RootLayout({
     <html
       lang="ko"
       className={`${pretendard.className} h-full overflow-hidden antialiased`}
-      data-app={isWebview ? '' : undefined}
+      {...(isWebview && { 'data-app': '' })}
     >
       <head>
         {process.env.NODE_ENV === 'development' && !isWebview && (
