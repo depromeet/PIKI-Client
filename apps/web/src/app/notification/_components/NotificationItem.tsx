@@ -1,13 +1,11 @@
-import Link from 'next/link';
-
 type NotificationItemProps = {
   profileImage?: string;
   message: string;
   time: string;
-  href: string | null;
+  onClick?: () => void;
 };
 
-function NotificationItem({ profileImage, message, time, href }: NotificationItemProps) {
+function NotificationItem({ profileImage, message, time, onClick }: NotificationItemProps) {
   const innerContent = (
     <>
       <div className="size-8 shrink-0 overflow-hidden rounded-full bg-blue-200">
@@ -20,12 +18,12 @@ function NotificationItem({ profileImage, message, time, href }: NotificationIte
     </>
   );
 
-  if (href) {
+  if (onClick) {
     return (
       <li>
-        <Link href={href} className="flex items-center gap-3 py-5">
+        <button type="button" onClick={onClick} className="flex w-full items-center gap-3 py-5">
           {innerContent}
-        </Link>
+        </button>
       </li>
     );
   }
