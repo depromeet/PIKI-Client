@@ -167,14 +167,18 @@ body {
 /**
  * 페이지 상하단 표준 여백.
  *
- * 디자인 스펙의 "Status Bar 62px" 은 status bar(노치) 영역 그 자체이고,
- * 루트 layout wrapper 가 이미 `pt-[env(safe-area-inset-top)]` 으로 그만큼 패딩을 잡는다.
- * 따라서 페이지에서 별도 상단 여백은 필요 없다 (값을 0 으로 두고 의미만 보존).
- *
- * 하단 12px 은 콘텐츠와 홈 인디케이터/내비게이션 사이 마진.
+ * - status: status bar 와 헤더 사이 여백. 웹(노치 없음)에서는 0,
+ *   앱(WebView, `<html data-app>`) 에서만 14px 추가. layout wrapper 가 이미
+ *   `pt-[env(safe-area-inset-top)]` 으로 노치만큼 패딩을 잡으므로 여기서는
+ *   디자인이 의도한 추가 여백만 더한다.
+ * - bottom: 12px (콘텐츠와 홈 인디케이터/내비게이션 사이 마진)
  */
 @utility pt-status {
   padding-top: 0;
+}
+
+html[data-app] .pt-status {
+  padding-top: 14px;
 }
 
 @utility pb-bottom {

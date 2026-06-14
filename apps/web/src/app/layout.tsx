@@ -51,7 +51,11 @@ async function RootLayout({
   const isWebview = userAgent.includes(WEBVIEW_UA_TOKEN);
 
   return (
-    <html lang="ko" className={`${pretendard.className} h-full overflow-hidden antialiased`}>
+    <html
+      lang="ko"
+      className={`${pretendard.className} h-full overflow-hidden antialiased`}
+      data-app={isWebview ? '' : undefined}
+    >
       <head>
         {process.env.NODE_ENV === 'development' && !isWebview && (
           <>
@@ -70,7 +74,7 @@ async function RootLayout({
       <body className="h-full overflow-hidden" suppressHydrationWarning>
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] [scrollbar-gutter:stable]">
+          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pt-[max(env(safe-area-inset-top),47px)] pb-[max(env(safe-area-inset-bottom),0px)] [scrollbar-gutter:stable]">
             {children}
           </div>
         </Providers>
