@@ -163,3 +163,17 @@ html,
 body {
   background-color: var(--color-bg-layer-basement);
 }
+
+/**
+ * 페이지 상하단 표준 여백.
+ * - status: 62px (status bar 와 콘텐츠 사이)
+ * - bottom: 12px (하단 내비게이션과 콘텐츠 사이)
+ * 앱(웹뷰) 에서는 노치/홈 인디케이터의 safe-area-inset 을 더한다.
+ */
+@utility pt-status {
+  padding-top: calc(env(safe-area-inset-top) + 62px);
+}
+
+@utility pb-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+}

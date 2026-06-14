@@ -15,7 +15,7 @@ async function MypageEditPage() {
   });
 
   return (
-    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-20">
+    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-status">
       <Header
         left={<HeaderIcon name="BACK" className="size-7.5" />}
         center="내 프로필 수정"

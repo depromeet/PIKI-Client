@@ -67,7 +67,7 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
   };
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-8">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-status pb-8">
       <Header
         center="초대 참여하기"
         centerClassName="heading-1 text-text-neutral-primary"

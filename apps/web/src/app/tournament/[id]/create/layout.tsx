@@ -5,7 +5,7 @@ import Skeleton from '@/components/skeleton';
 function LoadingFallback() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 px-5">
-      <div className="flex flex-1 flex-col gap-4 pt-[80px]">
+      <div className="flex flex-1 flex-col gap-4 pt-status">
         <div className="flex flex-col items-center">
           <Skeleton className="h-7 w-48" />
         </div>
