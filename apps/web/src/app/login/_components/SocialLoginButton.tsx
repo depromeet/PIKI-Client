@@ -45,7 +45,15 @@ type SocialLoginButtonProps = {
   disabled?: boolean;
 };
 
-function SocialLoginButton({ variant, icon, label, onClick, className, isLoading, disabled }: SocialLoginButtonProps) {
+function SocialLoginButton({
+  variant,
+  icon,
+  label,
+  onClick,
+  className,
+  isLoading,
+  disabled,
+}: SocialLoginButtonProps) {
   return (
     <button
       type="button"

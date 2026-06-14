@@ -11,7 +11,7 @@ async function MypageWithdrawPage() {
   const userData = await getMe();
 
   return (
-    <div className="flex h-dvh flex-col items-center bg-bg-layer-basement px-5 pt-20">
+    <div className="flex h-dvh flex-col items-center bg-bg-layer-basement px-5 pt-status">
       <Header
         left={<HeaderIcon name="BACK" />}
         center="회원탈퇴"

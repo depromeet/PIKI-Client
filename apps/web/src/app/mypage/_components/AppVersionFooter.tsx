@@ -15,9 +15,7 @@ async function AppVersionFooter() {
   const appVersion = getAppVersion(userAgent ?? '');
 
   const versionLabel =
-    isWebviewEnv && appVersion
-      ? `v${appVersion} (w${webVersion})`
-      : `v${webVersion}`;
+    isWebviewEnv && appVersion ? `v${appVersion} (w${webVersion})` : `v${webVersion}`;
 
   return (
     <div className="flex h-5 items-center gap-2 pl-5">

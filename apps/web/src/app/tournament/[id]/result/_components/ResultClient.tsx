@@ -46,7 +46,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   };
 
   return (
-    <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-[calc(env(safe-area-inset-top)+60px)] pb-[120px]">
+    <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-status pb-30">
       <h1 className="shrink-0 px-5 text-center text-[28px] leading-10 font-bold tracking-[-0.6px]">
         <span className="text-blue-500">{tournamentName} </span>
         <br />

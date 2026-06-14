@@ -24,7 +24,7 @@ function NotificationContent() {
   const { openNotificationSettings, isPushEnabled } = usePushPermission();
 
   return (
-    <div className="flex h-dvh flex-col px-5 pt-9">
+    <div className="flex h-dvh flex-col px-5 pt-status">
       <Header left={<HeaderIcon name="BACK" />} center="알림 히스토리" centerClassName="title-1" />
       <Spacing size={16} />
 

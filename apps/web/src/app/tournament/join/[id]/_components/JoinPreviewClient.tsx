@@ -10,6 +10,7 @@ import { Header } from '@/components/header';
 import Input from '@/components/input';
 import Spinner from '@/components/spinner';
 import { useGetNicknameCheck } from '@/hooks/useGetNicknameCheck';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 import { DEFAULT_RANDOM_NICKNAME } from '../../_consts/randomNickname';
 import { useGetInvitePreview } from '../../_hooks/useGetInvitePreview';
@@ -25,6 +26,9 @@ type JoinPreviewClientProps = {
 const MAX_NICKNAME_LENGTH = 10;
 
 function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps) {
+  // 이 페이지는 흰색 배경(bg-layer-default) — iOS 노치 영역까지 흰색으로 칠해야 자연스럽다.
+  usePageBackground('var(--color-bg-layer-default)');
+
   const router = useRouter();
   const [nickname, setNickname] = useState(DEFAULT_RANDOM_NICKNAME.nickname);
 
@@ -63,7 +67,7 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
   };
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-15 pb-8">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-status pb-8">
       <Header
         center="초대 참여하기"
         centerClassName="heading-1 text-text-neutral-primary"
