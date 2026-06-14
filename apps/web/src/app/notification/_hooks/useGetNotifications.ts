@@ -12,8 +12,8 @@ export const useGetNotifications = () => {
   } = useInfiniteQuery({
     queryKey: ['notifications'],
     queryFn: ({ pageParam }) => getNotifications({ cursor: pageParam }),
-    initialPageParam: undefined as string | undefined,
-    getNextPageParam: lastPage => (lastPage.hasNext ? (lastPage.nextCursor ?? undefined) : undefined),
+    initialPageParam: null as string | null,
+    getNextPageParam: lastPage => (lastPage.hasNext ? (lastPage.nextCursor ?? null) : null),
   });
 
   const notifications = notificationsData?.pages.flatMap(page => page.items) ?? [];

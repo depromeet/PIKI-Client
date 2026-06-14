@@ -10,8 +10,8 @@ async function Notification() {
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['notifications'],
-    queryFn: ({ pageParam }) => getNotifications({ cursor: pageParam as string | undefined }),
-    initialPageParam: undefined,
+    queryFn: ({ pageParam }) => getNotifications({ cursor: pageParam as string | null }),
+    initialPageParam: null,
   });
 
   return (
