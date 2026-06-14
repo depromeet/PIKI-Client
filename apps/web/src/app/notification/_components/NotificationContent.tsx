@@ -7,6 +7,7 @@ import { isWebview } from '@/utils/webBridge';
 
 import { useGetNotifications } from '../_hooks/useGetNotifications';
 import { usePushPermission } from '../_hooks/usePushPermission';
+import { getNotificationRoute } from '../_utils/getNotificationRoute';
 import NotificationEmptyState from './NotificationEmptyState';
 import NotificationItem from './NotificationItem';
 import PushDisabledBanner from './PushDisabledBanner';
@@ -38,6 +39,10 @@ function NotificationContent() {
                     message={notification.title}
                     time={formatTimeKo(notification.createdAt)}
                     profileImage={notification.imageUrl}
+                    href={getNotificationRoute(notification.type, notification.refId, {
+                      kind: notification.kind,
+                      tournamentId: notification.tournamentId,
+                    })}
                   />
                 ))}
               </ul>
