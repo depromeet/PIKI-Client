@@ -152,3 +152,14 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/**
+ * 기본 배경색 중앙화.
+ * iOS 26 Safari 가 `<meta name="theme-color">` 를 무시하기 시작하면서, 노치(safe-area-top)/홈 인디케이터
+ * 영역이 body 배경색으로 채워지게 됐다. 페이지마다 배경이 다른 경우엔 각 클라이언트에서
+ * `document.body.style.backgroundColor` 를 직접 덮어쓴다.
+ */
+html,
+body {
+  background-color: var(--color-bg-layer-basement);
+}
