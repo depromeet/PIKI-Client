@@ -166,15 +166,15 @@ body {
 
 /**
  * 페이지 상하단 표준 여백.
- * - status: 62px (status bar 와 콘텐츠 사이)
- * - bottom: 12px (하단 내비게이션과 콘텐츠 사이)
  *
- * 루트 layout 의 wrapper 가 이미 `pt-[env(safe-area-inset-top)]` / `pb-[env(safe-area-inset-bottom)]`
- * 으로 노치/홈 인디케이터만큼 패딩을 잡고 있다. 페이지는 그 안의 컨텐츠라서 여기서는
- * safe-area 를 다시 더하지 않고 디자인 스펙(62/12)만 적용한다.
+ * 디자인 스펙의 "Status Bar 62px" 은 status bar(노치) 영역 그 자체이고,
+ * 루트 layout wrapper 가 이미 `pt-[env(safe-area-inset-top)]` 으로 그만큼 패딩을 잡는다.
+ * 따라서 페이지에서 별도 상단 여백은 필요 없다 (값을 0 으로 두고 의미만 보존).
+ *
+ * 하단 12px 은 콘텐츠와 홈 인디케이터/내비게이션 사이 마진.
  */
 @utility pt-status {
-  padding-top: 62px;
+  padding-top: 0;
 }
 
 @utility pb-bottom {
