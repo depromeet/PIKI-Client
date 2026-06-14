@@ -1,8 +1,7 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+import { useCallback, useState } from 'react';
 
 import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
