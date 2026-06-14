@@ -168,12 +168,15 @@ body {
  * 페이지 상하단 표준 여백.
  * - status: 62px (status bar 와 콘텐츠 사이)
  * - bottom: 12px (하단 내비게이션과 콘텐츠 사이)
- * 앱(웹뷰) 에서는 노치/홈 인디케이터의 safe-area-inset 을 더한다.
+ *
+ * 루트 layout 의 wrapper 가 이미 `pt-[env(safe-area-inset-top)]` / `pb-[env(safe-area-inset-bottom)]`
+ * 으로 노치/홈 인디케이터만큼 패딩을 잡고 있다. 페이지는 그 안의 컨텐츠라서 여기서는
+ * safe-area 를 다시 더하지 않고 디자인 스펙(62/12)만 적용한다.
  */
 @utility pt-status {
-  padding-top: calc(env(safe-area-inset-top) + 62px);
+  padding-top: 62px;
 }
 
 @utility pb-bottom {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+  padding-bottom: 12px;
 }
