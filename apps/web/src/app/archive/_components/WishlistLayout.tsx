@@ -16,8 +16,8 @@ function WishlistLayout({ children }: WishlistLayoutProps) {
           <Header
             right={
               <>
-                <HeaderIcon name="PROFILE" />
                 <HeaderIcon name="ALARM" />
+                <HeaderIcon name="PROFILE" />
               </>
             }
           />
