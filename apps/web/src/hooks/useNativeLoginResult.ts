@@ -35,7 +35,7 @@ export const useNativeLoginResult = ({
           onSettled?.();
           router.replace(getLoginPath(redirect));
         }
-      } catch (_e) {
+      } catch {
         /** JSON.parse 실패 등 유효하지 않은 메시지는 무시 */
       }
     };
