@@ -20,12 +20,26 @@ type ReceiptPaperProps = {
 
 const SectionDivider = () => <div className="h-px w-full border-t border-dashed border-gray-100" />;
 
+/**
+ * 영수증 구분선 라벨. `*****Label*****` 형태로, 라벨 길이에 상관없이 항상
+ * 영수증 전체 폭을 채우도록 양옆 별표가 가용 공간만큼 자동으로 늘어난다.
+ */
 const PlaceLabel = ({ label }: { label: string }) => (
-  <p className="text-center text-text-neutral-secondary">
-    <span className="text-[10px] leading-[18px] tracking-[-0.4px]">******************</span>
-    <span className="text-[12px] leading-[18px] tracking-[-0.4px]">{label}</span>
-    <span className="text-[10px] leading-[18px] tracking-[-0.4px]">******************</span>
-  </p>
+  <div className="flex items-center gap-1 px-5 text-text-neutral-secondary">
+    <span
+      aria-hidden
+      className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap"
+    >
+      {'*'.repeat(60)}
+    </span>
+    <span className="shrink-0 text-[12px] leading-4.5 tracking-[-0.4px]">{label}</span>
+    <span
+      aria-hidden
+      className="flex-1 overflow-hidden text-end text-[10px] leading-4.5 whitespace-nowrap"
+    >
+      {'*'.repeat(60)}
+    </span>
+  </div>
 );
 
 const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function ReceiptPaper(
@@ -90,6 +104,8 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
             </ul>
           </div>
         )}
+
+        <SectionDivider />
 
         {/* @piki.day */}
         <p className="px-5 pt-3 pb-2 text-center caption-1-semibold text-text-neutral-secondary">
