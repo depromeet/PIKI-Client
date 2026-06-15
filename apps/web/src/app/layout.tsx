@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 /**
  * iOS 26 Safari 부터 `<meta name="theme-color">` 가 무시돼 노치/홈 인디케이터 영역이
  * body 배경색을 따른다. 이 영역까지 우리 콘텐츠가 칠해지도록 viewport-fit=cover 를 켜고,
- * 페이지에서는 `env(safe-area-inset-*)` 로 패딩을 잡는다.
+ * 페이지에서는 `pt-padding-top` 으로 패딩을 잡는다.
  */
 export const viewport: Viewport = {
   width: 'device-width',
@@ -71,10 +71,10 @@ async function RootLayout({
           </>
         )}
       </head>
-      <body className="h-full overflow-hidden" suppressHydrationWarning>
+      <body className="h-full overflow-hidden">
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pt-[max(env(safe-area-inset-top),47px)] pb-[max(env(safe-area-inset-bottom),0px)] [scrollbar-gutter:stable]">
+          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pb-[max(env(safe-area-inset-bottom),0px)] [scrollbar-gutter:stable]">
             {children}
           </div>
         </Providers>

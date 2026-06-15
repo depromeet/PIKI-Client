@@ -61,7 +61,7 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
   // 친구가 아직 본인 매치를 시작 안 했거나, 권한 없음 등으로 데이터를 받지 못한 경우.
   if (isGroupResultPending || isGroupResultError || !groupResultData) {
     return (
-      <main className="flex min-h-dvh flex-col bg-bg-layer-basement pt-status pb-8">
+      <main className="flex min-h-dvh flex-col bg-bg-layer-basement pt-padding-top pb-8">
         <header className="relative flex h-7.5 w-full shrink-0 items-center px-5">
           <button
             type="button"
@@ -92,7 +92,7 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
   const otherItems = sortedItems.filter(item => item.rank !== 1);
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-basement pt-status pb-8">
+    <main className="flex min-h-dvh flex-col bg-bg-layer-basement pt-padding-top pb-8">
       <header className="relative flex h-7.5 w-full shrink-0 items-center px-5">
         <button
           type="button"

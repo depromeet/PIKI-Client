@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-import { ChevronBackwardIconFill } from '@/assets/icons/fill';
 import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
 import SmileIcon from '@/assets/images/tournament/result/smile-icon.svg';
+import { Header, HeaderIcon } from '@/components/header';
 import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
 
@@ -38,7 +38,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   if (tournamentData.status !== 'COMPLETED') {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
+      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement pt-padding-top">
         <p className="body-1-medium text-text-neutral-tertiary">결과를 불러오는 중...</p>
       </main>
     );
@@ -74,22 +74,10 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   };
 
   return (
-    <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-status pb-30">
-      <header className="relative flex h-7.5 w-full shrink-0 items-center px-5">
-        <button
-          type="button"
-          aria-label="뒤로가기"
-          onClick={() => router.back()}
-          className="cursor-pointer p-0.75"
-        >
-          <ChevronBackwardIconFill className="size-6 text-icon-neutral-secondary" />
-        </button>
-        <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 heading-1 text-text-neutral-primary">
-          토너먼트 결과
-        </h1>
-      </header>
+    <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-padding-top pb-30">
+      <Header center="토너먼트 결과" centerClassName="title-1" left={<HeaderIcon name="BACK" />} />
 
-      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3 px-5">
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3">
         <ReceiptDrawMachine
           ref={receiptMachineRef}
           tournamentName={tournamentName}

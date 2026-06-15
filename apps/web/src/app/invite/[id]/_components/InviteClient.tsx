@@ -51,7 +51,7 @@ function InviteClient({ tournamentId, inviteCode }: InviteClientProps) {
 
   if (state === 'loading') {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
+      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement pt-padding-top">
         <div className="flex flex-col items-center gap-3">
           <Spinner size={32} />
           <p className="body-1-medium text-text-neutral-tertiary">초대 정보를 확인하고 있어요...</p>
@@ -61,7 +61,7 @@ function InviteClient({ tournamentId, inviteCode }: InviteClientProps) {
   }
 
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-6 bg-bg-layer-basement px-5">
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-6 bg-bg-layer-basement px-5 pt-padding-top">
       <div className="flex flex-col items-center gap-2">
         <p className="heading-1 text-text-neutral-primary">초대 링크가 유효하지 않아요</p>
         <p className="text-center body-1-medium text-text-neutral-tertiary">
