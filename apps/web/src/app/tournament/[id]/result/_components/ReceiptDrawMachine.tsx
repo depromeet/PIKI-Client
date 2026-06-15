@@ -145,9 +145,10 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
         <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
       </div>
 
-      {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음 */}
+      {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음.
+          상단만 자르고 좌우는 열어둬야 1위 트로피 뱃지가 종이 밖으로 살짝 나갈 수 있다. */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 overflow-hidden"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 [clip-path:inset(0_-100vw_-100vw_-100vw)]"
         style={{ top: `${receiptTopPx}px` }}
       >
         <div

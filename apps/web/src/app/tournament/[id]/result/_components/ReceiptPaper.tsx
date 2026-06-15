@@ -133,17 +133,19 @@ type ProductCardProps = {
 function ProductCard({ product, index, highlight = false }: ProductCardProps) {
   return (
     <div className="flex items-center gap-3 px-5">
-      <div className="relative size-15 shrink-0 overflow-hidden rounded-md bg-gray-50">
-        {product.imageUrl && (
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            sizes="60px"
-            className="object-cover"
-            unoptimized
-          />
-        )}
+      <div className="relative size-15 shrink-0">
+        <div className="size-full overflow-hidden rounded-md bg-gray-50">
+          {product.imageUrl && (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              width={60}
+              height={60}
+              className="size-full object-cover"
+              unoptimized
+            />
+          )}
+        </div>
         {highlight && (
           <TrophyBadge
             aria-label="1위"

@@ -198,17 +198,19 @@ function GroupProductCard({ item, highlight = false }: GroupProductCardProps) {
   return (
     <div className="flex flex-col gap-3 px-5">
       <div className="flex items-center gap-3">
-        <div className="relative size-15 shrink-0 overflow-hidden rounded-md bg-gray-50">
-          {item.imageUrl ? (
-            <Image
-              src={item.imageUrl}
-              alt={item.name}
-              fill
-              sizes="60px"
-              className="object-cover"
-              unoptimized
-            />
-          ) : null}
+        <div className="relative size-15 shrink-0">
+          <div className="size-full overflow-hidden rounded-md bg-gray-50">
+            {item.imageUrl ? (
+              <Image
+                src={item.imageUrl}
+                alt={item.name}
+                width={60}
+                height={60}
+                className="size-full object-cover"
+                unoptimized
+              />
+            ) : null}
+          </div>
           {highlight && (
             <TrophyBadge
               aria-label="1위"
