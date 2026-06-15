@@ -33,7 +33,12 @@ const SectionDivider = () => <div className="h-px w-full border-t border-dashed 
  * 양옆 별표가 가용 공간만큼 자동으로 늘어난다.
  */
 const PlaceLabel = ({ label }: { label: string }) => (
-  <div className="flex items-center gap-1 px-5 text-text-neutral-secondary">
+  <div
+    className={cn(
+      kodeMono.className,
+      'flex items-center gap-1 px-5 text-text-neutral-secondary'
+    )}
+  >
     <span
       aria-hidden
       className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap"
@@ -109,23 +114,23 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
       </header>
 
       <div className="mx-auto mt-5 flex w-full max-w-105 flex-1 flex-col px-5">
-        <div
-          className={cn(
-            kodeMono.className,
-            'relative flex w-full flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]'
-          )}
-        >
+        <div className="relative flex w-full flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]">
           {/* PIKI 로고 + 헤드라인 */}
           <div className="relative flex flex-col items-center gap-2">
             <PikiReceiptLogo aria-label="PIKI" className="h-14 w-19.25" />
-            <p className="text-center text-[12px] leading-4 font-semibold tracking-[-0.4px] text-text-neutral-secondary">
+            <p
+              className={cn(
+                kodeMono.className,
+                'text-center text-[12px] leading-4 font-semibold tracking-[-0.4px] text-text-neutral-secondary'
+              )}
+            >
               FROM WISH TO PICK
             </p>
           </div>
 
           <div className="flex flex-col">
             {/* 날짜 / 시간 */}
-            <div className="flex items-center justify-between px-5">
+            <div className={cn(kodeMono.className, 'flex items-center justify-between px-5')}>
               <span className="caption-1-semibold text-text-neutral-secondary">
                 {formatDate(date)}
               </span>
@@ -165,7 +170,12 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
 
             <SectionDivider />
 
-            <p className="px-5 py-2 text-center caption-1-semibold text-text-neutral-secondary">
+            <p
+              className={cn(
+                kodeMono.className,
+                'px-5 py-2 text-center caption-1-semibold text-text-neutral-secondary'
+              )}
+            >
               @piki.day
             </p>
           </div>
@@ -219,7 +229,7 @@ function GroupProductCard({ item, highlight = false }: GroupProductCardProps) {
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <p className="break-keep body-2-semibold text-text-neutral-primary">{item.name}</p>
+          <p className="break-keep body-2-regular text-text-neutral-primary">{item.name}</p>
           {count > 0 && (
             <button
               type="button"

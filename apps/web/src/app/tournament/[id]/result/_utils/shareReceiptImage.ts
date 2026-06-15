@@ -63,6 +63,21 @@ const renderInOffscreen = (
   };
 };
 
+const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> =>
+  new Promise<T>((resolve, reject) => {
+    const timeoutId = window.setTimeout(() => reject(new Error('TIMEOUT')), ms);
+    promise.then(
+      value => {
+        window.clearTimeout(timeoutId);
+        resolve(value);
+      },
+      error => {
+        window.clearTimeout(timeoutId);
+        reject(error);
+      }
+    );
+  });
+
 /**
  * DOM 요소를 PNG 로 캡처하고, Web Share API 가 가능하면 네이티브 공유 시트를 띄우고,
  * 그렇지 않으면 다운로드로 fallback.
@@ -71,23 +86,26 @@ const renderInOffscreen = (
  */
 export const shareReceiptImage = async (element: HTMLElement): Promise<boolean> => {
   // 외부 폰트(Kode Mono) 가 다 로드된 후 캡처해야 변형 없이 동일.
+  // fonts.ready 가 안 끝나는 일은 거의 없지만 무한 대기 방지로 타임아웃.
   if (typeof document !== 'undefined' && 'fonts' in document) {
-    await document.fonts.ready;
+    await withTimeout(document.fonts.ready, 3_000).catch(() => null);
   }
 
   // 원본 element 의 transform/mask 영향을 피하려고 clone 후 off-screen 에서 캡처.
   const { container, cleanup } = renderInOffscreen(element);
 
-  // clone 의 img 들도 새로 fetch 됐을 수 있으니 한 번 더 대기.
+  // clone 의 img 들이 새로 fetch 시작될 수 있다 → 각각 최대 3초 대기 후 그냥 진행.
   await Promise.all(
-    [...container.querySelectorAll('img')].map(img =>
-      img.complete && img.naturalWidth > 0
-        ? Promise.resolve()
-        : new Promise(resolve => {
-            img.addEventListener('load', () => resolve(null), { once: true });
-            img.addEventListener('error', () => resolve(null), { once: true });
-          })
-    )
+    [...container.querySelectorAll('img')].map(img => {
+      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+      return withTimeout(
+        new Promise(resolve => {
+          img.addEventListener('load', () => resolve(null), { once: true });
+          img.addEventListener('error', () => resolve(null), { once: true });
+        }),
+        3_000
+      ).catch(() => null);
+    })
   );
 
   // 고해상도 캡처
