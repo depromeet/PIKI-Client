@@ -89,7 +89,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         />
 
         {/* 영수증 밖 공유 버튼 — 이미지 공유 (모든 사용자) + 토너먼트 플레이 체험 (ROOT 소유자만) */}
-        <div className={cn('flex gap-2', !canSharePlayLink && 'justify-center')}>
+        <div className={cn('mx-5 flex gap-2', !canSharePlayLink && 'justify-center')}>
           <ShareButton
             icon={<ReceiptIcon aria-hidden className="size-5" />}
             label={isCapturing ? '이미지 만드는 중...' : '영수증 이미지 공유'}
@@ -112,13 +112,15 @@ function ResultClient({ tournamentId }: ResultClientProps) {
           - CLONE 사용자(플레이 링크 게스트): 응답의 sourceTournamentId 로 ROOT 지정
           - 친구 유무는 클릭 시 group-result API 응답으로 판단한다 (캐시 의존 X)
         */}
-        <GroupResultEntryCard
-          tournamentId={
-            tournamentData.isRoot
-              ? tournamentId
-              : (tournamentData.sourceTournamentId ?? tournamentId)
-          }
-        />
+        <div className="mx-5">
+          <GroupResultEntryCard
+            tournamentId={
+              tournamentData.isRoot
+                ? tournamentId
+                : (tournamentData.sourceTournamentId ?? tournamentId)
+            }
+          />
+        </div>
       </div>
 
       {/* 하단 버튼 — 시안상 단일 CTA */}
