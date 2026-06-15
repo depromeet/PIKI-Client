@@ -35,7 +35,7 @@ function WishSelectHeader({
   };
 
   return (
-    <div className="mt-20 flex flex-col gap-[25px]">
+    <div className="flex flex-col gap-[25px]">
       <div className="flex flex-col gap-2">
         <h1 className="title-1 text-gray-950">비교할 위시템을 선택해주세요</h1>
         <div className="min-h-[52px]">{renderSubtitle()}</div>
