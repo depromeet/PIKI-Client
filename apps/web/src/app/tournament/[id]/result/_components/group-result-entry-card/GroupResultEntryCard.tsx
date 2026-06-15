@@ -23,13 +23,16 @@ function GroupResultEntryCard({ tournamentId }: GroupResultEntryCardProps) {
   return (
     <Link
       href={ROUTES.TOURNAMENT_GROUP_RESULT(tournamentId)}
-      className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl bg-bg-layer-default px-4 py-3 shadow-[0px_2px_4px_rgba(0,0,0,0.08)]"
+      className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl bg-gray-75 px-4 py-3"
     >
       <div className="flex min-w-0 items-center gap-3">
-        <UserProfileGroup users={PLACEHOLDER_USERS} max={3} />
-        <p className="truncate body-1-semibold text-text-neutral-primary">친구 토너먼트 결과보기</p>
+        {/* 시안 기준 흰 테두리 더 얇게 — 공통 UserProfileGroup 의 1.6px 두께를 카드 안에서만 1px 로 override */}
+        <div className="[&_.rounded-full]:border! [&_.rounded-full]:border-white!">
+          <UserProfileGroup users={PLACEHOLDER_USERS} max={3} />
+        </div>
+        <p className="truncate body-2-semibold text-text-neutral-primary">전체 결과 보기</p>
       </div>
-      <ChevronForwardIconFill className="size-5 shrink-0 text-icon-neutral-secondary" />
+      <ChevronForwardIconFill className="size-5 shrink-0 text-icon-neutral-tertiary" />
     </Link>
   );
 }
