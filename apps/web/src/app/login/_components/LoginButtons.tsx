@@ -30,7 +30,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
 
   const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
 
-  const postNativeMessage = (provider: 'kakao' | 'google' | 'apple') => {
+  const postNativeMessage = (provider: SocialProviderT) => {
     if (!isWebview()) return false;
 
     setNativePendingProvider(provider);
