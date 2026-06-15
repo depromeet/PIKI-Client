@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 
-import { NotificationBadgeIconFill, NotificationIconFill } from '@/assets/icons/fill';
 import { useGetNotifications } from '@/app/notification/_hooks/useGetNotifications';
+import { NotificationBadgeIconFill, NotificationIconFill } from '@/assets/icons/fill';
 import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
 

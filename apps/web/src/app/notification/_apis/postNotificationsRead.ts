@@ -16,7 +16,7 @@ export type PostNotificationsReadRequestT =
 export const postNotificationsRead = async (body: PostNotificationsReadRequestT) => {
   const { data } = await clientApi.post<PostNotificationsReadResponseT>(
     ENDPOINTS.NOTIFICATIONS_READ,
-    body,
+    body
   );
 
   return data.data;

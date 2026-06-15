@@ -3,16 +3,22 @@
 import { Kode_Mono } from 'next/font/google';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-import { ChevronBackwardIconFill } from '@/assets/icons/fill';
+import {
+  ChevronBackwardIconFill,
+  ChevronDownIconFill,
+  ChevronUpIconFill,
+} from '@/assets/icons/fill';
 import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
 import ReceiptZigzag from '@/assets/images/tournament/result/receipt-zigzag.svg';
+import TrophyBadge from '@/assets/images/tournament/result/trophy-badge.svg';
 import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
 import { useGetGroupResult } from '../../_hooks/useGetGroupResult';
-import type { GroupResultItemT, GroupResultParticipantT } from '../../_types/groupResult';
-import { formatDate, formatPrice, formatTime } from '../../_utils/formatReceipt';
+import type { GroupResultItemT } from '../../_types/groupResult';
+import { formatDate, formatTime } from '../../_utils/formatReceipt';
 
 const kodeMono = Kode_Mono({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -20,21 +26,27 @@ type GroupResultClientProps = {
   tournamentId: number;
 };
 
-const buildChosenByLabel = (chosenBy: GroupResultParticipantT[]) => {
-  const [first, ...rest] = chosenBy;
-  if (!first) return '';
-  if (rest.length === 0) return first.nickname;
-  return `${first.nickname} 외 ${rest.length}명`;
-};
-
 const SectionDivider = () => <div className="h-px w-full border-t border-dashed border-gray-100" />;
 
+/**
+ * 영수증 구분선 라벨. 라벨 길이에 상관없이 항상 영수증 전체 폭을 채우도록
+ * 양옆 별표가 가용 공간만큼 자동으로 늘어난다.
+ */
 const PlaceLabel = ({ label }: { label: string }) => (
-  <p className="text-center text-text-neutral-secondary">
-    <span className="text-[10px] leading-4.5 tracking-[-0.4px]">******************</span>
-    <span className="text-[12px] leading-4.5 tracking-[-0.4px]">{label}</span>
-    <span className="text-[10px] leading-4.5 tracking-[-0.4px]">******************</span>
-  </p>
+  <div
+    className={cn(kodeMono.className, 'flex items-center gap-1 px-5 text-text-neutral-secondary')}
+  >
+    <span aria-hidden className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap">
+      {'*'.repeat(60)}
+    </span>
+    <span className="shrink-0 text-[12px] leading-4.5 tracking-[-0.4px]">{label}</span>
+    <span
+      aria-hidden
+      className="flex-1 overflow-hidden text-end text-[10px] leading-4.5 whitespace-nowrap"
+    >
+      {'*'.repeat(60)}
+    </span>
+  </div>
 );
 
 function GroupResultClient({ tournamentId }: GroupResultClientProps) {
@@ -96,25 +108,23 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
       </header>
 
       <div className="mx-auto mt-5 flex w-full max-w-105 flex-1 flex-col px-5">
-        <div
-          className={cn(
-            kodeMono.className,
-            'relative flex w-full flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]'
-          )}
-        >
+        <div className="relative flex w-full flex-col gap-2 bg-bg-layer-default pt-6 pb-6.25 filter-[drop-shadow(0px_2px_4px_rgba(0,0,0,0.12))]">
           {/* PIKI 로고 + 헤드라인 */}
-          <div className="relative flex flex-col items-center gap-4">
+          <div className="relative flex flex-col items-center gap-2">
             <PikiReceiptLogo aria-label="PIKI" className="h-14 w-19.25" />
-            <p className="text-center text-[12px] leading-4 font-semibold tracking-[-0.4px] text-text-neutral-secondary">
-              FROM ENDLESS WISHLISTS,
-              <br />
-              TO TODAY&apos;S ONE PICK.
+            <p
+              className={cn(
+                kodeMono.className,
+                'text-center text-[12px] leading-4 font-semibold tracking-[-0.4px] text-text-neutral-secondary'
+              )}
+            >
+              FROM WISH TO PICK
             </p>
           </div>
 
           <div className="flex flex-col">
             {/* 날짜 / 시간 */}
-            <div className="flex items-center justify-between px-5">
+            <div className={cn(kodeMono.className, 'flex items-center justify-between px-5')}>
               <span className="caption-1-semibold text-text-neutral-secondary">
                 {formatDate(date)}
               </span>
@@ -127,33 +137,26 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
 
             {/* 토너먼트 이름 */}
             <div className="flex flex-col px-5 py-2">
-              <p className="caption-1-semibold text-text-neutral-secondary">Tournament name</p>
-              <p className="caption-1-semibold text-text-neutral-secondary">{tournamentName}</p>
+              <p className="body-2-semibold text-text-neutral-primary">{tournamentName}</p>
             </div>
 
-            <SectionDivider />
-
-            <div className="flex items-center justify-center px-5 py-2">
-              <p className="caption-1-semibold text-text-neutral-secondary">Tournament Results</p>
-            </div>
-
-            <SectionDivider />
-
-            {/* 1st Place — 강조 카드 */}
+            {/* 1st Place — 트로피 */}
             {firstItem && (
               <div className="flex flex-col gap-3 py-3">
                 <PlaceLabel label="1st Place" />
-                <FirstPlaceCard item={firstItem} />
+                <GroupProductCard item={firstItem} highlight />
               </div>
             )}
 
-            {/* Others — 2위 이하 */}
+            {/* Others — 상품 카드 리스트 */}
             {otherItems.length > 0 && (
               <div className="flex flex-col gap-3 py-3">
                 <PlaceLabel label="Others" />
-                <ul className="flex flex-col gap-3 px-5">
+                <ul className="flex flex-col gap-3">
                   {otherItems.map(item => (
-                    <OtherPlaceRow key={`${item.rank}-${item.itemId}`} item={item} />
+                    <li key={`${item.rank}-${item.itemId}`}>
+                      <GroupProductCard item={item} />
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -161,7 +164,12 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
 
             <SectionDivider />
 
-            <p className="px-5 py-2 text-center caption-1-semibold text-text-neutral-secondary">
+            <p
+              className={cn(
+                kodeMono.className,
+                'px-5 py-2 text-center caption-1-semibold text-text-neutral-secondary'
+              )}
+            >
               @piki.day
             </p>
           </div>
@@ -177,90 +185,105 @@ function GroupResultClient({ tournamentId }: GroupResultClientProps) {
   );
 }
 
-function FirstPlaceCard({ item }: { item: GroupResultItemT }) {
-  const chosenByLabel = buildChosenByLabel(item.chosenBy);
+type GroupProductCardProps = {
+  item: GroupResultItemT;
+  /** 1위 카드에 트로피 뱃지 표시 */
+  highlight?: boolean;
+};
+
+const MAX_PROFILE_STACK = 3;
+
+function GroupProductCard({ item, highlight = false }: GroupProductCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const count = item.chosenBy.length;
+  const visibleChoosers = item.chosenBy.slice(0, MAX_PROFILE_STACK);
+  const extraCount = Math.max(0, count - MAX_PROFILE_STACK);
 
   return (
     <div className="flex flex-col gap-3 px-5">
       <div className="flex items-center gap-3">
-        {item.imageUrl ? (
-          <Image
-            src={item.imageUrl}
-            alt={item.name}
-            width={56}
-            height={56}
-            className="size-14 shrink-0 rounded-md object-cover"
-            unoptimized
-          />
-        ) : (
-          <div className="size-14 shrink-0 rounded-md bg-gray-50" aria-hidden />
-        )}
-        <div className="flex min-w-0 flex-1 flex-col">
-          {chosenByLabel && (
-            <p className="truncate caption-1-semibold text-text-neutral-secondary">
-              {chosenByLabel}
-            </p>
+        <div className="relative size-15 shrink-0">
+          <div className="size-full overflow-hidden rounded-md bg-gray-50">
+            {item.imageUrl ? (
+              <Image
+                src={item.imageUrl}
+                alt={item.name}
+                width={60}
+                height={60}
+                className="size-full object-cover"
+                unoptimized
+              />
+            ) : null}
+          </div>
+          {highlight && (
+            <TrophyBadge
+              aria-label="1위"
+              className="pointer-events-none absolute -top-2 -left-2 size-8"
+            />
           )}
-          <p className="truncate text-[12px] leading-4.5 font-semibold tracking-[-0.4px] text-text-neutral-primary">
-            {item.name}
-          </p>
-          <p className="text-[14px] leading-5.5 font-bold tracking-[-0.6px] text-text-neutral-primary">
-            {formatPrice(item.price)}
-          </p>
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <p className="body-2-regular break-keep text-text-neutral-primary">{item.name}</p>
+          {count > 0 && (
+            <button
+              type="button"
+              onClick={() => setIsExpanded(prev => !prev)}
+              aria-expanded={isExpanded}
+              className="flex cursor-pointer items-center gap-1.5 self-start"
+            >
+              <ul className="flex items-center">
+                {visibleChoosers.map((chooser, idx) => (
+                  <li key={chooser.userId} className={cn(idx !== 0 && '-ml-1.5')}>
+                    <Image
+                      src={chooser.profileImage}
+                      alt={chooser.nickname}
+                      width={20}
+                      height={20}
+                      className="size-5 rounded-full border border-white bg-gray-50 object-cover"
+                      unoptimized
+                    />
+                  </li>
+                ))}
+                {extraCount > 0 && (
+                  <li className="caption-2-semibold -ml-1.5 flex size-5 items-center justify-center rounded-full border border-white bg-gray-100 text-text-neutral-secondary">
+                    +{extraCount}
+                  </li>
+                )}
+              </ul>
+              <span className="caption-1-semibold text-text-accent">{count}명</span>
+              {isExpanded ? (
+                <ChevronUpIconFill className="size-4 text-text-accent" />
+              ) : (
+                <ChevronDownIconFill className="size-4 text-text-accent" />
+              )}
+            </button>
+          )}
         </div>
       </div>
 
-      {item.chosenBy.length > 0 && (
-        <ul className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          {item.chosenBy.map(participant => (
-            <li key={participant.userId} className="flex items-center gap-1.5">
+      {isExpanded && count > 0 && (
+        <ul className="flex flex-wrap gap-2">
+          {item.chosenBy.map(chooser => (
+            <li
+              key={chooser.userId}
+              className="flex items-center gap-1.5 rounded-full bg-gray-50 py-1 pr-3 pl-1"
+            >
               <Image
-                src={participant.profileImage}
-                alt={participant.nickname}
-                width={18}
-                height={18}
-                className="size-4.5 shrink-0 rounded-full bg-gray-50 object-cover"
+                src={chooser.profileImage}
+                alt={chooser.nickname}
+                width={20}
+                height={20}
+                className="size-5 rounded-full bg-gray-50 object-cover"
                 unoptimized
               />
-              <span className="caption-1-semibold text-text-neutral-secondary">
-                {participant.nickname}
+              <span className="caption-1-semibold text-text-neutral-primary">
+                {chooser.nickname}
               </span>
             </li>
           ))}
         </ul>
       )}
     </div>
-  );
-}
-
-function OtherPlaceRow({ item }: { item: GroupResultItemT }) {
-  const count = item.chosenBy.length;
-  const firstChooser = item.chosenBy[0];
-
-  return (
-    <li className="flex flex-col gap-1.5">
-      <div className="flex items-center justify-between gap-3">
-        <p className="flex-1 truncate caption-1-semibold text-text-neutral-secondary">
-          {item.name}
-        </p>
-        <p className="caption-1-semibold text-text-neutral-secondary">{count}명</p>
-      </div>
-      {firstChooser && (
-        <div className="flex items-center gap-1.5">
-          <Image
-            src={firstChooser.profileImage}
-            alt={firstChooser.nickname}
-            width={16}
-            height={16}
-            className="size-4 shrink-0 rounded-full bg-gray-50 object-cover"
-            unoptimized
-          />
-          <span className="caption-1-semibold text-text-neutral-secondary">
-            {firstChooser.nickname}
-          </span>
-        </div>
-      )}
-    </li>
   );
 }
 
