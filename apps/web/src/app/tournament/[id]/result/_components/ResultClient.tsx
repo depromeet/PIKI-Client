@@ -26,6 +26,8 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const [date] = useState(() => new Date());
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
+  // 동기 락 — setState 가 비동기라 빠른 연속 클릭 시 같은 이벤트 루프에서 재진입되는 걸 막는다.
+  const isCapturingRef = useRef(false);
   const receiptMachineRef = useRef<ReceiptDrawMachineHandleT | null>(null);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
@@ -53,14 +55,16 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const handleShareReceiptImage = async () => {
     const element = receiptMachineRef.current?.getReceiptPaperElement();
-    if (!element || isCapturing) return;
+    if (!element || isCapturingRef.current) return;
 
+    isCapturingRef.current = true;
     setIsCapturing(true);
     try {
       await shareReceiptImage(element);
     } catch {
       toast.error('영수증 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
     } finally {
+      isCapturingRef.current = false;
       setIsCapturing(false);
     }
   };
