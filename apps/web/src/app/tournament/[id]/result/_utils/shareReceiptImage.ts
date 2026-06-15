@@ -29,7 +29,7 @@ const downloadBlob = (blob: Blob, fileName: string) => {
 };
 
 /** 트로피 뱃지가 영수증 종이 좌상단으로 8px 나가고, 종이 자체 그림자도 있어서 여유를 둔다. */
-const CAPTURE_PADDING_PX = 24;
+const CAPTURE_PADDING_PX = 40;
 
 /**
  * 원본 영수증 DOM 을 cloneNode 한 뒤 off-screen 컨테이너에서 고정 폭으로 렌더링.
@@ -58,6 +58,13 @@ const renderInOffscreen = (
   clone.style.transform = 'none';
   clone.style.width = `${CAPTURE_WIDTH_PX}px`;
   clone.style.willChange = 'auto';
+  // 트로피 뱃지(`-top-2 -left-2`)가 영수증 좌상단 밖으로 살짝 나가는데, wrapper 의
+  // `filter: drop-shadow(...)` 가 새 containing block 을 만들어 자식 absolute 가
+  // wrapper bounding box 안에 클립되는 부수효과가 있다. 캡처에선 흰 wrapper 가
+  // 배경 역할을 하므로 그림자를 제거해 트로피 잘림을 방지한다.
+  clone.style.overflow = 'visible';
+  clone.style.clipPath = 'none';
+  clone.style.filter = 'none';
 
   // 영수증 상단의 흰색 그라데이션 오버레이는 원본 화면에서 프린터 슬롯 위 영역을 가려주는
   // 장식 (`absolute -top-6`). 캡처에선 wrapper 의 흰 배경이 그 역할을 하니 제거해서
@@ -68,6 +75,27 @@ const renderInOffscreen = (
     if (cls.includes('-top-6') && cls.includes('bg-linear-to-t')) {
       el.remove();
     }
+  });
+
+  // html2canvas 가 트로피 부모(.relative.size-15) 의 bounding box 밖(`-6px`) 은
+  // 잘라낸다. 부모 박스 자체에 음수 margin 으로 좌상단을 키워서 trophy 가 박스 안에
+  // 들어가게 하면 잘림 없이 시안의 박스 모서리 걸침 효과가 보존된다.
+  clone.querySelectorAll<HTMLElement>('[aria-label="1위"]').forEach(badge => {
+    const slot = badge.parentElement;
+    if (!slot) return;
+    // 부모 박스를 좌상단으로 확장 (음수 margin) + padding 으로 안쪽 이미지는 그대로.
+    slot.style.marginTop = '-10px';
+    slot.style.marginLeft = '-10px';
+    slot.style.paddingTop = '10px';
+    slot.style.paddingLeft = '10px';
+    slot.style.boxSizing = 'content-box';
+    // trophy 는 박스 좌상단(0,0)
+    badge.style.position = 'absolute';
+    badge.style.top = '0px';
+    badge.style.left = '0px';
+    badge.style.right = 'auto';
+    badge.style.bottom = 'auto';
+    badge.style.zIndex = '9999';
   });
 
   capture.appendChild(clone);
