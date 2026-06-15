@@ -7,7 +7,7 @@ const AUTHORIZED_ROUTE_PATTERNS = [
   /^\/tournament\/[^/]+\/item\/[^/]+$/,
   /^\/tournament\/[^/]+\/loading$/,
   /^\/tournament\/[^/]+\/match$/,
-  /^\/tournament\/[^/]+\/result$/,
+  /^\/tournament\/[^/]+\/result(?:\/group)?$/,
 ] as const;
 
 const matchesPath = (pathname: string, basePath: string) =>
@@ -26,6 +26,7 @@ const isPublicRoute = (pathname: string) => {
 const isMemberAndGuestRoute = (pathname: string) => {
   if (matchesPath(pathname, ROUTES.HOME)) return true;
   if (matchesPath(pathname, ROUTES.TOURNAMENT_JOIN_BY_CODE)) return true;
+  if (matchesPath(pathname, '/play')) return true;
   if (matchesPath(pathname, ROUTES.NOTIFICATION)) return true;
   if (pathname === ROUTES.MYPAGE) return true;
   if (pathname === ROUTES.MYPAGE_EDIT) return true;
