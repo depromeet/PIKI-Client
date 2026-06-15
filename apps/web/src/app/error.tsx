@@ -16,7 +16,7 @@ export default function Error({ error, reset }: Props) {
   const isClientError = statusCode >= 400 && statusCode < 500;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-8 bg-white px-5">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-8 bg-white px-5 pt-padding-top">
       <div className="w-full text-center">
         <p className="title-lg mb-2">
           {isClientError ? '요청 오류가 발생했습니다' : '서버 오류가 발생했습니다'}

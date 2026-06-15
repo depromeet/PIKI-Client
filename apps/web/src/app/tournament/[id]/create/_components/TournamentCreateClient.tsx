@@ -89,7 +89,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
-    <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-status pb-8">
+    <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-padding-top pb-8">
       <div className="space-y-4 px-5">
         <TournamentHeader name={tournamentData.name} hasFriends={hasFriends} />
         <ParticipantPanel

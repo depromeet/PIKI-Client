@@ -17,7 +17,7 @@ async function MypagePage() {
   });
 
   return (
-    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-status">
+    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-padding-top">
       <Header left={<HeaderIcon name="BACK" />} center="설정" centerClassName="title-1" />
       <Spacing size={48} />
 

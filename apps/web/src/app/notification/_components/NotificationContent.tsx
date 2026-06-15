@@ -36,7 +36,7 @@ function NotificationContent() {
   };
 
   return (
-    <div className="flex h-dvh flex-col bg-gray-50 px-7 pt-20">
+    <div className="flex h-dvh flex-col bg-gray-50 px-5 pt-padding-top">
       <Header left={<HeaderIcon name="BACK" />} center="알림 히스토리" centerClassName="title-1" />
       <Spacing size={16} />
 
