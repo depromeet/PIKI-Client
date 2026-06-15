@@ -6,6 +6,8 @@ export const ROUTES = {
   ROOT: '/',
   LOGIN: '/login',
   SOCIAL_LOGIN_CALLBACK: (provider: string) => `/auth/callback/${provider}`,
+  TERMS: '/terms',
+  POLICY: '/policy',
 
   /** 2. Member & Guest */
   HOME: '/home',
