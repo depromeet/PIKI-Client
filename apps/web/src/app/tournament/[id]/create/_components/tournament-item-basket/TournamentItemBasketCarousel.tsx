@@ -101,6 +101,11 @@ function TournamentItemBasketCarousel({
           isDepositClosed={isDepositClosed}
           maxHeight={basketMaxHeight}
         />
+        {items.length === 0 && (
+          <p className="mt-3 body-2-regular text-text-neutral-tertiary">
+            후보를 장바구니에 담아보세요.
+          </p>
+        )}
       </div>
     );
   }
