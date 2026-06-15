@@ -1,30 +1,42 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { Header, HeaderIcon } from '@/components/header';
 import Spacing from '@/components/spacing';
+import { formatTimeKo } from '@/utils/formatDate';
 import { isWebview } from '@/utils/webBridge';
 
+import { useGetNotifications } from '../_hooks/useGetNotifications';
+import useIntersectionObserver from '../_hooks/useIntersectionObserver';
+import { usePostNotificationsRead } from '../_hooks/usePostNotificationsRead';
 import { usePushPermission } from '../_hooks/usePushPermission';
+import { getNotificationRoute } from '../_utils/getNotificationRoute';
 import NotificationEmptyState from './NotificationEmptyState';
 import NotificationItem from './NotificationItem';
 import PushDisabledBanner from './PushDisabledBanner';
 
-// TODO: API 연동 시 제거
-const MOCK_NOTIFICATIONS = [
-  { id: 1, message: '배부른 사자님이 아이템을 추가했어요', time: '오전 11:25' },
-  { id: 2, message: '맛있는 캔디님이 아이템을 추가했어요', time: '오전 11:25' },
-  { id: 3, message: '졸린 호랑이님이 새 아이템을 담았어요', time: '오전 11:25' },
-  { id: 4, message: '노는 원숭이님의 토너먼트에 신입 등장', time: '오전 11:25' },
-];
-
 function NotificationContent() {
-  const notifications = MOCK_NOTIFICATIONS;
-  const isEmpty = notifications.length === 0;
-
+  const router = useRouter();
   const { openNotificationSettings, isPushEnabled } = usePushPermission();
+  const { notificationsData, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetNotifications();
+  const { postNotificationsReadMutation } = usePostNotificationsRead();
+  const isEmpty = !isPending && notificationsData.length === 0;
+
+  const bottomRef = useIntersectionObserver(fetchNextPage, !!hasNextPage && !isFetchingNextPage);
+
+  const handleNotificationClick = (notification: (typeof notificationsData)[number]) => {
+    const route = getNotificationRoute(notification.type, notification.refId, {
+      kind: notification.kind,
+      tournamentId: notification.tournamentId,
+    });
+    postNotificationsReadMutation({ ids: [notification.id] });
+    if (route) router.push(route);
+  };
 
   return (
-    <div className="flex h-dvh flex-col px-5 pt-status">
+    <div className="flex h-dvh flex-col bg-gray-50 px-7 pt-20">
       <Header left={<HeaderIcon name="BACK" />} center="알림 히스토리" centerClassName="title-1" />
       <Spacing size={16} />
 
@@ -39,15 +51,19 @@ function NotificationContent() {
 
             <div className="rounded-xl bg-base-50">
               <ul className="divide-y divide-gray-100 px-5">
-                {notifications.map(notification => (
+                {notificationsData.map(notification => (
                   <NotificationItem
                     key={notification.id}
-                    message={notification.message}
-                    time={notification.time}
+                    message={notification.title}
+                    time={formatTimeKo(notification.createdAt)}
+                    profileImage={notification.imageUrl}
+                    isRead={notification.isRead}
+                    onClick={() => handleNotificationClick(notification)}
                   />
                 ))}
               </ul>
             </div>
+            <div ref={bottomRef} />
           </div>
         )}
       </div>
