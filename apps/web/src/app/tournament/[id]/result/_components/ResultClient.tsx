@@ -3,7 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { ImageIconFill, LinkIconFill } from '@/assets/icons/fill';
 import { ROUTES } from '@/consts/route';
+import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import ReceiptDrawMachine from './ReceiptDrawMachine';
@@ -36,12 +38,18 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const tournamentName = tournamentData.name;
   const result = tournamentData.completed.result;
+  // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람) 제외
+  const canSharePlayLink = tournamentData.isRoot && tournamentData.isOwner;
 
   const handleGoHome = () => {
     router.push(ROUTES.HOME);
   };
 
-  const handleOpenShare = () => {
+  const handleShareReceiptImage = () => {
+    // TODO: 영수증 이미지 공유 구현
+  };
+
+  const handleSharePlayLink = () => {
     setIsShareDialogOpen(true);
   };
 
@@ -53,15 +61,24 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         <span className="text-text-neutral-primary">승자는</span>
       </h1>
 
-      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col gap-3 px-5">
-        <ReceiptDrawMachine
-          tournamentName={tournamentName}
-          result={result}
-          date={date}
-          // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람)는 제외
-          canSharePlayLink={tournamentData.isRoot && tournamentData.isOwner}
-          onSharePlayLink={handleOpenShare}
-        />
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3 px-5">
+        <ReceiptDrawMachine tournamentName={tournamentName} result={result} date={date} />
+
+        {/* 영수증 밖 공유 버튼 — 이미지 공유 (모든 사용자) + 토너먼트 플레이 체험 (ROOT 소유자만) */}
+        <div className={cn('flex gap-2', !canSharePlayLink && 'justify-center')}>
+          <ShareButton
+            icon={<ImageIconFill className="size-4 text-icon-neutral-primary" />}
+            label="영수증 이미지 공유"
+            onClick={handleShareReceiptImage}
+          />
+          {canSharePlayLink && (
+            <ShareButton
+              icon={<LinkIconFill className="size-4 text-icon-accent" />}
+              label="토너먼트 플레이 체험"
+              onClick={handleSharePlayLink}
+            />
+          )}
+        </div>
 
         {/*
           친구 토너먼트 결과보기 카드 노출 + 라우팅.
@@ -97,6 +114,25 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         initialPlayLinkExpiresAt={tournamentData.completed.playLinkExpiresAt}
       />
     </main>
+  );
+}
+
+type ShareButtonProps = {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+};
+
+function ShareButton({ icon, label, onClick }: ShareButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex h-13 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-bg-layer-default body-2-semibold text-text-neutral-primary"
+    >
+      {icon}
+      {label}
+    </button>
   );
 }
 
