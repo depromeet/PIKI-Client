@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import type React from 'react';
 
-import { NotificationIconFill } from '@/assets/icons/fill';
-import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
+
+import AlarmHeaderIcon from './AlarmHeaderIcon';
 
 import BackHeaderIcon from './BackHeaderIcon';
 import ProfileHeaderIcon from './ProfileHeaderIcon';
@@ -79,16 +78,7 @@ function HeaderIcon({
         <ProfileHeaderIcon onClick={onClick} className={cn('cursor-pointer p-[3px]', className)} />
       );
     case 'ALARM':
-      return (
-        <Link
-          href={ROUTES.NOTIFICATION}
-          aria-label="알림"
-          className={cn('cursor-pointer p-[3px]', className)}
-          onClick={onClick}
-        >
-          <NotificationIconFill className="size-6 text-icon-neutral-secondary" />
-        </Link>
-      );
+      return <AlarmHeaderIcon className={className} onClick={onClick} />;
     case 'BACK':
       return <BackHeaderIcon onClick={onClick} className={cn('cursor-pointer', className)} />;
     default:
