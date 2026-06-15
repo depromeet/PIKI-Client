@@ -2,7 +2,7 @@
 
 import { gsap } from 'gsap';
 import Image from 'next/image';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 
 import ReceiptPrinterImg from '@/assets/images/tournament/result/receipt-printer.png';
 
@@ -30,11 +30,25 @@ type ReceiptDrawMachineProps = {
   date: Date;
 };
 
-function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachineProps) {
+/** 외부에서 영수증 종이 DOM 을 캡처할 때 사용 (예: 영수증 이미지 공유) */
+export type ReceiptDrawMachineHandleT = {
+  getReceiptPaperElement: () => HTMLDivElement | null;
+};
+
+const ReceiptDrawMachine = forwardRef<ReceiptDrawMachineHandleT, ReceiptDrawMachineProps>(
+  function ReceiptDrawMachine({ tournamentName, result, date }, ref) {
   const animationScopeRef = useRef<HTMLDivElement | null>(null);
   const printerFrameRef = useRef<HTMLDivElement | null>(null);
   const receiptPaperRef = useRef<HTMLDivElement | null>(null);
   const slotBarRef = useRef<HTMLDivElement | null>(null);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getReceiptPaperElement: () => receiptPaperRef.current,
+    }),
+    []
+  );
   const [receiptTopPx, setReceiptTopPx] = useState(RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX);
 
   useLayoutEffect(() => {
@@ -160,6 +174,7 @@ function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachine
       </div>
     </div>
   );
-}
+  }
+);
 
 export default ReceiptDrawMachine;

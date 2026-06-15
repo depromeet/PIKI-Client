@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import { ChevronBackwardIconFill } from '@/assets/icons/fill';
 import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
@@ -10,7 +11,8 @@ import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
-import ReceiptDrawMachine from './ReceiptDrawMachine';
+import { shareReceiptImage } from '../_utils/shareReceiptImage';
+import ReceiptDrawMachine, { type ReceiptDrawMachineHandleT } from './ReceiptDrawMachine';
 import GroupResultEntryCard from './group-result-entry-card/GroupResultEntryCard';
 import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 
@@ -23,6 +25,8 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const { tournamentData } = useGetTournament(tournamentId);
   const [date] = useState(() => new Date());
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const receiptMachineRef = useRef<ReceiptDrawMachineHandleT | null>(null);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
@@ -47,8 +51,18 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     router.push(ROUTES.HOME);
   };
 
-  const handleShareReceiptImage = () => {
-    // TODO: 영수증 이미지 공유 구현
+  const handleShareReceiptImage = async () => {
+    const element = receiptMachineRef.current?.getReceiptPaperElement();
+    if (!element || isCapturing) return;
+
+    setIsCapturing(true);
+    try {
+      await shareReceiptImage(element);
+    } catch {
+      toast.error('영수증 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+    } finally {
+      setIsCapturing(false);
+    }
   };
 
   const handleSharePlayLink = () => {
@@ -72,14 +86,20 @@ function ResultClient({ tournamentId }: ResultClientProps) {
       </header>
 
       <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3 px-5">
-        <ReceiptDrawMachine tournamentName={tournamentName} result={result} date={date} />
+        <ReceiptDrawMachine
+          ref={receiptMachineRef}
+          tournamentName={tournamentName}
+          result={result}
+          date={date}
+        />
 
         {/* 영수증 밖 공유 버튼 — 이미지 공유 (모든 사용자) + 토너먼트 플레이 체험 (ROOT 소유자만) */}
         <div className={cn('flex gap-2', !canSharePlayLink && 'justify-center')}>
           <ShareButton
             icon={<ReceiptIcon aria-hidden className="size-5" />}
-            label="영수증 이미지 공유"
+            label={isCapturing ? '이미지 만드는 중...' : '영수증 이미지 공유'}
             onClick={handleShareReceiptImage}
+            disabled={isCapturing}
           />
           {canSharePlayLink && (
             <ShareButton
@@ -131,14 +151,16 @@ type ShareButtonProps = {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 };
 
-function ShareButton({ icon, label, onClick }: ShareButtonProps) {
+function ShareButton({ icon, label, onClick, disabled = false }: ShareButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex h-13 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-bg-layer-default body-2-semibold text-text-neutral-primary"
+      disabled={disabled}
+      className="flex h-13 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-bg-layer-default body-2-semibold text-text-neutral-primary disabled:cursor-default disabled:opacity-60"
     >
       {icon}
       {label}
