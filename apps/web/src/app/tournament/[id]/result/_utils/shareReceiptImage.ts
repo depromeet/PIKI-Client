@@ -28,6 +28,9 @@ const downloadBlob = (blob: Blob, fileName: string) => {
   URL.revokeObjectURL(url);
 };
 
+/** 트로피 뱃지가 영수증 종이 좌상단으로 8px 나가고, 종이 자체 그림자도 있어서 여유를 둔다. */
+const CAPTURE_PADDING_PX = 24;
+
 /**
  * 원본 영수증 DOM 을 cloneNode 한 뒤 off-screen 컨테이너에서 고정 폭으로 렌더링.
  * 원본은 부모의 `w-[74%]` / 마스크 / transform 등의 영향을 받아 캡처 시 폭이 흔들리고
@@ -35,16 +38,20 @@ const downloadBlob = (blob: Blob, fileName: string) => {
  */
 const renderInOffscreen = (
   source: HTMLElement
-): { container: HTMLDivElement; cleanup: () => void } => {
-  const container = document.createElement('div');
-  container.setAttribute('aria-hidden', 'true');
-  container.style.position = 'fixed';
-  container.style.top = '0';
-  container.style.left = '-99999px';
-  container.style.width = `${CAPTURE_WIDTH_PX}px`;
-  container.style.padding = '12px'; // 트로피 등 박스 밖 요소 잘림 방지
-  container.style.pointerEvents = 'none';
-  container.style.zIndex = '-1';
+): { capture: HTMLDivElement; cleanup: () => void } => {
+  // 캡처 대상이 될 outer wrapper — 영수증 종이 좌·상·우로 padding 을 두어
+  // 트로피 뱃지, 그림자가 잘리지 않도록 한다.
+  const capture = document.createElement('div');
+  capture.setAttribute('aria-hidden', 'true');
+  capture.style.position = 'fixed';
+  capture.style.top = '0';
+  capture.style.left = '-99999px';
+  capture.style.width = `${CAPTURE_WIDTH_PX + CAPTURE_PADDING_PX * 2}px`;
+  capture.style.padding = `${CAPTURE_PADDING_PX}px`;
+  capture.style.boxSizing = 'border-box';
+  capture.style.pointerEvents = 'none';
+  capture.style.zIndex = '-1';
+  capture.style.backgroundColor = '#ffffff';
 
   const clone = source.cloneNode(true) as HTMLElement;
   // 원본의 인라인 transform(gsap) 이 캡처 결과를 어긋나게 한다.
@@ -52,13 +59,24 @@ const renderInOffscreen = (
   clone.style.width = `${CAPTURE_WIDTH_PX}px`;
   clone.style.willChange = 'auto';
 
-  container.appendChild(clone);
-  document.body.appendChild(container);
+  // 영수증 상단의 흰색 그라데이션 오버레이는 원본 화면에서 프린터 슬롯 위 영역을 가려주는
+  // 장식 (`absolute -top-6`). 캡처에선 wrapper 의 흰 배경이 그 역할을 하니 제거해서
+  // 좌표 계산 어긋남으로 인한 절취선 침범을 방지한다.
+  clone.querySelectorAll('[aria-hidden]').forEach(node => {
+    const el = node as HTMLElement;
+    const cls = el.className?.toString?.() ?? '';
+    if (cls.includes('-top-6') && cls.includes('bg-linear-to-t')) {
+      el.remove();
+    }
+  });
+
+  capture.appendChild(clone);
+  document.body.appendChild(capture);
 
   return {
-    container: clone as HTMLDivElement,
+    capture,
     cleanup: () => {
-      if (container.parentNode) container.parentNode.removeChild(container);
+      if (capture.parentNode) capture.parentNode.removeChild(capture);
     },
   };
 };
@@ -92,11 +110,11 @@ export const shareReceiptImage = async (element: HTMLElement): Promise<boolean> 
   }
 
   // 원본 element 의 transform/mask 영향을 피하려고 clone 후 off-screen 에서 캡처.
-  const { container, cleanup } = renderInOffscreen(element);
+  const { capture, cleanup } = renderInOffscreen(element);
 
   // clone 의 img 들이 새로 fetch 시작될 수 있다 → 각각 최대 3초 대기 후 그냥 진행.
   await Promise.all(
-    [...container.querySelectorAll('img')].map(img => {
+    [...capture.querySelectorAll('img')].map(img => {
       if (img.complete && img.naturalWidth > 0) return Promise.resolve();
       return withTimeout(
         new Promise(resolve => {
@@ -112,14 +130,14 @@ export const shareReceiptImage = async (element: HTMLElement): Promise<boolean> 
   const scale = typeof window !== 'undefined' ? Math.max(window.devicePixelRatio || 2, 2) : 2;
   let canvas: HTMLCanvasElement;
   try {
-    canvas = await html2canvas(container, {
-      backgroundColor: null,
+    canvas = await html2canvas(capture, {
+      backgroundColor: '#ffffff',
       scale,
       useCORS: true,
       allowTaint: true,
       logging: false,
-      width: container.offsetWidth,
-      height: container.offsetHeight,
+      width: capture.offsetWidth,
+      height: capture.offsetHeight,
     });
   } finally {
     cleanup();
