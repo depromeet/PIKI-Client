@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
 import SmileIcon from '@/assets/images/tournament/result/smile-icon.svg';
+import Button from '@/components/button';
 import { Header, HeaderIcon } from '@/components/header';
 import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
@@ -122,13 +123,9 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
       {/* 하단 버튼 — 시안상 단일 CTA */}
       <div className="fixed right-0 bottom-0 left-0 z-30 mx-auto flex w-full max-w-120 items-center bg-bg-layer-basement px-5 pt-3 pb-5">
-        <button
-          type="button"
-          onClick={handleGoHome}
-          className="flex h-13.5 flex-1 cursor-pointer items-center justify-center rounded-xl bg-gray-950 body-1-semibold text-white"
-        >
+        <Button variant="primary" size="lg" onClick={handleGoHome}>
           홈으로 가기
-        </button>
+        </Button>
       </div>
 
       <PlateShareDialog
