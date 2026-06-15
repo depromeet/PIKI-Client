@@ -154,7 +154,7 @@ function ProductCard({ product, index, highlight = false }: ProductCardProps) {
         )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        <p className="truncate body-2-semibold text-text-neutral-primary">{product.name}</p>
+        <p className="break-keep body-2-semibold text-text-neutral-primary">{product.name}</p>
         <p className="body-2-semibold text-text-neutral-primary">{formatPrice(product.price)}</p>
       </div>
       <span className="sr-only">{index}위</span>
