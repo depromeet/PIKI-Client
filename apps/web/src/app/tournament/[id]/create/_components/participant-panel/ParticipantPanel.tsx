@@ -92,7 +92,7 @@ function ParticipantPanel({ participants, inviteCode, inviteExpiresAt }: Partici
         <button
           type="button"
           onClick={handleOpenInvite}
-          className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl bg-base-50 px-4 py-3"
+          className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl bg-base-50 px-4 py-4"
         >
           <div className="flex min-w-0 items-center gap-4">
             <div className="flex items-center">
