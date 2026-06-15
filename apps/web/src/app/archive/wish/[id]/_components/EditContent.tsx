@@ -14,7 +14,7 @@ function EditContent({ wishId }: EditContentProps) {
   const { wishData } = useGetWish(wishId);
 
   return (
-    <div className="hide-scrollbar overflow-y-auto bg-bg-layer-basement pb-[78px]">
+    <div className="hide-scrollbar overflow-y-auto bg-bg-layer-basement px-5 pt-padding-top pb-[78px]">
       <Header left={<HeaderIcon name="BACK" />} />
       <main>
         <header className="mt-3 flex flex-col items-center gap-2 text-center">

@@ -7,6 +7,6 @@ export default defineConfig([
   ...baseConfig,
   expoConfig,
   {
-    ignores: ['dist/**'],
+    ignores: ['dist/**', 'plugins/**'],
   },
 ]);

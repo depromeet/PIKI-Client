@@ -1,10 +1,8 @@
-import { Suspense } from 'react';
-
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getQueryClient } from '@/utils/queryClient';
 
-import { getTournament } from './_apis/getTournament';
+import { getTournament } from '../_common/_apis/getTournament';
 import TournamentCreateClient from './_components/TournamentCreateClient';
 
 type TournamentCreatePageProps = {
@@ -12,19 +10,18 @@ type TournamentCreatePageProps = {
 };
 
 async function TournamentCreatePage({ params }: TournamentCreatePageProps) {
-  const { id: tournamentId } = await params;
+  const { id } = await params;
+  const tournamentId = Number(id);
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ['tournament', tournamentId],
-    queryFn: () => getTournament(Number(tournamentId)),
+    queryFn: () => getTournament(tournamentId),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense>
-        <TournamentCreateClient tournamentId={tournamentId} />
-      </Suspense>
+      <TournamentCreateClient tournamentId={tournamentId} />
     </HydrationBoundary>
   );
 }

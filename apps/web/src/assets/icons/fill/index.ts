@@ -100,6 +100,7 @@ export { default as MultiselectIconFill } from './multiselect.svg';
 export { default as NoteIconFill } from './note.svg';
 export { default as NotificationOffIconFill } from './notification-off.svg';
 export { default as NotificationIconFill } from './notification.svg';
+export { default as NotificationBadgeIconFill } from './notificationBadge.svg';
 export { default as OpenIconFill } from './open.svg';
 export { default as PaymentIconFill } from './payment.svg';
 export { default as PercentIconFill } from './percent.svg';

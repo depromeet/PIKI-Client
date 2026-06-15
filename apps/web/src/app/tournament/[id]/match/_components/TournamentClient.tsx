@@ -42,7 +42,7 @@ function TournamentClient({ tournamentId, tournamentName, inProgress }: Tourname
 
   return (
     <main
-      className={`hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto px-5 pt-12 pb-6 ${backgroundClassName}`}
+      className={`hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto px-5 pt-padding-top pb-6 ${backgroundClassName}`}
     >
       <div className="flex flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-4">

@@ -64,7 +64,10 @@ export const handleOpenImagePicker = async ({ requestId, maxCount }: OpenImagePi
     });
 
     if (result.canceled || result.assets.length === 0) {
-      WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_CANCEL, payload: { requestId } });
+      WebBridge.postMessage({
+        type: WEBBRIDGE_MESSAGE_TYPE.APP_RES_IMAGE_PICKER_CANCEL,
+        payload: { requestId },
+      });
       return;
     }
 

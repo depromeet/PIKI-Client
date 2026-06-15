@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import Button from '@/components/button';
 import { useGetWishlist } from '@/hooks/useGetWishlist';
 
-import { useGetTournament } from '../../_hooks/useGetTournament';
+import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
 import { MAX_SELECT } from '../_consts/selectLimits';
 import { usePostTournamentItemsByWish } from '../_hooks/usePostTournamentItemsByWish';
 import useWishSelection from '../_hooks/useWishSelection';
@@ -24,7 +24,8 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
   const { postTournamentItemsByWishMutation, isPostTournamentItemsByWishPending } =
     usePostTournamentItemsByWish(tournamentId);
 
-  const existingItemIds = new Set(tournamentData.pending?.items.map(i => i.itemId) ?? []);
+  const pending = 'pending' in tournamentData ? tournamentData.pending : null;
+  const existingItemIds = new Set(pending?.items.map(i => i.itemId) ?? []);
   const items =
     wishlistData?.filter(
       item =>
@@ -47,11 +48,11 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
   };
 
   return (
-    <div className="flex h-full flex-col bg-bg-layer-basement px-5">
+    <div className="flex h-full flex-col bg-bg-layer-basement px-5 pt-padding-top">
       <WishSelectHeader
         selectedCount={selectedIds.length}
         totalCount={items.length}
-        tournamentCandidateCount={tournamentData.pending?.items.length ?? 0}
+        tournamentCandidateCount={pending?.items.length ?? 0}
         isMaxExceeded={isMaxExceeded}
       />
 
@@ -77,7 +78,8 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
         <Button
           variant="primary"
           size="lg"
-          disabled={selectedIds.length === 0 || isPostTournamentItemsByWishPending}
+          disabled={selectedIds.length === 0}
+          isLoading={isPostTournamentItemsByWishPending}
           onClick={handleNext}
         >
           다음

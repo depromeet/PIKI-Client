@@ -17,11 +17,11 @@ async function MypagePage() {
   });
 
   return (
-    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-20">
+    <div className="flex h-dvh flex-col bg-bg-layer-basement px-5 pt-padding-top">
       <Header left={<HeaderIcon name="BACK" />} center="설정" centerClassName="title-1" />
       <Spacing size={48} />
 
-      <div className="hide-scrollbar flex flex-1 flex-col overflow-y-auto pb-9">
+      <main className="hide-scrollbar flex flex-1 flex-col overflow-y-auto pb-9">
         {/** 프로필 */}
         <HydrationBoundary state={dehydrate(queryClient)}>
           <ProfileSection />
@@ -34,7 +34,7 @@ async function MypagePage() {
         <Spacing size={24} />
 
         <AppVersionFooter />
-      </div>
+      </main>
     </div>
   );
 }

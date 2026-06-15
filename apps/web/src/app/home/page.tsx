@@ -1,7 +1,6 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { getTournamentList } from '@/apis/getTournamentList';
-import { LoginIconOutline } from '@/assets/icons';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import BottomTabBar from '@/components/bottom-tab-bar';
 import { Header, HeaderIcon } from '@/components/header';
@@ -9,6 +8,7 @@ import { getQueryClient } from '@/utils/queryClient';
 
 import AddWishHomeDialog from './_components/AddWishHomeDialog';
 import CreateTournamentDialog from './_components/CreateTournamentDialog';
+import InviteTournamentButton from './_components/InviteTournamentButton';
 import TorunamentList from './_components/TournamentList';
 
 async function HomePage() {
@@ -20,7 +20,7 @@ async function HomePage() {
   });
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-gray-50 px-5 pt-9 pb-32">
+    <div className="relative flex min-h-dvh flex-col bg-gray-50 px-5 pt-padding-top pb-32">
       {/* 상단 헤더 */}
       <Header
         right={
@@ -47,13 +47,7 @@ async function HomePage() {
             </div>
 
             {/* 초대 토너먼트 입장 */}
-            <button
-              type="button"
-              className="flex h-[54px] w-full cursor-pointer items-center justify-center gap-2 rounded-[12px] bg-bg-layer-default px-9"
-            >
-              <LoginIconOutline className="size-6 text-icon-neutral-secondary" />
-              <span className="body-1-semibold text-text-neutral-primary">초대 토너먼트 입장</span>
-            </button>
+            <InviteTournamentButton />
           </div>
         </section>
 

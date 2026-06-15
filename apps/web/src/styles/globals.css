@@ -134,7 +134,7 @@
   --color-icon-accent: var(--color-blue-500);
 
   /** User Accent Color */
-  --color-uac-light: #0A7AFF;
+  --color-uac-light: #0a7aff;
   --color-icon-warning: var(--color-yellow-600);
   --color-icon-error: var(--color-red-600);
   --color-icon-success: var(--color-green-600);
@@ -143,6 +143,8 @@
   --color-icon-neutral-primary: var(--color-gray-600);
   --color-icon-neutral-secondary: var(--color-gray-300);
   --color-icon-neutral-inverse: var(--color-base-50);
+
+  --spacing-padding-top: max(env(safe-area-inset-top), 47px);
 }
 
 @utility hide-scrollbar {
@@ -151,4 +153,28 @@
   }
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/**
+ * 기본 배경색 중앙화.
+ * iOS 26 Safari 가 `<meta name="theme-color">` 를 무시하기 시작하면서, 노치(safe-area-top)/홈 인디케이터
+ * 영역이 body 배경색으로 채워지게 됐다. 페이지마다 배경이 다른 경우엔 각 클라이언트에서
+ * `document.body.style.backgroundColor` 를 직접 덮어쓴다.
+ */
+html,
+body {
+  background-color: var(--color-neutral-50);
+}
+
+/**
+ * 페이지 상하단 표준 여백.
+ *
+ * - status: status bar 와 헤더 사이 여백. 웹(노치 없음)에서는 0,
+ *   앱(WebView, `<html data-app>`) 에서만 14px 추가. layout wrapper 가 이미
+ *   `pt-[env(safe-area-inset-top)]` 으로 노치만큼 패딩을 잡으므로 여기서는
+ *   디자인이 의도한 추가 여백만 더한다.
+ * - bottom: 12px (콘텐츠와 홈 인디케이터/내비게이션 사이 마진)
+ */
+html[data-app] {
+  --spacing-padding-top: max(env(safe-area-inset-top) + 14px, 47px);
 }

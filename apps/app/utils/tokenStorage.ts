@@ -1,28 +1,39 @@
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
+/**
+ * NOTE: PiKi 앱과 Share Extension(iOS 앱 공유 바텀시트)에서 access, refresh token을 공유하기 위해 App Group 사용
+ */
+const getSecureStoreOptions = (): SecureStore.SecureStoreOptions =>
+  Platform.OS === 'ios' ? { accessGroup: 'group.day.no30s.piki' } : {};
+
 export const TokenStorage = {
   async setTokens(accessToken: string, refreshToken: string) {
+    const options = getSecureStoreOptions();
+
     await Promise.all([
-      SecureStore.setItemAsync(ACCESS_TOKEN_KEY, accessToken),
-      SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken),
+      SecureStore.setItemAsync(ACCESS_TOKEN_KEY, accessToken, options),
+      SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken, options),
     ]);
   },
 
   async getAccessToken() {
-    return SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
+    return SecureStore.getItemAsync(ACCESS_TOKEN_KEY, getSecureStoreOptions());
   },
 
   async getRefreshToken() {
-    return SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
+    return SecureStore.getItemAsync(REFRESH_TOKEN_KEY, getSecureStoreOptions());
   },
 
   async clearTokens() {
+    const options = getSecureStoreOptions();
+
     await Promise.all([
-      SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY),
-      SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY),
+      SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY, options),
+      SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY, options),
     ]);
   },
 };

@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { WEBVIEW_UA_TOKEN } from '@piki/core';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { headers } from 'next/headers';
 import React from 'react';
-
-import { WEBVIEW_UA_TOKEN } from '@piki/core';
-
-import { cn } from '@/utils/cn';
 
 import Providers from '../components/Providers';
 import '../styles/globals.css';
@@ -33,6 +30,17 @@ export const metadata: Metadata = {
   description: '흩어진 위시를 한곳에 모아 토너먼트로 결정해보세요.',
 };
 
+/**
+ * iOS 26 Safari 부터 `<meta name="theme-color">` 가 무시돼 노치/홈 인디케이터 영역이
+ * body 배경색을 따른다. 이 영역까지 우리 콘텐츠가 칠해지도록 viewport-fit=cover 를 켜고,
+ * 페이지에서는 `pt-padding-top` 으로 패딩을 잡는다.
+ */
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
+
 async function RootLayout({
   children,
 }: Readonly<{
@@ -43,10 +51,10 @@ async function RootLayout({
   const isWebview = userAgent.includes(WEBVIEW_UA_TOKEN);
 
   return (
-    /** TEMP: 임시 배경색 추가 */
     <html
       lang="ko"
-      className={cn(pretendard.className, 'h-full overflow-hidden bg-gray-100 antialiased')}
+      className={`${pretendard.className} h-full overflow-hidden antialiased`}
+      {...(isWebview && { 'data-app': '' })}
     >
       <head>
         {process.env.NODE_ENV === 'development' && !isWebview && (
@@ -66,7 +74,7 @@ async function RootLayout({
       <body className="h-full overflow-hidden">
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] [scrollbar-gutter:stable]">
+          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pb-[max(env(safe-area-inset-bottom),0px)] [scrollbar-gutter:stable]">
             {children}
           </div>
         </Providers>

@@ -1,17 +1,29 @@
 import type { InitialProps as ShareExtensionProps } from 'expo-share-extension';
-import { close } from 'expo-share-extension';
-import { useEffect, useState } from 'react';
+import { close, openHostApp } from 'expo-share-extension';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { postWishLinkFromShare } from '@/utils/postWishLinkFromShare';
 
-export default function ShareBottomSheet({ url }: ShareExtensionProps) {
+export default function ShareBottomSheet(props: ShareExtensionProps) {
+  return (
+    <SafeAreaProvider>
+      <ShareBottomSheetContent {...props} />
+    </SafeAreaProvider>
+  );
+}
+
+function ShareBottomSheetContent({ url }: ShareExtensionProps) {
   const [sheetStatus, setSheetStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleOpenWishlist = () => {
+    /** openHostApp path 규칙: `/{path}?{query}` — `web=...`만 넘기면 `/web=...` 라우트로 해석됨 */
+    openHostApp(`/?web=${encodeURIComponent('/archive?tab=wish')}`);
+  };
 
   useEffect(() => {
     if (!url) {
-      setErrorMessage('공유된 링크를 찾을 수 없어요');
       setSheetStatus('error');
       return;
     }
@@ -25,11 +37,9 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
 
       if (result.ok) {
         setSheetStatus('success');
-        close();
         return;
       }
 
-      setErrorMessage(result.message);
       setSheetStatus('error');
     };
 
@@ -42,7 +52,7 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
 
   if (sheetStatus === 'loading')
     return (
-      <View style={styles.sheet}>
+      <SheetContainer>
         <View style={styles.handle} />
 
         <Text allowFontScaling={false} style={styles.title}>
@@ -57,60 +67,79 @@ export default function ShareBottomSheet({ url }: ShareExtensionProps) {
 
           <LoadingDots />
         </View>
-      </View>
+      </SheetContainer>
     );
 
-  // TODO: 에러 ui 스타일 변경 필요
   if (sheetStatus === 'error')
     return (
-      <View style={styles.sheet}>
+      <SheetContainer onDimPress={() => close()}>
         <View style={styles.handle} />
 
         <Text allowFontScaling={false} style={styles.title}>
-          위시 담기에 실패했어요
+          위시템을 저장하지 못했어요
         </Text>
 
-        <Text allowFontScaling={false} style={styles.errorMessage}>
-          {errorMessage}
-        </Text>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('@/assets/images/share-bottom-sheet/basket.png')}
+            style={styles.image}
+          />
+
+          <Image
+            source={require('@/assets/images/share-bottom-sheet/warning.png')}
+            style={styles.icon}
+          />
+        </View>
 
         <Pressable style={styles.button} onPress={() => close()}>
           <Text allowFontScaling={false} style={styles.buttonText}>
-            닫기
+            확인
           </Text>
         </Pressable>
-      </View>
+      </SheetContainer>
     );
 
   return (
-    <View style={styles.sheet}>
+    <SheetContainer onDimPress={() => close()}>
       <View style={styles.handle} />
 
       <Text allowFontScaling={false} style={styles.title}>
-        위시 저장 완료!
+        위시템을 저장했어요
       </Text>
 
-      <View style={styles.productContainer}>
+      <View style={styles.imageContainer}>
         <Image
           source={require('@/assets/images/share-bottom-sheet/basket.png')}
-          style={styles.productImage}
+          style={styles.image}
         />
-        <View style={styles.dots}>
-          <Text allowFontScaling={false} style={styles.productName}>
-            댕기 명주실 북어
-          </Text>
-          <Text allowFontScaling={false} style={styles.productPrice}>
-            52,000원
-          </Text>
-        </View>
+
+        <Image
+          source={require('@/assets/images/share-bottom-sheet/icon-success.png')}
+          style={styles.icon}
+        />
       </View>
 
-      {/** TODO: 위시 보러가기 버튼 클릭 시 위시 페이지로 이동 */}
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={handleOpenWishlist}>
         <Text allowFontScaling={false} style={styles.buttonText}>
-          위시 보러가기
+          위시템 보러가기
         </Text>
       </Pressable>
+    </SheetContainer>
+  );
+}
+
+type SheetContainerProps = {
+  children: ReactNode;
+  onDimPress?: () => void;
+};
+
+function SheetContainer({ children, onDimPress }: SheetContainerProps) {
+  const { bottom } = useSafeAreaInsets();
+
+  return (
+    <View style={styles.wrapper}>
+      {onDimPress && <Pressable style={StyleSheet.absoluteFill} onPress={onDimPress} />}
+      <View style={[styles.sheet, { paddingBottom: bottom }]}>{children}</View>
     </View>
   );
 }
@@ -149,15 +178,19 @@ function LoadingDots() {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: '#00000066',
+  },
   sheet: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingTop: 12,
-    paddingBottom: 20,
     paddingHorizontal: 20,
     alignItems: 'center',
-    flex: 1,
+    width: '100%',
   },
   handle: {
     height: 4,
@@ -169,12 +202,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  errorMessage: {
-    marginTop: 12,
-    fontSize: 16,
-    color: '#686F7E',
-    textAlign: 'center',
   },
   image: {
     width: 145,
@@ -201,35 +228,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F4F6',
   },
 
-  productContainer: {
-    borderColor: '#DCDEE2',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 20,
-    marginTop: 20,
-    marginBottom: 20,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 20,
-    alignItems: 'center',
-  },
-  productImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
-  },
-  productName: {
-    fontSize: 16,
-    fontWeight: 'medium',
-    color: '#686F7E',
-    marginBottom: 4,
-  },
-  productPrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2D3037',
-  },
   button: {
     width: '100%',
     height: 54,
@@ -237,11 +235,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 'auto',
   },
   buttonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+
+  icon: {
+    width: 48,
+    height: 48,
+    position: 'absolute',
+    top: 93,
+    left: 49,
   },
 });

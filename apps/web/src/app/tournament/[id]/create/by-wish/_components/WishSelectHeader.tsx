@@ -24,7 +24,9 @@ function WishSelectHeader({
 
     return (
       <p className="whitespace-pre-line">
-        <span className="heading-2 text-text-neutral-secondary">{tournamentCandidateCount}개가</span>
+        <span className="heading-2 text-text-neutral-secondary">
+          {tournamentCandidateCount}개가
+        </span>
         <span className="heading-2-medium text-text-neutral-secondary">
           {' 담겨있어요\n더 추가하고 싶은 상품을 골라보세요.'}
         </span>
@@ -33,7 +35,7 @@ function WishSelectHeader({
   };
 
   return (
-    <div className="mt-20 flex flex-col gap-[25px]">
+    <div className="flex flex-col gap-[25px]">
       <div className="flex flex-col gap-2">
         <h1 className="title-1 text-gray-950">비교할 위시템을 선택해주세요</h1>
         <div className="min-h-[52px]">{renderSubtitle()}</div>

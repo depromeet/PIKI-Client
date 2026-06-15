@@ -8,35 +8,29 @@ import { ROUTES } from '@/consts/route';
 import type { TournamentItemT } from '@/types/tournament';
 
 import { getTournament } from '../../_common/_apis/getTournament';
-import type {
-  GetTournamentCompletedResponseT,
-  GetTournamentInProgressResponseT,
-} from '../../_common/_types/tournamentResponse';
+import type { GetTournamentInProgressResponseT } from '../../_common/_types/tournamentResponse';
 import { type TransitionStageT, getRoundLabel, getTransitionStage } from '../_consts/rounds';
 import { pairByPriceAsc, shufflePairs } from '../_utils/pairItems';
 import { usePostRecordMatch } from './usePostRecordMatch';
 
 type UseTournamentArgs = {
   tournamentId: number;
+  /** 현재 미사용 — TournamentClient 호출 시그니처 유지를 위해 인자만 받는다 */
   tournamentName: string;
   inProgress: GetTournamentInProgressResponseT['inProgress'];
 };
 
-const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTournamentArgs) => {
+const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { postRecordMatchMutation } = usePostRecordMatch({
     tournamentId,
     onSuccess: data => {
-      // 결승 응답에 포함된 result로 결과 페이지의 GET을 건너뛰도록 캐시 선갱신
       if (!data) return;
-      const completed: GetTournamentCompletedResponseT = {
-        tournamentId,
-        name: tournamentName,
-        status: 'COMPLETED',
-        completed: { result: data.result },
-      };
-      queryClient.setQueryData(['tournament', tournamentId], completed);
+      // 결승 종료 후 result 페이지가 권위 응답(hasGroupResult/playLinkExpiresAt/isRoot 등)
+      // 을 받아야 하므로 클라 캐시는 비워 두고 SSR fresh data 로 채우게 한다.
+      // (시드해두면 stale 한 hasGroupResult=false 가 클라에 남아 카드 노출이 늦어짐)
+      queryClient.removeQueries({ queryKey: ['tournament', tournamentId] });
     },
   });
 
@@ -74,7 +68,7 @@ const useTournament = ({ tournamentId, tournamentName, inProgress }: UseTourname
     const next = await getTournament(tournamentId);
     queryClient.setQueryData(['tournament', tournamentId], next);
 
-    if (next.status !== 'IN_PROGRESS') return;
+    if (next.status !== 'IN_PROGRESS' || !next.inProgress) return;
     setCurrentRound(next.inProgress.currentRound);
     setRemainingItems(next.inProgress.remainingItems);
   };

@@ -7,7 +7,6 @@ import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Input from '@/components/input';
 import Spacing from '@/components/spacing';
-import Spinner from '@/components/spinner';
 import type { ItemStatusT } from '@/types/item';
 import formatPrice from '@/utils/formatPrice';
 
@@ -100,18 +99,25 @@ function ItemEditForm({
 
       <BottomCta className="bg-bg-layer-basement py-3">
         {itemStatus === 'READY' && (
-          <Button variant="secondary" size="lg" className="flex-1" onClick={handleDelete}>
-            {isDeleteWishPending ? <Spinner size={20} /> : '삭제하기'}
+          <Button
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            isLoading={isDeleteWishPending}
+            onClick={handleDelete}
+          >
+            삭제하기
           </Button>
         )}
         <Button
           variant="primary"
           size="lg"
-          onClick={handleSave}
+          isLoading={isPatchWishPending}
           disabled={isDeleteWishPending || !isValid}
           className="flex-1"
+          onClick={handleSave}
         >
-          {isPatchWishPending ? <Spinner size={20} /> : '저장하기'}
+          저장하기
         </Button>
       </BottomCta>
     </>
