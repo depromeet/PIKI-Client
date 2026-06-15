@@ -84,10 +84,12 @@ function TournamentItemBasketCarousel({
   const handleIndicatorSelect = (index: number) => carouselApi?.scrollTo(index);
 
   const { ref: containerRef, height: containerHeight } = useContainerHeight();
-  const indicatorRef = useRef<HTMLDivElement>(null);
+  const { ref: indicatorRef, height: indicatorHeight } = useContainerHeight();
   const gap = isCarouselEnabled ? 16 : 0;
-  const indicatorHeight = indicatorRef.current?.clientHeight ?? 0;
-  const basketMaxHeight = containerHeight ? containerHeight - indicatorHeight - gap : undefined;
+  let basketMaxHeight: number | undefined;
+  if (containerHeight) {
+    basketMaxHeight = containerHeight - (indicatorHeight ?? 0) - gap;
+  }
 
   if (!isCarouselEnabled) {
     return (
