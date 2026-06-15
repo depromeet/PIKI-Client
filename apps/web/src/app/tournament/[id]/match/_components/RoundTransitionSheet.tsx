@@ -248,8 +248,8 @@ function RoundTransitionSheet({ stage, onComplete }: RoundTransitionSheetProps) 
   useEffect(() => {
     if (!ringStarted) return;
     if (remaining <= 0) {
-      handleSkip();
-      return;
+      const t = setTimeout(handleSkip, 0);
+      return () => clearTimeout(t);
     }
     const t = setTimeout(() => setRemaining(prev => prev - 1), 1000);
     return () => clearTimeout(t);
