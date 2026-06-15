@@ -3,6 +3,7 @@
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
+import useContainerHeight from '@/hooks/useContainerHeight';
 import { cn } from '@/utils/cn';
 
 import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
@@ -82,16 +83,33 @@ function TournamentItemBasketCarousel({
 
   const handleIndicatorSelect = (index: number) => carouselApi?.scrollTo(index);
 
+  const { ref: containerRef, height: containerHeight } = useContainerHeight();
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const gap = isCarouselEnabled ? 16 : 0;
+  const indicatorHeight = indicatorRef.current?.clientHeight ?? 0;
+  const basketMaxHeight = containerHeight ? containerHeight - indicatorHeight - gap : undefined;
+
   if (!isCarouselEnabled) {
     return (
-      <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4 px-5">
-        <TournamentItemBasket basketIndex={0} items={items} isDepositClosed={isDepositClosed} />
+      <div
+        ref={containerRef}
+        className="flex min-h-0 w-full flex-1 flex-col items-center justify-start px-5"
+      >
+        <TournamentItemBasket
+          basketIndex={0}
+          items={items}
+          isDepositClosed={isDepositClosed}
+          maxHeight={basketMaxHeight}
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-4">
+    <div
+      ref={containerRef}
+      className="flex min-h-0 w-full flex-1 flex-col items-center justify-start gap-4"
+    >
       <Carousel
         key={activeBasketCount}
         className={cn('relative w-full', !carouselApi && 'invisible')}
@@ -109,17 +127,20 @@ function TournamentItemBasketCarousel({
                 basketIndex={i}
                 items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
                 isDepositClosed={isDepositClosed}
+                maxHeight={basketMaxHeight}
               />
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
 
-      <CarouselIndicator
-        totalCount={activeBasketCount}
-        currentIndex={currentIndex}
-        onSelect={handleIndicatorSelect}
-      />
+      <div ref={indicatorRef}>
+        <CarouselIndicator
+          totalCount={activeBasketCount}
+          currentIndex={currentIndex}
+          onSelect={handleIndicatorSelect}
+        />
+      </div>
     </div>
   );
 }
