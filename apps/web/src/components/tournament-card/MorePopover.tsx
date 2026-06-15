@@ -45,7 +45,10 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
   };
 
   const handleShareTournamentResult = () => {
-    // TODO: 결과 공유하기 기능 연결
+    setIsPopoverOpen(false);
+    router.push(
+      `${ROUTES.TOURNAMENT_RESULT(tournamentId)}?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.SHARE_RECEIPT}`
+    );
   };
 
   return (

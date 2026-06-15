@@ -3,6 +3,7 @@ export const QUERY_ACTION = {
   KEY: 'action',
   VALUE: {
     OPEN_GET_ITEM_DIALOG: 'get-item',
+    SHARE_RECEIPT: 'share-receipt',
   },
 } as const;
 

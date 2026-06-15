@@ -1,14 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
 import SmileIcon from '@/assets/images/tournament/result/smile-icon.svg';
 import Button from '@/components/button';
 import { Header, HeaderIcon } from '@/components/header';
+import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
+import { useQueryAction } from '@/hooks/useQueryAction';
 import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
@@ -37,24 +39,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     router.replace(ROUTES.TOURNAMENT_MATCH(tournamentId));
   }, [tournamentData.status, router, tournamentId]);
 
-  if (tournamentData.status !== 'COMPLETED') {
-    return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement pt-padding-top">
-        <p className="body-1-medium text-text-neutral-tertiary">결과를 불러오는 중...</p>
-      </main>
-    );
-  }
-
-  const tournamentName = tournamentData.name;
-  const result = tournamentData.completed.result;
-  // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람) 제외
-  const canSharePlayLink = tournamentData.isRoot && tournamentData.isOwner;
-
-  const handleGoHome = () => {
-    router.push(ROUTES.HOME);
-  };
-
-  const handleShareReceiptImage = async () => {
+  const handleShareReceiptImage = useCallback(async () => {
     const element = receiptMachineRef.current?.getReceiptPaperElement();
     if (!element || isCapturingRef.current) return;
 
@@ -70,6 +55,32 @@ function ResultClient({ tournamentId }: ResultClientProps) {
       isCapturingRef.current = false;
       setIsCapturing(false);
     }
+  }, []);
+
+  // 보관함의 "결과 공유하기" 메뉴에서 진입 시 자동으로 영수증 이미지 공유 시트를 띄운다.
+  // 영수증 슬라이드 애니메이션(~2초) 이 끝난 뒤 캡처해야 정상이라 약간 지연.
+  useQueryAction({
+    action: QUERY_ACTION.VALUE.SHARE_RECEIPT,
+    onAction: () => {
+      window.setTimeout(handleShareReceiptImage, 2_000);
+    },
+  });
+
+  if (tournamentData.status !== 'COMPLETED') {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement pt-padding-top">
+        <p className="body-1-medium text-text-neutral-tertiary">결과를 불러오는 중...</p>
+      </main>
+    );
+  }
+
+  const tournamentName = tournamentData.name;
+  const result = tournamentData.completed.result;
+  // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람) 제외
+  const canSharePlayLink = tournamentData.isRoot && tournamentData.isOwner;
+
+  const handleGoHome = () => {
+    router.push(ROUTES.HOME);
   };
 
   const handleSharePlayLink = () => {
