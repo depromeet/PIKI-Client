@@ -15,7 +15,9 @@ const matchesPath = (pathname: string, basePath: string) =>
 
 const isPublicRoute = (pathname: string) => {
   if (pathname === ROUTES.ROOT) return true;
-  if (matchesPath(pathname, ROUTES.LOGIN)) return true;
+  if (pathname === ROUTES.TERMS) return true;
+  if (pathname === ROUTES.POLICY) return true;
+  if (pathname === ROUTES.LOGIN) return true;
   if (/^\/auth\/callback\/[^/]+$/.test(pathname)) return true; // 소셜 로그인 콜백 경로
 
   return false;
@@ -25,6 +27,8 @@ const isMemberAndGuestRoute = (pathname: string) => {
   if (matchesPath(pathname, ROUTES.HOME)) return true;
   if (matchesPath(pathname, ROUTES.TOURNAMENT_JOIN_BY_CODE)) return true;
   if (matchesPath(pathname, ROUTES.NOTIFICATION)) return true;
+  if (pathname === ROUTES.MYPAGE) return true;
+  if (pathname === ROUTES.MYPAGE_EDIT) return true;
 
   return false;
 };
@@ -33,6 +37,7 @@ const isAuthorizedRoute = (pathname: string) =>
   AUTHORIZED_ROUTE_PATTERNS.some(pattern => pattern.test(pathname));
 
 const isMemberOnlyRoute = (pathname: string) => {
+  if (pathname === ROUTES.MYPAGE_WITHDRAW) return true;
   if (matchesPath(pathname, ROUTES.ARCHIVE_BASE)) return true;
 
   return false;
