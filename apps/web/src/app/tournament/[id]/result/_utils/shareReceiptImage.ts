@@ -161,8 +161,9 @@ export const shareReceiptImage = async (element: HTMLElement): Promise<boolean> 
     canvas = await html2canvas(capture, {
       backgroundColor: '#ffffff',
       scale,
+      // CORS 헤더가 없는 이미지가 tainted canvas 를 만들면 이후 toDataURL 이 SecurityError 를
+      // 던져 캡처 자체가 실패한다. allowTaint 는 끄고 CORS 준수만 허용.
       useCORS: true,
-      allowTaint: true,
       logging: false,
       width: capture.offsetWidth,
       height: capture.offsetHeight,
