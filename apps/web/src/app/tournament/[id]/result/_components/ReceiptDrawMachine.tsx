@@ -28,17 +28,9 @@ type ReceiptDrawMachineProps = {
   tournamentName: string;
   result: RankedProductT[];
   date: Date;
-  canSharePlayLink: boolean;
-  onSharePlayLink?: () => void;
 };
 
-function ReceiptDrawMachine({
-  tournamentName,
-  result,
-  date,
-  canSharePlayLink,
-  onSharePlayLink,
-}: ReceiptDrawMachineProps) {
+function ReceiptDrawMachine({ tournamentName, result, date }: ReceiptDrawMachineProps) {
   const animationScopeRef = useRef<HTMLDivElement | null>(null);
   const printerFrameRef = useRef<HTMLDivElement | null>(null);
   const receiptPaperRef = useRef<HTMLDivElement | null>(null);
@@ -150,12 +142,7 @@ function ReceiptDrawMachine({
 
       {/* 영수증 종이 영역 공간 확보 (layout reserved) */}
       <div className="invisible mx-auto w-[74%]" aria-hidden>
-        <ReceiptPaper
-          tournamentName={tournamentName}
-          result={result}
-          date={date}
-          canSharePlayLink={canSharePlayLink}
-        />
+        <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
       </div>
 
       {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음 */}
@@ -167,13 +154,7 @@ function ReceiptDrawMachine({
           ref={receiptPaperRef}
           className="pointer-events-auto mx-auto h-fit w-[74%] will-change-transform"
         >
-          <ReceiptPaper
-            tournamentName={tournamentName}
-            result={result}
-            date={date}
-            canSharePlayLink={canSharePlayLink}
-            onSharePlayLink={onSharePlayLink}
-          />
+          <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
         </div>
       </div>
     </div>
