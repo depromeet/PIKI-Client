@@ -2,9 +2,9 @@ import { Kode_Mono } from 'next/font/google';
 import Image from 'next/image';
 import { forwardRef } from 'react';
 
-import { TrophyIconFill } from '@/assets/icons/fill';
 import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
 import ReceiptZigzag from '@/assets/images/tournament/result/receipt-zigzag.svg';
+import TrophyBadge from '@/assets/images/tournament/result/trophy-badge.svg';
 import { cn } from '@/utils/cn';
 
 import type { RankedProductT } from '../../_common/_types/tournament';
@@ -91,10 +91,8 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
           </div>
         )}
 
-        <SectionDivider />
-
         {/* @piki.day */}
-        <p className="px-5 py-2 text-center caption-1-semibold text-text-neutral-secondary">
+        <p className="px-5 pt-3 pb-2 text-center caption-1-semibold text-text-neutral-secondary">
           @piki.day
         </p>
       </div>
@@ -131,12 +129,10 @@ function ProductCard({ product, index, highlight = false }: ProductCardProps) {
           />
         )}
         {highlight && (
-          <span
+          <TrophyBadge
             aria-label="1위"
-            className="absolute -top-1 -left-1 flex size-6 items-center justify-center rounded-full bg-gray-700"
-          >
-            <TrophyIconFill className="size-3.5 text-yellow-400" />
-          </span>
+            className="pointer-events-none absolute -top-2 -left-2 size-8"
+          />
         )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col">

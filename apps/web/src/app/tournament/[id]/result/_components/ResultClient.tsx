@@ -3,7 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { ImageIconFill, LinkIconFill } from '@/assets/icons/fill';
+import { ChevronBackwardIconFill } from '@/assets/icons/fill';
+import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
+import SmileIcon from '@/assets/images/tournament/result/smile-icon.svg';
 import { ROUTES } from '@/consts/route';
 import { cn } from '@/utils/cn';
 
@@ -55,11 +57,19 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   return (
     <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-status pb-30">
-      <h1 className="shrink-0 px-5 text-center text-[28px] leading-10 font-bold tracking-[-0.6px]">
-        <span className="text-blue-500">{tournamentName} </span>
-        <br />
-        <span className="text-text-neutral-primary">승자는</span>
-      </h1>
+      <header className="relative flex h-7.5 w-full shrink-0 items-center px-5">
+        <button
+          type="button"
+          aria-label="뒤로가기"
+          onClick={() => router.back()}
+          className="cursor-pointer p-0.75"
+        >
+          <ChevronBackwardIconFill className="size-6 text-icon-neutral-secondary" />
+        </button>
+        <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 heading-1 text-text-neutral-primary">
+          토너먼트 결과
+        </h1>
+      </header>
 
       <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3 px-5">
         <ReceiptDrawMachine tournamentName={tournamentName} result={result} date={date} />
@@ -67,13 +77,13 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         {/* 영수증 밖 공유 버튼 — 이미지 공유 (모든 사용자) + 토너먼트 플레이 체험 (ROOT 소유자만) */}
         <div className={cn('flex gap-2', !canSharePlayLink && 'justify-center')}>
           <ShareButton
-            icon={<ImageIconFill className="size-4 text-icon-neutral-primary" />}
+            icon={<ReceiptIcon aria-hidden className="size-5" />}
             label="영수증 이미지 공유"
             onClick={handleShareReceiptImage}
           />
           {canSharePlayLink && (
             <ShareButton
-              icon={<LinkIconFill className="size-4 text-icon-accent" />}
+              icon={<SmileIcon aria-hidden className="size-4.25" />}
               label="토너먼트 플레이 체험"
               onClick={handleSharePlayLink}
             />

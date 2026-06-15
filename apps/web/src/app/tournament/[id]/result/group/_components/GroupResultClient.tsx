@@ -9,10 +9,10 @@ import {
   ChevronBackwardIconFill,
   ChevronDownIconFill,
   ChevronUpIconFill,
-  TrophyIconFill,
 } from '@/assets/icons/fill';
 import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
 import ReceiptZigzag from '@/assets/images/tournament/result/receipt-zigzag.svg';
+import TrophyBadge from '@/assets/images/tournament/result/trophy-badge.svg';
 import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../../_common/_hooks/useGetTournament';
@@ -196,12 +196,10 @@ function GroupProductCard({ item, highlight = false }: GroupProductCardProps) {
             />
           ) : null}
           {highlight && (
-            <span
+            <TrophyBadge
               aria-label="1위"
-              className="absolute -top-1 -left-1 flex size-6 items-center justify-center rounded-full bg-gray-700"
-            >
-              <TrophyIconFill className="size-3.5 text-yellow-400" />
-            </span>
+              className="pointer-events-none absolute -top-2 -left-2 size-8"
+            />
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
