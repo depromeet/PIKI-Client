@@ -34,15 +34,9 @@ const SectionDivider = () => <div className="h-px w-full border-t border-dashed 
  */
 const PlaceLabel = ({ label }: { label: string }) => (
   <div
-    className={cn(
-      kodeMono.className,
-      'flex items-center gap-1 px-5 text-text-neutral-secondary'
-    )}
+    className={cn(kodeMono.className, 'flex items-center gap-1 px-5 text-text-neutral-secondary')}
   >
-    <span
-      aria-hidden
-      className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap"
-    >
+    <span aria-hidden className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap">
       {'*'.repeat(60)}
     </span>
     <span className="shrink-0 text-[12px] leading-4.5 tracking-[-0.4px]">{label}</span>
@@ -229,7 +223,7 @@ function GroupProductCard({ item, highlight = false }: GroupProductCardProps) {
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <p className="break-keep body-2-regular text-text-neutral-primary">{item.name}</p>
+          <p className="body-2-regular break-keep text-text-neutral-primary">{item.name}</p>
           {count > 0 && (
             <button
               type="button"
@@ -251,7 +245,7 @@ function GroupProductCard({ item, highlight = false }: GroupProductCardProps) {
                   </li>
                 ))}
                 {extraCount > 0 && (
-                  <li className="-ml-1.5 flex size-5 items-center justify-center rounded-full border border-white bg-gray-100 caption-2-semibold text-text-neutral-secondary">
+                  <li className="caption-2-semibold -ml-1.5 flex size-5 items-center justify-center rounded-full border border-white bg-gray-100 text-text-neutral-secondary">
                     +{extraCount}
                   </li>
                 )}

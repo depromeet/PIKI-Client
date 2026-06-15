@@ -26,15 +26,9 @@ const SectionDivider = () => <div className="h-px w-full border-t border-dashed 
  */
 const PlaceLabel = ({ label }: { label: string }) => (
   <div
-    className={cn(
-      kodeMono.className,
-      'flex items-center gap-1 px-5 text-text-neutral-secondary'
-    )}
+    className={cn(kodeMono.className, 'flex items-center gap-1 px-5 text-text-neutral-secondary')}
   >
-    <span
-      aria-hidden
-      className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap"
-    >
+    <span aria-hidden className="flex-1 overflow-hidden text-[10px] leading-4.5 whitespace-nowrap">
       {'*'.repeat(60)}
     </span>
     <span className="shrink-0 text-[12px] leading-4.5 tracking-[-0.4px]">{label}</span>
@@ -78,9 +72,7 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
 
       <div className="flex flex-col">
         {/* 날짜 / 시간 */}
-        <div
-          className={cn(kodeMono.className, 'flex items-center justify-between px-5')}
-        >
+        <div className={cn(kodeMono.className, 'flex items-center justify-between px-5')}>
           <span className="caption-1-semibold text-text-neutral-secondary">{formatDate(date)}</span>
           <span className="caption-1-semibold text-text-neutral-secondary">{formatTime(date)}</span>
         </div>
@@ -168,7 +160,7 @@ function ProductCard({ product, index, highlight = false }: ProductCardProps) {
         )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        <p className="break-keep body-2-regular text-text-neutral-primary">{product.name}</p>
+        <p className="body-2-regular break-keep text-text-neutral-primary">{product.name}</p>
         <p className="body-2-semibold text-text-neutral-primary">{formatPrice(product.price)}</p>
       </div>
       <span className="sr-only">{index}위</span>

@@ -32,7 +32,7 @@ function GroupResultEntryCard({ tournamentId }: GroupResultEntryCardProps) {
         </div>
         <p className="truncate body-2-semibold text-text-neutral-primary">전체 결과 보기</p>
       </div>
-      <ChevronForwardIconFill className="size-5 shrink-0 text-icon-neutral-tertiary" />
+      <ChevronForwardIconFill className="text-icon-neutral-tertiary size-5 shrink-0" />
     </Link>
   );
 }
