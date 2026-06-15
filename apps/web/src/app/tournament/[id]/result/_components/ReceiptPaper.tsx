@@ -45,7 +45,10 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
   { tournamentName, result, date },
   ref
 ) {
-  const [first, ...rest] = result;
+  // 응답 배열 순서에 의존하지 않고 rank 기준으로 정렬 — 1위는 별도 강조 카드.
+  const sortedResult = [...result].sort((a, b) => a.rank - b.rank);
+  const first = sortedResult.find(item => item.rank === 1);
+  const rest = sortedResult.filter(item => item.rank !== 1);
 
   return (
     <div
@@ -88,7 +91,7 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
         {first && (
           <div className="flex flex-col gap-3 py-3">
             <PlaceLabel label="1st Place" />
-            <ProductCard product={first} index={1} highlight />
+            <ProductCard product={first} highlight />
           </div>
         )}
 
@@ -97,9 +100,9 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
           <div className="flex flex-col gap-3 py-3">
             <PlaceLabel label="Others" />
             <ul className="flex flex-col gap-3">
-              {rest.map((product, idx) => (
-                <li key={`${idx + 2}-${product.name}`}>
-                  <ProductCard product={product} index={idx + 2} />
+              {rest.map(product => (
+                <li key={`${product.rank}-${product.itemId ?? product.name}`}>
+                  <ProductCard product={product} />
                 </li>
               ))}
             </ul>
@@ -131,12 +134,11 @@ const ReceiptPaper = forwardRef<HTMLDivElement, ReceiptPaperProps>(function Rece
 
 type ProductCardProps = {
   product: RankedProductT;
-  index: number;
   /** 1위 카드에 트로피 뱃지 표시 */
   highlight?: boolean;
 };
 
-function ProductCard({ product, index, highlight = false }: ProductCardProps) {
+function ProductCard({ product, highlight = false }: ProductCardProps) {
   return (
     <div className="flex items-center gap-3 px-5">
       <div className="relative size-15 shrink-0">
@@ -163,7 +165,7 @@ function ProductCard({ product, index, highlight = false }: ProductCardProps) {
         <p className="body-2-regular break-keep text-text-neutral-primary">{product.name}</p>
         <p className="body-2-semibold text-text-neutral-primary">{formatPrice(product.price)}</p>
       </div>
-      <span className="sr-only">{index}위</span>
+      <span className="sr-only">{product.rank}위</span>
     </div>
   );
 }
