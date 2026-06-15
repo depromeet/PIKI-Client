@@ -22,7 +22,6 @@ import DepositCountdown from './deposit-countdown/DepositCountdown';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
-import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
 import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
 import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 import WelcomeJoinDialog from './welcome-join-dialog/WelcomeJoinDialog';
@@ -89,29 +88,28 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
-    <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-padding-top pb-8">
-      <div className="space-y-4 px-5">
+    <div className="flex h-full min-h-0 flex-col bg-bg-layer-basement pt-status pb-8">
+      <div className="px-5">
         <TournamentHeader name={tournamentData.name} hasFriends={hasFriends} />
-        <ParticipantPanel
-          participants={participants}
-          inviteCode={pending?.inviteCode ?? ''}
-          inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
-        />
-        <TournamentItemBasketStatus
-          isProcessing={hasPendingItem}
-          count={pending?.items.length ?? 0}
+        <div className="mt-[3.9dvh]">
+          <ParticipantPanel
+            participants={participants}
+            inviteCode={pending?.inviteCode ?? ''}
+            inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
+          />
+        </div>
+      </div>
+
+      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col">
+        <TournamentItemBasketCarousel
+          items={pending?.items}
+          scrollToLast={scrollToLast}
+          onScrolled={onScrolled}
           isDepositClosed={isDepositClosed}
         />
       </div>
 
-      <TournamentItemBasketCarousel
-        items={pending?.items}
-        scrollToLast={scrollToLast}
-        onScrolled={onScrolled}
-        isDepositClosed={isDepositClosed}
-      />
-
-      <div className="flex shrink-0 flex-col gap-3 px-5">
+      <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(6dvh)]">
         {hasFriends && !ownerStarted && !isDepositClosed && (
           <DepositCountdown deadline={depositDeadline} />
         )}
