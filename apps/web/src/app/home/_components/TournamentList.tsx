@@ -17,6 +17,8 @@ const toUsers = (imageUrls: string[]): UserT[] =>
 function TorunamentList() {
   const { tournamentListData } = useGetTournamentList();
 
+  if (tournamentListData.length === 0) return null;
+
   return (
     <section className="flex flex-col gap-3">
       <h2 className="heading-2 text-black">진행 중인 토너먼트</h2>
