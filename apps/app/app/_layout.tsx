@@ -2,10 +2,12 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { initializeKakaoSDK } from '@react-native-kakao/core';
 import { Stack } from 'expo-router';
 import { ShareIntentProvider } from 'expo-share-intent';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import PushNotificationProvider from '@/components/PushNotificationProvider';
+import { SplashScreenControllerProvider } from '@/hooks/useSplashScreenController';
 
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_NATIVE_APP_KEY ?? '');
 
@@ -13,17 +15,22 @@ GoogleSignin.configure({
   iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ?? '',
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID ?? '',
 });
+
+void SplashScreen.preventAutoHideAsync();
+
 function RootLayout() {
   return (
-    <ShareIntentProvider
-      options={{
-        scheme: 'piki',
-      }}
-    >
-      <PushNotificationProvider />
-      <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }} />
-    </ShareIntentProvider>
+    <SplashScreenControllerProvider>
+      <ShareIntentProvider
+        options={{
+          scheme: 'piki',
+        }}
+      >
+        <PushNotificationProvider />
+        <StatusBar style="auto" />
+        <Stack screenOptions={{ headerShown: false }} />
+      </ShareIntentProvider>
+    </SplashScreenControllerProvider>
   );
 }
 
