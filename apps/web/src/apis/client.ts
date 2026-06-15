@@ -2,6 +2,7 @@ import type { AxiosError } from 'axios';
 import axios from 'axios';
 
 import { ENDPOINTS } from '@/consts/api';
+import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { ApiErrorResponseT } from '@/types/api';
 import { getCookie, setCookie } from '@/utils/cookie';
@@ -83,7 +84,13 @@ clientApi.interceptors.response.use(
         /** refresh 요청 실패 시 로그인 페이지로 리다이렉트 */
       } catch (refreshError) {
         processQueue(refreshError);
-        if (typeof window !== 'undefined')
+
+        const loginRedirectDisabled =
+          window.location.pathname === ROUTES.LOGIN ||
+          window.location.pathname === ROUTES.ROOT ||
+          /^\/auth\/callback\/[^/]+$/.test(window.location.pathname);
+
+        if (typeof window !== 'undefined' && !loginRedirectDisabled)
           window.location.href = getLoginPath(
             `${window.location.pathname}${window.location.search}`
           );
