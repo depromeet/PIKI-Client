@@ -19,5 +19,12 @@ export const useGetNotifications = () => {
   const notifications = notificationsData?.pages.flatMap(page => page.items) ?? [];
   const unreadCount = notificationsData?.pages[0]?.unreadCount ?? 0;
 
-  return { notificationsData: notifications, unreadCount, fetchNextPage, hasNextPage, isFetchingNextPage, isPending };
+  return {
+    notificationsData: notifications,
+    unreadCount,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+  };
 };

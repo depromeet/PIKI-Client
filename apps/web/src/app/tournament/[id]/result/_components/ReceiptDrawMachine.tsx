@@ -2,7 +2,7 @@
 
 import { gsap } from 'gsap';
 import Image from 'next/image';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 
 import ReceiptPrinterImg from '@/assets/images/tournament/result/receipt-printer.png';
 
@@ -28,156 +28,153 @@ type ReceiptDrawMachineProps = {
   tournamentName: string;
   result: RankedProductT[];
   date: Date;
-  canSharePlayLink: boolean;
-  onSharePlayLink?: () => void;
 };
 
-function ReceiptDrawMachine({
-  tournamentName,
-  result,
-  date,
-  canSharePlayLink,
-  onSharePlayLink,
-}: ReceiptDrawMachineProps) {
-  const animationScopeRef = useRef<HTMLDivElement | null>(null);
-  const printerFrameRef = useRef<HTMLDivElement | null>(null);
-  const receiptPaperRef = useRef<HTMLDivElement | null>(null);
-  const slotBarRef = useRef<HTMLDivElement | null>(null);
-  const [receiptTopPx, setReceiptTopPx] = useState(RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX);
+/** 외부에서 영수증 종이 DOM 을 캡처할 때 사용 (예: 영수증 이미지 공유) */
+export type ReceiptDrawMachineHandleT = {
+  getReceiptPaperElement: () => HTMLDivElement | null;
+};
 
-  useLayoutEffect(() => {
-    const frame = printerFrameRef.current;
-    if (!frame) return;
+const ReceiptDrawMachine = forwardRef<ReceiptDrawMachineHandleT, ReceiptDrawMachineProps>(
+  function ReceiptDrawMachine({ tournamentName, result, date }, ref) {
+    const animationScopeRef = useRef<HTMLDivElement | null>(null);
+    const printerFrameRef = useRef<HTMLDivElement | null>(null);
+    const receiptPaperRef = useRef<HTMLDivElement | null>(null);
+    const slotBarRef = useRef<HTMLDivElement | null>(null);
 
-    const updateReceiptTop = () =>
-      setReceiptTopPx(frame.getBoundingClientRect().height * RECEIPT_TOP_PER_PRINTER_HEIGHT);
+    useImperativeHandle(
+      ref,
+      () => ({
+        getReceiptPaperElement: () => receiptPaperRef.current,
+      }),
+      []
+    );
+    const [receiptTopPx, setReceiptTopPx] = useState(RECEIPT_TOP_AT_MAX_PRINTER_WIDTH_PX);
 
-    updateReceiptTop();
-    const resizeObserver = new ResizeObserver(updateReceiptTop);
-    resizeObserver.observe(frame);
-    return () => resizeObserver.disconnect();
-  }, []);
+    useLayoutEffect(() => {
+      const frame = printerFrameRef.current;
+      if (!frame) return;
 
-  useLayoutEffect(() => {
-    const animationScopeElement = animationScopeRef.current;
-    const receiptPaperElement = receiptPaperRef.current;
-    const slotBarElement = slotBarRef.current;
+      const updateReceiptTop = () =>
+        setReceiptTopPx(frame.getBoundingClientRect().height * RECEIPT_TOP_PER_PRINTER_HEIGHT);
 
-    if (!animationScopeElement || !receiptPaperElement || !slotBarElement) return;
+      updateReceiptTop();
+      const resizeObserver = new ResizeObserver(updateReceiptTop);
+      resizeObserver.observe(frame);
+      return () => resizeObserver.disconnect();
+    }, []);
 
-    const context = gsap.context(() => {
-      const receiptHeight = receiptPaperElement.getBoundingClientRect().height;
-      const startY = receiptHeight;
+    useLayoutEffect(() => {
+      const animationScopeElement = animationScopeRef.current;
+      const receiptPaperElement = receiptPaperRef.current;
+      const slotBarElement = slotBarRef.current;
 
-      gsap.set(slotBarElement, {
-        x: 0,
-        y: 0,
-        scaleX: 1,
-        scaleY: 1,
-        transformOrigin: 'center center',
-      });
-      gsap.set(receiptPaperElement, {
-        x: 0,
-        y: -startY,
-        rotation: 0,
-        skewX: 0,
-        skewY: 0,
-        transformOrigin: '50% 0%',
-      });
+      if (!animationScopeElement || !receiptPaperElement || !slotBarElement) return;
 
-      const timeline = gsap.timeline({ defaults: { ease: 'power2.out' }, repeat: 0 });
+      const context = gsap.context(() => {
+        const receiptHeight = receiptPaperElement.getBoundingClientRect().height;
+        const startY = receiptHeight;
 
-      timeline
-        .to(slotBarElement, {
-          duration: 0.18,
-          scaleX: 1,
-          scaleY: 1.1,
-          transformOrigin: 'center center',
-          ease: 'power1.inOut',
-          yoyo: true,
-          repeat: 2,
-        })
-        .to(
-          receiptPaperElement,
-          { duration: 1.45, x: 0, y: 0, rotation: 0, ease: 'power3.out' },
-          '-=0.08'
-        )
-        .to(
-          slotBarElement,
-          {
-            duration: 0.22,
-            scaleX: 1,
-            scaleY: 1,
-            transformOrigin: 'center center',
-            ease: 'power1.out',
-          },
-          '<0.35'
-        )
-        .set(receiptPaperElement, {
+        gsap.set(slotBarElement, {
           x: 0,
           y: 0,
-          rotation: 0,
           scaleX: 1,
           scaleY: 1,
+          transformOrigin: 'center center',
+        });
+        gsap.set(receiptPaperElement, {
+          x: 0,
+          y: -startY,
+          rotation: 0,
           skewX: 0,
           skewY: 0,
-        })
-        .set(slotBarElement, { x: 0, y: 0, scaleX: 1, scaleY: 1 });
-    }, animationScopeElement);
+          transformOrigin: '50% 0%',
+        });
 
-    return () => context.revert();
-  }, []);
+        const timeline = gsap.timeline({ defaults: { ease: 'power2.out' }, repeat: 0 });
 
-  return (
-    <div
-      className="relative isolate flex min-h-0 w-full flex-1 flex-col items-center"
-      ref={animationScopeRef}
-    >
-      {/* 프린터 (먼저 렌더) */}
+        timeline
+          .to(slotBarElement, {
+            duration: 0.18,
+            scaleX: 1,
+            scaleY: 1.1,
+            transformOrigin: 'center center',
+            ease: 'power1.inOut',
+            yoyo: true,
+            repeat: 2,
+          })
+          .to(
+            receiptPaperElement,
+            { duration: 1.45, x: 0, y: 0, rotation: 0, ease: 'power3.out' },
+            '-=0.08'
+          )
+          .to(
+            slotBarElement,
+            {
+              duration: 0.22,
+              scaleX: 1,
+              scaleY: 1,
+              transformOrigin: 'center center',
+              ease: 'power1.out',
+            },
+            '<0.35'
+          )
+          .set(receiptPaperElement, {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            scaleX: 1,
+            scaleY: 1,
+            skewX: 0,
+            skewY: 0,
+          })
+          .set(slotBarElement, { x: 0, y: 0, scaleX: 1, scaleY: 1 });
+      }, animationScopeElement);
+
+      return () => context.revert();
+    }, []);
+
+    return (
       <div
-        className="relative z-30 w-full shrink-0"
-        ref={printerFrameRef}
-        style={{ aspectRatio: `${PRINTER_ASPECT_NUMERATOR}/${PRINTER_ASPECT_DENOMINATOR}` }}
+        className="relative isolate flex min-h-0 w-full flex-1 flex-col items-center"
+        ref={animationScopeRef}
       >
-        <Image
-          src={ReceiptPrinterImg}
-          alt="영수증 기계"
-          className="h-full w-full object-contain"
-          priority
-        />
-        <div className="absolute inset-x-0 bottom-0 h-1.25" ref={slotBarRef} />
-      </div>
-
-      {/* 영수증 종이 영역 공간 확보 (layout reserved) */}
-      <div className="invisible mx-auto w-[74%]" aria-hidden>
-        <ReceiptPaper
-          tournamentName={tournamentName}
-          result={result}
-          date={date}
-          canSharePlayLink={canSharePlayLink}
-        />
-      </div>
-
-      {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음 */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-40 overflow-hidden"
-        style={{ top: `${receiptTopPx}px` }}
-      >
+        {/* 프린터 (먼저 렌더) */}
         <div
-          ref={receiptPaperRef}
-          className="pointer-events-auto mx-auto h-fit w-[74%] will-change-transform"
+          className="relative z-30 w-full shrink-0"
+          ref={printerFrameRef}
+          style={{ aspectRatio: `${PRINTER_ASPECT_NUMERATOR}/${PRINTER_ASPECT_DENOMINATOR}` }}
         >
-          <ReceiptPaper
-            tournamentName={tournamentName}
-            result={result}
-            date={date}
-            canSharePlayLink={canSharePlayLink}
-            onSharePlayLink={onSharePlayLink}
+          <Image
+            src={ReceiptPrinterImg}
+            alt="영수증 기계"
+            className="h-full w-full object-contain"
+            priority
           />
+          <div className="absolute inset-x-0 bottom-0 h-1.25" ref={slotBarRef} />
+        </div>
+
+        {/* 영수증 종이 영역 공간 확보 (layout reserved) */}
+        <div className="invisible mx-auto w-[74%]" aria-hidden>
+          <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
+        </div>
+
+        {/* 영수증 마스크 — 슬롯 위치(top)부터 컨테이너 끝(bottom-0)까지, 프린터 위로(z-40) 덮음.
+          상단만 자르고 좌우는 열어둬야 1위 트로피 뱃지가 종이 밖으로 살짝 나갈 수 있다. */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-40 [clip-path:inset(0_-100vw_-100vw_-100vw)]"
+          style={{ top: `${receiptTopPx}px` }}
+        >
+          <div
+            ref={receiptPaperRef}
+            className="pointer-events-auto mx-auto h-fit w-[74%] will-change-transform"
+          >
+            <ReceiptPaper tournamentName={tournamentName} result={result} date={date} />
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 export default ReceiptDrawMachine;
