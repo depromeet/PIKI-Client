@@ -1,5 +1,6 @@
 'use client';
 
+import type { SocialProviderT } from '@piki/core';
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import { useCallback, useState } from 'react';
 
@@ -19,12 +20,10 @@ type LoginButtonsProps = {
   redirect: string | null;
 };
 
-type NativePendingProviderT = 'kakao' | 'google' | 'apple' | null;
-
 function LoginButtons({ redirect }: LoginButtonsProps) {
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
-  const [nativePendingProvider, setNativePendingProvider] = useState<NativePendingProviderT>(null);
+  const [nativePendingProvider, setNativePendingProvider] = useState<SocialProviderT | null>(null);
 
   const handleNativeLoginSettled = useCallback(() => setNativePendingProvider(null), []);
   useNativeLoginResult({ redirect: validRedirect, onSettled: handleNativeLoginSettled });
