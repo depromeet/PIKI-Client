@@ -61,8 +61,10 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     setIsCapturing(true);
     try {
       await shareReceiptImage(element);
-    } catch {
-      toast.error('영수증 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+    } catch (error) {
+      console.error('[shareReceiptImage]', error);
+      const detail = error instanceof Error ? error.message : String(error);
+      toast.error(`영수증 이미지를 만들지 못했어요: ${detail}`);
     } finally {
       isCapturingRef.current = false;
       setIsCapturing(false);
