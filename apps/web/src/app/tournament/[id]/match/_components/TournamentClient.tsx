@@ -1,10 +1,9 @@
 'use client';
 
 import type { GetTournamentInProgressResponseT } from '../../_common/_types/tournamentResponse';
-import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
 import useTournament from '../_hooks/useTournament';
 import RoundBadge from './RoundBadge';
-import RoundTransition from './RoundTransition';
+import RoundTransitionSheet from './RoundTransitionSheet';
 import TournamentQuestion from './TournamentQuestion';
 import VsSection from './VsSection';
 
@@ -23,18 +22,6 @@ function TournamentClient({ tournamentId, tournamentName, inProgress }: Tourname
     handleSelect,
     handleTransitionComplete,
   } = useTournament({ tournamentId, tournamentName, inProgress });
-
-  if (transitionStage) {
-    const copy = ROUND_TRANSITION_COPY[transitionStage];
-    return (
-      <RoundTransition
-        stage={transitionStage}
-        title={copy.title}
-        description={copy.description}
-        onComplete={handleTransitionComplete}
-      />
-    );
-  }
 
   const backgroundClassName = isFinalRound
     ? 'bg-gradient-to-b from-[#ECF3FE] via-[#F3F7FE] to-white'
@@ -64,6 +51,10 @@ function TournamentClient({ tournamentId, tournamentName, inProgress }: Tourname
           />
         )}
       </div>
+
+      {transitionStage && (
+        <RoundTransitionSheet stage={transitionStage} onComplete={handleTransitionComplete} />
+      )}
     </main>
   );
 }
