@@ -8,6 +8,7 @@ import type {
 export type TournamentParticipantT = {
   userId: string;
   nickname: string;
+  itemCount: number;
   profileImage: string;
 };
 

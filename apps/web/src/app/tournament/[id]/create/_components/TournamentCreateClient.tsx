@@ -63,7 +63,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       profileType: 'blue' as const,
       ...(isGeneratedAvatar(p.profileImage) ? {} : { imageUrl: p.profileImage }),
     },
-    itemCount: 0,
+    itemCount: p.itemCount,
   }));
   const hasFriends = participants.length > 1;
 
