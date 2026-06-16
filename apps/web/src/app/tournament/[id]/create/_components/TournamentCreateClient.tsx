@@ -5,16 +5,12 @@ import { useState } from 'react';
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
+import { useGetMe } from '@/hooks/useGetMe';
 import { useQueryAction } from '@/hooks/useQueryAction';
 import { useSSEFallback } from '@/hooks/useSSEFallback';
 import { hasParsingItems } from '@/utils/item';
 
-import {
-  type JoinConfirmPayloadT,
-  type JoinWelcomePayloadT,
-  consumeJoinConfirmFor,
-  consumeJoinWelcomeFor,
-} from '../../../join/_utils/joinSession';
+import { type JoinConfirmPayloadT, consumeJoinConfirmFor } from '../../../join/_utils/joinSession';
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import { useCountdown } from '../_hooks/useCountdown';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
@@ -33,6 +29,7 @@ type TournamentCreateClientProps = {
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(tournamentId);
+  const { userData } = useGetMe();
 
   // 주최자(ROOT)는 시작/완료 시점에 mutation/페이지에서 직접 라우팅한다.
   // 참여자(CLONE 생성 예정)는 ROOT status 변화에 따라 자동 라우팅하지 않고,
@@ -70,9 +67,6 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   }));
   const hasFriends = participants.length > 1;
 
-  const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
-    consumeJoinWelcomeFor(tournamentId)
-  );
   const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
     consumeJoinConfirmFor(tournamentId)
   );
@@ -83,8 +77,10 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
   });
+  const { isActive: isWelcomeOpen, setIsActive: setIsWelcomeOpen } = useQueryAction({
+    action: QUERY_ACTION.VALUE.WELCOME_JOIN,
+  });
 
-  const handleCloseWelcome = () => setWelcomePayload(null);
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
@@ -133,15 +129,13 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <GetItemDialogContent type="tournament" />
       </Dialog>
 
-      {welcomePayload && (
+      {isWelcomeOpen && (
         <WelcomeJoinDialog
-          open
-          onOpenChange={open => {
-            if (!open) handleCloseWelcome();
-          }}
-          nickname={welcomePayload.nickname}
-          profileType={welcomePayload.profileType}
-          onConfirm={handleCloseWelcome}
+          open={isWelcomeOpen}
+          onOpenChange={setIsWelcomeOpen}
+          nickname={userData.nickname}
+          profileImage={userData.profileImage}
+          onConfirm={() => setIsWelcomeOpen(false)}
         />
       )}
 

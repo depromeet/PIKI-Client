@@ -9,13 +9,14 @@ import { EditIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Header } from '@/components/header';
 import Input from '@/components/input';
+import { QUERY_ACTION } from '@/consts/queryAction';
+import { ROUTES } from '@/consts/route';
 import { useGetMe } from '@/hooks/useGetMe';
 import { useNicknameValidation } from '@/hooks/useNicknameValidation';
 import { usePageBackground } from '@/hooks/usePageBackground';
 
 import { useGetInvitePreview } from '../../_hooks/useGetInvitePreview';
 import { usePostJoin } from '../../_hooks/usePostJoin';
-import { setJoinWelcome } from '../../_utils/joinSession';
 
 type JoinPreviewClientProps = {
   tournamentId: number;
@@ -31,11 +32,11 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
 
   const router = useRouter();
   const { userData } = useGetMe();
-  const { patchMeMutation, isPatchMePending } = usePatchMe();
-  const [nickname, setNickname] = useState(userData.nickname);
-
   const { invitePreviewData } = useGetInvitePreview(tournamentId);
+  const { patchMeMutation, isPatchMePending } = usePatchMe();
   const { postJoinMutation, isPostJoinPending } = usePostJoin();
+
+  const [nickname, setNickname] = useState(userData.nickname);
 
   const {
     isCheckingNickname,
@@ -48,7 +49,7 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
   const isComplete =
     isNicknameValid && !isCheckingNickname && !isPostJoinPending && !isPatchMePending;
 
-  const joinTournament = (nickname: string) => {
+  const joinTournament = () => {
     postJoinMutation(
       {
         tournamentId,
@@ -56,13 +57,9 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
       },
       {
         onSuccess: () => {
-          setJoinWelcome({
-            tournamentId,
-            nickname: nickname,
-            profileType:
-              userData.id.charCodeAt(userData.id.length - 1) % 2 === 0 ? 'blue' : 'yellow',
-          });
-          router.push(`/tournament/${tournamentId}/create`);
+          router.push(
+            `${ROUTES.TOURNAMENT_CREATE(tournamentId)}?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.WELCOME_JOIN}`
+          );
         },
         onError: () => {
           toast.warning('참여에 실패했어요. 잠시 후 다시 시도해주세요.');
@@ -78,13 +75,13 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
       patchMeMutation(
         { nickname: trimmedNickname },
         {
-          onSuccess: updatedUser => joinTournament(updatedUser.nickname),
+          onSuccess: () => joinTournament(),
         }
       );
       return;
     }
 
-    joinTournament(trimmedNickname);
+    joinTournament();
   };
 
   return (
