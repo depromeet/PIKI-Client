@@ -13,7 +13,7 @@ function TournamentBasketItem({ item, index, onClick }: TournamentBasketItemProp
   return (
     <div
       className={cn(
-        'relative aspect-square w-full overflow-hidden shadow-[0_0_8px_rgba(0,0,0,0.16)]',
+        'relative aspect-square w-full overflow-hidden rounded-2xl shadow-[0_0_8px_rgba(0,0,0,0.16)]',
         item.status === 'READY' || (item.status === 'FAILED' && 'cursor-pointer')
       )}
       onClick={onClick}
