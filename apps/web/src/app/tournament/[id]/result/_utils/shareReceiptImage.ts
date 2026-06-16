@@ -14,7 +14,7 @@ const downloadBlob = (blob: Blob, fileName: string) => {
   URL.revokeObjectURL(url);
 };
 
-const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> =>
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> =>
   new Promise<T>((resolve, reject) => {
     const timeoutId = window.setTimeout(() => reject(new Error('TIMEOUT')), ms);
     promise.then(

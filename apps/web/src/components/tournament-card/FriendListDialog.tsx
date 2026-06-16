@@ -62,7 +62,9 @@ function FriendListDialog({ open, onOpenChange, tournamentId }: FriendListDialog
       }
     }
     // 본인 먼저 노출.
-    return Array.from(map.values()).sort((a, b) => Number(b.isMe ?? false) - Number(a.isMe ?? false));
+    return Array.from(map.values()).sort(
+      (a, b) => Number(b.isMe ?? false) - Number(a.isMe ?? false)
+    );
   }, [groupResultData, myUserId]);
 
   return (
