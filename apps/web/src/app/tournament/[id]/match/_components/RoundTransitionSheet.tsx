@@ -267,7 +267,7 @@ function RoundTransitionSheet({ stage, onComplete }: RoundTransitionSheetProps) 
     <>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-40 bg-bg-layer-overlay ${isExiting ? 'rs-dim-exit' : 'rs-dim'}`}
+        className={`fixed inset-0 z-40 cursor-pointer bg-bg-layer-overlay ${isExiting ? 'rs-dim-exit' : 'rs-dim'}`}
         aria-hidden
         onClick={handleSkip}
       />
@@ -277,7 +277,7 @@ function RoundTransitionSheet({ stage, onComplete }: RoundTransitionSheetProps) 
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`fixed bottom-0 left-1/2 z-50 w-full max-w-[402px] -translate-x-1/2 overflow-hidden ${isExiting ? 'rs-sheet-exit' : 'rs-sheet'}`}
+        className={`fixed bottom-0 left-1/2 z-50 w-full max-w-[402px] -translate-x-1/2 cursor-pointer overflow-hidden ${isExiting ? 'rs-sheet-exit' : 'rs-sheet'}`}
         style={{
           height: 540,
           borderRadius: '24px 24px 0 0',

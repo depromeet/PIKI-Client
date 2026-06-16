@@ -102,7 +102,11 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
           const stage = getTransitionStage(nextRoundItemCount);
           if (stage === 'toNext') {
             // toSemi/toFinal만 바텀시트 표시 — 일반 라운드는 바로 진입
-            await advanceToNextRound();
+            try {
+              await advanceToNextRound();
+            } catch {
+              // 네트워크 오류 등으로 실패해도 UI가 멈추지 않도록 — 다음 매치 진입 시 재조회됨
+            }
           } else {
             setTransitionStage(stage);
           }
