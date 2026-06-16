@@ -87,13 +87,10 @@ function MorePopover({ status, tournamentId, participantCount = 0 }: MorePopover
 
           {status === TOURNAMENT_STATUS.IN_PROGRESS && (
             <>
-              {hasInvitedFriends && (
-                <OptionButton
-                  Icon={GroupIconFill}
-                  label="친구 목록 보기"
-                  onClick={handleViewFriendList}
-                />
-              )}
+              {/*
+                TODO: IN_PROGRESS 참여자 API 가 추가되면 친구 목록 보기 노출.
+                현재는 group-result(COMPLETED 전용) 만 사용 가능해 데이터를 못 받으므로 미노출.
+              */}
               <OptionButton
                 disabled
                 Icon={TrashIconFill}
