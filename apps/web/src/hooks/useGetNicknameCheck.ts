@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 
 import { getNicknameCheck } from '@/apis/getNicknameCheck';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const NICKNAME_MAX_LENGTH = 10;
 const DEBOUNCE_MS = 300;
@@ -12,27 +12,28 @@ const DEBOUNCE_MS = 300;
  * - 빈 값 / 길이 초과 / debounce 진행 중에는 조회 비활성
  */
 export const useGetNicknameCheck = (nickname: string) => {
-  const [debouncedNickname, setDebouncedNickname] = useState(nickname);
+  const trimmedNickname = nickname.trim();
+  const debouncedNickname = useDebounce(trimmedNickname, DEBOUNCE_MS);
+  const isValidLength =
+    debouncedNickname.length > 0 && debouncedNickname.length <= NICKNAME_MAX_LENGTH;
+  const isPendingDebounce = debouncedNickname !== trimmedNickname;
 
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedNickname(nickname), DEBOUNCE_MS);
-    return () => window.clearTimeout(timeoutId);
-  }, [nickname]);
-
-  const trimmed = debouncedNickname.trim();
-  const isValidLength = trimmed.length > 0 && trimmed.length <= NICKNAME_MAX_LENGTH;
-  const isPendingDebounce = nickname.trim() !== trimmed;
-
-  const { data: nicknameCheckData, isFetching: isNicknameCheckFetching } = useQuery({
-    queryKey: ['nicknameCheck', trimmed],
-    queryFn: () => getNicknameCheck(trimmed),
+  const {
+    data: nicknameCheckData,
+    error: nicknameCheckError,
+    isFetching,
+    isSuccess: isGetNicknameCheckSuccess,
+  } = useQuery({
+    queryKey: ['nicknameCheck', debouncedNickname],
+    queryFn: () => getNicknameCheck(debouncedNickname),
     enabled: isValidLength,
     placeholderData: keepPreviousData,
-    staleTime: 30_000,
   });
 
   return {
     nicknameCheckData,
-    isNicknameCheckFetching: isNicknameCheckFetching || isPendingDebounce,
+    nicknameCheckError,
+    isNicknameCheckFetching: isFetching || isPendingDebounce,
+    isGetNicknameCheckSuccess,
   };
 };

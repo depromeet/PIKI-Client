@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { type FormEvent, useState } from 'react';
 
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Spacing from '@/components/spacing';
+import { ROUTES } from '@/consts/route';
 import { useGetMe } from '@/hooks/useGetMe';
 
 import { useNicknameValidation } from '../_hooks/useNicknameValidation';
@@ -13,6 +15,8 @@ import NicknameField from './NicknameField';
 import ProfileImageField from './ProfileImageField';
 
 function EditForm() {
+  const router = useRouter();
+
   const { userData } = useGetMe();
   const { patchMeMutation, isPatchMePending } = usePatchMe();
 
@@ -38,10 +42,17 @@ function EditForm() {
 
     if (isEditDisabled) return;
 
-    patchMeMutation({
-      ...(isNicknameChanged ? { nickname: trimmedNickname } : {}),
-      ...(profileImageFile ? { image: profileImageFile } : {}),
-    });
+    patchMeMutation(
+      {
+        ...(isNicknameChanged ? { nickname: trimmedNickname } : {}),
+        ...(profileImageFile ? { image: profileImageFile } : {}),
+      },
+      {
+        onSuccess: () => {
+          router.replace(ROUTES.MYPAGE);
+        },
+      }
+    );
   };
 
   return (

@@ -14,14 +14,14 @@ import { serverApi } from './server';
 export const getNicknameCheck = async (nickname: string) => {
   if (environmentManager.isServer()) {
     const { data } = await serverApi.get<ApiResponseT<GetNicknameCheckResponseT>>(
-      ENDPOINTS.USERS_NICKNAME_CHECK,
+      ENDPOINTS.USER_NICKNAME_CHECK,
       { params: { nickname } }
     );
     return data.data;
   }
 
   const { data } = await clientApi.get<ApiResponseT<GetNicknameCheckResponseT>>(
-    ENDPOINTS.USERS_NICKNAME_CHECK,
+    ENDPOINTS.USER_NICKNAME_CHECK,
     { params: { nickname } }
   );
   return data.data;
