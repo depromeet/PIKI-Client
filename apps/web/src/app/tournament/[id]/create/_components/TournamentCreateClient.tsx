@@ -96,7 +96,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
             participants={participants}
             inviteCode={pending?.inviteCode ?? ''}
             inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
-            depositDeadline={!ownerStarted && !isDepositClosed ? depositDeadline : undefined}
+            {...(!ownerStarted && !isDepositClosed && { depositDeadline })}
           />
         </div>
       </div>
