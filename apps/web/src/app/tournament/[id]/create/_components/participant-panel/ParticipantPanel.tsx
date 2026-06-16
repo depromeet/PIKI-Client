@@ -33,15 +33,6 @@ type ParticipantPanelProps = {
 
 const PLACEHOLDER_AVATAR_COUNT = 2;
 
-const getCollapsedLabel = (participants: ParticipantT[]) => {
-  const names = participants.map(p => p.user.name).filter((name): name is string => Boolean(name));
-  if (names.length === 0) return '나';
-  const head = names.slice(0, 3).join(' · ');
-  const rest = names.length - 3;
-  if (rest <= 0) return head;
-  return `${head} 외 ${rest}명`;
-};
-
 function ParticipantPanel({
   participants,
   inviteCode,
@@ -53,7 +44,6 @@ function ParticipantPanel({
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 
   const hasFriends = participants.length > 1;
-  const label = getCollapsedLabel(participants);
   const users = participants.map(p => p.user);
   const inviteUrl = inviteCode ? buildInviteUrl(tournamentId, inviteCode) : '';
 
@@ -71,7 +61,9 @@ function ParticipantPanel({
           >
             <div className="flex min-w-0 items-center gap-4">
               <UserProfileGroup users={users} max={3} />
-              <p className="truncate body-1-semibold text-text-neutral-primary">{label}</p>
+              <p className="truncate body-1-semibold text-text-neutral-secondary">
+                {participants.length}명이 함께 담는 중
+              </p>
             </div>
             {isExpanded ? (
               <ChevronUpIconOutline className="size-6 shrink-0 text-icon-neutral-secondary" />
