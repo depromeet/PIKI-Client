@@ -8,7 +8,7 @@ import './RoundTransitionSheet.css';
 
 // ── Countdown arc ─────────────────────────────────────────────────────────────
 const ARC_SIZE = 40;
-const ARC_STROKE = 4;
+const ARC_STROKE = 1.5;
 const ARC_RADIUS = (ARC_SIZE - ARC_STROKE) / 2;
 const ARC_CIRCUMFERENCE = 2 * Math.PI * ARC_RADIUS;
 const COUNTDOWN = 3;
@@ -69,7 +69,7 @@ const getCards = (stage: TransitionStageT): MBCardT[] => {
     },
     {
       xPct: 50, top: MY_F, isBlue: false, icon: 'trophy',
-      fadeDelay: '0.15s', isArriving: !isSemi, arriveDelay: '1.05s',
+      fadeDelay: isSemi ? '1.2s' : '0.15s', isArriving: !isSemi, arriveDelay: '1.05s',
     },
   ];
 };
@@ -94,12 +94,12 @@ const getPaths = (stage: TransitionStageT): ConnPathT[] => {
   const SL = 0.25 * MB_W, SR = 0.75 * MB_W, FC = 0.5 * MB_W;
 
   return [
-    { d: makeU(Q1, Q2, MHB_Q, MY_Q),      isBlue: isSemi,  delay: isSemi ? '0.5s' : '0s'  },
-    { d: makeU(Q3, Q4, MHB_Q, MY_Q),      isBlue: isSemi,  delay: isSemi ? '0.5s' : '0s'  },
-    { d: makeTrunk(SL, MSB, MHB_Q),        isBlue: isSemi,  delay: isSemi ? '0.7s' : '0s'  },
-    { d: makeTrunk(SR, MSB, MHB_Q),        isBlue: isSemi,  delay: isSemi ? '0.7s' : '0s'  },
-    { d: makeU(SL, SR, MHB_SEMI, MY_S),    isBlue: !isSemi, delay: isSemi ? '0s' : '0.5s'  },
-    { d: makeTrunk(FC, MHF_BOT, MHB_SEMI), isBlue: !isSemi, delay: isSemi ? '0s' : '0.7s'  },
+    { d: makeU(Q1, Q2, MHB_Q, MY_Q),      isBlue: isSemi,  delay: isSemi ? '0.5s'  : '0.3s'  },
+    { d: makeU(Q3, Q4, MHB_Q, MY_Q),      isBlue: isSemi,  delay: isSemi ? '0.5s'  : '0.3s'  },
+    { d: makeTrunk(SL, MSB, MHB_Q),        isBlue: isSemi,  delay: isSemi ? '0.7s'  : '0.45s' },
+    { d: makeTrunk(SR, MSB, MHB_Q),        isBlue: isSemi,  delay: isSemi ? '0.7s'  : '0.45s' },
+    { d: makeU(SL, SR, MHB_SEMI, MY_S),    isBlue: !isSemi, delay: isSemi ? '1.1s'  : '0.5s'  },
+    { d: makeTrunk(FC, MHF_BOT, MHB_SEMI), isBlue: !isSemi, delay: isSemi ? '1.15s' : '0.7s'  },
   ];
 };
 
@@ -184,6 +184,8 @@ function MiniBracket({ stage }: { stage: TransitionStageT }) {
               strokeWidth={MLW}
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="mb-conn-gray"
+              style={{ '--mb-d': path.delay } as CSSProperties}
             />
           )
         )}
