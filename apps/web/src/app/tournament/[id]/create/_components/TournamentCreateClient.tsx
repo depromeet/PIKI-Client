@@ -18,10 +18,10 @@ import {
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import { useCountdown } from '../_hooks/useCountdown';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
-import DepositCountdown from './deposit-countdown/DepositCountdown';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
+import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
 import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
 import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 import WelcomeJoinDialog from './welcome-join-dialog/WelcomeJoinDialog';
@@ -96,23 +96,26 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
             participants={participants}
             inviteCode={pending?.inviteCode ?? ''}
             inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
+            {...(!ownerStarted && !isDepositClosed && { depositDeadline })}
           />
         </div>
       </div>
 
-      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col">
+      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col gap-5">
         <TournamentItemBasketCarousel
           items={pending?.items}
           scrollToLast={scrollToLast}
           onScrolled={onScrolled}
           isDepositClosed={isDepositClosed}
         />
+        <TournamentItemBasketStatus
+          isProcessing={hasPendingItem}
+          count={pending?.items.length ?? 0}
+          isDepositClosed={isDepositClosed}
+        />
       </div>
 
       <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(6dvh)]">
-        {hasFriends && !ownerStarted && !isDepositClosed && (
-          <DepositCountdown deadline={depositDeadline} />
-        )}
         <TournamentStartButton
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
