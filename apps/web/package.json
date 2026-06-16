@@ -1,7 +1,6 @@
 {
   "name": "piki-web",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
   "scripts": {
     "predev": "node scripts/prebuild.mjs",
