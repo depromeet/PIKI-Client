@@ -18,7 +18,6 @@ import {
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import { useCountdown } from '../_hooks/useCountdown';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
-import DepositCountdown from './deposit-countdown/DepositCountdown';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
@@ -96,6 +95,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
             participants={participants}
             inviteCode={pending?.inviteCode ?? ''}
             inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
+            depositDeadline={!ownerStarted && !isDepositClosed ? depositDeadline : undefined}
           />
         </div>
       </div>
@@ -110,9 +110,6 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       </div>
 
       <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(6dvh)]">
-        {hasFriends && !ownerStarted && !isDepositClosed && (
-          <DepositCountdown deadline={depositDeadline} />
-        )}
         <TournamentStartButton
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}

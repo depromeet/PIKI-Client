@@ -7,6 +7,7 @@ import { AddIconOutline, ChevronDownIconOutline, ChevronUpIconOutline } from '@/
 import UserProfileGroup from '@/components/user-profile-group';
 import type { UserT } from '@/components/user-profile-group/userProfile.const';
 
+import DepositCountdown from '../deposit-countdown/DepositCountdown';
 import InviteFriendsDialog from '../invite-friends/InviteFriendsDialog';
 import ParticipantChip from './ParticipantChip';
 
@@ -26,6 +27,8 @@ type ParticipantPanelProps = {
   inviteCode?: string;
   /** 초대 코드 만료 시각 (ISO 8601) */
   inviteExpiresAt?: string;
+  /** 담기 마감 시각 — 있을 때만 타이머 노출 */
+  depositDeadline?: string;
 };
 
 const PLACEHOLDER_AVATAR_COUNT = 2;
@@ -39,7 +42,12 @@ const getCollapsedLabel = (participants: ParticipantT[]) => {
   return `${head} 외 ${rest}명`;
 };
 
-function ParticipantPanel({ participants, inviteCode, inviteExpiresAt }: ParticipantPanelProps) {
+function ParticipantPanel({
+  participants,
+  inviteCode,
+  inviteExpiresAt,
+  depositDeadline,
+}: ParticipantPanelProps) {
   const { id: tournamentId } = useParams<{ id: string }>();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
@@ -71,6 +79,8 @@ function ParticipantPanel({ participants, inviteCode, inviteExpiresAt }: Partici
               <ChevronDownIconOutline className="size-6 shrink-0 text-icon-neutral-secondary" />
             )}
           </button>
+
+          {depositDeadline && <DepositCountdown deadline={depositDeadline} />}
 
           {isExpanded && (
             <div className="flex flex-wrap gap-2">
