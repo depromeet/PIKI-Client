@@ -32,6 +32,8 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   // 동기 락 — setState 가 비동기라 빠른 연속 클릭 시 같은 이벤트 루프에서 재진입되는 걸 막는다.
   const isCapturingRef = useRef(false);
   const receiptMachineRef = useRef<ReceiptDrawMachineHandleT | null>(null);
+  // SHARE_RECEIPT 액션 진입 시 예약한 setTimeout id — 언마운트 시 정리해 stale 호출을 막는다.
+  const shareTimeoutRef = useRef<number | null>(null);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
@@ -62,9 +64,19 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   useQueryAction({
     action: QUERY_ACTION.VALUE.SHARE_RECEIPT,
     onAction: () => {
-      window.setTimeout(handleShareReceiptImage, 2_000);
+      shareTimeoutRef.current = window.setTimeout(handleShareReceiptImage, 2_000);
     },
   });
+
+  // 언마운트 시 예약된 공유 타이머 정리.
+  useEffect(() => {
+    return () => {
+      if (shareTimeoutRef.current !== null) {
+        window.clearTimeout(shareTimeoutRef.current);
+        shareTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   if (tournamentData.status !== 'COMPLETED') {
     return (
