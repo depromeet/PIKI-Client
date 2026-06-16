@@ -88,7 +88,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
-    <div className="pt-status flex h-full min-h-0 flex-col bg-bg-layer-basement pb-8">
+    <div className="flex h-full min-h-0 flex-col bg-bg-layer-basement pt-padding-top pb-8">
       <div className="px-5">
         <TournamentHeader name={tournamentData.name} hasFriends={hasFriends} />
         <div className="mt-[3.9dvh]">

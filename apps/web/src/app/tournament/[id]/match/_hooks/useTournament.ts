@@ -97,9 +97,19 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
     // (응답 안 기다리고 advance 시 서버가 아직 다음 라운드로 전환 못해 같은 라운드 다시 받는 race 방지)
     if (isLastMatchInRound) {
       postRecordMatchMutation(matchBody, {
-        onSuccess: () => {
+        onSuccess: async () => {
           const nextRoundItemCount = currentRound / 2;
-          setTransitionStage(getTransitionStage(nextRoundItemCount));
+          const stage = getTransitionStage(nextRoundItemCount);
+          if (stage === 'toNext') {
+            // toSemi/toFinal만 바텀시트 표시 — 일반 라운드는 바로 진입
+            try {
+              await advanceToNextRound();
+            } catch {
+              // 네트워크 오류 등으로 실패해도 UI가 멈추지 않도록 — 다음 매치 진입 시 재조회됨
+            }
+          } else {
+            setTransitionStage(stage);
+          }
         },
       });
       return;

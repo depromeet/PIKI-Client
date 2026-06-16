@@ -21,7 +21,13 @@
         "ITSAppUsesNonExemptEncryption": false,
         "AppGroup": "group.day.no30s.piki",
         "AppGroupIdentifier": "group.day.no30s.piki",
-        "UIBackgroundModes": ["remote-notification"]
+        "UIBackgroundModes": ["remote-notification"],
+        "LSApplicationQueriesSchemes": [
+          "kakaokompassauth",
+          "kakaolink",
+          "kakaotalk",
+          "kakao326734abdf8de5c7e090a2fc72e1dce6"
+        ]
       },
       "privacyManifests": {
         "NSPrivacyAccessedAPITypes": [
@@ -134,7 +140,13 @@
           }
         }
       ],
-      "./plugins/withShareExtensionKeychain.js"
+      "./plugins/withShareExtensionKeychain.js",
+      [
+        "./plugins/withKakaoLoginConfig.js",
+        {
+          "nativeAppKey": "326734abdf8de5c7e090a2fc72e1dce6"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
