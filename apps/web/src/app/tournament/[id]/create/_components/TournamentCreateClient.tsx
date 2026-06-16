@@ -131,10 +131,14 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
 
       {isWelcomeOpen && (
         <WelcomeJoinDialog
+          userIdentityType={userData.identityType}
           open={isWelcomeOpen}
           onOpenChange={setIsWelcomeOpen}
           nickname={userData.nickname}
           profileImage={userData.profileImage}
+          tournamentName={tournamentData.name}
+          itemCount={pending?.items.length ?? 0}
+          participantCount={pending?.participants.length ?? 0}
           onConfirm={() => setIsWelcomeOpen(false)}
         />
       )}
