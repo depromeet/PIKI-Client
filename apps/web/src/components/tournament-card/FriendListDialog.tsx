@@ -71,7 +71,7 @@ function FriendListDialog({ open, onOpenChange, tournamentId }: FriendListDialog
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="gap-4 p-5">
-        <DialogTitle className="text-center title-1 text-text-neutral-primary">
+        <DialogTitle className="text-center heading-1 text-text-neutral-primary">
           친구 목록 보기
         </DialogTitle>
         <DialogDescription className="sr-only">
@@ -108,7 +108,7 @@ function FriendListBody({ isPending, friends }: FriendListBodyProps) {
 
   // 스크롤 영역 — 약 400px 안에서 4명 정도 노출, 나머지는 내부 스크롤
   return (
-    <ul className="hide-scrollbar flex max-h-80 flex-col gap-2 overflow-y-auto">
+    <ul className="hide-scrollbar flex max-h-100 flex-col gap-2 overflow-y-auto">
       {friends.map(friend => (
         <li key={friend.userId}>
           <FriendRow friend={friend} />
@@ -126,10 +126,10 @@ function FriendRow({ friend }: FriendRowProps) {
   const user = toUser(friend);
 
   return (
-    <div className="flex h-14 items-center justify-between gap-3 rounded-xl bg-gray-50 px-3">
-      <div className="flex min-w-0 items-center gap-3">
-        <UserProfile user={user} className="size-9.5 border-0" />
-        <span className="truncate body-1-semibold text-text-neutral-primary">
+    <div className="flex items-center justify-between gap-4 rounded-xl bg-bg-layer-basement p-5">
+      <div className="flex min-w-0 items-center gap-4">
+        <UserProfile user={user} className="size-8 border-0" />
+        <span className="truncate body-1-bold text-text-neutral-primary">
           {friend.nickname}
         </span>
       </div>
