@@ -6,7 +6,7 @@ import { type ComponentType, type SVGProps, useState } from 'react';
 import {
   GroupIconFill,
   HeartIconFill,
-  LinkIconFill,
+  ReciptIconFill,
   ThreeDotHorizontalIconFill,
   TrashIconFill,
 } from '@/assets/icons';
@@ -52,11 +52,9 @@ function MorePopover({ status, tournamentId, participantCount = 0 }: MorePopover
     setIsFriendListOpen(true);
   };
 
-  const handleShareTournamentResult = () => {
+  const handleViewTournamentResult = () => {
     setIsPopoverOpen(false);
-    router.push(
-      `${ROUTES.TOURNAMENT_RESULT(tournamentId)}?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.SHARE_RECEIPT}`
-    );
+    router.push(ROUTES.TOURNAMENT_RESULT(tournamentId));
   };
 
   return (
@@ -110,9 +108,9 @@ function MorePopover({ status, tournamentId, participantCount = 0 }: MorePopover
                 />
               )}
               <OptionButton
-                Icon={LinkIconFill}
-                label="결과 공유하기"
-                onClick={handleShareTournamentResult}
+                Icon={ReciptIconFill}
+                label="결과 확인하기"
+                onClick={handleViewTournamentResult}
               />
               <OptionButton
                 Icon={TrashIconFill}
