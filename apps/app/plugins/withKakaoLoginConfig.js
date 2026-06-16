@@ -28,14 +28,23 @@ const withKakaoLoginConfig = (config, { nativeAppKey }) => {
     let contents = config.modResults.contents;
 
     if (!contents.includes('import KakaoSDKAuth')) {
-      contents = contents.replace('import Expo', 'import Expo\nimport KakaoSDKAuth');
+      const next = contents.replace('import Expo', 'import Expo\nimport KakaoSDKAuth');
+      if (next === contents) {
+        throw new Error('[withKakaoLoginConfig] AppDelegate.swift에서 "import Expo"를 찾을 수 없어 KakaoSDKAuth import 추가에 실패했습니다.');
+      }
+      contents = next;
     }
 
     if (!contents.includes('AuthApi.isKakaoTalkLoginUrl')) {
-      contents = contents.replace(
-        'return super.application(app, open: url, options: options) || RCTLinkingManager.application(app, open: url, options: options)',
-        'if AuthApi.isKakaoTalkLoginUrl(url) {\n      return AuthController.handleOpenUrl(url: url)\n    }\n    return super.application(app, open: url, options: options) || RCTLinkingManager.application(app, open: url, options: options)'
+      const ANCHOR = 'return super.application(app, open: url, options: options) || RCTLinkingManager.application(app, open: url, options: options)';
+      const next = contents.replace(
+        ANCHOR,
+        'if AuthApi.isKakaoTalkLoginUrl(url) {\n      return AuthController.handleOpenUrl(url: url)\n    }\n    ' + ANCHOR
       );
+      if (next === contents) {
+        throw new Error('[withKakaoLoginConfig] AppDelegate.swift에서 openURL 핸들러를 찾을 수 없어 KakaoSDKAuth URL 핸들러 추가에 실패했습니다.');
+      }
+      contents = next;
     }
 
     config.modResults.contents = contents;
