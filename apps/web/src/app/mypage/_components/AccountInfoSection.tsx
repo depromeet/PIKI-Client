@@ -28,15 +28,13 @@ function AccountInfoSection() {
 type AccountLinkItemProps = {
   href: string;
   label: string;
-  isExternal?: boolean;
 };
 
-function AccountLinkItem({ href, label, isExternal = false }: AccountLinkItemProps) {
+function AccountLinkItem({ href, label }: AccountLinkItemProps) {
   return (
     <Link
       href={href}
       className="flex w-full cursor-pointer items-center px-2 py-5 body-1-semibold text-text-neutral-secondary"
-      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     >
       {label}
     </Link>
