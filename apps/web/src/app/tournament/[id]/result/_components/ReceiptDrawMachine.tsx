@@ -45,7 +45,10 @@ const ReceiptDrawMachine = forwardRef<ReceiptDrawMachineHandleT, ReceiptDrawMach
     useImperativeHandle(
       ref,
       () => ({
-        getReceiptPaperElement: () => receiptPaperRef.current,
+        // 캡처 대상은 wrapper(transform 으로 애니메이션 / clip-path 마스크 영향) 가 아니라
+        // 그 안의 실제 영수증 종이 element.
+        getReceiptPaperElement: () =>
+          (receiptPaperRef.current?.firstElementChild as HTMLDivElement | null) ?? null,
       }),
       []
     );

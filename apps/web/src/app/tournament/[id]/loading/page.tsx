@@ -28,7 +28,9 @@ function TournamentLoadingPage() {
         <h1 className="text-[24px] leading-8 font-bold text-text-neutral-primary">
           대진표 만드는 중...
         </h1>
-        <p className="heading-2-medium text-text-neutral-tertiary">비슷한 가격대 상품끼리 대진표를 짜고 있어요</p>
+        <p className="heading-2-medium text-text-neutral-tertiary">
+          비슷한 가격대 상품끼리 대진표를 짜고 있어요
+        </p>
       </header>
 
       <div className="mt-15">
