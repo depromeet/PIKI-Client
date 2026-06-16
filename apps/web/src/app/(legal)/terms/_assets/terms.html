@@ -1,0 +1,1272 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>서비스 이용약관</title>
+    <style>
+      /* cspell:disable-file */
+      /* webkit printing magic: print all background colors */
+      html {
+        -webkit-print-color-adjust: exact;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      @media only screen {
+        body {
+          margin: 2em auto;
+          max-width: 900px;
+          color: rgb(55, 53, 47);
+        }
+      }
+
+      body {
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      a,
+      a.visited {
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      .pdf-relative-link-path {
+        font-size: 80%;
+        color: #444;
+      }
+
+      h1,
+      h2,
+      h3 {
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      /* Override strong tags inside headings to maintain consistent weight */
+      h1 strong,
+      h2 strong,
+      h3 strong {
+        font-weight: 600;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 0.75em;
+      }
+
+      h1 {
+        font-size: 1.875rem;
+        margin-top: 1.875rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1.25rem;
+        margin-top: 1.25rem;
+      }
+
+      .source {
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 1.5em;
+        word-break: break-all;
+      }
+
+      .callout {
+        border-radius: 10px;
+        padding: 1rem;
+      }
+
+      figure {
+        margin: 1.25em 0;
+        page-break-inside: avoid;
+      }
+
+      figcaption {
+        opacity: 0.5;
+        font-size: 85%;
+        margin-top: 0.5em;
+      }
+
+      mark {
+        background-color: transparent;
+      }
+
+      .indented {
+        padding-left: 1.5em;
+      }
+
+      hr {
+        background: transparent;
+        display: block;
+        width: 100%;
+        height: 1px;
+        visibility: visible;
+        border: none;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      @media only print {
+        img {
+          max-height: 100vh;
+          object-fit: contain;
+        }
+
+        table.collection-content {
+          width: 100%;
+          table-layout: fixed;
+        }
+
+        table.collection-content th,
+        table.collection-content td {
+          overflow-wrap: anywhere;
+        }
+
+        table.collection-content td > .user,
+        table.collection-content td > time {
+          white-space: pre-wrap;
+        }
+      }
+
+      @page {
+        margin: 1in;
+      }
+
+      .collection-content-wrapper {
+        overflow-x: auto;
+      }
+
+      @media only print {
+        .collection-content-wrapper {
+          overflow-x: visible;
+        }
+      }
+
+      .collection-content {
+        font-size: 0.875rem;
+      }
+
+      .collection-content td {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .column-list {
+        display: flex;
+        gap: 46px;
+      }
+
+      .column {
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .column > *:first-child {
+        margin-top: 0;
+      }
+
+      .table_of_contents-item {
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        padding: 0.125rem;
+      }
+
+      .table_of_contents-indent-1 {
+        margin-left: 1.5rem;
+      }
+
+      .table_of_contents-indent-2 {
+        margin-left: 3rem;
+      }
+
+      .table_of_contents-indent-3 {
+        margin-left: 4.5rem;
+      }
+
+      .table_of_contents-link {
+        text-decoration: none;
+        opacity: 0.7;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid rgba(55, 53, 47, 0.09);
+      }
+
+      table {
+        border-collapse: collapse;
+        border-left: none;
+        border-right: none;
+      }
+
+      th,
+      td {
+        font-weight: normal;
+        padding: 0.25em 0.5em;
+        line-height: 1.5;
+        min-height: 1.5em;
+        text-align: left;
+      }
+
+      th {
+        color: rgba(55, 53, 47, 0.6);
+      }
+
+      ol,
+      ul {
+        margin: 0;
+        margin-block-start: 0.6em;
+        margin-block-end: 0.6em;
+      }
+
+      li > ol:first-child,
+      li > ul:first-child {
+        margin-block-start: 0.6em;
+      }
+
+      ul > li {
+        list-style: disc;
+      }
+
+      ul.to-do-list {
+        padding-inline-start: 0;
+      }
+
+      ul.to-do-list > li {
+        list-style: none;
+      }
+
+      .to-do-children-checked {
+        text-decoration: line-through;
+        opacity: 0.375;
+      }
+
+      ul.toggle > li {
+        list-style: none;
+      }
+
+      ul {
+        padding-inline-start: 1.7em;
+      }
+
+      ul > li {
+        padding-left: 0.1em;
+      }
+
+      ol {
+        padding-inline-start: 1.6em;
+      }
+
+      ol.numbered-list.numbered-list-digits-2 {
+        padding-inline-start: 2em;
+      }
+
+      ol.numbered-list.numbered-list-digits-3plus {
+        padding-inline-start: 2.4em;
+      }
+
+      ol > li {
+        padding-left: 0.2em;
+      }
+
+      .mono ol {
+        padding-inline-start: 2em;
+      }
+
+      .mono ol > li {
+        text-indent: -0.4em;
+      }
+
+      .toggle {
+        padding-inline-start: 0em;
+        list-style-type: none;
+      }
+
+      /* Indent toggle children */
+      .toggle > li > details {
+        padding-left: 1.7em;
+      }
+
+      .toggle > li > details > summary {
+        margin-left: -1.1em;
+      }
+
+      .selected-value {
+        display: inline-block;
+        padding: 0 0.5em;
+        background: rgba(206, 205, 202, 0.5);
+        border-radius: 3px;
+        margin-right: 0.5em;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        white-space: nowrap;
+      }
+
+      .collection-title {
+        display: inline-block;
+        margin-right: 1em;
+      }
+
+      .page-description {
+        margin-bottom: 2em;
+      }
+
+      .simple-table {
+        margin-top: 1em;
+        font-size: 0.875rem;
+        empty-cells: show;
+      }
+      .simple-table td {
+        height: 29px;
+        min-width: 120px;
+      }
+
+      .simple-table th {
+        height: 29px;
+        min-width: 120px;
+      }
+
+      .simple-table-header-color {
+        background: rgb(247, 246, 243);
+        color: black;
+      }
+      .simple-table-header {
+        font-weight: 500;
+      }
+
+      time {
+        opacity: 0.5;
+      }
+
+      .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 1.2em;
+        max-height: 1.2em;
+        text-decoration: none;
+        vertical-align: text-bottom;
+        margin-right: 0.5em;
+      }
+
+      img.icon {
+        border-radius: 3px;
+      }
+
+      .callout img.notion-static-icon {
+        width: 1em;
+        height: 1em;
+      }
+
+      .callout p {
+        margin: 0;
+      }
+
+      .callout h1,
+      .callout h2,
+      .callout h3 {
+        margin: 0 0 0.6rem;
+      }
+
+      .user-icon {
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: 100%;
+        margin-right: 0.5rem;
+      }
+
+      .user-icon-inner {
+        font-size: 0.8em;
+      }
+
+      .text-icon {
+        border: 1px solid #000;
+        text-align: center;
+      }
+
+      .page-cover-image {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+        max-height: 30vh;
+      }
+
+      .page-header-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .page-header-icon-with-cover {
+        margin-top: -0.72em;
+        margin-left: 0.07em;
+      }
+
+      .page-header-icon img {
+        border-radius: 3px;
+      }
+
+      .link-to-page {
+        margin: 1em 0;
+        padding: 0;
+        border: none;
+        font-weight: 500;
+      }
+
+      p > .user {
+        opacity: 0.5;
+      }
+
+      td > .user,
+      td > time {
+        white-space: nowrap;
+      }
+
+      input[type='checkbox'] {
+        transform: scale(1.5);
+        margin-right: 0.6em;
+        vertical-align: middle;
+      }
+
+      p {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+      }
+
+      .image {
+        border: none;
+        margin: 1.5em 0;
+        padding: 0;
+        border-radius: 0;
+        text-align: center;
+      }
+
+      .code,
+      code {
+        background: rgba(135, 131, 120, 0.15);
+        border-radius: 3px;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 85%;
+        tab-size: 2;
+      }
+
+      code {
+        color: #eb5757;
+      }
+
+      .code {
+        padding: 1.5em 1em;
+      }
+
+      .code-wrap {
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .code > code {
+        background: none;
+        padding: 0;
+        font-size: 100%;
+        color: inherit;
+      }
+
+      blockquote {
+        font-size: 1em;
+        margin: 1em 0;
+        padding-left: 1em;
+        border-left: 3px solid rgb(55, 53, 47);
+      }
+
+      blockquote.quote-large {
+        font-size: 1.25em;
+      }
+
+      .bookmark {
+        text-decoration: none;
+        max-height: 8em;
+        padding: 0;
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+      }
+
+      .bookmark-title {
+        font-size: 0.85em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 1.75em;
+        white-space: nowrap;
+      }
+
+      .bookmark-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .bookmark-info {
+        flex: 4 1 180px;
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .bookmark-image {
+        width: 33%;
+        flex: 1 1 180px;
+        display: block;
+        position: relative;
+        object-fit: cover;
+        border-radius: 1px;
+      }
+
+      .bookmark-description {
+        color: rgba(55, 53, 47, 0.6);
+        font-size: 0.75em;
+        overflow: hidden;
+        max-height: 4.5em;
+        word-break: break-word;
+      }
+
+      .bookmark-href {
+        font-size: 0.75em;
+        margin-top: 0.25em;
+      }
+
+      .sans {
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI Variable Display',
+          'Segoe UI',
+          Helvetica,
+          'Apple Color Emoji',
+          'Noto Sans Arabic',
+          'Noto Sans Hebrew',
+          Arial,
+          sans-serif,
+          'Segoe UI Emoji',
+          'Segoe UI Symbol';
+      }
+      .code {
+        font-family:
+          'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono', Courier, monospace;
+      }
+      .serif {
+        font-family: Lyon-Text, Georgia, ui-serif, serif;
+      }
+      .mono {
+        font-family: iawriter-mono, Nitti, Menlo, Courier, monospace;
+      }
+      .pdf .sans {
+        font-family:
+          Inter,
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI Variable Display',
+          'Segoe UI',
+          Helvetica,
+          'Apple Color Emoji',
+          'Noto Sans Arabic',
+          'Noto Sans Hebrew',
+          Arial,
+          sans-serif,
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans CJK JP';
+      }
+      .pdf:lang(zh-CN) .sans {
+        font-family:
+          Inter,
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI Variable Display',
+          'Segoe UI',
+          Helvetica,
+          'Apple Color Emoji',
+          'Noto Sans Arabic',
+          'Noto Sans Hebrew',
+          Arial,
+          sans-serif,
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans CJK SC';
+      }
+      .pdf:lang(zh-TW) .sans {
+        font-family:
+          Inter,
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI Variable Display',
+          'Segoe UI',
+          Helvetica,
+          'Apple Color Emoji',
+          'Noto Sans Arabic',
+          'Noto Sans Hebrew',
+          Arial,
+          sans-serif,
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans CJK TC';
+      }
+      .pdf:lang(ko-KR) .sans {
+        font-family:
+          Inter,
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI Variable Display',
+          'Segoe UI',
+          Helvetica,
+          'Apple Color Emoji',
+          'Noto Sans Arabic',
+          'Noto Sans Hebrew',
+          Arial,
+          sans-serif,
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans CJK KR';
+      }
+      .pdf .code {
+        font-family:
+          Source Code Pro,
+          'SFMono-Regular',
+          Menlo,
+          Consolas,
+          'PT Mono',
+          'Liberation Mono',
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK JP';
+      }
+      .pdf:lang(zh-CN) .code {
+        font-family:
+          Source Code Pro,
+          'SFMono-Regular',
+          Menlo,
+          Consolas,
+          'PT Mono',
+          'Liberation Mono',
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK SC';
+      }
+      .pdf:lang(zh-TW) .code {
+        font-family:
+          Source Code Pro,
+          'SFMono-Regular',
+          Menlo,
+          Consolas,
+          'PT Mono',
+          'Liberation Mono',
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK TC';
+      }
+      .pdf:lang(ko-KR) .code {
+        font-family:
+          Source Code Pro,
+          'SFMono-Regular',
+          Menlo,
+          Consolas,
+          'PT Mono',
+          'Liberation Mono',
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK KR';
+      }
+      .pdf .serif {
+        font-family:
+          PT Serif,
+          Lyon-Text,
+          Georgia,
+          ui-serif,
+          serif,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Serif CJK JP';
+      }
+      .pdf:lang(zh-CN) .serif {
+        font-family:
+          PT Serif,
+          Lyon-Text,
+          Georgia,
+          ui-serif,
+          serif,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Serif CJK SC';
+      }
+      .pdf:lang(zh-TW) .serif {
+        font-family:
+          PT Serif,
+          Lyon-Text,
+          Georgia,
+          ui-serif,
+          serif,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Serif CJK TC';
+      }
+      .pdf:lang(ko-KR) .serif {
+        font-family:
+          PT Serif,
+          Lyon-Text,
+          Georgia,
+          ui-serif,
+          serif,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Serif CJK KR';
+      }
+      .pdf .mono {
+        font-family:
+          PT Mono,
+          iawriter-mono,
+          Nitti,
+          Menlo,
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK JP';
+      }
+      .pdf:lang(zh-CN) .mono {
+        font-family:
+          PT Mono,
+          iawriter-mono,
+          Nitti,
+          Menlo,
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK SC';
+      }
+      .pdf:lang(zh-TW) .mono {
+        font-family:
+          PT Mono,
+          iawriter-mono,
+          Nitti,
+          Menlo,
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK TC';
+      }
+      .pdf:lang(ko-KR) .mono {
+        font-family:
+          PT Mono,
+          iawriter-mono,
+          Nitti,
+          Menlo,
+          Courier,
+          monospace,
+          'Twemoji',
+          'Noto Color Emoji',
+          'Noto Sans Mono CJK KR';
+      }
+      .highlight-default {
+        color: rgba(44, 44, 43, 1);
+      }
+      .highlight-gray {
+        color: rgba(125, 122, 117, 1);
+        fill: rgba(125, 122, 117, 1);
+      }
+      .highlight-brown {
+        color: rgba(159, 118, 90, 1);
+        fill: rgba(159, 118, 90, 1);
+      }
+      .highlight-orange {
+        color: rgba(210, 123, 45, 1);
+        fill: rgba(210, 123, 45, 1);
+      }
+      .highlight-yellow {
+        color: rgba(203, 148, 52, 1);
+        fill: rgba(203, 148, 52, 1);
+      }
+      .highlight-teal {
+        color: rgba(80, 148, 110, 1);
+        fill: rgba(80, 148, 110, 1);
+      }
+      .highlight-blue {
+        color: rgba(56, 125, 201, 1);
+        fill: rgba(56, 125, 201, 1);
+      }
+      .highlight-purple {
+        color: rgba(154, 107, 180, 1);
+        fill: rgba(154, 107, 180, 1);
+      }
+      .highlight-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+      }
+      .highlight-red {
+        color: rgba(207, 81, 72, 1);
+        fill: rgba(207, 81, 72, 1);
+      }
+      .highlight-default_background {
+        color: rgba(44, 44, 43, 1);
+      }
+      .highlight-gray_background {
+        background: rgba(42, 28, 0, 0.07);
+      }
+      .highlight-brown_background {
+        background: rgba(139, 46, 0, 0.086);
+      }
+      .highlight-orange_background {
+        background: rgba(224, 101, 1, 0.129);
+      }
+      .highlight-yellow_background {
+        background: rgba(211, 168, 0, 0.137);
+      }
+      .highlight-teal_background {
+        background: rgba(0, 100, 45, 0.09);
+      }
+      .highlight-blue_background {
+        background: rgba(0, 124, 215, 0.094);
+      }
+      .highlight-purple_background {
+        background: rgba(102, 0, 178, 0.078);
+      }
+      .highlight-pink_background {
+        background: rgba(197, 0, 93, 0.086);
+      }
+      .highlight-red_background {
+        background: rgba(223, 22, 0, 0.094);
+      }
+      .block-color-default {
+        color: inherit;
+        fill: inherit;
+      }
+      .block-color-gray {
+        color: rgba(125, 122, 117, 1);
+        fill: rgba(125, 122, 117, 1);
+      }
+      .block-color-brown {
+        color: rgba(159, 118, 90, 1);
+        fill: rgba(159, 118, 90, 1);
+      }
+      .block-color-orange {
+        color: rgba(210, 123, 45, 1);
+        fill: rgba(210, 123, 45, 1);
+      }
+      .block-color-yellow {
+        color: rgba(203, 148, 52, 1);
+        fill: rgba(203, 148, 52, 1);
+      }
+      .block-color-teal {
+        color: rgba(80, 148, 110, 1);
+        fill: rgba(80, 148, 110, 1);
+      }
+      .block-color-blue {
+        color: rgba(56, 125, 201, 1);
+        fill: rgba(56, 125, 201, 1);
+      }
+      .block-color-purple {
+        color: rgba(154, 107, 180, 1);
+        fill: rgba(154, 107, 180, 1);
+      }
+      .block-color-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+      }
+      .block-color-red {
+        color: rgba(207, 81, 72, 1);
+        fill: rgba(207, 81, 72, 1);
+      }
+      .block-color-default_background {
+        color: inherit;
+        fill: inherit;
+      }
+      .block-color-gray_background {
+        background: rgba(240, 239, 237, 1);
+      }
+      .block-color-brown_background {
+        background: rgba(245, 237, 233, 1);
+      }
+      .block-color-orange_background {
+        background: rgba(251, 235, 222, 1);
+      }
+      .block-color-yellow_background {
+        background: rgba(249, 243, 220, 1);
+      }
+      .block-color-teal_background {
+        background: rgba(232, 241, 236, 1);
+      }
+      .block-color-blue_background {
+        background: rgba(229, 242, 252, 1);
+      }
+      .block-color-purple_background {
+        background: rgba(243, 235, 249, 1);
+      }
+      .block-color-pink_background {
+        background: rgba(250, 233, 241, 1);
+      }
+      .block-color-red_background {
+        background: rgba(252, 233, 231, 1);
+      }
+      .select-value-color-default {
+        background-color: rgba(42, 28, 0, 0.07);
+      }
+      .select-value-color-gray {
+        background-color: rgba(28, 19, 1, 0.11);
+      }
+      .select-value-color-brown {
+        background-color: rgba(127, 51, 0, 0.156);
+      }
+      .select-value-color-orange {
+        background-color: rgba(196, 88, 0, 0.203);
+      }
+      .select-value-color-yellow {
+        background-color: rgba(209, 156, 0, 0.282);
+      }
+      .select-value-color-green {
+        background-color: rgba(0, 96, 38, 0.156);
+      }
+      .select-value-color-blue {
+        background-color: rgba(0, 118, 217, 0.203);
+      }
+      .select-value-color-purple {
+        background-color: rgba(92, 0, 163, 0.141);
+      }
+      .select-value-color-pink {
+        background-color: rgba(183, 0, 78, 0.152);
+      }
+      .select-value-color-red {
+        background-color: rgba(206, 24, 0, 0.164);
+      }
+
+      .checkbox {
+        display: inline-flex;
+        vertical-align: text-bottom;
+        width: 16;
+        height: 16;
+        background-size: 16px;
+        margin-left: 2px;
+        margin-right: 5px;
+      }
+
+      .checkbox-on {
+        background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E');
+      }
+
+      .checkbox-off {
+        background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E');
+      }
+    </style>
+  </head>
+  <body>
+    <article id="36fc800c-72cf-8083-82ee-e2bae144ad55" class="page sans">
+      <div class="page-body">
+        <div style="display: contents" dir="auto">
+          <p id="8c07daa7-aec8-4c91-bd59-c6dc544250af" class="">
+            <strong>시행일: 2025년 06월 11일</strong>
+          </p>
+        </div>
+        <div style="display: contents" dir="auto">
+          <p id="37cc800c-72cf-80a7-9954-f00ddc6a2a9d" class="">
+            <strong>서비스명: PiKi (piki.day)</strong>
+          </p>
+        </div>
+        <div style="display: contents" dir="auto">
+          <p id="36fc800c-72cf-805f-8fb4-e1e3bfc9d21f" class="">
+            <strong>운영: 팀 PiKi (비영리 사이드 프로젝트)</strong>
+          </p>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="8d8a742c-ee5f-4292-b826-5a9e3147de07" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="e50d3a18-c644-4222-9773-4aef1b0d9fcc" class="">제1조 목적</h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <p id="a6579377-79d6-46af-b816-86f9ba11588b" class="">
+            본 약관은 PiKi 팀(이하 &quot;운영자&quot;)이 제공하는 PiKi 서비스(이하
+            &quot;서비스&quot;)의 이용 조건 및 절차, 운영자와 이용자 간의 권리·의무 및 책임 사항을
+            규정함을 목적으로 합니다.
+          </p>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="d28b4b32-0350-4f4a-94ba-a1d69e0df90b" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="3506048e-2ec9-4210-ab5f-7b8247da6cdf" class="">
+            제2조 서비스의 목적 및 제공 내용
+          </h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="82bfaab4-850f-4073-b8f5-a50a5a242cff" class="numbered-list" start="1">
+            <li>
+              PiKi는 이용자가 저장한 위시리스트 아이템을 토너먼트 방식으로 비교하여 구매 결정을 돕는
+              모바일 애플리케이션 서비스입니다.
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="dcdfc992-b55c-418d-b5a4-34d39cc427f5" class="numbered-list" start="2">
+            <li>
+              서비스의 주요 기능은 다음과 같습니다.
+              <div style="display: contents" dir="auto">
+                <ul id="86d7ab08-ccdf-43d7-8921-82ae30e90873" class="bulleted-list">
+                  <li style="list-style-type: disc">위시리스트(상품) 등록 및 관리</li>
+                </ul>
+              </div>
+              <div style="display: contents" dir="auto">
+                <ul id="bf30b4c6-4efd-4f38-9002-2bf7ee817c93" class="bulleted-list">
+                  <li style="list-style-type: disc">아이템 간 토너먼트 비교 기능</li>
+                </ul>
+              </div>
+              <div style="display: contents" dir="auto">
+                <ul id="80dcfd82-8941-4aec-afb6-339b15e9a2d7" class="bulleted-list">
+                  <li style="list-style-type: disc">비교 결과 저장 및 확인</li>
+                </ul>
+              </div>
+              <div style="display: contents" dir="auto">
+                <ul id="c8d2faa3-c546-4c24-b40d-dc6dd2cc3adf" class="bulleted-list">
+                  <li style="list-style-type: disc">소셜 로그인을 통한 회원 관리</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="b333fedd-5e2d-4613-9a68-1c9bf91d8230" class="numbered-list" start="3">
+            <li>운영자는 서비스의 기능 및 내용을 사전 공지 없이 변경하거나 종료할 수 있습니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="db110914-cfbd-44d2-a8f0-99285f8faed2" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="e06f4b22-1c95-45f1-948e-2c539f662d94" class="">제3조 회원가입 조건</h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="58b1ad7e-735b-4adc-a308-23183e2c1c3b" class="numbered-list" start="1">
+            <li>
+              이용자는 다음의 방법으로 회원가입할 수 있습니다.
+              <div style="display: contents" dir="auto">
+                <ul id="7470f459-b69f-4a2b-9eae-2237ac7a0d31" class="bulleted-list">
+                  <li style="list-style-type: disc">Google 계정 연동</li>
+                </ul>
+              </div>
+              <div style="display: contents" dir="auto">
+                <ul id="4ecba7a6-a67c-43d9-ac8c-84465d495915" class="bulleted-list">
+                  <li style="list-style-type: disc">Apple 계정 연동</li>
+                </ul>
+              </div>
+              <div style="display: contents" dir="auto">
+                <ul id="d8cd801e-bd20-457c-ba18-49d267bb60d8" class="bulleted-list">
+                  <li style="list-style-type: disc">카카오 계정 연동</li>
+                </ul>
+              </div>
+              <div style="display: contents" dir="auto">
+                <ul id="e2712ce9-b528-4235-b7c0-9b2f92e3575d" class="bulleted-list">
+                  <li style="list-style-type: disc">비회원(게스트)으로 시작</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="52d82a3f-b538-4a7f-a8cc-b6acf397175e" class="numbered-list" start="2">
+            <li>만 14세 미만의 이용자는 회원가입을 할 수 없습니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="dc332a0e-6b68-4265-872d-aba4fc1cd6fb" class="numbered-list" start="3">
+            <li>이용자는 타인의 정보를 도용하거나 허위 정보를 입력해서는 안 됩니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="20e9f7db-90bd-4750-a9bf-bb23909fa990" class="numbered-list" start="4">
+            <li>회원가입 시 본 약관 및 개인정보 처리방침에 동의한 것으로 간주합니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="e80e5af7-586b-49f8-9dce-6917c7dc7c24" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="0934aa82-191e-44ea-be4b-e93c53296e83" class="">제4조 회원 탈퇴 조건</h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="7bdcda33-a134-49db-9e4d-c7438f39d11e" class="numbered-list" start="1">
+            <li>이용자는 언제든지 서비스 내 설정 메뉴를 통해 탈퇴를 요청할 수 있습니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="4868da13-469d-402a-81fa-6f365de36ddc" class="numbered-list" start="2">
+            <li>탈퇴 시 이용자의 계정 및 관련 데이터는 즉시 또는 일정 유예기간 이후 삭제됩니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="3f198df6-52ce-4b5f-88cd-525c333fea95" class="numbered-list" start="3">
+            <li>
+              탈퇴 후에는 동일한 소셜 계정으로 재가입이 가능하나, 기존 데이터는 복구되지 않습니다.
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="fe595f30-b2e9-472b-a076-1e662f089053" class="numbered-list" start="4">
+            <li>탈퇴 요청은 앱 내 [설정 &gt; 탈퇴하기] 메뉴에서 진행할 수 있습니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="ff8671e6-739b-4c3c-a46d-fe5f1796a009" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="16851c2c-d6a7-43a1-abe5-bab869e8a452" class="">제5조 이용 제한 사유</h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <p id="8beed3e8-1298-459b-8310-47462dde8005" class="">
+            운영자는 이용자가 다음 각 호에 해당하는 행위를 하는 경우 서비스 이용을 제한하거나 계정을
+            삭제할 수 있습니다.
+          </p>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="84a15128-834d-439a-a626-5704c7ac5c3c" class="numbered-list" start="1">
+            <li>타인의 개인정보 또는 계정을 도용하는 행위</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="997f0dbb-01a5-46ad-962f-b01d48986feb" class="numbered-list" start="2">
+            <li>서비스의 정상적인 운영을 방해하거나 시스템에 부정한 방법으로 접근하는 행위</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="fc3aafdf-f939-48f0-a6ae-2bd22318283f" class="numbered-list" start="3">
+            <li>허위 정보를 등록하거나 부정한 목적으로 서비스를 이용하는 행위</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="934f36f8-0aa7-4bea-9c70-eb357ae99985" class="numbered-list" start="4">
+            <li>관련 법령 또는 본 약관을 위반하는 행위</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="06f33ca1-e84e-4322-a4e6-f3713e4d8b04" class="numbered-list" start="5">
+            <li>기타 운영자가 서비스 운영상 부적절하다고 판단하는 행위</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="734bf4fd-c56d-4fba-99d8-d14d41f5ff98" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="75a9d1e3-732f-49c0-b1b8-0e2a8cbd14af" class="">제6조 면책 조항</h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="97564235-363f-4e7e-9dc0-d823ac25025a" class="numbered-list" start="1">
+            <li>
+              운영자는 천재지변, 시스템 장애, 제3자의 서비스 장애(Google, Apple, Kakao 등) 등
+              불가항력적인 사유로 인한 서비스 중단에 대해 책임을 지지 않습니다.
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="94dcfb94-43fb-4f7f-a9ca-c839f710c362" class="numbered-list" start="2">
+            <li>
+              서비스는 비영리 사이드 프로젝트로 운영되며, 운영자는 서비스의 완전성, 무결성, 특정
+              목적에의 적합성을 보증하지 않습니다.
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="af0fdd64-3029-4e6e-9f3d-4fcbe7ddc199" class="numbered-list" start="3">
+            <li>
+              이용자가 서비스를 통해 구매 결정을 내린 결과에 대한 책임은 이용자 본인에게 있습니다.
+            </li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="d88b98a2-9c1f-4bcb-bc45-714293a10a1a" class="numbered-list" start="4">
+            <li>이용자 간 또는 이용자와 제3자 간의 분쟁에 대해 운영자는 책임을 지지 않습니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ol type="1" id="067ceab3-50d1-4a48-bb8b-1cba4157dedf" class="numbered-list" start="5">
+            <li>이용자 본인의 부주의로 인한 개인정보 유출에 대해 운영자는 책임을 지지 않습니다.</li>
+          </ol>
+        </div>
+        <div style="display: contents" dir="auto">
+          <hr id="ad556866-cf29-4b61-a0a6-49609cee2afb" />
+        </div>
+        <div style="display: contents" dir="auto">
+          <h2 id="24486ea4-8630-406c-8f4f-d79c24782448" class="">제7조 운영자 연락처</h2>
+        </div>
+        <div style="display: contents" dir="auto">
+          <p id="f33fccac-2a21-4a88-97fd-1abed782f5ae" class="">
+            서비스 이용과 관련한 문의 사항은 아래로 연락해 주세요.
+          </p>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ul id="81f06587-5d01-4720-8639-cce844eceb9c" class="bulleted-list">
+            <li style="list-style-type: disc">
+              <strong>팀명</strong>: <strong>팀 PiKi</strong>
+              <div style="display: contents" dir="auto">
+                <ul id="d2ba8082-1ff8-4b7b-a3bb-892c9e516c07" class="bulleted-list">
+                  <li style="list-style-type: circle">
+                    <strong>이메일</strong>: depromeet18.3@gmail.com
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div style="display: contents" dir="auto">
+          <ul id="eb4070d6-45a8-4139-8f69-720711bb7aef" class="bulleted-list">
+            <li style="list-style-type: disc">
+              <strong>서비스 URL</strong>: <a href="https://piki.day/">https://piki.day</a>
+            </li>
+          </ul>
+        </div>
+        <div style="display: contents" dir="auto">
+          <p id="36fc800c-72cf-8057-81a9-e4a68e71dc8c" class=""></p>
+        </div>
+      </div>
+    </article>
+    <span class="sans" style="font-size: 14px; padding-top: 2em"></span>
+  </body>
+</html>

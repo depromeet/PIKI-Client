@@ -1,12 +1,14 @@
 'use client';
 
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
+import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
 import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import Spinner from '@/components/spinner';
+import { ROUTES } from '@/consts/route';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
 import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
 import { WebBridge, isWebview } from '@/utils/webBridge';
@@ -111,13 +113,19 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
 
       <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
         가입 시{' '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+        <Link
+          href="/terms"
+          className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
+        >
           이용약관
-        </span>
+        </Link>
         {' 및 '}
-        <span className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]">
+        <Link
+          href={ROUTES.POLICY}
+          className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
+        >
           개인정보 처리방침
-        </span>
+        </Link>
         에 동의하게 됩니다.
       </p>
     </div>

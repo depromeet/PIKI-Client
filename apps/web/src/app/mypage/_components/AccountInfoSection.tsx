@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ROUTES } from '@/consts/route';
 import { useGetMe } from '@/hooks/useGetMe';
 
-import { MYPAGE_EXTERNAL_LINKS } from '../_consts/mypage';
 import LogoutMenuItem from './LogoutMenuItem';
 
 function AccountInfoSection() {
@@ -19,8 +18,8 @@ function AccountInfoSection() {
         {userData.identityType === 'MEMBER' && (
           <AccountLinkItem href={ROUTES.MYPAGE_WITHDRAW} label="탈퇴하기" />
         )}
-        <AccountLinkItem href={MYPAGE_EXTERNAL_LINKS.TERMS} label="이용약관" />
-        <AccountLinkItem href={MYPAGE_EXTERNAL_LINKS.PRIVACY} label="개인정보 처리방침" />
+        <AccountLinkItem href={ROUTES.TERMS} label="이용약관" />
+        <AccountLinkItem href={ROUTES.POLICY} label="개인정보 처리방침" />
       </div>
     </section>
   );
@@ -29,15 +28,13 @@ function AccountInfoSection() {
 type AccountLinkItemProps = {
   href: string;
   label: string;
-  isExternal?: boolean;
 };
 
-function AccountLinkItem({ href, label, isExternal = false }: AccountLinkItemProps) {
+function AccountLinkItem({ href, label }: AccountLinkItemProps) {
   return (
     <Link
       href={href}
       className="flex w-full cursor-pointer items-center px-2 py-5 body-1-semibold text-text-neutral-secondary"
-      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     >
       {label}
     </Link>
