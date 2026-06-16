@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 
 import { useGetGroupResult } from '@/app/tournament/[id]/result/_hooks/useGetGroupResult';
+import { ProfileCircledFilledIconOutline } from '@/assets/icons';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 import Spinner from '@/components/spinner';
 import UserProfile from '@/components/user-profile-group/UserProfile';
@@ -133,8 +134,12 @@ function FriendRow({ friend }: FriendRowProps) {
         </span>
       </div>
       {friend.isMe && (
-        <span className="flex shrink-0 items-center gap-1 rounded-full bg-bg-layer-default px-2 py-1 caption-1-semibold text-text-neutral-secondary">
-          <UserProfile user={{ ...user, name: '나' }} className="size-4 border-0" />나
+        <span className="flex shrink-0 items-center gap-1 rounded-lg bg-black/4 px-2 py-1 body-2-semibold text-text-neutral-secondary">
+          <ProfileCircledFilledIconOutline
+            className="size-5 text-icon-neutral-secondary"
+            aria-hidden
+          />
+          나
         </span>
       )}
     </div>
