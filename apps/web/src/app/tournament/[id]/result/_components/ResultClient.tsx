@@ -102,7 +102,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-padding-top pb-30">
       <Header center="토너먼트 결과" centerClassName="title-1" left={<HeaderIcon name="BACK" />} />
 
-      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3">
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-120 flex-1 flex-col gap-3">
         <ReceiptDrawMachine
           ref={receiptMachineRef}
           tournamentName={tournamentName}
@@ -111,7 +111,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         />
 
         {/* 영수증 밖 공유 버튼 — 이미지 공유 (모든 사용자) + 토너먼트 플레이 체험 (ROOT 소유자만) */}
-        <div className={cn('mx-5 flex gap-2', !canSharePlayLink && 'justify-center')}>
+        <div className={cn('mx-5 flex gap-3', !canSharePlayLink && 'justify-center')}>
           <ShareButton
             icon={<ReceiptIcon aria-hidden className="size-5" />}
             label={isCapturing ? '이미지 만드는 중...' : '영수증 이미지 공유'}
