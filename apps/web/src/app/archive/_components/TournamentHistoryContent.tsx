@@ -36,19 +36,24 @@ function TournamentHistoryContent() {
   }
 
   return (
-    <main className="hide-scrollbar flex flex-1 flex-col gap-3 overflow-y-auto pb-24">
-      {tournamentListData.map(tournament => (
-        <TournamentCard
-          key={tournament.tournamentId}
-          tournamentId={tournament.tournamentId}
-          status={tournament.status}
-          name={tournament.name}
-          date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
-          users={toUsers(tournament.participantProfileImages)}
-          participantCount={tournament.participantProfileImages.length}
-        />
-      ))}
-    </main>
+    <>
+      <main className="hide-scrollbar flex flex-1 flex-col gap-3 overflow-y-auto pb-24">
+        {tournamentListData.map(tournament => (
+          <TournamentCard
+            key={tournament.tournamentId}
+            tournamentId={tournament.tournamentId}
+            status={tournament.status}
+            name={tournament.name}
+            date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
+            users={toUsers(tournament.participantProfileImages)}
+            participantCount={tournament.participantProfileImages.length}
+          />
+        ))}
+      </main>
+      <div className="fixed bottom-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+        <BottomTabBar />
+      </div>
+    </>
   );
 }
 
