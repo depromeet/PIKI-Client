@@ -106,6 +106,7 @@ export { default as PhotoIconOutline } from './photo.svg';
 export { default as PieChartIconOutline } from './pie-chart.svg';
 export { default as PinIconOutline } from './pin.svg';
 export { default as ProfileCircledIconOutline } from './profile-circled.svg';
+export { default as ProfileCircledFilledIconOutline } from './profile-circled-filled.svg';
 export { default as PromoIconOutline } from './promo.svg';
 export { default as ReciptIconOutline } from './recipt.svg';
 export { default as RedoIconOutline } from './redo.svg';

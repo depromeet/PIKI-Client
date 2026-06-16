@@ -17,6 +17,8 @@ const toUsers = (imageUrls: string[]): UserT[] =>
 function TorunamentList() {
   const { tournamentListData } = useGetTournamentList();
 
+  if (tournamentListData.length === 0) return null;
+
   return (
     <section className="flex flex-col gap-3">
       <h2 className="heading-2 text-black">진행 중인 토너먼트</h2>
@@ -29,6 +31,7 @@ function TorunamentList() {
           name={tournament.name}
           date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
           users={toUsers(tournament.participantProfileImages)}
+          participantCount={tournament.participantProfileImages.length}
         />
       ))}
     </section>

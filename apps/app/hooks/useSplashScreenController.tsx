@@ -1,12 +1,5 @@
 import * as SplashScreen from 'expo-splash-screen';
-import {
-  createContext,
-  type ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import { type ReactNode, createContext, useCallback, useContext, useEffect, useRef } from 'react';
 
 const SPLASH_TIMEOUT_MS = 15_000;
 
@@ -15,9 +8,7 @@ type SplashScreenControllerContextT = {
   onWebViewLoadError: () => void;
 };
 
-const SplashScreenControllerContext = createContext<SplashScreenControllerContextT | null>(
-  null
-);
+const SplashScreenControllerContext = createContext<SplashScreenControllerContextT | null>(null);
 
 type Props = {
   children: ReactNode;
