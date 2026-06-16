@@ -17,19 +17,14 @@ type LegalContentProps = {
 const getLegalHtmlParts = (document: LegalDocumentT) => {
   const htmlPath = path.join(process.cwd(), legalHtmlPaths[document]);
   const html = readFileSync(htmlPath, 'utf-8');
-
-  return {
-    styleContent: html.match(/<style>([\s\S]*?)<\/style>/)?.[1] ?? '',
-    bodyContent: html.match(/<body[^>]*>([\s\S]*?)<\/body>/)?.[1] ?? '',
-  };
+  return html.match(/<body[^>]*>([\s\S]*?)<\/body>/)?.[1] ?? '';
 };
 
 function LegalContent({ document }: LegalContentProps) {
-  const { styleContent, bodyContent } = getLegalHtmlParts(document);
+  const bodyContent = getLegalHtmlParts(document);
 
   return (
     <div className={styles.root}>
-      <style dangerouslySetInnerHTML={{ __html: styleContent }} />
       <div dangerouslySetInnerHTML={{ __html: bodyContent }} />
     </div>
   );
