@@ -13,8 +13,8 @@ export const ROUND_TRANSITION_COPY: Record<
     description: '얼마 안 남았어요!\n이어서 준결승전을 시작할게요',
   },
   toFinal: {
-    title: '결승까지 왔어요!',
-    description: '마지막 두 개의 상품만 남았어요\n3초 뒤 시작할게요',
+    title: '마지막 한 판!',
+    description: '최종 선택만 남았어요.',
   },
 };
 
