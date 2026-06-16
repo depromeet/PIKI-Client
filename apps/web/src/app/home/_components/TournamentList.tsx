@@ -31,6 +31,7 @@ function TorunamentList() {
           name={tournament.name}
           date={tournament.createdAt.slice(0, 10).replaceAll('-', '/')}
           users={toUsers(tournament.participantProfileImages)}
+          participantCount={tournament.participantProfileImages.length}
         />
       ))}
     </section>

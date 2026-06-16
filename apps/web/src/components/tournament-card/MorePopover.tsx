@@ -16,25 +16,24 @@ import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import type { TournamentStatusT } from '@/types/tournament';
 
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from '../popover';
-import FriendListDialog, { type FriendListItemT } from './FriendListDialog';
+import FriendListDialog from './FriendListDialog';
 import TournamentDeleteDialog from './TournamentDeleteDialog';
 
 type MorePopoverProps = {
   status: TournamentStatusT;
   tournamentId: number;
-  /** 친구 목록 (본인 포함). 1명 이상이면 '친구 목록 보기' 메뉴를 노출한다. */
-  friends?: FriendListItemT[];
+  /** 토너먼트 참여자 수 (본인 포함). 2명 이상일 때만 '친구 목록 보기' 메뉴를 노출. */
+  participantCount?: number;
 };
 
-function MorePopover({ status, tournamentId, friends = [] }: MorePopoverProps) {
+function MorePopover({ status, tournamentId, participantCount = 0 }: MorePopoverProps) {
   const router = useRouter();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isFriendListOpen, setIsFriendListOpen] = useState(false);
 
-  // 초대한 친구가 1명 이상일 때만 친구 목록 보기 메뉴 노출.
-  // friends 에는 본인이 포함될 수 있으므로 isMe 가 아닌 인원이 1명 이상인지로 판단.
-  const hasInvitedFriends = friends.some(friend => !friend.isMe);
+  // 본인 외 친구가 1명 이상이면 (= participantCount >= 2) 친구 목록 보기 메뉴 노출.
+  const hasInvitedFriends = participantCount >= 2;
 
   const handleAddTournamentItem = () => {
     setIsPopoverOpen(false);
@@ -137,7 +136,7 @@ function MorePopover({ status, tournamentId, friends = [] }: MorePopoverProps) {
       <FriendListDialog
         open={isFriendListOpen}
         onOpenChange={setIsFriendListOpen}
-        friends={friends}
+        tournamentId={tournamentId}
       />
     </>
   );

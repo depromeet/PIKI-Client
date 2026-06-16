@@ -1,8 +1,13 @@
 'use client';
 
+import { useMemo } from 'react';
+
+import { useGetGroupResult } from '@/app/tournament/[id]/result/_hooks/useGetGroupResult';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
+import Spinner from '@/components/spinner';
 import UserProfile from '@/components/user-profile-group/UserProfile';
 import type { ProfileTypeT, UserT } from '@/components/user-profile-group/userProfile.const';
+import { useGetMe } from '@/hooks/useGetMe';
 
 export type FriendListItemT = {
   userId: string;
@@ -15,7 +20,8 @@ export type FriendListItemT = {
 type FriendListDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  friends: FriendListItemT[];
+  /** group-result API 호출용. COMPLETED 토너먼트에서만 의미 있음. */
+  tournamentId: number;
 };
 
 /** 닉네임 → 안정적인 profileType(blue/yellow) 매핑. 이미지가 없을 때만 사용. */
@@ -32,7 +38,33 @@ const toUser = (friend: FriendListItemT): UserT => ({
   ...(friend.profileImage ? { imageUrl: friend.profileImage } : {}),
 });
 
-function FriendListDialog({ open, onOpenChange, friends }: FriendListDialogProps) {
+function FriendListDialog({ open, onOpenChange, tournamentId }: FriendListDialogProps) {
+  // 모달이 열렸을 때만 group-result fetch.
+  const { groupResultData, isGroupResultPending } = useGetGroupResult(tournamentId, {
+    enabled: open,
+  });
+  const { userData } = useGetMe();
+  const myUserId = userData.id;
+
+  // group-result 의 모든 chosenBy 를 합쳐 userId 기준 dedup.
+  const friends = useMemo<FriendListItemT[]>(() => {
+    if (!groupResultData) return [];
+    const map = new Map<string, FriendListItemT>();
+    for (const item of groupResultData.items) {
+      for (const participant of item.chosenBy) {
+        if (map.has(participant.userId)) continue;
+        map.set(participant.userId, {
+          userId: participant.userId,
+          nickname: participant.nickname,
+          profileImage: participant.profileImage,
+          isMe: participant.userId === myUserId,
+        });
+      }
+    }
+    // 본인 먼저 노출.
+    return Array.from(map.values()).sort((a, b) => Number(b.isMe ?? false) - Number(a.isMe ?? false));
+  }, [groupResultData, myUserId]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="gap-4 p-5">
@@ -43,16 +75,43 @@ function FriendListDialog({ open, onOpenChange, friends }: FriendListDialogProps
           이 토너먼트에 참여한 친구 목록입니다.
         </DialogDescription>
 
-        {/* 스크롤 영역 — 약 400px 안에서 4명 정도 노출, 나머지는 내부 스크롤 */}
-        <ul className="hide-scrollbar flex max-h-80 flex-col gap-2 overflow-y-auto">
-          {friends.map(friend => (
-            <li key={friend.userId}>
-              <FriendRow friend={friend} />
-            </li>
-          ))}
-        </ul>
+        <FriendListBody isPending={isGroupResultPending} friends={friends} />
       </DialogContent>
     </Dialog>
+  );
+}
+
+type FriendListBodyProps = {
+  isPending: boolean;
+  friends: FriendListItemT[];
+};
+
+function FriendListBody({ isPending, friends }: FriendListBodyProps) {
+  if (isPending) {
+    return (
+      <div className="flex h-50 items-center justify-center">
+        <Spinner size={24} />
+      </div>
+    );
+  }
+
+  if (friends.length === 0) {
+    return (
+      <p className="py-10 text-center body-1-medium text-text-neutral-tertiary">
+        참여한 친구가 없어요.
+      </p>
+    );
+  }
+
+  // 스크롤 영역 — 약 400px 안에서 4명 정도 노출, 나머지는 내부 스크롤
+  return (
+    <ul className="hide-scrollbar flex max-h-80 flex-col gap-2 overflow-y-auto">
+      {friends.map(friend => (
+        <li key={friend.userId}>
+          <FriendRow friend={friend} />
+        </li>
+      ))}
+    </ul>
   );
 }
 
