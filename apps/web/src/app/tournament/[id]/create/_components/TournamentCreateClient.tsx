@@ -21,6 +21,7 @@ import { useScrollToLast } from '../_hooks/useScrollToLast';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
+import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
 import TournamentItemBasketCarousel from './tournament-item-basket/TournamentItemBasketCarousel';
 import TournamentStartButton from './tournament-start-button/TournamentStartButton';
 import WelcomeJoinDialog from './welcome-join-dialog/WelcomeJoinDialog';
@@ -100,11 +101,16 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         </div>
       </div>
 
-      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col">
+      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col gap-5">
         <TournamentItemBasketCarousel
           items={pending?.items}
           scrollToLast={scrollToLast}
           onScrolled={onScrolled}
+          isDepositClosed={isDepositClosed}
+        />
+        <TournamentItemBasketStatus
+          isProcessing={hasPendingItem}
+          count={pending?.items.length ?? 0}
           isDepositClosed={isDepositClosed}
         />
       </div>

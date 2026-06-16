@@ -95,7 +95,7 @@ function TournamentItemBasketCarousel({
     return (
       <div
         ref={containerRef}
-        className="flex min-h-0 w-full flex-1 flex-col items-center justify-start px-5"
+        className="flex min-h-0 w-full flex-col items-center justify-start px-5"
       >
         <TournamentItemBasket
           basketIndex={0}
@@ -103,11 +103,6 @@ function TournamentItemBasketCarousel({
           isDepositClosed={isDepositClosed}
           maxHeight={basketMaxHeight}
         />
-        {items.length === 0 && (
-          <p className="mt-3 body-2-regular text-text-neutral-tertiary">
-            후보를 장바구니에 담아보세요.
-          </p>
-        )}
       </div>
     );
   }
