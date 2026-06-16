@@ -16,17 +16,25 @@ import { TOURNAMENT_STATUS } from '@/consts/tournament';
 import type { TournamentStatusT } from '@/types/tournament';
 
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from '../popover';
+import FriendListDialog, { type FriendListItemT } from './FriendListDialog';
 import TournamentDeleteDialog from './TournamentDeleteDialog';
 
 type MorePopoverProps = {
   status: TournamentStatusT;
   tournamentId: number;
+  /** 친구 목록 (본인 포함). 1명 이상이면 '친구 목록 보기' 메뉴를 노출한다. */
+  friends?: FriendListItemT[];
 };
 
-function MorePopover({ status, tournamentId }: MorePopoverProps) {
+function MorePopover({ status, tournamentId, friends = [] }: MorePopoverProps) {
   const router = useRouter();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isFriendListOpen, setIsFriendListOpen] = useState(false);
+
+  // 초대한 친구가 1명 이상일 때만 친구 목록 보기 메뉴 노출.
+  // friends 에는 본인이 포함될 수 있으므로 isMe 가 아닌 인원이 1명 이상인지로 판단.
+  const hasInvitedFriends = friends.some(friend => !friend.isMe);
 
   const handleAddTournamentItem = () => {
     setIsPopoverOpen(false);
@@ -41,7 +49,8 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
   };
 
   const handleViewFriendList = () => {
-    // TODO: 친구 목록 보기 페이지로 연결
+    setIsPopoverOpen(false);
+    setIsFriendListOpen(true);
   };
 
   const handleShareTournamentResult = () => {
@@ -79,11 +88,13 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
 
           {status === TOURNAMENT_STATUS.IN_PROGRESS && (
             <>
-              <OptionButton
-                Icon={GroupIconFill}
-                label="친구 목록 보기"
-                onClick={handleViewFriendList}
-              />
+              {hasInvitedFriends && (
+                <OptionButton
+                  Icon={GroupIconFill}
+                  label="친구 목록 보기"
+                  onClick={handleViewFriendList}
+                />
+              )}
               <OptionButton
                 disabled
                 Icon={TrashIconFill}
@@ -95,11 +106,13 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
 
           {status === TOURNAMENT_STATUS.COMPLETED && (
             <>
-              <OptionButton
-                Icon={GroupIconFill}
-                label="친구 목록 보기"
-                onClick={handleViewFriendList}
-              />
+              {hasInvitedFriends && (
+                <OptionButton
+                  Icon={GroupIconFill}
+                  label="친구 목록 보기"
+                  onClick={handleViewFriendList}
+                />
+              )}
               <OptionButton
                 Icon={LinkIconFill}
                 label="결과 공유하기"
@@ -119,6 +132,12 @@ function MorePopover({ status, tournamentId }: MorePopoverProps) {
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
         tournamentId={tournamentId}
+      />
+
+      <FriendListDialog
+        open={isFriendListOpen}
+        onOpenChange={setIsFriendListOpen}
+        friends={friends}
       />
     </>
   );

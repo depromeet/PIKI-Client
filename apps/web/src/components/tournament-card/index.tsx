@@ -4,6 +4,7 @@ import type { UserT } from '@/components/user-profile-group/userProfile.const';
 import type { TournamentStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
+import type { FriendListItemT } from './FriendListDialog';
 import MorePopover from './MorePopover';
 
 type TournamentCardProps = {
@@ -13,6 +14,8 @@ type TournamentCardProps = {
   date: string;
   users: UserT[];
   maxProfiles?: number;
+  /** 더보기 → 친구 목록 보기 메뉴에서 사용. 비어있으면 메뉴 미노출. */
+  friends?: FriendListItemT[];
   className?: string;
 };
 
@@ -23,6 +26,7 @@ function TournamentCard({
   date,
   users,
   maxProfiles = 3,
+  friends,
   className,
 }: TournamentCardProps) {
   return (
@@ -37,7 +41,7 @@ function TournamentCard({
           <StatusChip status={status} />
           <h3 className="heading-1 text-text-neutral-primary">{name}</h3>
         </div>
-        <MorePopover status={status} tournamentId={tournamentId} />
+        <MorePopover status={status} tournamentId={tournamentId} friends={friends} />
       </div>
       <div className="flex items-end justify-between">
         <span className="body-2-medium text-text-neutral-tertiary">{date}</span>
