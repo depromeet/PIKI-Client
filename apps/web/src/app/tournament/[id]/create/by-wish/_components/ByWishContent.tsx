@@ -48,7 +48,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
   };
 
   return (
-    <div className="flex h-full flex-col bg-bg-layer-basement px-5">
+    <div className="flex h-full flex-col bg-bg-layer-basement px-5 pt-padding-top">
       <WishSelectHeader
         selectedCount={selectedIds.length}
         totalCount={items.length}

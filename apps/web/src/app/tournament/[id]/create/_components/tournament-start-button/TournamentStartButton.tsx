@@ -66,6 +66,8 @@ function TournamentStartButton({
 
   const isDisabled = isWaitingForOwnerStart || (!isDepositClosed && (count < 2 || hasUnreadyItem));
 
+  if (count === 0) return null;
+
   return (
     <>
       {isTooltipVisible && (

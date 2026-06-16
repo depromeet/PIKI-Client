@@ -1,12 +1,18 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
+import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
+import SmileIcon from '@/assets/images/tournament/result/smile-icon.svg';
+import { Header, HeaderIcon } from '@/components/header';
 import { ROUTES } from '@/consts/route';
+import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
-import ReceiptDrawMachine from './ReceiptDrawMachine';
+import { shareReceiptImage } from '../_utils/shareReceiptImage';
+import ReceiptDrawMachine, { type ReceiptDrawMachineHandleT } from './ReceiptDrawMachine';
 import GroupResultEntryCard from './group-result-entry-card/GroupResultEntryCard';
 import PlateShareDialog from './plate-share-dialog/PlateShareDialog';
 
@@ -19,6 +25,10 @@ function ResultClient({ tournamentId }: ResultClientProps) {
   const { tournamentData } = useGetTournament(tournamentId);
   const [date] = useState(() => new Date());
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  // 동기 락 — setState 가 비동기라 빠른 연속 클릭 시 같은 이벤트 루프에서 재진입되는 걸 막는다.
+  const isCapturingRef = useRef(false);
+  const receiptMachineRef = useRef<ReceiptDrawMachineHandleT | null>(null);
 
   // RSC에서 status 검사를 하지만, 클라에서 status가 바뀐 경우 방어
   useEffect(() => {
@@ -28,7 +38,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   if (tournamentData.status !== 'COMPLETED') {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement">
+      <main className="flex min-h-dvh items-center justify-center bg-bg-layer-basement pt-padding-top">
         <p className="body-1-medium text-text-neutral-tertiary">결과를 불러오는 중...</p>
       </main>
     );
@@ -36,32 +46,61 @@ function ResultClient({ tournamentId }: ResultClientProps) {
 
   const tournamentName = tournamentData.name;
   const result = tournamentData.completed.result;
+  // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람) 제외
+  const canSharePlayLink = tournamentData.isRoot && tournamentData.isOwner;
 
   const handleGoHome = () => {
     router.push(ROUTES.HOME);
   };
 
-  const handleOpenShare = () => {
+  const handleShareReceiptImage = async () => {
+    const element = receiptMachineRef.current?.getReceiptPaperElement();
+    if (!element || isCapturingRef.current) return;
+
+    isCapturingRef.current = true;
+    setIsCapturing(true);
+    try {
+      await shareReceiptImage(element);
+    } catch {
+      toast.error('영수증 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+    } finally {
+      isCapturingRef.current = false;
+      setIsCapturing(false);
+    }
+  };
+
+  const handleSharePlayLink = () => {
     setIsShareDialogOpen(true);
   };
 
   return (
-    <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-status pb-30">
-      <h1 className="shrink-0 px-5 text-center text-[28px] leading-10 font-bold tracking-[-0.6px]">
-        <span className="text-blue-500">{tournamentName} </span>
-        <br />
-        <span className="text-text-neutral-primary">승자는</span>
-      </h1>
+    <main className="flex min-h-dvh flex-col overflow-x-hidden bg-bg-layer-basement pt-padding-top pb-30">
+      <Header center="토너먼트 결과" centerClassName="title-1" left={<HeaderIcon name="BACK" />} />
 
-      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-[420px] flex-1 flex-col gap-3 px-5">
+      <div className="mx-auto mt-3 flex min-h-0 w-full max-w-105 flex-1 flex-col gap-3">
         <ReceiptDrawMachine
+          ref={receiptMachineRef}
           tournamentName={tournamentName}
           result={result}
           date={date}
-          // 플레이 링크 공유는 ROOT 의 소유자만 가능 — CLONE 소유자(친구 초대 → CLONE 생성한 사람)는 제외
-          canSharePlayLink={tournamentData.isRoot && tournamentData.isOwner}
-          onSharePlayLink={handleOpenShare}
         />
+
+        {/* 영수증 밖 공유 버튼 — 이미지 공유 (모든 사용자) + 토너먼트 플레이 체험 (ROOT 소유자만) */}
+        <div className={cn('flex gap-2', !canSharePlayLink && 'justify-center')}>
+          <ShareButton
+            icon={<ReceiptIcon aria-hidden className="size-5" />}
+            label={isCapturing ? '이미지 만드는 중...' : '영수증 이미지 공유'}
+            onClick={handleShareReceiptImage}
+            disabled={isCapturing}
+          />
+          {canSharePlayLink && (
+            <ShareButton
+              icon={<SmileIcon aria-hidden className="size-4.25" />}
+              label="토너먼트 플레이 체험"
+              onClick={handleSharePlayLink}
+            />
+          )}
+        </div>
 
         {/*
           친구 토너먼트 결과보기 카드 노출 + 라우팅.
@@ -97,6 +136,27 @@ function ResultClient({ tournamentId }: ResultClientProps) {
         initialPlayLinkExpiresAt={tournamentData.completed.playLinkExpiresAt}
       />
     </main>
+  );
+}
+
+type ShareButtonProps = {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+};
+
+function ShareButton({ icon, label, onClick, disabled = false }: ShareButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="flex h-13 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-bg-layer-default body-2-semibold text-text-neutral-primary disabled:cursor-default disabled:opacity-60"
+    >
+      {icon}
+      {label}
+    </button>
   );
 }
 

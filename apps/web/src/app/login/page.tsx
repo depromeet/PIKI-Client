@@ -10,7 +10,7 @@ async function LoginPage({ searchParams }: LoginPageProps) {
   const { redirect } = await searchParams;
 
   return (
-    <div className="flex min-h-full flex-col items-center bg-gray-50 pt-28">
+    <div className="flex min-h-full flex-col items-center bg-gray-50 pt-padding-top">
       <div className="flex flex-col items-center gap-6">
         <PikiLogo aria-label="PIKI" />
         <p className="text-center body-1-bold whitespace-pre-line text-text-neutral-secondary">
