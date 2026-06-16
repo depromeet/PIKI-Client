@@ -1,62 +1,48 @@
 import { isAxiosError } from 'axios';
 
-import { useDebounce } from '@/hooks/useDebounce';
+import { useGetNicknameCheck } from '@/hooks/useGetNicknameCheck';
 import type { ApiErrorResponseT } from '@/types/api';
 
-import { useGetNicknameCheck } from './useGetNicknameCheck';
-
-const NICKNAME_DEBOUNCE_DELAY = 300;
 const WITHDRAW_PREFIX = '탈퇴';
 const WITHDRAW_PREFIX_ERROR_TEXT = `'탈퇴'로 시작하는 닉네임은 사용할 수 없습니다.`;
+const DUPLICATE_NICKNAME_ERROR_TEXT = '이미 사용 중인 닉네임이에요.';
 
 export const useNicknameValidation = (nickname: string, originalNickname: string) => {
   const trimmedNickname = nickname.trim();
-  const debouncedNickname = useDebounce(trimmedNickname, NICKNAME_DEBOUNCE_DELAY);
-
   const isNicknameChanged = trimmedNickname !== originalNickname;
   const hasNickname = trimmedNickname.length > 0;
   const hasInvalidPrefix = trimmedNickname.startsWith(WITHDRAW_PREFIX);
-  const isDebouncing = debouncedNickname !== trimmedNickname;
-  const canCheckNickname =
-    isNicknameChanged &&
-    hasNickname &&
-    !hasInvalidPrefix &&
-    debouncedNickname.length > 0 &&
-    debouncedNickname === trimmedNickname;
+  const canCheckNickname = isNicknameChanged && hasNickname && !hasInvalidPrefix;
 
   const {
-    getNicknameCheckError,
-    isGetNicknameCheckFetching,
-    isGetNicknameCheckSuccess,
     nicknameCheckData,
-  } = useGetNicknameCheck(debouncedNickname, canCheckNickname);
+    nicknameCheckError,
+    isNicknameCheckFetching,
+    isGetNicknameCheckSuccess,
+  } = useGetNicknameCheck(nickname, canCheckNickname);
 
   let nicknameErrorText: string | null = null;
 
   if (hasInvalidPrefix) nicknameErrorText = WITHDRAW_PREFIX_ERROR_TEXT;
   else if (
     canCheckNickname &&
-    isAxiosError<ApiErrorResponseT>(getNicknameCheckError) &&
-    getNicknameCheckError.response
+    isAxiosError<ApiErrorResponseT>(nicknameCheckError) &&
+    nicknameCheckError.response
   )
-    nicknameErrorText = getNicknameCheckError.response.data.detail;
+    nicknameErrorText = nicknameCheckError.response.data.detail;
   else if (canCheckNickname && nicknameCheckData && !nicknameCheckData.available)
-    nicknameErrorText = nicknameCheckData.detail;
+    nicknameErrorText = DUPLICATE_NICKNAME_ERROR_TEXT;
 
   const isCheckingNickname =
-    isNicknameChanged &&
-    hasNickname &&
-    !hasInvalidPrefix &&
-    (isDebouncing || isGetNicknameCheckFetching);
-  const isNicknameAvailable = nicknameCheckData?.available === true;
+    isNicknameChanged && hasNickname && !hasInvalidPrefix && isNicknameCheckFetching;
 
   const isNicknameValid =
     hasNickname &&
     (!isNicknameChanged ||
       (canCheckNickname &&
         isGetNicknameCheckSuccess &&
-        !isGetNicknameCheckFetching &&
-        isNicknameAvailable));
+        !isNicknameCheckFetching &&
+        nicknameCheckData?.available === true));
 
   return {
     isCheckingNickname,

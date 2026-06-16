@@ -10,7 +10,7 @@ import Button from '@/components/button';
 import { Header } from '@/components/header';
 import Input from '@/components/input';
 import { useGetMe } from '@/hooks/useGetMe';
-import { useGetNicknameCheck } from '@/hooks/useGetNicknameCheck';
+import { useNicknameValidation } from '@/hooks/useNicknameValidation';
 import { usePageBackground } from '@/hooks/usePageBackground';
 
 import { useGetInvitePreview } from '../../_hooks/useGetInvitePreview';
@@ -37,19 +37,13 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
   const { invitePreviewData } = useGetInvitePreview(tournamentId);
   const { postJoinMutation, isPostJoinPending } = usePostJoin();
 
-  const trimmedNickname = nickname.trim();
-  const isNicknameChanged = trimmedNickname !== userData.nickname;
-  const { nicknameCheckData, isNicknameCheckFetching } = useGetNicknameCheck(nickname);
-
-  const isCheckingNickname =
-    isNicknameChanged && trimmedNickname.length > 0 && isNicknameCheckFetching;
-
-  const isNicknameValid =
-    trimmedNickname.length > 0 &&
-    (!isNicknameChanged || (!isNicknameCheckFetching && nicknameCheckData?.available === true));
-
-  const showDuplicateError =
-    isNicknameChanged && !isNicknameCheckFetching && nicknameCheckData?.available === false;
+  const {
+    isCheckingNickname,
+    isNicknameChanged,
+    isNicknameValid,
+    nicknameErrorText,
+    trimmedNickname,
+  } = useNicknameValidation(nickname, userData.nickname);
 
   const isComplete =
     isNicknameValid && !isCheckingNickname && !isPostJoinPending && !isPatchMePending;
@@ -120,8 +114,8 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
           onChange={event => setNickname(event.target.value)}
           right={<EditIconFill className="size-5" />}
           maxLength={MAX_NICKNAME_LENGTH}
-          aria-invalid={showDuplicateError}
-          {...(showDuplicateError ? { helperText: '이미 사용 중인 닉네임이에요.' } : {})}
+          aria-invalid={Boolean(nicknameErrorText)}
+          {...(nicknameErrorText ? { helperText: nicknameErrorText } : {})}
         />
       </section>
 

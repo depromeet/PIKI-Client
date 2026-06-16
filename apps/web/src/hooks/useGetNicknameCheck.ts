@@ -11,7 +11,7 @@ const DEBOUNCE_MS = 300;
  * - 입력값을 debounce 후 조회 (불필요한 호출 최소화)
  * - 빈 값 / 길이 초과 / debounce 진행 중에는 조회 비활성
  */
-export const useGetNicknameCheck = (nickname: string) => {
+export const useGetNicknameCheck = (nickname: string, enabled = true) => {
   const trimmedNickname = nickname.trim();
   const debouncedNickname = useDebounce(trimmedNickname, DEBOUNCE_MS);
   const isValidLength =
@@ -24,10 +24,11 @@ export const useGetNicknameCheck = (nickname: string) => {
     isFetching,
     isSuccess: isGetNicknameCheckSuccess,
   } = useQuery({
-    queryKey: ['nicknameCheck', debouncedNickname],
+    queryKey: ['nickname', debouncedNickname],
     queryFn: () => getNicknameCheck(debouncedNickname),
-    enabled: isValidLength,
+    enabled: enabled && isValidLength,
     placeholderData: keepPreviousData,
+    retry: false,
   });
 
   return {

@@ -8,8 +8,8 @@ import Button from '@/components/button';
 import Spacing from '@/components/spacing';
 import { ROUTES } from '@/consts/route';
 import { useGetMe } from '@/hooks/useGetMe';
+import { useNicknameValidation } from '@/hooks/useNicknameValidation';
 
-import { useNicknameValidation } from '../_hooks/useNicknameValidation';
 import { usePatchMe } from '../_hooks/usePatchMe';
 import NicknameField from './NicknameField';
 import ProfileImageField from './ProfileImageField';
