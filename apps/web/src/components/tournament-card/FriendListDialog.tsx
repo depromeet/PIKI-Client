@@ -129,9 +129,7 @@ function FriendRow({ friend }: FriendRowProps) {
     <div className="flex items-center justify-between gap-4 rounded-xl bg-bg-layer-basement p-5">
       <div className="flex min-w-0 items-center gap-4">
         <UserProfile user={user} className="size-8 border-0" />
-        <span className="truncate body-1-bold text-text-neutral-primary">
-          {friend.nickname}
-        </span>
+        <span className="truncate body-1-bold text-text-neutral-primary">{friend.nickname}</span>
       </div>
       {friend.isMe && (
         <span className="flex shrink-0 items-center gap-1 rounded-lg bg-black/4 px-2 py-1 body-2-semibold text-text-neutral-secondary">
