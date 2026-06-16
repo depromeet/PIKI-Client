@@ -1,5 +1,6 @@
 'use client';
 
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -9,11 +10,13 @@ import { EditIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Header } from '@/components/header';
 import Input from '@/components/input';
+import TournamentErrorDialog from '@/components/tournament-error-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
 import { useGetMe } from '@/hooks/useGetMe';
 import { useNicknameValidation } from '@/hooks/useNicknameValidation';
 import { usePageBackground } from '@/hooks/usePageBackground';
+import type { ApiErrorResponseT } from '@/types/api';
 
 import { useGetInvitePreview } from '../../_hooks/useGetInvitePreview';
 import { usePostJoin } from '../../_hooks/usePostJoin';
@@ -37,6 +40,7 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
   const { postJoinMutation, isPostJoinPending } = usePostJoin();
 
   const [nickname, setNickname] = useState(userData.nickname);
+  const [isTournamentErrorDialogOpen, setIsTournamentErrorDialogOpen] = useState(false);
 
   const {
     isCheckingNickname,
@@ -61,7 +65,12 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
             `${ROUTES.TOURNAMENT_CREATE(tournamentId)}?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.WELCOME_JOIN}`
           );
         },
-        onError: () => {
+        onError: error => {
+          if (isAxiosError<ApiErrorResponseT>(error) && error.response?.status === 409) {
+            setIsTournamentErrorDialogOpen(true);
+            return;
+          }
+
           toast.warning('참여에 실패했어요. 잠시 후 다시 시도해주세요.');
         },
       }
@@ -85,49 +94,57 @@ function JoinPreviewClient({ tournamentId, inviteCode }: JoinPreviewClientProps)
   };
 
   return (
-    <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-padding-top pb-8">
-      <Header
-        center="초대 참여하기"
-        centerClassName="heading-1 text-text-neutral-primary"
-        className="px-5"
-      />
-
-      <section className="mt-8.75 flex flex-col gap-2 px-5">
-        <p className="body-2-semibold text-text-neutral-primary">초대받은 토너먼트</p>
-        <div className="flex flex-col gap-1 rounded-xl bg-gray-50 p-4">
-          <p className="body-1-semibold text-text-neutral-primary">
-            {invitePreviewData.tournamentName}
-          </p>
-          <p className="body-2-medium text-text-neutral-secondary">
-            후보 {invitePreviewData.itemCount}개 · 참여 {invitePreviewData.participantCount}명
-          </p>
-        </div>
-      </section>
-
-      <section className="mt-8 px-5">
-        <Input
-          label="닉네임을 설정해주세요."
-          value={nickname}
-          onChange={event => setNickname(event.target.value)}
-          right={<EditIconFill className="size-5" />}
-          maxLength={MAX_NICKNAME_LENGTH}
-          aria-invalid={Boolean(nicknameErrorText)}
-          {...(nicknameErrorText ? { helperText: nicknameErrorText } : {})}
+    <>
+      <main className="flex min-h-dvh flex-col bg-bg-layer-default pt-padding-top pb-8">
+        <Header
+          center="초대 참여하기"
+          centerClassName="heading-1 text-text-neutral-primary"
+          className="px-5"
         />
-      </section>
 
-      <div className="mt-auto px-5">
-        <Button
-          size="lg"
-          variant="primary"
-          disabled={!isComplete}
-          onClick={handleConfirm}
-          isLoading={isPostJoinPending || isPatchMePending}
-        >
-          참여하기
-        </Button>
-      </div>
-    </main>
+        <section className="mt-8.75 flex flex-col gap-2 px-5">
+          <p className="body-2-semibold text-text-neutral-primary">초대받은 토너먼트</p>
+          <div className="flex flex-col gap-1 rounded-xl bg-gray-50 p-4">
+            <p className="body-1-semibold text-text-neutral-primary">
+              {invitePreviewData.tournamentName}
+            </p>
+            <p className="body-2-medium text-text-neutral-secondary">
+              후보 {invitePreviewData.itemCount}개 · 참여 {invitePreviewData.participantCount}명
+            </p>
+          </div>
+        </section>
+
+        <section className="mt-8 px-5">
+          <Input
+            label="닉네임을 설정해주세요."
+            value={nickname}
+            onChange={event => setNickname(event.target.value)}
+            right={<EditIconFill className="size-5" />}
+            maxLength={MAX_NICKNAME_LENGTH}
+            aria-invalid={Boolean(nicknameErrorText)}
+            {...(nicknameErrorText ? { helperText: nicknameErrorText } : {})}
+          />
+        </section>
+
+        <div className="mt-auto px-5">
+          <Button
+            size="lg"
+            variant="primary"
+            disabled={!isComplete}
+            onClick={handleConfirm}
+            isLoading={isPostJoinPending || isPatchMePending}
+          >
+            참여하기
+          </Button>
+        </div>
+      </main>
+
+      <TournamentErrorDialog
+        type="LINK_EXPIRED"
+        open={isTournamentErrorDialogOpen}
+        onOpenChange={setIsTournamentErrorDialogOpen}
+      />
+    </>
   );
 }
 
