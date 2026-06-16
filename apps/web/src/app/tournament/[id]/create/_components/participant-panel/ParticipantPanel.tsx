@@ -59,8 +59,14 @@ function ParticipantPanel({
             onClick={handleToggleExpand}
             className="flex w-full cursor-pointer items-center justify-between gap-3"
           >
-            <div className="flex min-w-0 items-center gap-4">
-              <UserProfileGroup users={users} max={3} />
+            <div className="flex min-w-0 items-center gap-3">
+              {depositDeadline ? (
+                <div className="shrink-0 rounded-lg bg-blue-50 px-3 py-1.5">
+                  <DepositCountdown deadline={depositDeadline} showLabel={false} />
+                </div>
+              ) : (
+                <UserProfileGroup users={users} max={3} />
+              )}
               <p className="truncate body-1-semibold text-text-neutral-secondary">
                 {participants.length}명이 함께 담는 중
               </p>
@@ -71,8 +77,6 @@ function ParticipantPanel({
               <ChevronDownIconOutline className="size-6 shrink-0 text-icon-neutral-secondary" />
             )}
           </button>
-
-          {depositDeadline && <DepositCountdown deadline={depositDeadline} />}
 
           {isExpanded && (
             <div className="flex flex-wrap gap-2">
