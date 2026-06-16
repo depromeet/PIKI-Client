@@ -4,7 +4,7 @@ import path from 'path';
 import styles from '../_styles/legal.module.css';
 
 const legalHtmlPaths = {
-  policy: 'src/app/(legal)/policy/_assets/policy.html',
+  privacy: 'src/app/(legal)/privacy/_assets/privacy.html',
   terms: 'src/app/(legal)/terms/_assets/terms.html',
 };
 

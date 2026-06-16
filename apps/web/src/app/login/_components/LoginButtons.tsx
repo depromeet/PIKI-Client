@@ -8,6 +8,7 @@ import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import Spinner from '@/components/spinner';
+import { ROUTES } from '@/consts/route';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
 import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
 import { WebBridge, isWebview } from '@/utils/webBridge';
@@ -120,7 +121,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
         </Link>
         {' 및 '}
         <Link
-          href="/policy"
+          href={ROUTES.POLICY}
           className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
         >
           개인정보 처리방침
