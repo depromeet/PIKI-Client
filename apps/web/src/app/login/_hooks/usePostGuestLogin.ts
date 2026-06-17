@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { ROUTES } from '@/consts/route';
 import { setCookie } from '@/utils/cookie';
+import { getLoginRedirectPath } from '@/utils/loginRedirect';
 import { isWebview } from '@/utils/webBridge';
 
 import { postGuestLogin } from '../_apis/postGuestLogin';
@@ -22,7 +22,7 @@ export const usePostGuestLogin = () => {
         // TODO: 웹뷰로 로그인 정보 전송
       }
 
-      router.replace(ROUTES.HOME);
+      router.replace(getLoginRedirectPath());
     },
   });
 

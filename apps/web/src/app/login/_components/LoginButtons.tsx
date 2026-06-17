@@ -90,6 +90,7 @@ function LoginButtons({ redirect }: LoginButtonsProps) {
   };
 
   const handleGuestLogin = () => {
+    setLoginRedirectPath(validRedirect);
     postGuestLoginMutation();
   };
 
