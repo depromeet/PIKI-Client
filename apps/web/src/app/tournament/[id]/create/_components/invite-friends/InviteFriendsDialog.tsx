@@ -1,12 +1,14 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
 import { share } from '@/utils/share';
+
+import InviteExpiresPicker from './InviteExpiresPicker';
 
 type InviteFriendsDialogProps = {
   open: boolean;
@@ -60,6 +62,16 @@ function InviteFriendsDialog({
   inviteExpiresAt,
 }: InviteFriendsDialogProps) {
   const expiresInfo = useMemo(() => formatExpiresInfo(inviteExpiresAt), [inviteExpiresAt]);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+  const handleOpenPicker = () => setIsPickerOpen(true);
+
+  const handleConfirmExpires = (newExpiresAt: string) => {
+    // TODO: 백엔드 PATCH /api/v1/tournaments/{id}/invite (절대 시각 ISO) 연동
+    // 임시: picker 닫고 결과만 표시.
+    console.warn('[InviteExpiresPicker] 새 마감 시각 선택:', newExpiresAt);
+    setIsPickerOpen(false);
+  };
 
   const handleSendInviteLink = async () => {
     if (!inviteUrl) return;
@@ -98,6 +110,13 @@ function InviteFriendsDialog({
                   <p className="heading-1 text-text-neutral-primary">{expiresInfo.absoluteLabel}</p>
                 </div>
               </div>
+              <button
+                type="button"
+                className="cursor-pointer underline body-2-medium text-text-neutral-tertiary"
+                onClick={handleOpenPicker}
+              >
+                변경
+              </button>
             </div>
           )}
 
@@ -121,6 +140,14 @@ function InviteFriendsDialog({
           </Button>
         </div>
       </DrawerContent>
+
+      <InviteExpiresPicker
+        key={isPickerOpen ? `picker-${inviteExpiresAt ?? ''}` : 'picker-closed'}
+        open={isPickerOpen}
+        onOpenChange={setIsPickerOpen}
+        initialExpiresAt={inviteExpiresAt}
+        onConfirm={handleConfirmExpires}
+      />
     </Drawer>
   );
 }
