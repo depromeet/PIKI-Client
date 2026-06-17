@@ -20,6 +20,7 @@ type TournamentItemBasketCarouselProps = {
   scrollToLast?: boolean;
   onScrolled?: () => void;
   isDepositClosed?: boolean;
+  participantImageMap?: Map<string, string>;
 };
 
 function TournamentItemBasketCarousel({
@@ -27,6 +28,7 @@ function TournamentItemBasketCarousel({
   scrollToLast = false,
   onScrolled,
   isDepositClosed = false,
+  participantImageMap,
 }: TournamentItemBasketCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -102,6 +104,7 @@ function TournamentItemBasketCarousel({
           items={items}
           isDepositClosed={isDepositClosed}
           maxHeight={basketMaxHeight}
+          participantImageMap={participantImageMap}
         />
       </div>
     );
@@ -130,6 +133,7 @@ function TournamentItemBasketCarousel({
                 items={items.slice(i * ITEMS_PER_BASKET, (i + 1) * ITEMS_PER_BASKET)}
                 isDepositClosed={isDepositClosed}
                 maxHeight={basketMaxHeight}
+                participantImageMap={participantImageMap}
               />
             </CarouselItem>
           ))}

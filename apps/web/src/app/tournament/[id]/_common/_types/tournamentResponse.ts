@@ -8,6 +8,7 @@ import type {
 export type TournamentParticipantT = {
   userId: string;
   nickname: string;
+  itemCount: number;
   profileImage: string;
 };
 
@@ -17,6 +18,7 @@ export type TournamentParticipantT = {
 export type TournamentPendingItemT = Partial<TournamentItemT> & {
   tournamentItemId: number;
   itemId: number;
+  userId?: string;
 };
 
 /**

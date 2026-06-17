@@ -63,9 +63,13 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       profileType: 'blue' as const,
       ...(isGeneratedAvatar(p.profileImage) ? {} : { imageUrl: p.profileImage }),
     },
-    itemCount: 0,
+    itemCount: p.itemCount,
   }));
   const hasFriends = participants.length > 1;
+
+  const participantImageMap = new Map(
+    (pending?.participants ?? []).map(p => [p.userId, p.profileImage])
+  );
 
   const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
     consumeJoinConfirmFor(tournamentId)
@@ -103,6 +107,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
           scrollToLast={scrollToLast}
           onScrolled={onScrolled}
           isDepositClosed={isDepositClosed}
+          participantImageMap={participantImageMap}
         />
         <TournamentItemBasketStatus
           isProcessing={hasPendingItem}

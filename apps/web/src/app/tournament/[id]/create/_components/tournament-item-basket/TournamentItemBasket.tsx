@@ -17,6 +17,7 @@ type TournamentItemBasketProps = {
   items: TournamentPendingItemT[];
   maxHeight?: number;
   isDepositClosed?: boolean;
+  participantImageMap?: Map<string, string>;
 };
 
 function TournamentItemBasket({
@@ -24,6 +25,7 @@ function TournamentItemBasket({
   items,
   maxHeight,
   isDepositClosed = false,
+  participantImageMap,
 }: TournamentItemBasketProps) {
   const { id } = useParams<{ id: string }>();
   const tournamentId = Number(id);
@@ -79,6 +81,7 @@ function TournamentItemBasket({
                 item={item}
                 index={index}
                 onClick={() => handleItemClick(item)}
+                participantImageMap={participantImageMap}
               />
             ))}
           </div>
