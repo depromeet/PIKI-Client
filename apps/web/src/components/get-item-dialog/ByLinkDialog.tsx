@@ -12,7 +12,7 @@ import { ROUTES } from '@/consts/route';
 import { usePostWishLink } from '@/hooks/usePostWishLink';
 import type { ItemTypeT } from '@/types/item';
 
-const URL_PATTERN = /^https?:\/\/.+/i;
+const URL_PATTERN = /^https:\/\/.+/i;
 
 type ByLinkProps = {
   type: ItemTypeT;
@@ -91,7 +91,7 @@ function ByLinkDialog({ type, open, onOpenChange }: ByLinkProps) {
             onChange={event => handleChange(event.target.value)}
             left={<LinkIconFill className="size-5" />}
             aria-invalid={hasError}
-            {...(hasError ? { helperText: '올바른 URL 형식으로 입력해주세요.' } : {})}
+            {...(hasError ? { helperText: 'https://로 시작하는 URL을 입력해주세요.' } : {})}
             autoFocus
             inputMode="url"
           />
