@@ -45,6 +45,7 @@ function InviteClient({ tournamentId, inviteCode }: InviteClientProps) {
         );
       } catch (error) {
         if (isAxiosError<ApiErrorResponseT>(error) && error.response?.status === 409) {
+          setState('invalid');
           setIsTournamentErrorDialogOpen(true);
           return;
         }
@@ -77,6 +78,7 @@ function InviteClient({ tournamentId, inviteCode }: InviteClientProps) {
         router.replace(`${ROUTES.TOURNAMENT_JOIN_BY_LINK(tournamentId)}?code=${inviteCode}`);
       } catch (error) {
         if (isAxiosError<ApiErrorResponseT>(error) && error.response?.status === 409) {
+          setState('invalid');
           setIsTournamentErrorDialogOpen(true);
           return;
         }
