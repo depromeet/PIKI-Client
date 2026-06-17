@@ -134,6 +134,7 @@ function ParticipantPanel({
       <InviteFriendsDialog
         open={isInviteDialogOpen}
         onOpenChange={setIsInviteDialogOpen}
+        tournamentId={Number(tournamentId)}
         inviteUrl={inviteUrl}
         inviteExpiresAt={inviteExpiresAt}
       />

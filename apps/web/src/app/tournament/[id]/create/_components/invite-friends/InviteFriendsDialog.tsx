@@ -8,11 +8,14 @@ import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
 import { share } from '@/utils/share';
 
+import { usePatchInviteExpiry } from '../../_hooks/usePatchInviteExpiry';
 import InviteExpiresPicker from './InviteExpiresPicker';
 
 type InviteFriendsDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** 마감 시각 변경 API 호출용 */
+  tournamentId: number;
   inviteUrl?: string;
   /** ISO 8601 — 초대 코드 만료 시각 */
   inviteExpiresAt?: string;
@@ -58,19 +61,30 @@ const formatExpiresInfo = (expiresAt: string | undefined) => {
 function InviteFriendsDialog({
   open,
   onOpenChange,
+  tournamentId,
   inviteUrl,
   inviteExpiresAt,
 }: InviteFriendsDialogProps) {
   const expiresInfo = useMemo(() => formatExpiresInfo(inviteExpiresAt), [inviteExpiresAt]);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const { patchInviteExpiryMutation, isPatchInviteExpiryPending } =
+    usePatchInviteExpiry(tournamentId);
 
   const handleOpenPicker = () => setIsPickerOpen(true);
 
   const handleConfirmExpires = (newExpiresAt: string) => {
-    // TODO: 백엔드 PATCH /api/v1/tournaments/{id}/invite (절대 시각 ISO) 연동
-    // 임시: picker 닫고 결과만 표시.
-    console.warn('[InviteExpiresPicker] 새 마감 시각 선택:', newExpiresAt);
-    setIsPickerOpen(false);
+    patchInviteExpiryMutation(
+      { newExpiresAt },
+      {
+        onSuccess: () => {
+          toast.success('초대 마감 시각이 변경되었어요.');
+          setIsPickerOpen(false);
+        },
+        onError: () => {
+          toast.error('마감 시각을 변경하지 못했어요.');
+        },
+      }
+    );
   };
 
   const handleSendInviteLink = async () => {
@@ -147,6 +161,7 @@ function InviteFriendsDialog({
         onOpenChange={setIsPickerOpen}
         initialExpiresAt={inviteExpiresAt}
         onConfirm={handleConfirmExpires}
+        isPending={isPatchInviteExpiryPending}
       />
     </Drawer>
   );

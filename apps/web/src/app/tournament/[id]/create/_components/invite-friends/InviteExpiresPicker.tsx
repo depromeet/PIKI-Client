@@ -23,6 +23,22 @@ const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'))
 const MERIDIEMS = ['AM', 'PM'] as const;
 type MeridiemT = (typeof MERIDIEMS)[number];
 
+/**
+ * Date → 로컬 LocalDateTime 문자열 (시간대 정보 없는 ISO).
+ * 서버가 `LocalDateTime` 으로 받으므로 `toISOString()` 의 UTC `Z` 접미사를 피한다.
+ * 예: "2026-06-18T14:30:00"
+ */
+const toLocalDateTimeString = (date: Date) => {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  const mm = pad(date.getMonth() + 1);
+  const dd = pad(date.getDate());
+  const hh = pad(date.getHours());
+  const mi = pad(date.getMinutes());
+  const ss = pad(date.getSeconds());
+  return `${yyyy}-${mm}-${dd}T${hh}:${mi}:${ss}`;
+};
+
 /** 12시간제 시(1~12) + AM/PM → 0~23 시 */
 const to24Hour = (hour12: number, meridiem: MeridiemT) => {
   if (meridiem === 'AM') return hour12 === 12 ? 0 : hour12;
@@ -80,7 +96,7 @@ function InviteExpiresPicker({
     if (next.getTime() <= now.getTime()) {
       next.setDate(next.getDate() + 1);
     }
-    onConfirm(next.toISOString());
+    onConfirm(toLocalDateTimeString(next));
   };
 
   return (
