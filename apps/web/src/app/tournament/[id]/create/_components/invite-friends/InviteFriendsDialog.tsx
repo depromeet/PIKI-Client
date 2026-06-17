@@ -34,12 +34,6 @@ const formatExpiresInfo = (expiresAt: string | undefined) => {
 
   const now = new Date();
   const remainingMs = expires.getTime() - now.getTime();
-  console.warn('[formatExpiresInfo]', {
-    rawFromServer: expiresAt,
-    parsedKST: expires.toString(),
-    nowKST: now.toString(),
-    remainingMinutes: Math.round(remainingMs / 60_000),
-  });
   if (remainingMs <= 0) return { remainingLabel: '마감', absoluteLabel: '만료됨' };
 
   const totalMinutes = Math.floor(remainingMs / 60_000);
@@ -80,21 +74,14 @@ function InviteFriendsDialog({
   const handleOpenPicker = () => setIsPickerOpen(true);
 
   const handleConfirmExpires = (newExpiresAt: string) => {
-    console.warn('[PATCH 보내는 값]', {
-      newExpiresAt,
-      nowLocalKST: new Date().toString(),
-      currentInviteExpiresAt: inviteExpiresAt,
-    });
     patchInviteExpiryMutation(
       { newExpiresAt },
       {
         onSuccess: () => {
-          console.warn('[PATCH 성공 — 새로고침된 inviteExpiresAt 은 GET 응답에서 확인]');
           toast.success('초대 마감 시각이 변경되었어요.');
           setIsPickerOpen(false);
         },
-        onError: error => {
-          console.error('[PATCH 실패]', error);
+        onError: () => {
           toast.error('마감 시각을 변경하지 못했어요.');
         },
       }
