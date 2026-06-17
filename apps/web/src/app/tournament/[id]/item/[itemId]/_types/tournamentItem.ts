@@ -5,7 +5,7 @@ export type GetTournamentItemResponseT = {
   itemId: number;
 } & (
   | {
-      status: (typeof ITEM_STATUS)['PROCESSING'];
+      status: (typeof ITEM_STATUS)['PROCESSING'] | (typeof ITEM_STATUS)['PENDING'];
       name: null;
       imageUrl: null;
       price: null;
