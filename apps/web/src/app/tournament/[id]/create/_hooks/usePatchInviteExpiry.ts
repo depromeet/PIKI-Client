@@ -1,9 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import {
-  type PatchInviteExpiryRequestT,
-  patchInviteExpiry,
-} from '../_apis/patchInviteExpiry';
+import { type PatchInviteExpiryRequestT, patchInviteExpiry } from '../_apis/patchInviteExpiry';
 
 export const usePatchInviteExpiry = (tournamentId: number) => {
   const queryClient = useQueryClient();

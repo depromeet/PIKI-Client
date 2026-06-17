@@ -7,10 +7,7 @@ export type PatchInviteExpiryRequestT = {
   newExpiresAt: string;
 };
 
-export const patchInviteExpiry = async (
-  tournamentId: number,
-  body: PatchInviteExpiryRequestT
-) => {
+export const patchInviteExpiry = async (tournamentId: number, body: PatchInviteExpiryRequestT) => {
   const { data } = await clientApi.patch<ApiResponseT<null>>(
     ENDPOINTS.TOURNAMENT_INVITE(tournamentId),
     body

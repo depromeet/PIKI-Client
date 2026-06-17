@@ -82,10 +82,7 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
   };
 
   return (
-    <div
-      className={cn('relative', className)}
-      style={{ height: containerHeight, width: '100%' }}
-    >
+    <div className={cn('relative', className)} style={{ height: containerHeight, width: '100%' }}>
       <div
         ref={containerRef}
         onScroll={handleScroll}

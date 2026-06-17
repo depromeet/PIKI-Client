@@ -127,7 +127,7 @@ function InviteFriendsDialog({
               </div>
               <button
                 type="button"
-                className="cursor-pointer underline body-2-medium text-text-neutral-tertiary"
+                className="cursor-pointer body-2-medium text-text-neutral-tertiary underline"
                 onClick={handleOpenPicker}
               >
                 변경
