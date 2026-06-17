@@ -1,6 +1,7 @@
 import { WEBBRIDGE_MESSAGE_TYPE, isWebBridgeMessageT } from '@piki/core';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { setCookie } from '@/utils/cookie';
 import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
@@ -33,6 +34,7 @@ export const useNativeLoginResult = ({
           router.replace(getLoginRedirectPath(redirect));
         } else if (parsed.type === WEBBRIDGE_MESSAGE_TYPE.SOCIAL_LOGIN_ERROR) {
           onSettled?.();
+          toast.error('요청을 처리하지 못했어요. 다시 시도해 주세요.');
           router.replace(getLoginPath(redirect));
         }
       } catch {

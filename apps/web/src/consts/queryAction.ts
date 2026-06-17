@@ -4,6 +4,7 @@ export const QUERY_ACTION = {
   VALUE: {
     OPEN_GET_ITEM_DIALOG: 'get-item',
     SHARE_RECEIPT: 'share-receipt',
+    WELCOME_JOIN: 'welcome-join',
   },
 } as const;
 

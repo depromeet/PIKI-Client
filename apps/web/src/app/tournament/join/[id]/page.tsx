@@ -1,6 +1,7 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 
+import { getMe } from '@/apis/getMe';
 import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
 
@@ -20,10 +21,17 @@ async function TournamentJoinPage({ params, searchParams }: TournamentJoinPagePr
   if (tournamentId === null) notFound();
 
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery({
+  const getInvitePreviewPromise = queryClient.prefetchQuery({
     queryKey: ['invitePreview', tournamentId],
     queryFn: () => getInvitePreview(tournamentId),
   });
+
+  const getMePromise = queryClient.prefetchQuery({
+    queryKey: ['me'],
+    queryFn: getMe,
+  });
+
+  await Promise.all([getInvitePreviewPromise, getMePromise]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

@@ -102,6 +102,7 @@
   --color-bg-informative: var(--color-blue-50);
 
   --color-bg-layer-default: var(--color-base-50);
+  --color-bg-layer-floating: var(--color-base-50);
   --color-bg-layer-basement: var(--color-gray-50);
   --color-bg-layer-overlay: #00000066;
 
@@ -136,7 +137,7 @@
   /** User Accent Color */
   --color-uac-light: #0a7aff;
   --color-icon-warning: var(--color-yellow-600);
-  --color-icon-error: var(--color-red-600);
+  --color-icon-error: var(--color-red-300);
   --color-icon-success: var(--color-green-600);
   --color-icon-informative: var(--color-blue-600);
 

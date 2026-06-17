@@ -9,7 +9,8 @@ import { getRouteType } from '@/utils/getRouteType';
 
 function NotificationSSEProvider() {
   const pathname = usePathname();
-  const enabled = getRouteType(pathname) !== 'PUBLIC';
+  const routeType = getRouteType(pathname);
+  const enabled = !!routeType && routeType !== 'PUBLIC';
 
   const { data: meData } = useQuery({
     queryKey: ['me'],

@@ -14,6 +14,7 @@ import Button from '@/components/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 import Input from '@/components/input';
 import Spinner from '@/components/spinner';
+import TournamentErrorDialog from '@/components/tournament-error-dialog';
 
 import InvalidCodeDialog from './InvalidCodeDialog';
 
@@ -27,6 +28,7 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
   const [code, setCode] = useState('');
   const [showFormatError, setShowFormatError] = useState(false);
   const [isInvalidDialogOpen, setIsInvalidDialogOpen] = useState(false);
+  const [isTournamentErrorDialogOpen, setIsTournamentErrorDialogOpen] = useState(false);
 
   const { mutate: previewMutation, isPending: isPreviewPending } = useMutation({
     mutationFn: getInvitePreviewByCode,
@@ -38,14 +40,23 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
       router.push(`/tournament/join/${data.tournamentId}?code=${enteredCode}`);
     },
     onError: error => {
-      // 400: 코드 없음 / 409: 만료 — 둘 다 사용자에게 InvalidCodeDialog 안내
       if (isAxiosError(error)) {
         const status = error.response?.status;
-        if (status === 400 || status === 409) {
+        /** 400: 코드 불일치 */
+        if (status === 400) {
+          onOpenChange(false);
           setIsInvalidDialogOpen(true);
           return;
         }
+
+        /** 409: 초대 코드 만료 */
+        if (status === 409) {
+          onOpenChange(false);
+          setIsTournamentErrorDialogOpen(true);
+          return;
+        }
       }
+      onOpenChange(false);
       setIsInvalidDialogOpen(true);
     },
   });
@@ -111,6 +122,11 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
       </Dialog>
 
       <InvalidCodeDialog open={isInvalidDialogOpen} onOpenChange={setIsInvalidDialogOpen} />
+      <TournamentErrorDialog
+        type="LINK_EXPIRED"
+        open={isTournamentErrorDialogOpen}
+        onOpenChange={setIsTournamentErrorDialogOpen}
+      />
     </>
   );
 }

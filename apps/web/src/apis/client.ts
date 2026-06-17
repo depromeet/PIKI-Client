@@ -67,13 +67,16 @@ clientApi.interceptors.response.use(
          * refreshToken 필드 누락 → 400 거부. 헤더 자체를 빼면 쿠키만 보고 처리한다.
          */
         const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}${ENDPOINTS.AUTH_TOKEN_REFRESH}`,
+          ENDPOINTS.AUTH_TOKEN_REFRESH,
           void 0,
           {
             withCredentials: true,
-            // Content-Type 헤더가 있으면 백엔드가 body 우선 검증해 400 거부.
+            // Content-Type 헤더가 있으면 백엔드가 body 우선 검증해 refreshToken 필드 누락으로 400 거부.
             // serverApi 의 postTokenRefreshServer 와 동일하게 false 로 헤더 자체를 제거.
-            headers: { 'Content-Type': false as unknown as string },
+            headers: {
+              'Content-Type': false as unknown as string,
+              'X-Client-Type': isWebview() ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB,
+            },
           }
         );
         /** 웹뷰인 경우 토큰 쿠키에 저장 */
@@ -90,10 +93,12 @@ clientApi.interceptors.response.use(
         /** refresh 요청 실패 시 로그인 페이지로 리다이렉트 */
       } catch (refreshError) {
         processQueue(refreshError);
-        if (typeof window !== 'undefined')
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('piki_session_expired', '1');
           window.location.href = getLoginPath(
             `${window.location.pathname}${window.location.search}`
           );
+        }
 
         return Promise.reject(refreshError);
       } finally {
