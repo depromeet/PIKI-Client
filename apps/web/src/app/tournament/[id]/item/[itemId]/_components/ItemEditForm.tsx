@@ -110,7 +110,7 @@ function ItemEditForm({
       </div>
 
       {itemStatus === 'READY' && (
-        <BottomCta className="bg-bg-layer-default py-3">
+        <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="secondary"
             size="lg"
@@ -126,7 +126,7 @@ function ItemEditForm({
       )}
 
       {itemStatus === 'FAILED' && (
-        <BottomCta className="bg-bg-layer-default py-3">
+        <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="primary"
             size="lg"

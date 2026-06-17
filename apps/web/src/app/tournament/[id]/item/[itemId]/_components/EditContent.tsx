@@ -18,8 +18,7 @@ function EditContent({ tournamentId, tournamentItemId }: EditContentProps) {
   return (
     <div
       className={cn(
-        'hide-scrollbar min-h-dvh overflow-y-auto px-5 pt-padding-top pb-[78px]',
-        tournamentItemData.status === 'FAILED' ? 'bg-bg-layer-basement' : 'bg-bg-layer-default'
+        'hide-scrollbar min-h-dvh overflow-y-auto bg-bg-layer-basement px-5 pt-padding-top pb-[78px]'
       )}
     >
       {tournamentItemData.status === 'FAILED' && <Header left={<HeaderIcon name="BACK" />} />}
