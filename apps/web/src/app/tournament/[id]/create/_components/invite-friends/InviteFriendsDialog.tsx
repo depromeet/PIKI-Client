@@ -139,7 +139,7 @@ function InviteFriendsDialog({
             <div className="flex items-center gap-2">
               <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
               <p className="body-2-medium text-text-neutral-secondary">
-                최대 8명까지 초대할 수 있어요.
+                최대 7명까지 초대할 수 있어요.
               </p>
             </div>
             <div className="flex items-center gap-2">
