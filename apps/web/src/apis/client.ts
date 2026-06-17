@@ -86,10 +86,12 @@ clientApi.interceptors.response.use(
         /** refresh 요청 실패 시 로그인 페이지로 리다이렉트 */
       } catch (refreshError) {
         processQueue(refreshError);
-        if (typeof window !== 'undefined')
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('piki_session_expired', '1');
           window.location.href = getLoginPath(
             `${window.location.pathname}${window.location.search}`
           );
+        }
 
         return Promise.reject(refreshError);
       } finally {

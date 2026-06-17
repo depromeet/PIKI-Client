@@ -28,7 +28,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       style={
         {
-          '--normal-bg': 'var(--color-gray-500)',
+          '--normal-bg': 'var(--color-gray-700)',
           '--normal-text': 'var(--color-text-neutral-inverse)',
           '--border-radius': 'var(--radius-xl)',
           // sonner 컨테이너 width 변수 — 토스트 카드 폭을 결정 (기본 356px)
