@@ -17,7 +17,7 @@ function WishlistContent() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   useShareIntentWish();
-  const { wishlistData, fetchNextPage, hasNextPage } = useGetWishlist();
+  const { wishlistData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist();
 
   const hasPendingItem = hasParsingItems(wishlistData);
 
@@ -38,14 +38,14 @@ function WishlistContent() {
     if (!el) return;
 
     const observer = new IntersectionObserver(entries => {
-      if (entries[0]?.isIntersecting && hasNextPage) {
+      if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
       }
     });
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <>

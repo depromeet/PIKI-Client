@@ -110,8 +110,9 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
             // 준결승/결승 바텀시트 — ref에 저장하고 시트 표시
             pendingNextRoundRef.current = nextInProgress;
             setTransitionStage(stage);
-          } catch {
-            // 네트워크 오류 등으로 실패해도 UI가 멈추지 않도록 — 다음 매치 진입 시 재조회됨
+          } catch (error) {
+            // 네트워크 오류 등으로 실패해도 UI가 멈추지 않도록 — 사용자가 다시 시도하면 재조회됨
+            console.error('[useTournament] 라운드 전환 데이터 조회 실패:', error);
           }
         },
       });

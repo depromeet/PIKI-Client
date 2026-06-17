@@ -19,7 +19,7 @@ type ByWishContentProps = {
 
 function ByWishContent({ tournamentId }: ByWishContentProps) {
   const { selectedIds, isMaxExceeded, handleSelect } = useWishSelection(MAX_SELECT);
-  const { wishlistData, fetchNextPage, hasNextPage } = useGetWishlist();
+  const { wishlistData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist();
   const { tournamentData } = useGetTournament(tournamentId);
   const { postTournamentItemsByWishMutation, isPostTournamentItemsByWishPending } =
     usePostTournamentItemsByWish(tournamentId);
@@ -41,10 +41,10 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
 
   // 위시에서 가져오기는 전체 목록 기준으로 카운트를 표시해야 하므로 마운트 시 전체 로드
   useEffect(() => {
-    if (hasNextPage) {
+    if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleNext = () => {
     const itemIds = items
