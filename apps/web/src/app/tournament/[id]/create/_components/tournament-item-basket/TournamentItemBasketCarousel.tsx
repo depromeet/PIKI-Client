@@ -134,7 +134,6 @@ function TournamentItemBasketCarousel({
                 isDepositClosed={isDepositClosed}
                 maxHeight={basketMaxHeight}
                 participantImageMap={participantImageMap}
-                currentUserId={currentUserId}
               />
             </CarouselItem>
           ))}
