@@ -170,7 +170,10 @@ function InviteFriendsDialog({
       </DrawerContent>
 
       <InviteExpiresPicker
-        key={isPickerOpen ? `picker-${inviteExpiresAt ?? ''}` : 'picker-closed'}
+        // picker 가 열릴 때만 새 인스턴스로 마운트해 initialExpiresAt 을 다시 잡는다.
+        // inviteExpiresAt 변화는 key 에 반영하지 않는다 — 드래그 중 react-query refetch 등으로
+        // 새 값이 들어와도 picker 가 통째로 remount 되어 사용자가 끌던 위치가 0 으로 리셋된다.
+        key={isPickerOpen ? 'picker-open' : 'picker-closed'}
         open={isPickerOpen}
         onOpenChange={setIsPickerOpen}
         initialExpiresAt={inviteExpiresAt}

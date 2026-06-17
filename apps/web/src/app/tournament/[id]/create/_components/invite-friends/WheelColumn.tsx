@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -41,12 +41,16 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
   const padRows = Math.floor(visibleRows / 2);
   const containerHeight = itemHeight * visibleRows;
 
-  // 외부 selectedIndex 가 바뀌면 스크롤 위치를 맞춤 (초기 진입 포함).
+  // 첫 마운트에서만 selectedIndex 에 맞춰 스크롤 위치 초기화.
+  // 이후엔 사용자 인터랙션(드래그/클릭) 으로만 위치가 바뀌고, 외부 selectedIndex 는 따라온다.
+  // (effect 가 selectedIndex 변경 시마다 강제 리셋하면 드래그 직후 위치가 되돌아간다.)
+  const hasInitializedRef = useRef(false);
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
+    if (!el || hasInitializedRef.current) return;
     el.scrollTop = selectedIndex * itemHeight;
     lastEmittedIndexRef.current = selectedIndex;
+    hasInitializedRef.current = true;
   }, [selectedIndex, itemHeight]);
 
   const handleScroll = () => {
@@ -75,6 +79,75 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
     },
   }));
 
+  // 클릭한 항목으로 부드럽게 스크롤. native scroll-snap 이 가운데 정렬 마무리.
+  const handleItemClick = (index: number) => {
+    const el = containerRef.current;
+    if (!el || index === selectedIndex) return;
+    const clamped = Math.max(0, Math.min(items.length - 1, index));
+    el.scrollTo({ top: clamped * itemHeight, behavior: 'smooth' });
+  };
+
+  /**
+   * 마우스/펜으로 컨테이너를 직접 드래그해 휠을 굴리는 인터랙션.
+   * 드래그 중에는 scroll-snap 을 꺼서 자유롭게 끌고, 떼면 다시 켜서 가까운 항목에 스냅한다.
+   * touch 는 native momentum scroll 이 더 자연스러우니 mouse/pen 만 가로챈다.
+   */
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStateRef = useRef<{ startY: number; startScrollTop: number; moved: boolean } | null>(
+    null
+  );
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'touch') return; // touch 는 native 처리
+    const el = containerRef.current;
+    if (!el) return;
+    event.preventDefault();
+    dragStateRef.current = {
+      startY: event.clientY,
+      startScrollTop: el.scrollTop,
+      moved: false,
+    };
+    el.setPointerCapture(event.pointerId);
+    setIsDragging(true);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const state = dragStateRef.current;
+    const el = containerRef.current;
+    if (!state || !el) return;
+    const dy = event.clientY - state.startY;
+    if (Math.abs(dy) > 2) state.moved = true;
+    el.scrollTop = state.startScrollTop - dy;
+  };
+
+  const handlePointerEnd = (event: React.PointerEvent<HTMLDivElement>) => {
+    const state = dragStateRef.current;
+    const el = containerRef.current;
+    if (!state || !el) return;
+    if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId);
+    const finalScrollTop = el.scrollTop;
+    dragStateRef.current = null;
+    setIsDragging(false);
+    // 드래그 후 가장 가까운 항목으로 스냅 + 즉시 onChange 호출 (디바운스 의존 X).
+    const nextIndex = Math.round(finalScrollTop / itemHeight);
+    const clamped = Math.max(0, Math.min(items.length - 1, nextIndex));
+    el.scrollTo({ top: clamped * itemHeight, behavior: 'smooth' });
+    if (clamped !== lastEmittedIndexRef.current) {
+      lastEmittedIndexRef.current = clamped;
+      onChange(clamped);
+    }
+  };
+
+  /** 드래그 직후 발생하는 click 이벤트 차단 (드래그 종료를 click 으로 오해하지 않도록). */
+  const handleItemMouseClick = (event: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const state = dragStateRef.current;
+    if (state?.moved) {
+      event.preventDefault();
+      return;
+    }
+    handleItemClick(index);
+  };
+
   const getOpacity = (distance: number) => {
     if (distance === 0) return 1;
     if (distance === 1) return 0.4;
@@ -86,7 +159,16 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        className="hide-scrollbar h-full snap-y snap-mandatory overflow-y-scroll"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+        className={cn(
+          'hide-scrollbar h-full overflow-y-scroll',
+          // snap 은 컨테이너 차원에서 안 쓴다 — 우리가 scrollTo(N*itemHeight) 로 직접 정렬.
+          // (snap-mandatory 가 들어가면 사용자가 끝까지 끌어도 가장 가까운 항목으로 되돌아간다.)
+          isDragging ? 'cursor-grabbing' : 'cursor-grab'
+        )}
       >
         {/* 위/아래 패딩 — 첫·마지막 항목도 가운데 정렬되도록 */}
         <div style={{ height: itemHeight * padRows }} />
@@ -95,7 +177,8 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
           return (
             <div
               key={`${item}-${index}`}
-              className="flex snap-center items-center justify-center body-1-bold text-text-neutral-primary"
+              onClick={event => handleItemMouseClick(event, index)}
+              className="flex w-full select-none items-center justify-center body-1-bold text-text-neutral-primary"
               style={{ height: itemHeight, opacity: getOpacity(distance) }}
             >
               {item}
