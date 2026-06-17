@@ -23,3 +23,12 @@ export type GetTournamentItemResponseT = {
       status: (typeof ITEM_STATUS)['FAILED'];
     }
 );
+
+export type PatchTournamentItemRequestT = {
+  name?: string;
+  currentPrice?: number;
+  image?: File;
+  currency?: string;
+};
+
+export type PatchTournamentItemResponseT = GetTournamentItemResponseT;

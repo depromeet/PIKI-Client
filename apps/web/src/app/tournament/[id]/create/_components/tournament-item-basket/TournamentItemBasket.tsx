@@ -1,10 +1,12 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import AddIcon from '@/assets/icons/fill/add.svg';
 import { Dialog, DialogTrigger } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
+import { ROUTES } from '@/consts/route';
 
 import type { TournamentPendingItemT } from '../../../_common/_types/tournamentResponse';
 import basketImg from '../../_assets/basket-gray.png';
@@ -35,8 +37,6 @@ function TournamentItemBasket({
   const [failedItem, setFailedItem] = useState<TournamentPendingItemT | null>(null);
 
   const handleItemClick = (item: TournamentItemBasketProps['items'][number]) => {
-    // if (item.status === 'READY')
-    //router.push(ROUTES.TOURNAMENT_ITEM_EDIT(String(tournamentId), String(item.tournamentItemId))); // TODO: 변경된 디자인에 맞춰 수정 필요
     if (item.status === 'FAILED') setFailedItem(item);
   };
 
@@ -75,15 +75,27 @@ function TournamentItemBasket({
         ) : (
           <div className="grid w-[45%] grid-cols-2 gap-x-6 gap-y-5 pt-[20%]">
             {addSlot}
-            {items.map((item: TournamentPendingItemT, index: number) => (
-              <TournamentBasketItem
-                key={item.tournamentItemId}
-                item={item}
-                index={index}
-                onClick={() => handleItemClick(item)}
-                participantImageMap={participantImageMap}
-              />
-            ))}
+            {items.map((item, index) => {
+              if (item.status === 'READY') {
+                return (
+                  <Link
+                    key={item.tournamentItemId}
+                    href={ROUTES.TOURNAMENT_ITEM_EDIT(tournamentId, item.tournamentItemId)}
+                  >
+                    <TournamentBasketItem key={item.tournamentItemId} item={item} index={index} />
+                  </Link>
+                );
+              }
+
+              return (
+                <TournamentBasketItem
+                  key={item.tournamentItemId}
+                  item={item}
+                  index={index}
+                  onClick={() => handleItemClick(item)}
+                />
+              );
+            })}
           </div>
         )}
       </div>

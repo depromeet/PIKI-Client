@@ -58,7 +58,7 @@ function ItemEditForm({
     patchWishMutation({
       name: trimmedName,
       currentPrice: parsedPrice,
-      ...(selectedImage ? { image: selectedImage } : {}), // TODO: url로 보내야함
+      ...(selectedImage ? { image: selectedImage } : {}),
     });
   };
 
