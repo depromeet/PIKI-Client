@@ -21,12 +21,14 @@ function NotificationContent() {
   const { openNotificationSettings, isPushEnabled } = usePushPermission();
   const { notificationsData, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetNotifications();
-  const { postNotificationsReadMutation } = usePostNotificationsRead();
+  const { postNotificationsReadMutation, isPostNotificationsReadPending } =
+    usePostNotificationsRead();
   const isEmpty = !isPending && notificationsData.length === 0;
 
   const bottomRef = useIntersectionObserver(fetchNextPage, !!hasNextPage && !isFetchingNextPage);
 
   const handleNotificationClick = (notification: (typeof notificationsData)[number]) => {
+    if (isPostNotificationsReadPending) return;
     const route = getNotificationRoute(notification.type, notification.refId, {
       kind: notification.kind,
       tournamentId: notification.tournamentId,
