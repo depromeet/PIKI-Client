@@ -2,7 +2,7 @@
   "expo": {
     "name": "PiKi",
     "slug": "piki",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "piki",
@@ -161,7 +161,7 @@
             "ios": {
               "appExtensions": [
                 {
-                  "targetName": "PIKIShareExtension",
+                  "targetName": "PiKiShareExtension",
                   "bundleIdentifier": "day.no30s.piki.ShareExtension",
                   "entitlements": {
                     "com.apple.security.application-groups": ["group.day.no30s.piki"],
