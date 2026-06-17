@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useGetWishlist } from '@/hooks/useGetWishlist';
 import { useSSEFallback } from '@/hooks/useSSEFallback';
@@ -17,7 +17,7 @@ function WishlistContent() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   useShareIntentWish();
-  const { data: wishlistData } = useGetWishlist();
+  const { wishlistData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetWishlist();
 
   const hasPendingItem = hasParsingItems(wishlistData);
 
@@ -31,6 +31,22 @@ function WishlistContent() {
     handleConfirmDelete,
   } = useWishlistDelete();
 
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
     <>
       <main className="flex flex-1 flex-col pb-24">
@@ -40,6 +56,7 @@ function WishlistContent() {
           selectedIds={selectedIds}
           onToggleSelect={handleToggleSelect}
         />
+        <div ref={sentinelRef} />
       </main>
 
       <WishlistBottomBar isDeleteMode={isDeleteMode} selectedCount={selectedIds.size} />

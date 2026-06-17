@@ -2,7 +2,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { ROUTES } from '@/consts/route';
 import type { TournamentItemT } from '@/types/tournament';
@@ -19,6 +19,8 @@ type UseTournamentArgs = {
   tournamentName: string;
   inProgress: GetTournamentInProgressResponseT['inProgress'];
 };
+
+type InProgressT = NonNullable<GetTournamentInProgressResponseT['inProgress']>;
 
 const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
   const router = useRouter();
@@ -49,6 +51,9 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
     () => false
   );
 
+  // 준결승/결승 바텀시트 표시 중 재조회 없이 적용할 다음 라운드 데이터
+  const pendingNextRoundRef = useRef<InProgressT | null>(null);
+
   // 페어 생성 — SSR/첫 렌더: 가격 오름차순 그대로, 마운트 후: 셔플 적용
   const pairs = useMemo(() => {
     const sorted = pairByPriceAsc(remainingItems);
@@ -61,17 +66,6 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
   const roundLabel = getRoundLabel(currentRound, matchIndex);
   const isFinalRound = currentRound === 2;
   const isLastMatchInRound = pairs.length === 1;
-
-  const advanceToNextRound = async () => {
-    // 라운드 종료 후 서버에서 다음 라운드 정보 가져오기
-    // queryClient.fetchQuery는 setQueryData로 시드된 캐시를 반환할 수 있어 직접 fetch
-    const next = await getTournament(tournamentId);
-    queryClient.setQueryData(['tournament', tournamentId], next);
-
-    if (next.status !== 'IN_PROGRESS' || !next.inProgress) return;
-    setCurrentRound(next.inProgress.currentRound);
-    setRemainingItems(next.inProgress.remainingItems);
-  };
 
   const handleSelect = (winner: TournamentItemT) => {
     if (!currentMatch) return;
@@ -93,22 +87,32 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
       return;
     }
 
-    // 라운드 마지막 매치 → POST 응답 기다린 후 전환 화면 노출
-    // (응답 안 기다리고 advance 시 서버가 아직 다음 라운드로 전환 못해 같은 라운드 다시 받는 race 방지)
+    // 라운드 마지막 매치 — 서버의 실제 다음 라운드 수 기준으로 바텀시트 판단
+    // (currentRound / 2 계산은 홀수 강에서 틀릴 수 있어 서버 응답만 신뢰)
     if (isLastMatchInRound) {
       postRecordMatchMutation(matchBody, {
         onSuccess: async () => {
-          const nextRoundItemCount = currentRound / 2;
-          const stage = getTransitionStage(nextRoundItemCount);
-          if (stage === 'toNext') {
-            // toSemi/toFinal만 바텀시트 표시 — 일반 라운드는 바로 진입
-            try {
-              await advanceToNextRound();
-            } catch {
-              // 네트워크 오류 등으로 실패해도 UI가 멈추지 않도록 — 다음 매치 진입 시 재조회됨
+          try {
+            const next = await getTournament(tournamentId);
+            queryClient.setQueryData(['tournament', tournamentId], next);
+
+            if (next.status !== 'IN_PROGRESS' || !next.inProgress) return;
+
+            const nextInProgress = next.inProgress;
+            const stage = getTransitionStage(nextInProgress.currentRound);
+
+            if (stage === 'toNext') {
+              setCurrentRound(nextInProgress.currentRound);
+              setRemainingItems(nextInProgress.remainingItems);
+              return;
             }
-          } else {
+
+            // 준결승/결승 바텀시트 — ref에 저장하고 시트 표시
+            pendingNextRoundRef.current = nextInProgress;
             setTransitionStage(stage);
+          } catch (error) {
+            // 네트워크 오류 등으로 실패해도 UI가 멈추지 않도록 — 사용자가 다시 시도하면 재조회됨
+            console.error('[useTournament] 라운드 전환 데이터 조회 실패:', error);
           }
         },
       });
@@ -128,8 +132,15 @@ const useTournament = ({ tournamentId, inProgress }: UseTournamentArgs) => {
     );
   };
 
-  const handleTransitionComplete = async () => {
-    await advanceToNextRound();
+  const handleTransitionComplete = () => {
+    const pendingNextRound = pendingNextRoundRef.current;
+
+    if (pendingNextRound) {
+      setCurrentRound(pendingNextRound.currentRound);
+      setRemainingItems(pendingNextRound.remainingItems);
+      pendingNextRoundRef.current = null;
+    }
+
     setTransitionStage(null);
   };
 

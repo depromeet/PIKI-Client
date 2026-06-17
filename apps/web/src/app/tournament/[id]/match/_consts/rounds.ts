@@ -22,7 +22,7 @@ export const ROUND_TRANSITION_COPY: Record<
 // 2 → 결승 진입, 4 → 준결승 진입, 그 외 → 일반 다음 라운드
 export const getTransitionStage = (nextRoundItemCount: number): TransitionStageT => {
   if (nextRoundItemCount === 2) return 'toFinal';
-  if (nextRoundItemCount === 4) return 'toSemi';
+  if (nextRoundItemCount > 2 && nextRoundItemCount <= 4) return 'toSemi';
   return 'toNext';
 };
 

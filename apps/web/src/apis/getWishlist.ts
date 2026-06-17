@@ -6,8 +6,22 @@ import { ENDPOINTS } from '@/consts/api';
 import type { ApiResponseT } from '@/types/api';
 
 import type { WishlistEntryT } from '../app/archive/_types/wish';
+import type { WishItemT } from '../app/archive/_types/wish';
 
-const mapWishlist = (entries: WishlistEntryT[]) =>
+type WishlistApiResponseT = ApiResponseT<WishlistEntryT[]> & {
+  pageResponse: {
+    nextCursor: string | null;
+    hasNext: boolean;
+  };
+};
+
+export type WishlistPageT = {
+  items: WishItemT[];
+  nextCursor: string | null;
+  hasNext: boolean;
+};
+
+const mapWishlist = (entries: WishlistEntryT[]): WishItemT[] =>
   entries.map(({ wish, item }) => ({
     id: wish.id,
     itemId: item.id,
@@ -17,12 +31,22 @@ const mapWishlist = (entries: WishlistEntryT[]) =>
     imageUrl: item.imageUrl ?? null,
   }));
 
-export const getWishlist = async () => {
+export const getWishlist = async (cursor: string | null = null): Promise<WishlistPageT> => {
+  const params = { size: 20, ...(cursor ? { cursor } : {}) };
+
   if (environmentManager.isServer()) {
-    const { data } = await serverApi.get<ApiResponseT<WishlistEntryT[]>>(ENDPOINTS.WISHLISTS);
-    return mapWishlist(data.data);
+    const { data } = await serverApi.get<WishlistApiResponseT>(ENDPOINTS.WISHLISTS, { params });
+    return {
+      items: mapWishlist(data.data),
+      nextCursor: data.pageResponse.nextCursor,
+      hasNext: data.pageResponse.hasNext,
+    };
   }
 
-  const { data } = await clientApi.get<ApiResponseT<WishlistEntryT[]>>(ENDPOINTS.WISHLISTS);
-  return mapWishlist(data.data);
+  const { data } = await clientApi.get<WishlistApiResponseT>(ENDPOINTS.WISHLISTS, { params });
+  return {
+    items: mapWishlist(data.data),
+    nextCursor: data.pageResponse.nextCursor,
+    hasNext: data.pageResponse.hasNext,
+  };
 };
