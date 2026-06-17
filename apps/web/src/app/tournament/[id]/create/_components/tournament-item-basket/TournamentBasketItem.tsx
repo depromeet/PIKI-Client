@@ -21,7 +21,7 @@ function TournamentBasketItem({
 }: TournamentBasketItemProps) {
   const { userData } = useGetMe();
   const friendImageUrl =
-    item.userId && item.userId !== userData.id ? participantImageMap?.get(item.userId) : undefined;
+    item.userId && item.userId !== userData.id ? participantImageMap?.get(item.userId) : null;
 
   return (
     <div
