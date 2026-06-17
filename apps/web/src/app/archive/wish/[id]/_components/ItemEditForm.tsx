@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { EditIconFill } from '@/assets/icons';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Input from '@/components/input';
@@ -13,6 +12,7 @@ import formatPrice from '@/utils/formatPrice';
 import { useDeleteWish } from '../_hooks/useDeleteWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
 import ItemImageSection from './ItemImageSection';
+import UrlEditDrawer from './UrlEditDrawer';
 
 type ItemEditFormProps = {
   wishId: number;
@@ -82,7 +82,7 @@ function ItemEditForm({
           onChange={event => setName(event.target.value)}
           maxLength={50}
           autoCorrect="off"
-          right={itemStatus === 'READY' ? <EditIconFill className="size-5" /> : null}
+          disabled={itemStatus === 'READY'}
         />
         <Input
           label="가격"
@@ -93,12 +93,12 @@ function ItemEditForm({
           onBlur={() => setPrice(prev => formatPrice(prev))}
           inputMode="numeric"
           autoCorrect="off"
-          right={itemStatus === 'READY' ? <EditIconFill className="size-5" /> : null}
+          disabled={itemStatus === 'READY'}
         />
       </div>
 
-      <BottomCta className="bg-bg-layer-basement py-3">
-        {itemStatus === 'READY' && (
+      {itemStatus === 'READY' && (
+        <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="secondary"
             size="lg"
@@ -108,18 +108,25 @@ function ItemEditForm({
           >
             삭제하기
           </Button>
-        )}
-        <Button
-          variant="primary"
-          size="lg"
-          isLoading={isPatchWishPending}
-          disabled={isDeleteWishPending || !isValid}
-          className="flex-1"
-          onClick={handleSave}
-        >
-          저장하기
-        </Button>
-      </BottomCta>
+
+          {itemStatus === 'READY' && <UrlEditDrawer />}
+        </BottomCta>
+      )}
+
+      {itemStatus === 'FAILED' && (
+        <BottomCta className="bg-bg-layer-basement py-3">
+          <Button
+            variant="primary"
+            size="lg"
+            isLoading={isPatchWishPending}
+            disabled={isDeleteWishPending || !isValid}
+            className="flex-1"
+            onClick={handleSave}
+          >
+            저장하기
+          </Button>
+        </BottomCta>
+      )}
     </>
   );
 }
