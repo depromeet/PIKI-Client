@@ -1,10 +1,9 @@
-import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import { setCookie } from '@/utils/cookie';
 import { getLoginRedirectPath } from '@/utils/loginRedirect';
-import { WebBridge, isWebview } from '@/utils/webBridge';
+import { isWebview } from '@/utils/webBridge';
 
 import { postGuestLogin } from '../_apis/postGuestLogin';
 
@@ -20,7 +19,6 @@ export const usePostGuestLogin = () => {
       if (isWebview() && data.accessToken && data.refreshToken) {
         setCookie('access_token', data.accessToken, { minutes: 15 });
         setCookie('refresh_token', data.refreshToken, { days: 14 });
-        WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_PUSH_PERMISSION_STATUS });
       }
 
       router.replace(getLoginRedirectPath());
