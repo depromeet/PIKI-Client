@@ -1,0 +1,30 @@
+@keyframes splash-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/** SplashClient SPLASH_FADE_IN_MS(1500)와 동기화 */
+.splash-logo {
+  animation: splash-fade-in 1.5s ease-in forwards;
+}
+
+/** SplashClient SPLASH_SHRINK_MS(700)와 동기화 */
+.splash-bg-shift {
+  transition: background-color 0.7s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo {
+    opacity: 1;
+    animation: none;
+  }
+
+  .splash-bg-shift {
+    transition: none;
+  }
+}
