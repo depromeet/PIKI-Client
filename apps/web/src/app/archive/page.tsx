@@ -31,7 +31,7 @@ async function WishlistPage({ searchParams }: WishlistPageProps) {
       queryKey: ['wishlists'],
       queryFn: ({ pageParam }) => getWishlist(pageParam as string | null),
       initialPageParam: null as string | null,
-      getNextPageParam: (page: WishlistPageT) => (page.hasNext ? page.nextCursor : undefined),
+      getNextPageParam: (page: WishlistPageT) => (page.hasNext ? page.nextCursor : null),
     });
   } else if (activeTab === '토너먼트 기록')
     await queryClient.prefetchQuery({
