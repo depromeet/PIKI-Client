@@ -13,7 +13,7 @@ export type GetWishResponseT = {
         sourceUrl: string | null; // 확인필
       }
     | {
-        status: (typeof ITEM_STATUS)['READY'];
+        status: (typeof ITEM_STATUS)['READY'] | (typeof ITEM_STATUS)['PENDING'];
         name: string;
         imageUrl: string;
         currentPrice: number;
