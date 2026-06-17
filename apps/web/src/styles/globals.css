@@ -102,6 +102,7 @@
   --color-bg-informative: var(--color-blue-50);
 
   --color-bg-layer-default: var(--color-base-50);
+  --color-bg-layer-floating: var(--color-base-50);
   --color-bg-layer-basement: var(--color-gray-50);
   --color-bg-layer-overlay: #00000066;
 
@@ -134,15 +135,17 @@
   --color-icon-accent: var(--color-blue-500);
 
   /** User Accent Color */
-  --color-uac-light: #0A7AFF;
+  --color-uac-light: #0a7aff;
   --color-icon-warning: var(--color-yellow-600);
-  --color-icon-error: var(--color-red-600);
+  --color-icon-error: var(--color-red-300);
   --color-icon-success: var(--color-green-600);
   --color-icon-informative: var(--color-blue-600);
 
   --color-icon-neutral-primary: var(--color-gray-600);
   --color-icon-neutral-secondary: var(--color-gray-300);
   --color-icon-neutral-inverse: var(--color-base-50);
+
+  --spacing-padding-top: max(env(safe-area-inset-top), 47px);
 }
 
 @utility hide-scrollbar {
@@ -161,7 +164,7 @@
  */
 html,
 body {
-  background-color: var(--color-bg-layer-basement);
+  background-color: var(--color-neutral-50);
 }
 
 /**
@@ -173,14 +176,6 @@ body {
  *   디자인이 의도한 추가 여백만 더한다.
  * - bottom: 12px (콘텐츠와 홈 인디케이터/내비게이션 사이 마진)
  */
-@utility pt-status {
-  padding-top: 0;
-}
-
-html[data-app] .pt-status {
-  padding-top: 14px;
-}
-
-@utility pb-bottom {
-  padding-bottom: 12px;
+html[data-app] {
+  --spacing-padding-top: max(env(safe-area-inset-top) + 14px, 47px);
 }

@@ -20,13 +20,13 @@ async function HomePage() {
   });
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-gray-50 px-5 pt-status pb-32">
+    <div className="relative flex min-h-dvh flex-col bg-gray-50 px-5 pt-padding-top pb-32">
       {/* 상단 헤더 */}
       <Header
         right={
           <>
-            <HeaderIcon name="ALARM" />
             <HeaderIcon name="PROFILE" />
+            <HeaderIcon name="ALARM" />
           </>
         }
       />

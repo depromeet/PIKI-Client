@@ -21,12 +21,14 @@ function NotificationContent() {
   const { openNotificationSettings, isPushEnabled } = usePushPermission();
   const { notificationsData, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetNotifications();
-  const { postNotificationsReadMutation } = usePostNotificationsRead();
+  const { postNotificationsReadMutation, isPostNotificationsReadPending } =
+    usePostNotificationsRead();
   const isEmpty = !isPending && notificationsData.length === 0;
 
   const bottomRef = useIntersectionObserver(fetchNextPage, !!hasNextPage && !isFetchingNextPage);
 
   const handleNotificationClick = (notification: (typeof notificationsData)[number]) => {
+    if (isPostNotificationsReadPending) return;
     const route = getNotificationRoute(notification.type, notification.refId, {
       kind: notification.kind,
       tournamentId: notification.tournamentId,
@@ -36,7 +38,7 @@ function NotificationContent() {
   };
 
   return (
-    <div className="flex h-dvh flex-col bg-gray-50 px-7 pt-20">
+    <div className="flex h-dvh flex-col bg-gray-50 px-5 pt-padding-top">
       <Header left={<HeaderIcon name="BACK" />} center="알림 히스토리" centerClassName="title-1" />
       <Spacing size={16} />
 

@@ -70,7 +70,7 @@ function CallbackHandler() {
   }, [isValidProvider, postSocialLoginMutation, provider, router, searchParams]);
 
   return (
-    <div className="flex h-dvh flex-col items-center justify-center gap-3">
+    <div className="flex h-dvh flex-col items-center justify-center gap-3 pt-padding-top">
       <Spinner size={32} />
       <p className="text-sm text-text-neutral-secondary">로그인 중...</p>
     </div>

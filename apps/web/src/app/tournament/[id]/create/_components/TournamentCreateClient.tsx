@@ -5,20 +5,15 @@ import { useState } from 'react';
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
 import { QUERY_ACTION } from '@/consts/queryAction';
+import { useGetMe } from '@/hooks/useGetMe';
 import { useQueryAction } from '@/hooks/useQueryAction';
 import { useSSEFallback } from '@/hooks/useSSEFallback';
 import { hasParsingItems } from '@/utils/item';
 
-import {
-  type JoinConfirmPayloadT,
-  type JoinWelcomePayloadT,
-  consumeJoinConfirmFor,
-  consumeJoinWelcomeFor,
-} from '../../../join/_utils/joinSession';
+import { type JoinConfirmPayloadT, consumeJoinConfirmFor } from '../../../join/_utils/joinSession';
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import { useCountdown } from '../_hooks/useCountdown';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
-import DepositCountdown from './deposit-countdown/DepositCountdown';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
@@ -34,6 +29,7 @@ type TournamentCreateClientProps = {
 function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { scrollToLast, onScrolled } = useScrollToLast();
   const { tournamentData } = useGetTournament(tournamentId);
+  const { userData } = useGetMe();
 
   // 주최자(ROOT)는 시작/완료 시점에 mutation/페이지에서 직접 라우팅한다.
   // 참여자(CLONE 생성 예정)는 ROOT status 변화에 따라 자동 라우팅하지 않고,
@@ -71,9 +67,6 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   }));
   const hasFriends = participants.length > 1;
 
-  const [welcomePayload, setWelcomePayload] = useState<JoinWelcomePayloadT | null>(() =>
-    consumeJoinWelcomeFor(tournamentId)
-  );
   const [confirmPayload, setConfirmPayload] = useState<JoinConfirmPayloadT | null>(() =>
     consumeJoinConfirmFor(tournamentId)
   );
@@ -84,18 +77,32 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   const { isActive: isGetItemDialogOpen, setIsActive: setIsGetItemDialogOpen } = useQueryAction({
     action: QUERY_ACTION.VALUE.OPEN_GET_ITEM_DIALOG,
   });
+  const { isActive: isWelcomeOpen, setIsActive: setIsWelcomeOpen } = useQueryAction({
+    action: QUERY_ACTION.VALUE.WELCOME_JOIN,
+  });
 
-  const handleCloseWelcome = () => setWelcomePayload(null);
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
-    <div className="flex h-dvh min-h-0 flex-col gap-4 bg-bg-layer-basement pt-status pb-8">
-      <div className="space-y-4 px-5">
+    <div className="flex h-full min-h-0 flex-col bg-bg-layer-basement pt-padding-top pb-8">
+      <div className="px-5">
         <TournamentHeader name={tournamentData.name} hasFriends={hasFriends} />
-        <ParticipantPanel
-          participants={participants}
-          inviteCode={pending?.inviteCode ?? ''}
-          inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
+        <div className="mt-[3.9dvh]">
+          <ParticipantPanel
+            participants={participants}
+            inviteCode={pending?.inviteCode ?? ''}
+            inviteExpiresAt={pending?.inviteExpiresAt ?? ''}
+            {...(!ownerStarted && !isDepositClosed && { depositDeadline })}
+          />
+        </div>
+      </div>
+
+      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col gap-5">
+        <TournamentItemBasketCarousel
+          items={pending?.items}
+          scrollToLast={scrollToLast}
+          onScrolled={onScrolled}
+          isDepositClosed={isDepositClosed}
         />
         <TournamentItemBasketStatus
           isProcessing={hasPendingItem}
@@ -104,17 +111,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <TournamentItemBasketCarousel
-        items={pending?.items}
-        scrollToLast={scrollToLast}
-        onScrolled={onScrolled}
-        isDepositClosed={isDepositClosed}
-      />
-
-      <div className="flex shrink-0 flex-col gap-3 px-5">
-        {hasFriends && !ownerStarted && !isDepositClosed && (
-          <DepositCountdown deadline={depositDeadline} />
-        )}
+      <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(6dvh)]">
         <TournamentStartButton
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
@@ -132,15 +129,17 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <GetItemDialogContent type="tournament" />
       </Dialog>
 
-      {welcomePayload && (
+      {isWelcomeOpen && (
         <WelcomeJoinDialog
-          open
-          onOpenChange={open => {
-            if (!open) handleCloseWelcome();
-          }}
-          nickname={welcomePayload.nickname}
-          profileType={welcomePayload.profileType}
-          onConfirm={handleCloseWelcome}
+          userIdentityType={userData.identityType}
+          open={isWelcomeOpen}
+          onOpenChange={setIsWelcomeOpen}
+          nickname={userData.nickname}
+          profileImage={userData.profileImage}
+          tournamentName={tournamentData.name}
+          itemCount={pending?.items.length ?? 0}
+          participantCount={pending?.participants.length ?? 0}
+          onConfirm={() => setIsWelcomeOpen(false)}
         />
       )}
 

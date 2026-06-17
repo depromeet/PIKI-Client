@@ -1,0 +1,135 @@
+/* ── Sheet slide ──────────────────────────────────────────────────────────── */
+@keyframes rs-slide-in {
+  from {
+    transform: translateY(105%);
+  }
+}
+@keyframes rs-slide-out {
+  to {
+    transform: translateY(105%);
+  }
+}
+
+/* ── Backdrop ─────────────────────────────────────────────────────────────── */
+@keyframes rs-dim-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rs-dim-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ── Mini bracket cards ───────────────────────────────────────────────────── */
+@keyframes mb-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes mb-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  65% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes mb-pulse {
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* ── Mini bracket connector lines ─────────────────────────────────────────── */
+@keyframes mb-draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── Countdown ring ───────────────────────────────────────────────────────── */
+@keyframes rs-ring-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  65% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Applied classes ──────────────────────────────────────────────────────── */
+.rs-sheet {
+  animation: rs-slide-in 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.rs-sheet-exit {
+  animation: rs-slide-out 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.rs-dim {
+  animation: rs-dim-in 0.4s ease both;
+}
+.rs-dim-exit {
+  animation: rs-dim-out 0.4s ease both;
+}
+.rs-ring {
+  animation: rs-ring-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) 0.15s both;
+}
+
+/* Static card (Q/semi already won — just fade-up on mount stagger) */
+.mb-card {
+  animation: mb-fade-up 0.25s ease both;
+  animation-delay: var(--mb-d, 0.15s);
+}
+/* Arriving card: fade-up first, then pop + infinite pulse */
+.mb-card-arriving {
+  animation:
+    mb-fade-up 0.25s ease var(--mb-d, 0.15s) both,
+    mb-pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3) var(--mb-arrive-d, 1s) both,
+    mb-pulse 1.5s ease-in-out calc(var(--mb-arrive-d, 1s) + 0.35s) infinite;
+}
+
+/* Gray static connector paths — delayed fade-in to follow card order */
+@keyframes mb-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.mb-conn-gray {
+  animation: mb-fade-in 0.2s ease both;
+  animation-delay: var(--mb-d, 0s);
+}
+
+/* Blue animated connector paths */
+.mb-conn-path {
+  animation: mb-draw-path 0.35s ease forwards;
+  animation-delay: var(--mb-d, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rs-sheet,
+  .rs-sheet-exit,
+  .rs-dim,
+  .rs-dim-exit,
+  .rs-ring,
+  .mb-card,
+  .mb-card-arriving,
+  .mb-conn-gray,
+  .mb-conn-path {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: 0;
+  }
+}

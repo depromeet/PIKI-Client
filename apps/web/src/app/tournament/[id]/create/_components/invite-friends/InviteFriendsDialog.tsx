@@ -1,16 +1,22 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
+import { parseServerLocalDateTime } from '@/utils/formatDate';
 import { share } from '@/utils/share';
+
+import { usePatchInviteExpiry } from '../../_hooks/usePatchInviteExpiry';
+import InviteExpiresPicker from './InviteExpiresPicker';
 
 type InviteFriendsDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** 마감 시각 변경 API 호출용 */
+  tournamentId: number;
   inviteUrl?: string;
   /** ISO 8601 — 초대 코드 만료 시각 */
   inviteExpiresAt?: string;
@@ -23,7 +29,7 @@ const isSameDay = (a: Date, b: Date) =>
 
 const formatExpiresInfo = (expiresAt: string | undefined) => {
   if (!expiresAt) return null;
-  const expires = new Date(expiresAt);
+  const expires = parseServerLocalDateTime(expiresAt);
   if (Number.isNaN(expires.getTime())) return null;
 
   const now = new Date();
@@ -56,10 +62,31 @@ const formatExpiresInfo = (expiresAt: string | undefined) => {
 function InviteFriendsDialog({
   open,
   onOpenChange,
+  tournamentId,
   inviteUrl,
   inviteExpiresAt,
 }: InviteFriendsDialogProps) {
   const expiresInfo = useMemo(() => formatExpiresInfo(inviteExpiresAt), [inviteExpiresAt]);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const { patchInviteExpiryMutation, isPatchInviteExpiryPending } =
+    usePatchInviteExpiry(tournamentId);
+
+  const handleOpenPicker = () => setIsPickerOpen(true);
+
+  const handleConfirmExpires = (newExpiresAt: string) => {
+    patchInviteExpiryMutation(
+      { newExpiresAt },
+      {
+        onSuccess: () => {
+          toast.success('초대 마감 시각이 변경되었어요.');
+          setIsPickerOpen(false);
+        },
+        onError: () => {
+          toast.error('마감 시각을 변경하지 못했어요.');
+        },
+      }
+    );
+  };
 
   const handleSendInviteLink = async () => {
     if (!inviteUrl) return;
@@ -98,6 +125,13 @@ function InviteFriendsDialog({
                   <p className="heading-1 text-text-neutral-primary">{expiresInfo.absoluteLabel}</p>
                 </div>
               </div>
+              <button
+                type="button"
+                className="cursor-pointer body-2-medium text-text-neutral-tertiary underline"
+                onClick={handleOpenPicker}
+              >
+                변경
+              </button>
             </div>
           )}
 
@@ -105,7 +139,7 @@ function InviteFriendsDialog({
             <div className="flex items-center gap-2">
               <CheckIconFill className="size-4.5 text-text-neutral-secondary" />
               <p className="body-2-medium text-text-neutral-secondary">
-                최대 8명까지 초대할 수 있어요.
+                최대 7명까지 초대할 수 있어요.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -121,6 +155,15 @@ function InviteFriendsDialog({
           </Button>
         </div>
       </DrawerContent>
+
+      <InviteExpiresPicker
+        key={isPickerOpen ? `picker-${inviteExpiresAt ?? ''}` : 'picker-closed'}
+        open={isPickerOpen}
+        onOpenChange={setIsPickerOpen}
+        initialExpiresAt={inviteExpiresAt}
+        onConfirm={handleConfirmExpires}
+        isPending={isPatchInviteExpiryPending}
+      />
     </Drawer>
   );
 }

@@ -6,14 +6,19 @@ export const ROUTES = {
   ROOT: '/',
   LOGIN: '/login',
   SOCIAL_LOGIN_CALLBACK: (provider: string) => `/auth/callback/${provider}`,
+  TERMS: '/terms',
+  POLICY: '/privacy',
 
   /** 2. Member & Guest */
   HOME: '/home',
+  INVITE_BASE: '/invite',
+  INVITE_BY_LINK: (tournamentId: number) => `/invite/${tournamentId}`,
   TOURNAMENT_JOIN_BY_CODE: '/tournament/join',
   TOURNAMENT_JOIN_BY_LINK: (id: number) => `/tournament/join/${id}`,
   NOTIFICATION: '/notification',
   MYPAGE: '/mypage',
   MYPAGE_EDIT: '/mypage/edit',
+  PLAY_FROM_LINK: (sourceTournamentId: number) => `/play/${sourceTournamentId}`,
 
   /** 3. Member Only */
   ARCHIVE_BASE: '/archive',
@@ -31,6 +36,4 @@ export const ROUTES = {
   TOURNAMENT_MATCH: (tournamentId: number) => `/tournament/${tournamentId}/match`,
   TOURNAMENT_RESULT: (tournamentId: number) => `/tournament/${tournamentId}/result`,
   TOURNAMENT_GROUP_RESULT: (tournamentId: number) => `/tournament/${tournamentId}/result/group`,
-  /** 플레이 링크 진입 — 친구가 받은 URL 클릭 시 */
-  PLAY_FROM_LINK: (sourceTournamentId: number) => `/play/${sourceTournamentId}`,
 } as const;

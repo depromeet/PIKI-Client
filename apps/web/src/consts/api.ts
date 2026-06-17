@@ -16,10 +16,6 @@ export const ENDPOINTS = {
   WISHLIST: (id: number) => `/api/v1/wishlists/${id}`,
   WISH_OCR: '/api/v1/wishlists/images',
 
-  /** 유저 */
-  USERS_ME: '/api/v1/users/me',
-  USERS_NICKNAME_CHECK: '/api/v1/users/nickname/check',
-
   /** 토너먼트 */
   TOURNAMENTS: '/api/v1/tournaments',
   TOURNAMENT: (id: number) => `/api/v1/tournaments/${id}`,
@@ -32,6 +28,7 @@ export const ENDPOINTS = {
   TOURNAMENT_PLAY_LINK: (id: number) => `/api/v1/tournaments/${id}/play-link`,
   TOURNAMENT_JOIN: (id: number) => `/api/v1/tournaments/${id}/join`,
   TOURNAMENT_JOIN_GUEST: (id: number) => `/api/v1/tournaments/${id}/join/guest`,
+  TOURNAMENT_INVITE: (id: number) => `/api/v1/tournaments/${id}/invite`,
   TOURNAMENT_INVITE_PREVIEW: (id: number) => `/api/v1/tournaments/${id}/invite-preview`,
   TOURNAMENT_INVITE_PREVIEW_BY_CODE: '/api/v1/tournaments/by-invite-code',
   TOURNAMENT_FROM_PLAY_LINK: (sourceTournamentId: number) =>

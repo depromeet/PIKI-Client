@@ -1,10 +1,9 @@
 'use client';
 
 import type { GetTournamentInProgressResponseT } from '../../_common/_types/tournamentResponse';
-import { ROUND_TRANSITION_COPY } from '../_consts/rounds';
 import useTournament from '../_hooks/useTournament';
 import RoundBadge from './RoundBadge';
-import RoundTransition from './RoundTransition';
+import RoundTransitionSheet from './RoundTransitionSheet';
 import TournamentQuestion from './TournamentQuestion';
 import VsSection from './VsSection';
 
@@ -24,25 +23,13 @@ function TournamentClient({ tournamentId, tournamentName, inProgress }: Tourname
     handleTransitionComplete,
   } = useTournament({ tournamentId, tournamentName, inProgress });
 
-  if (transitionStage) {
-    const copy = ROUND_TRANSITION_COPY[transitionStage];
-    return (
-      <RoundTransition
-        stage={transitionStage}
-        title={copy.title}
-        description={copy.description}
-        onComplete={handleTransitionComplete}
-      />
-    );
-  }
-
   const backgroundClassName = isFinalRound
     ? 'bg-gradient-to-b from-[#ECF3FE] via-[#F3F7FE] to-white'
     : 'bg-bg-layer-basement';
 
   return (
     <main
-      className={`hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto px-5 pt-12 pb-6 ${backgroundClassName}`}
+      className={`hide-scrollbar flex min-h-dvh flex-col items-center overflow-y-auto px-5 pt-padding-top pb-6 ${backgroundClassName}`}
     >
       <div className="flex flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-4">
@@ -64,6 +51,10 @@ function TournamentClient({ tournamentId, tournamentName, inProgress }: Tourname
           />
         )}
       </div>
+
+      {transitionStage && (
+        <RoundTransitionSheet stage={transitionStage} onComplete={handleTransitionComplete} />
+      )}
     </main>
   );
 }

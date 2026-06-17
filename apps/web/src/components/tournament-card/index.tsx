@@ -13,6 +13,8 @@ type TournamentCardProps = {
   date: string;
   users: UserT[];
   maxProfiles?: number;
+  /** 본인 포함 참여자 수. 2명 이상이면 더보기에 '친구 목록 보기' 메뉴 노출. */
+  participantCount?: number;
   className?: string;
 };
 
@@ -23,6 +25,7 @@ function TournamentCard({
   date,
   users,
   maxProfiles = 3,
+  participantCount,
   className,
 }: TournamentCardProps) {
   return (
@@ -37,7 +40,11 @@ function TournamentCard({
           <StatusChip status={status} />
           <h3 className="heading-1 text-text-neutral-primary">{name}</h3>
         </div>
-        <MorePopover status={status} tournamentId={tournamentId} />
+        <MorePopover
+          status={status}
+          tournamentId={tournamentId}
+          participantCount={participantCount}
+        />
       </div>
       <div className="flex items-end justify-between">
         <span className="body-2-medium text-text-neutral-tertiary">{date}</span>

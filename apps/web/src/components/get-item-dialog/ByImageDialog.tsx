@@ -80,7 +80,12 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           상품 스크린샷 이미지를 선택해 담습니다. (최대 {MAX_IMAGE_COUNT}장까지 가져올 수 있어요.)
         </DialogDescription>
 
-        <div className="flex w-full flex-col items-center rounded-xl border border-dashed border-border-neutral-muted bg-bg-layer-basement py-8">
+        <button
+          type="button"
+          onClick={openPicker}
+          disabled={isImagePickerPending || isPostWishOCRPending || isPostTournamentOCRPending}
+          className="flex w-full cursor-pointer flex-col items-center rounded-xl border border-dashed border-border-neutral-muted bg-bg-layer-basement py-8 disabled:cursor-not-allowed disabled:opacity-60"
+        >
           <ImageIconFill className="size-6 text-icon-neutral-secondary" />
 
           <Spacing size={10} />
@@ -92,7 +97,7 @@ function ByImageDialog({ type, open, onOpenChange }: Props) {
           <p className="body-2-medium text-text-neutral-secondary">
             최대 {MAX_IMAGE_COUNT}장까지 가져올 수 있어요.
           </p>
-        </div>
+        </button>
 
         <Button
           size="lg"

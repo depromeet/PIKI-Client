@@ -1,0 +1,100 @@
+.root {
+  color: var(--color-text-neutral-primary);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.6px;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/** 앱 헤더와 중복되는 Notion 페이지 헤더 숨김 */
+.root :global(article > header) {
+  display: none;
+}
+
+.root :global(.page) {
+  margin: 0;
+  max-width: none;
+}
+
+.root :global(h1) {
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.6px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 0;
+  color: var(--color-text-neutral-primary);
+}
+
+.root :global(h1:first-child) {
+  margin-top: 0;
+}
+
+.root :global(h2) {
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.6px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 0;
+  color: var(--color-text-neutral-primary);
+}
+
+.root :global(h3) {
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.6px;
+  font-weight: 600;
+  margin-top: 16px;
+  margin-bottom: 0;
+  color: var(--color-text-neutral-primary);
+}
+
+.root :global(p) {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: var(--color-text-neutral-secondary);
+}
+
+.root :global(strong) {
+  font-weight: 600;
+  color: var(--color-text-neutral-primary);
+}
+
+.root :global(a),
+.root :global(a.visited) {
+  color: var(--color-text-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.root :global(hr) {
+  margin: 16px 0;
+  border: none;
+  border-bottom: 1px solid var(--color-border-neutral-muted);
+}
+
+.root :global(ol),
+.root :global(ul) {
+  margin-block: 8px;
+  padding-inline-start: 1.25em;
+  color: var(--color-text-neutral-secondary);
+}
+
+.root :global(li) {
+  padding-left: 0.1em;
+}
+
+.root :global(li + li) {
+  margin-top: 4px;
+}
+
+.root :global(.numbered-list > li) {
+  list-style-type: decimal;
+}
+
+.root :global(.bulleted-list > li) {
+  list-style-type: disc;
+}

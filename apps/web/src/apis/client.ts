@@ -2,6 +2,7 @@ import type { AxiosError } from 'axios';
 import axios from 'axios';
 
 import { ENDPOINTS } from '@/consts/api';
+import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
 import type { ApiErrorResponseT } from '@/types/api';
@@ -62,14 +63,20 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        /** 토큰 갱신 — body 없는 POST 라도 빈 객체로 보내야 일부 백엔드가 415 안 던진다. */
-        const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}${ENDPOINTS.AUTH_TOKEN_REFRESH}`,
-          {},
-          {
-            withCredentials: true,
-          }
-        );
+        /**
+         * 토큰 갱신 — body 와 Content-Type 을 모두 제거해야 한다.
+         * 빈 객체 {} + Content-Type:json 으로 보내면 백엔드가 "body 우선" 으로 검증해
+         * refreshToken 필드 누락 → 400 거부. 헤더 자체를 빼면 쿠키만 보고 처리한다.
+         */
+        const { data } = await axios.post(ENDPOINTS.AUTH_TOKEN_REFRESH, void 0, {
+          withCredentials: true,
+          // Content-Type 헤더가 있으면 백엔드가 body 우선 검증해 refreshToken 필드 누락으로 400 거부.
+          // serverApi 의 postTokenRefreshServer 와 동일하게 false 로 헤더 자체를 제거.
+          headers: {
+            'Content-Type': false as unknown as string,
+            'X-Client-Type': isWebview() ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB,
+          },
+        });
         /** 웹뷰인 경우 토큰 쿠키에 저장 */
         const { access_token: newAccessToken, refresh_token: newRefreshToken } = data.data;
         if (isWebview() && newAccessToken && newRefreshToken) {
@@ -84,16 +91,19 @@ clientApi.interceptors.response.use(
         /** refresh 요청 실패 시 로그인 페이지로 리다이렉트 */
       } catch (refreshError) {
         processQueue(refreshError);
+        if (typeof window !== 'undefined') {
+          const loginRedirectDisabled =
+            window.location.pathname === ROUTES.LOGIN ||
+            window.location.pathname === ROUTES.ROOT ||
+            /^\/auth\/callback\/[^/]+$/.test(window.location.pathname);
 
-        const loginRedirectDisabled =
-          window.location.pathname === ROUTES.LOGIN ||
-          window.location.pathname === ROUTES.ROOT ||
-          /^\/auth\/callback\/[^/]+$/.test(window.location.pathname);
-
-        if (typeof window !== 'undefined' && !loginRedirectDisabled)
-          window.location.href = getLoginPath(
-            `${window.location.pathname}${window.location.search}`
-          );
+          if (!loginRedirectDisabled) {
+            window.location.href = getLoginPath(
+              `${window.location.pathname}${window.location.search}`,
+              QUERY_ACTION.VALUE.SESSION_EXPIRED
+            );
+          }
+        }
 
         return Promise.reject(refreshError);
       } finally {
