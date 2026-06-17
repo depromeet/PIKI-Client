@@ -75,7 +75,6 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
             />
           ))}
         </div>
-
       </main>
 
       <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] bg-white px-5 py-3">

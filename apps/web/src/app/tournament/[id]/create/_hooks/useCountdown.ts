@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { parseServerLocalDateTime } from '@/utils/formatDate';
+
 const pad = (value: number) => value.toString().padStart(2, '0');
 
 const formatRemaining = (ms: number) => {
@@ -15,7 +17,11 @@ const formatRemaining = (ms: number) => {
  * SSR/CSR 하이드레이션 불일치를 피하기 위해 마운트 후에만 계산.
  */
 export const useCountdown = (deadline: Date | string | number) => {
-  const target = typeof deadline === 'object' ? deadline.getTime() : new Date(deadline).getTime();
+  const target = (() => {
+    if (typeof deadline === 'object') return deadline.getTime();
+    if (typeof deadline === 'string') return parseServerLocalDateTime(deadline).getTime();
+    return new Date(deadline).getTime();
+  })();
   const [remaining, setRemaining] = useState<string | null>(null);
 
   useEffect(() => {

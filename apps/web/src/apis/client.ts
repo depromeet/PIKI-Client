@@ -61,13 +61,20 @@ clientApi.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        /** 토큰 갱신 — body 없는 POST 라도 빈 객체로 보내야 일부 백엔드가 415 안 던진다. */
+        /**
+         * 토큰 갱신 — body 와 Content-Type 을 모두 제거해야 한다.
+         * 빈 객체 {} + Content-Type:json 으로 보내면 백엔드가 "body 우선" 으로 검증해
+         * refreshToken 필드 누락 → 400 거부. 헤더 자체를 빼면 쿠키만 보고 처리한다.
+         */
         const { data } = await axios.post(
           ENDPOINTS.AUTH_TOKEN_REFRESH,
-          {},
+          void 0,
           {
             withCredentials: true,
+            // Content-Type 헤더가 있으면 백엔드가 body 우선 검증해 refreshToken 필드 누락으로 400 거부.
+            // serverApi 의 postTokenRefreshServer 와 동일하게 false 로 헤더 자체를 제거.
             headers: {
+              'Content-Type': false as unknown as string,
               'X-Client-Type': isWebview() ? CLIENT_TYPE.APP : CLIENT_TYPE.WEB,
             },
           }
