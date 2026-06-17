@@ -56,6 +56,7 @@ function InviteCodeDialog({ open, onOpenChange }: InviteCodeDialogProps) {
           return;
         }
       }
+      onOpenChange(false);
       setIsInvalidDialogOpen(true);
     },
   });
