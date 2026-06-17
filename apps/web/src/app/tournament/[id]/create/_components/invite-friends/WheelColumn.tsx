@@ -1,8 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { cn } from '@/utils/cn';
+
+export type WheelColumnHandleT = {
+  /** 현재 스크롤 위치로부터 인덱스를 즉시 계산해 반환 (디바운스 무시) */
+  getCurrentIndex: () => number;
+};
 
 type WheelColumnProps = {
   /** 휠에 노출할 값 목록 (예: ['1','2',...,'12']) */
@@ -23,15 +28,12 @@ type WheelColumnProps = {
  * - scroll-snap-y mandatory 로 자연스러운 휠 스냅
  * - 위·아래 행은 opacity 로 흐릿하게
  * - 스크롤 종료를 감지해 onChange 호출
+ * - ref 의 getCurrentIndex 로 디바운스 대기 없이 현재 인덱스를 즉시 계산 가능
  */
-function WheelColumn({
-  items,
-  selectedIndex,
-  onChange,
-  itemHeight = 36,
-  visibleRows = 5,
-  className,
-}: WheelColumnProps) {
+const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function WheelColumn(
+  { items, selectedIndex, onChange, itemHeight = 36, visibleRows = 5, className },
+  ref
+) {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimerRef = useRef<number | null>(null);
   const lastEmittedIndexRef = useRef(selectedIndex);
@@ -63,6 +65,15 @@ function WheelColumn({
       }
     }, 80);
   };
+
+  useImperativeHandle(ref, () => ({
+    getCurrentIndex: () => {
+      const el = containerRef.current;
+      if (!el) return selectedIndex;
+      const nextIndex = Math.round(el.scrollTop / itemHeight);
+      return Math.max(0, Math.min(items.length - 1, nextIndex));
+    },
+  }));
 
   const getOpacity = (distance: number) => {
     if (distance === 0) return 1;
@@ -105,6 +116,6 @@ function WheelColumn({
       />
     </div>
   );
-}
+});
 
 export default WheelColumn;

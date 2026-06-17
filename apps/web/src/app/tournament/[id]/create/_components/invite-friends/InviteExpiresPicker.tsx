@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
+import { parseServerLocalDateTime } from '@/utils/formatDate';
 
-import WheelColumn from './WheelColumn';
+import WheelColumn, { type WheelColumnHandleT } from './WheelColumn';
 
 type InviteExpiresPickerProps = {
   open: boolean;
@@ -58,7 +59,7 @@ const parseInitial = (
 ): { hourIndex: number; minuteIndex: number; meridiemIndex: number } => {
   const base = (() => {
     if (!initialExpiresAt) return new Date(Date.now() + 30 * 60 * 1000); // 기본 30분 후
-    const d = new Date(initialExpiresAt);
+    const d = parseServerLocalDateTime(initialExpiresAt);
     return Number.isNaN(d.getTime()) ? new Date(Date.now() + 30 * 60 * 1000) : d;
   })();
   const { hour12, meridiem } = from24Hour(base.getHours());
@@ -83,10 +84,19 @@ function InviteExpiresPicker({
     () => parseInitial(initialExpiresAt).meridiemIndex
   );
 
+  // 휠 디바운스(80ms) 가 끝나기 전에 '확인' 을 눌러도 정확한 값을 잡도록 ref 로 즉시 조회.
+  const hourRef = useRef<WheelColumnHandleT>(null);
+  const minuteRef = useRef<WheelColumnHandleT>(null);
+  const meridiemRef = useRef<WheelColumnHandleT>(null);
+
   const handleConfirm = () => {
-    const hour12 = hourIndex + 1;
-    const minute = minuteIndex;
-    const meridiem = MERIDIEMS[meridiemIndex] ?? 'AM';
+    const currentHourIndex = hourRef.current?.getCurrentIndex() ?? hourIndex;
+    const currentMinuteIndex = minuteRef.current?.getCurrentIndex() ?? minuteIndex;
+    const currentMeridiemIndex = meridiemRef.current?.getCurrentIndex() ?? meridiemIndex;
+
+    const hour12 = currentHourIndex + 1;
+    const minute = currentMinuteIndex;
+    const meridiem = MERIDIEMS[currentMeridiemIndex] ?? 'AM';
     const hour24 = to24Hour(hour12, meridiem);
 
     // 오늘 날짜 + 선택한 시:분. 이미 지난 시각이면 다음날로 자동 보정.
@@ -113,10 +123,21 @@ function InviteExpiresPicker({
           </div>
 
           <div className="flex w-full items-center justify-center gap-2 px-4">
-            <WheelColumn items={HOURS} selectedIndex={hourIndex} onChange={setHourIndex} />
-            <span className="body-1-bold text-text-neutral-primary">:</span>
-            <WheelColumn items={MINUTES} selectedIndex={minuteIndex} onChange={setMinuteIndex} />
             <WheelColumn
+              ref={hourRef}
+              items={HOURS}
+              selectedIndex={hourIndex}
+              onChange={setHourIndex}
+            />
+            <span className="body-1-bold text-text-neutral-primary">:</span>
+            <WheelColumn
+              ref={minuteRef}
+              items={MINUTES}
+              selectedIndex={minuteIndex}
+              onChange={setMinuteIndex}
+            />
+            <WheelColumn
+              ref={meridiemRef}
               items={[...MERIDIEMS]}
               selectedIndex={meridiemIndex}
               onChange={setMeridiemIndex}

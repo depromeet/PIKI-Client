@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
+import { parseServerLocalDateTime } from '@/utils/formatDate';
 import { share } from '@/utils/share';
 
 import { usePatchInviteExpiry } from '../../_hooks/usePatchInviteExpiry';
@@ -28,7 +29,7 @@ const isSameDay = (a: Date, b: Date) =>
 
 const formatExpiresInfo = (expiresAt: string | undefined) => {
   if (!expiresAt) return null;
-  const expires = new Date(expiresAt);
+  const expires = parseServerLocalDateTime(expiresAt);
   if (Number.isNaN(expires.getTime())) return null;
 
   const now = new Date();
