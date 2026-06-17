@@ -64,7 +64,10 @@ function TournamentStartButton({
     startTournament();
   };
 
-  const isDisabled = isWaitingForOwnerStart || (!isDepositClosed && (count < 2 || hasUnreadyItem));
+  // 마감(isDepositClosed) 된 참여자는 후보 수와 무관하게 시작 불가.
+  // 그 외에는 후보 2개 미만 / 아직 처리중인 아이템이 있으면 비활성.
+  const isDisabled =
+    isWaitingForOwnerStart || isDepositClosed || count < 2 || hasUnreadyItem;
 
   if (count === 0) return null;
 
