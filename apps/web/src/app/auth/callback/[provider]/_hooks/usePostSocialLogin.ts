@@ -2,6 +2,7 @@ import type { SocialProviderT } from '@piki/core';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { QUERY_ACTION } from '@/consts/queryAction';
 import { getLoginPath, getLoginRedirectPath } from '@/utils/loginRedirect';
 
 import { postSocialLogin } from '../_apis/postSocialLogin';
@@ -27,8 +28,7 @@ export const usePostSocialLogin = (provider: SocialProviderT) => {
       window.location.replace(getLoginRedirectPath(variables.redirect));
     },
     onError: (_, variables) => {
-      sessionStorage.setItem('piki_social_login_error', '1');
-      router.replace(getLoginPath(variables.redirect));
+      router.replace(getLoginPath(variables.redirect, QUERY_ACTION.VALUE.SOCIAL_LOGIN_ERROR));
     },
   });
 

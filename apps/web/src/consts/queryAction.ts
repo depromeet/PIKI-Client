@@ -5,6 +5,8 @@ export const QUERY_ACTION = {
     OPEN_GET_ITEM_DIALOG: 'get-item',
     SHARE_RECEIPT: 'share-receipt',
     WELCOME_JOIN: 'welcome-join',
+    SESSION_EXPIRED: 'session-expired',
+    SOCIAL_LOGIN_ERROR: 'social-login-error',
   },
 } as const;
 

@@ -1,4 +1,5 @@
 import { ROUTES } from '@/consts/route';
+import type { QueryActionValueT } from '@/consts/queryAction';
 
 const LOGIN_REDIRECT_STORAGE_KEY = 'login_redirect';
 
@@ -33,9 +34,11 @@ export const clearLoginRedirectPath = () => {
   sessionStorage.removeItem(LOGIN_REDIRECT_STORAGE_KEY);
 };
 
-export const getLoginPath = (redirectPath: string | null): string => {
-  if (!isValidLoginRedirectPath(redirectPath)) return ROUTES.LOGIN;
+export const getLoginPath = (redirectPath: string | null, action?: QueryActionValueT): string => {
+  const searchParams = new URLSearchParams();
+  if (isValidLoginRedirectPath(redirectPath)) searchParams.set('redirect', redirectPath);
+  if (action) searchParams.set('action', action);
+  if (!searchParams.size) return ROUTES.LOGIN;
 
-  const searchParams = new URLSearchParams({ redirect: redirectPath });
   return `${ROUTES.LOGIN}?${searchParams.toString()}`;
 };

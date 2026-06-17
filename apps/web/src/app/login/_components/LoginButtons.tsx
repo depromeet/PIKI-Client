@@ -1,7 +1,9 @@
 'use client';
 
+import type { SocialProviderT } from '@piki/core';
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -9,9 +11,14 @@ import AppleIcon from '@/assets/icons/social/apple.svg';
 import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import Spinner from '@/components/spinner';
+import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
-import { isValidLoginRedirectPath, setLoginRedirectPath } from '@/utils/loginRedirect';
+import {
+  getLoginPath,
+  isValidLoginRedirectPath,
+  setLoginRedirectPath,
+} from '@/utils/loginRedirect';
 import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
@@ -20,39 +27,44 @@ import SocialLoginButton from './SocialLoginButton';
 
 type LoginButtonsProps = {
   redirect: string | null;
+  action: string | null;
 };
 
-type NativePendingProviderT = 'kakao' | 'google' | 'apple' | null;
-
-function LoginButtons({ redirect }: LoginButtonsProps) {
+function LoginButtons({ redirect, action }: LoginButtonsProps) {
+  const router = useRouter();
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
-  const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
-  const [nativePendingProvider, setNativePendingProvider] = useState<NativePendingProviderT>(null);
 
+  const [nativePendingProvider, setNativePendingProvider] = useState<SocialProviderT | null>(null);
+
+  const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
   const handleNativeLoginSettled = useCallback(() => setNativePendingProvider(null), []);
   useNativeLoginResult({ redirect: validRedirect, onSettled: handleNativeLoginSettled });
 
   useEffect(() => {
-    const sessionExpired = sessionStorage.getItem('piki_session_expired') === '1';
-    const socialLoginError = sessionStorage.getItem('piki_social_login_error') === '1';
-
-    const timer = setTimeout(() => {
-      if (sessionExpired) {
-        sessionStorage.removeItem('piki_session_expired');
+    const handleLoginError = () => {
+      if (action === QUERY_ACTION.VALUE.SESSION_EXPIRED) {
         toast.error('로그인 정보가 만료됐어요. 다시 로그인해 주세요.');
+        router.replace(getLoginPath(validRedirect), { scroll: false });
+        return;
       }
-      if (socialLoginError) {
-        sessionStorage.removeItem('piki_social_login_error');
+      if (action === QUERY_ACTION.VALUE.SOCIAL_LOGIN_ERROR) {
         toast.error('요청을 처리하지 못했어요. 다시 시도해 주세요.');
+        router.replace(getLoginPath(validRedirect), { scroll: false });
       }
-    }, 0);
+    };
 
-    return () => clearTimeout(timer);
-  }, []);
+    /** NOTE: dev 모드에서는 strict mode 로 인해 두 번 실행되는 문제를 방지하기 위해 setTimeout 을 사용 */
+    if (process.env.NODE_ENV === 'development') {
+      const timer = window.setTimeout(handleLoginError, 0);
+      return () => window.clearTimeout(timer);
+    }
+
+    handleLoginError();
+  }, [action, validRedirect, router]);
 
   const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
 
-  const postNativeMessage = (provider: 'kakao' | 'google' | 'apple') => {
+  const postNativeMessage = (provider: SocialProviderT) => {
     if (!isWebview()) return false;
 
     setNativePendingProvider(provider);
