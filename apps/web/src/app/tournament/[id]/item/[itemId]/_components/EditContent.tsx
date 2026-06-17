@@ -25,15 +25,11 @@ function EditContent({ tournamentId, tournamentItemId }: EditContentProps) {
       {tournamentItemData.status === 'FAILED' && <Header left={<HeaderIcon name="BACK" />} />}
       <main>
         <header className="mt-3 flex flex-col items-center gap-2 text-center">
-          <h1 className="title-1 text-text-neutral-primary">
-            {tournamentItemData.status === 'FAILED'
-              ? '상품 정보를 가져오지 못 했어요.'
-              : '위시템 정보 수정'}
-          </h1>
+          <h1 className="title-1 text-text-neutral-primary">위시템 정보 확인</h1>
           <h2 className="heading-2-medium text-text-neutral-tertiary">
             {tournamentItemData.status === 'FAILED'
-              ? '직접 입력 후 저장해주세요'
-              : '필요한 정보는 직접 수정할 수 있어요'}
+              ? '필요한 정보는 직접 수정할 수 있어요'
+              : '상품 정보는 링크를 갱신하면 자동으로 수정돼요'}
           </h2>
         </header>
 
