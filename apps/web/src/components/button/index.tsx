@@ -22,15 +22,16 @@ function Button({
   className,
   children,
   isLoading,
+  disabled,
   type = 'button',
   ...rest
 }: ButtonProps) {
   return (
     <button
       type={type}
-      disabled={isLoading || rest.disabled}
       className={cn(buttonStyles({ variant, size, icon }), className)}
       {...rest}
+      disabled={isLoading || disabled}
     >
       {isLoading ? (
         <Spinner size={24} />
