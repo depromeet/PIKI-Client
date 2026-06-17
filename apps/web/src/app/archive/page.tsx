@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 
 import { getTournamentList } from '@/apis/getTournamentList';
 import { getWishlist } from '@/apis/getWishlist';
+import type { WishlistPageT } from '@/apis/getWishlist';
 import { getQueryClient } from '@/utils/queryClient';
 
 import TournamentHistoryContent from './_components/TournamentHistoryContent';
@@ -26,9 +27,11 @@ async function WishlistPage({ searchParams }: WishlistPageProps) {
   const queryClient = getQueryClient();
 
   if (activeTab === '저장한 위시템') {
-    await queryClient.prefetchQuery({
+    await queryClient.prefetchInfiniteQuery({
       queryKey: ['wishlists'],
-      queryFn: getWishlist,
+      queryFn: ({ pageParam }) => getWishlist(pageParam as string | null),
+      initialPageParam: null as string | null,
+      getNextPageParam: (page: WishlistPageT) => (page.hasNext ? page.nextCursor : undefined),
     });
   } else if (activeTab === '토너먼트 기록')
     await queryClient.prefetchQuery({

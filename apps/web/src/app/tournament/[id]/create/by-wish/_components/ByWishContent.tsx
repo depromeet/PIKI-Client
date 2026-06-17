@@ -19,26 +19,32 @@ type ByWishContentProps = {
 
 function ByWishContent({ tournamentId }: ByWishContentProps) {
   const { selectedIds, isMaxExceeded, handleSelect } = useWishSelection(MAX_SELECT);
-  const { data: wishlistData } = useGetWishlist();
+  const { wishlistData, fetchNextPage, hasNextPage } = useGetWishlist();
   const { tournamentData } = useGetTournament(tournamentId);
   const { postTournamentItemsByWishMutation, isPostTournamentItemsByWishPending } =
     usePostTournamentItemsByWish(tournamentId);
 
   const pending = 'pending' in tournamentData ? tournamentData.pending : null;
   const existingItemIds = new Set(pending?.items.map(i => i.itemId) ?? []);
-  const items =
-    wishlistData?.filter(
-      item =>
-        item.status !== 'FAILED' &&
-        item.status !== 'PROCESSING' &&
-        item.itemId != null &&
-        !existingItemIds.has(item.itemId)
-    ) ?? [];
+  const items = wishlistData.filter(
+    item =>
+      item.status !== 'FAILED' &&
+      item.status !== 'PROCESSING' &&
+      item.itemId != null &&
+      !existingItemIds.has(item.itemId)
+  );
 
   useEffect(() => {
     if (!isMaxExceeded) return;
     toast.warning(`최대 ${MAX_SELECT}개까지 상품을 담을 수 있어요.`);
   }, [isMaxExceeded]);
+
+  // 위시에서 가져오기는 전체 목록 기준으로 카운트를 표시해야 하므로 마운트 시 전체 로드
+  useEffect(() => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, fetchNextPage]);
 
   const handleNext = () => {
     const itemIds = items
@@ -69,6 +75,7 @@ function ByWishContent({ tournamentId }: ByWishContentProps) {
             />
           ))}
         </div>
+
       </main>
 
       <div className="fixed bottom-0 left-1/2 z-10 flex w-full max-w-120 -translate-x-1/2 gap-[10px] bg-white px-5 py-3">
