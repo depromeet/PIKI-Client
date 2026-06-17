@@ -22,8 +22,6 @@ export const usePostLogout = () => {
         WebBridge.postMessage({ type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT });
       }
 
-      sessionStorage.removeItem('piki_session_expired');
-      sessionStorage.removeItem('piki_social_login_error');
       queryClient.clear();
       router.replace(ROUTES.LOGIN);
     },
