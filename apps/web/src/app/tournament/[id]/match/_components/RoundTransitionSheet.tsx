@@ -326,7 +326,7 @@ function RoundTransitionSheet({ stage, onComplete }: RoundTransitionSheetProps) 
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`fixed bottom-0 left-1/2 z-50 w-full max-w-[402px] -translate-x-1/2 cursor-pointer overflow-hidden ${isExiting ? 'rs-sheet-exit' : 'rs-sheet'}`}
+        className={`fixed bottom-0 left-1/2 z-50 w-full max-w-120 -translate-x-1/2 cursor-pointer overflow-hidden ${isExiting ? 'rs-sheet-exit' : 'rs-sheet'}`}
         style={{
           height: 540,
           borderRadius: '24px 24px 0 0',
@@ -341,8 +341,8 @@ function RoundTransitionSheet({ stage, onComplete }: RoundTransitionSheetProps) 
             position: 'absolute',
             top: 15,
             left: 0,
-            width: 402,
-            height: 402,
+            right: 0,
+            aspectRatio: '1 / 1',
             borderRadius: '50%',
             background: '#FFF',
           }}
