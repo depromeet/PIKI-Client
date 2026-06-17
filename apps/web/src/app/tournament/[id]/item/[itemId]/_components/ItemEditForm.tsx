@@ -70,7 +70,11 @@ function ItemEditForm({
 
   return (
     <>
-      <ItemImageSection imageUrl={initialImageUrl} onImageSelect={setSelectedImage} />
+      <ItemImageSection
+        imageUrl={initialImageUrl}
+        onImageSelect={setSelectedImage}
+        disabled={itemStatus === 'READY'}
+      />
 
       <Spacing size={24} />
 
