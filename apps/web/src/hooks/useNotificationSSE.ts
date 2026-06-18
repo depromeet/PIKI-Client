@@ -77,10 +77,25 @@ export const useNotificationSSE = (enabled: boolean) => {
             retryDelayRef.current = 1_000;
             return;
           }
-          // 401이면 재연결하지 않음
           if (response.status === 401) {
-            cancelled = true;
-            throw new Error('unauthorized');
+            // 토큰 만료 시 클라이언트사이드에서 refresh 후 재연결
+            try {
+              const refreshRes = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/token/refresh`,
+                { method: 'POST', credentials: 'include' }
+              );
+              if (!refreshRes.ok) {
+                cancelled = true;
+                throw new Error('unauthorized');
+              }
+              // refresh 성공 → onerror backoff로 재연결
+              throw new Error('token-refreshed');
+            } catch (err) {
+              if (err instanceof Error && err.message === 'unauthorized') {
+                cancelled = true;
+              }
+              throw err;
+            }
           }
           throw new Error(`SSE open failed: ${response.status}`);
         },
