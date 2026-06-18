@@ -12,7 +12,6 @@ import formatPrice from '@/utils/formatPrice';
 import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';
 import { usePatchTournamentItem } from '../_hooks/usePatchTournamentItem';
 import ItemImageSection from './ItemImageSection';
-import UrlEditDrawer from './UrlEditDrawer';
 
 type ItemEditFormProps = {
   tournamentId: number;
@@ -54,19 +53,19 @@ function ItemEditForm({
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
 
-  const isValid = trimmedName.length > 0 && parsedPrice > 0;
+  const isValid = trimmedName.length > 0 && parsedPrice > 0 && selectedImage !== null;
 
   const handleSave = () => {
     const isChanged =
       trimmedName !== initialName.trim() ||
       formatPrice(price) !== initialPriceFormatted ||
       selectedImage !== null;
-    if (!isChanged || isPatchTournamentItemPending) return;
+    if (!isChanged || isPatchTournamentItemPending || !selectedImage) return;
 
     patchTournamentItemMutation({
       name: trimmedName,
       currentPrice: parsedPrice,
-      ...(selectedImage ? { image: selectedImage } : {}),
+      image: selectedImage,
     });
   };
 
@@ -109,7 +108,7 @@ function ItemEditForm({
         />
       </div>
 
-      {itemStatus === 'READY' && (
+      {itemStatus === 'FAILED' && (
         <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="secondary"
@@ -120,13 +119,6 @@ function ItemEditForm({
           >
             삭제하기
           </Button>
-
-          {itemStatus === 'READY' && <UrlEditDrawer />}
-        </BottomCta>
-      )}
-
-      {itemStatus === 'FAILED' && (
-        <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="primary"
             size="lg"

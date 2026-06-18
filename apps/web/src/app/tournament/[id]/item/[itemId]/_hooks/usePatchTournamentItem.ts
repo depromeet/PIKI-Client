@@ -15,13 +15,12 @@ export const usePatchTournamentItem = (tournamentId: number, tournamentItemId: n
 
   const { mutate: patchTournamentItemMutation, isPending: isPatchTournamentItemPending } =
     useMutation({
-      meta: { handledErrorStatuses: [403, 404, 409] },
-      mutationFn: (body: PatchTournamentItemRequestT) => {
+      mutationFn: (body: Omit<PatchTournamentItemRequestT, 'currency'>) => {
         const formData = new FormData();
-        if (body.name) formData.append('name', body.name);
-        if (body.currentPrice) formData.append('currentPrice', String(body.currentPrice));
-        if (body.currency) formData.append('currency', body.currency);
-        if (body.image) formData.append('image', body.image);
+        formData.append('name', body.name);
+        formData.append('price', String(body.currentPrice));
+        formData.append('currency', 'KRW');
+        formData.append('image', body.image);
         return patchTournamentItem(tournamentId, tournamentItemId, formData);
       },
       onSuccess: () => {

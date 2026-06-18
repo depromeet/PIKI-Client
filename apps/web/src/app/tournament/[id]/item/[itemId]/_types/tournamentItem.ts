@@ -25,10 +25,10 @@ export type GetTournamentItemResponseT = {
 );
 
 export type PatchTournamentItemRequestT = {
-  name?: string;
-  currentPrice?: number;
-  image?: File;
-  currency?: string;
+  name: string;
+  currentPrice: number;
+  image: File;
+  currency: string;
 };
 
 export type PatchTournamentItemResponseT = GetTournamentItemResponseT;
