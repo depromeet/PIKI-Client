@@ -5,9 +5,16 @@ import { useEffect, useState } from 'react';
 import Button from '@/components/button';
 
 import { usePostTournamentStart } from '../../_hooks/usePostTournamentStart';
+import ByeWarningDialog from './ByeWarningDialog';
 import ConfirmStartDialog from './ConfirmStartDialog';
 
 const PARTICIPANT_TOOLTIP_DURATION_MS = 3_000;
+
+/**
+ * count 가 2의 거듭제곱(2, 4, 8, 16, 32) 인지 검사.
+ * 아니면 부전승이 발생하므로 사용자에게 안내 모달을 띄운다.
+ */
+const isPowerOfTwo = (n: number) => n >= 2 && (n & (n - 1)) === 0;
 
 type TournamentStartButtonProps = {
   count: number;
@@ -29,6 +36,7 @@ function TournamentStartButton({
   isParticipant = false,
 }: TournamentStartButtonProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isByeWarningOpen, setIsByeWarningOpen] = useState(false);
   const { postTournamentStartMutation, isPostTournamentStartPending } =
     usePostTournamentStart(tournamentId);
 
@@ -45,9 +53,12 @@ function TournamentStartButton({
 
   const startTournament = () => postTournamentStartMutation();
 
-  const handleClick = () => {
-    if (isWaitingForOwnerStart) return;
-    // 참여자는 본인 CLONE 만 만드는 거라 "담지 못한 친구" 안내가 필요 없음 — 바로 시작
+  /**
+   * 부전승 체크를 통과한 후의 분기:
+   * - 참여자(CLONE) 는 본인만 시작하니 바로 진행.
+   * - 주최자는 친구가 있으면 ConfirmStartDialog (담지 못한 친구 안내), 없으면 바로 시작.
+   */
+  const proceedAfterByeCheck = () => {
     if (isParticipant) {
       startTournament();
       return;
@@ -57,6 +68,21 @@ function TournamentStartButton({
       return;
     }
     startTournament();
+  };
+
+  const handleClick = () => {
+    if (isWaitingForOwnerStart) return;
+    // 후보 수가 2의 거듭제곱이 아니면 부전승 발생 — 먼저 안내 모달 노출.
+    if (!isPowerOfTwo(count)) {
+      setIsByeWarningOpen(true);
+      return;
+    }
+    proceedAfterByeCheck();
+  };
+
+  const handleByeWarningConfirm = () => {
+    setIsByeWarningOpen(false);
+    proceedAfterByeCheck();
   };
 
   const handleConfirm = () => {
@@ -99,6 +125,13 @@ function TournamentStartButton({
         open={isConfirmOpen}
         onOpenChange={setIsConfirmOpen}
         onConfirm={handleConfirm}
+      />
+
+      <ByeWarningDialog
+        open={isByeWarningOpen}
+        onOpenChange={setIsByeWarningOpen}
+        onAddMore={() => setIsByeWarningOpen(false)}
+        onConfirm={handleByeWarningConfirm}
       />
     </>
   );
