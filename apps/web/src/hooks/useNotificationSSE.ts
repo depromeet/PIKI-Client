@@ -156,6 +156,7 @@ export const useNotificationSSE = (enabled: boolean) => {
                 case 'TOURNAMENT_STARTED':
                 case 'TOURNAMENT_JOINED':
                 case 'TOURNAMENT_ITEM_ADDED':
+                case 'TOURNAMENT_ITEM_DELETED':
                   queryClient.invalidateQueries({ queryKey: ['tournament', payload.refId] });
                   toast.info(payload.title, {
                     description: payload.body || void 0,
