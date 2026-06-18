@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
@@ -114,18 +114,16 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   // 참여자에게 노출되는 "주최자가 토너먼트를 시작했어요!" 모달.
   // SSE(TOURNAMENT_STARTED) 또는 폴링으로 ownerStarted 가 false→true 로 바뀌는 순간 자동 오픈.
   // 사용자가 닫거나 시작하면 다시 띄우지 않는다.
+  // React 공식 권장: 이전 값을 state 로 보관해 렌더 중 비교 → effect 불필요.
   const [isOwnerStartedDialogOpen, setIsOwnerStartedDialogOpen] = useState(false);
   const [hasDismissedOwnerStarted, setHasDismissedOwnerStarted] = useState(false);
-  const prevOwnerStartedRef = useRef(ownerStarted);
-
-  useEffect(() => {
-    const wasNotStarted = !prevOwnerStartedRef.current;
-    prevOwnerStartedRef.current = ownerStarted;
-    if (!isParticipant) return;
-    if (wasNotStarted && ownerStarted && !hasDismissedOwnerStarted) {
+  const [prevOwnerStarted, setPrevOwnerStarted] = useState(ownerStarted);
+  if (prevOwnerStarted !== ownerStarted) {
+    setPrevOwnerStarted(ownerStarted);
+    if (isParticipant && !prevOwnerStarted && ownerStarted && !hasDismissedOwnerStarted) {
       setIsOwnerStartedDialogOpen(true);
     }
-  }, [ownerStarted, isParticipant, hasDismissedOwnerStarted]);
+  }
 
   const handleStartFromOwnerStarted = () => {
     setIsOwnerStartedDialogOpen(false);
