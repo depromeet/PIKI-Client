@@ -1,6 +1,9 @@
+import Link from 'next/link';
+
 import WishCard from '@/app/archive/_components/wish-grid/WishCard';
 import WishFailedCard from '@/app/archive/_components/wish-grid/WishFailedCard';
 import { CheckboxEmptyIconFill, CheckboxSelectedIconFill } from '@/assets/icons';
+import { ROUTES } from '@/consts/route';
 
 import type { WishItemT } from '../../_types/wish';
 import WishProcessingCard from './WishProcessingCard';
@@ -16,13 +19,14 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
   return (
     <div className="grid grid-cols-2 gap-x-2 gap-y-3">
       {items.map(item => {
-        if (item.status === 'FAILED') return <WishFailedCard key={item.id} wishId={item.id} />;
+        if (item.status === 'FAILED')
+          return (
+            <Link href={ROUTES.WISH_EDIT(item.id)} key={item.id}>
+              <WishFailedCard key={item.id} />
+            </Link>
+          );
         else if (item.status === 'PENDING' || item.status === 'PROCESSING')
           return <WishProcessingCard key={item.id} />;
-
-        const card = (
-          <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />
-        );
 
         if (isDeleteMode) {
           const isSelected = selectedIds?.has(item.id) ?? false;
@@ -47,7 +51,11 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
           );
         }
 
-        return card;
+        return (
+          <Link href={ROUTES.WISH_EDIT(item.id)} key={item.id}>
+            <WishCard key={item.id} name={item.name} price={item.price} imageUrl={item.imageUrl} />
+          </Link>
+        );
       })}
     </div>
   );

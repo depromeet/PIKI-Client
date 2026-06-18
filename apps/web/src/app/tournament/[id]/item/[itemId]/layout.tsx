@@ -33,10 +33,8 @@ async function TournamentItemLayout({ children, params }: TournamentItemLayoutPr
     );
 
     /** 아직 PROCESSING 상태인 경우에는 접근 불가 */
-    if (tournamentItemData.status === 'PROCESSING') {
-      // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
+    if (tournamentItemData.status === 'PROCESSING' || tournamentItemData.status === 'PENDING')
       redirect(ROUTES.TOURNAMENT_CREATE(tournamentId));
-    }
   } catch (error) {
     if (!isAxiosError<ApiErrorResponseT>(error)) throw error;
 
