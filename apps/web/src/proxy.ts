@@ -69,21 +69,6 @@ const handleTokenRefresh = async (request: NextRequest) => {
 };
 
 export const proxy = async (request: NextRequest) => {
-  /**
-   * Apple OAuth 콜백은 form POST로 전송되며, 백엔드 설정에 따라 /home 등 다른 경로로 들어올 수 있다.
-   * rewrite 대신 307을 사용하는 이유: rewrite 시 route.ts의 Set-Cookie가 브라우저에 적용되기 전에
-   * proxy가 GET /home을 처리해 토큰을 인식 못 하는 문제가 발생한다.
-   */
-  if (
-    request.method === 'POST' &&
-    request.headers.get('origin')?.includes('appleid.apple.com') &&
-    request.nextUrl.pathname !== '/auth/callback/apple'
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/auth/callback/apple';
-    return NextResponse.redirect(url, { status: 307 });
-  }
-
   const { pathname, search } = request.nextUrl;
 
   const routeType = getRouteType(pathname);
