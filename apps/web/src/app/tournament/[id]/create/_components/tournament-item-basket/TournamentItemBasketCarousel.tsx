@@ -97,7 +97,7 @@ function TournamentItemBasketCarousel({
     return (
       <div
         ref={containerRef}
-        className="flex min-h-0 w-full flex-col items-center justify-start px-5"
+        className="flex min-h-0 w-full flex-1 flex-col items-center justify-start px-5"
       >
         <TournamentItemBasket
           basketIndex={0}
