@@ -9,6 +9,9 @@ import Input from '@/components/input';
 
 import { usePostCreateTournament } from '../_hooks/usePostCreateTournament';
 
+/** 토너먼트 생성 시 기본 초대 마감 시각 — 현재 + 30분. */
+const DEFAULT_INVITE_DURATION_MINUTES = 30;
+
 function CreateTournamentDialog() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -20,7 +23,7 @@ function CreateTournamentDialog() {
   const handleCreate = () => {
     if (isDisabled) return;
     postCreateTournamentMutation(
-      { name: trimmedName },
+      { name: trimmedName, inviteDurationMinutes: DEFAULT_INVITE_DURATION_MINUTES },
       {
         onSuccess: () => {
           setOpen(false);
