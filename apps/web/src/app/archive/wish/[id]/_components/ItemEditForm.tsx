@@ -44,6 +44,8 @@ function ItemEditForm({
   const { deleteWishMutation, isDeleteWishPending } = useDeleteWish(wishId);
   const { postWishRefreshMutation, isPostWishRefreshPending } = usePostWishRefresh(wishId);
 
+  const isReadyActionPending = isDeleteWishPending || isPostWishRefreshPending;
+
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
 
@@ -64,13 +66,13 @@ function ItemEditForm({
   };
 
   const handleDelete = () => {
-    if (isDeleteWishPending) return;
+    if (isReadyActionPending) return;
 
     deleteWishMutation();
   };
 
   const handleRefresh = () => {
-    if (isPostWishRefreshPending) return;
+    if (isReadyActionPending) return;
 
     postWishRefreshMutation();
   };
@@ -115,6 +117,7 @@ function ItemEditForm({
             size="lg"
             className="flex-1"
             isLoading={isDeleteWishPending}
+            disabled={isPostWishRefreshPending}
             onClick={handleDelete}
           >
             삭제하기
@@ -125,6 +128,7 @@ function ItemEditForm({
             size="lg"
             className="flex-1"
             isLoading={isPostWishRefreshPending}
+            disabled={isDeleteWishPending}
             onClick={handleRefresh}
           >
             다시 불러오기
