@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
   const loginUrl = new URL('/login', request.url);
 
   if (!code || !state) {
-    loginUrl.searchParams.set('appleError', 'missing_code_or_state');
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 
@@ -22,9 +21,6 @@ export async function POST(request: NextRequest) {
     });
 
     if (!apiResponse.ok) {
-      const errorText = await apiResponse.text();
-      loginUrl.searchParams.set('appleError', `backend_${apiResponse.status}`);
-      loginUrl.searchParams.set('appleErrorBody', errorText);
       return NextResponse.redirect(loginUrl, { status: 302 });
     }
 
@@ -41,8 +37,7 @@ export async function POST(request: NextRequest) {
     });
 
     return redirect;
-  } catch (e) {
-    loginUrl.searchParams.set('appleError', `exception_${String(e)}`);
+  } catch {
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 }
