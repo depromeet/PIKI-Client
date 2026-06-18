@@ -7,6 +7,12 @@ export type NotificationTypeT =
 
 export type NotificationKindT = 'WISH' | 'TOURNAMENT';
 
+export type TournamentItemParsedSsePayloadT = {
+  tournamentId: number;
+  tournamentItemId: number;
+  status: 'READY' | 'FAILED';
+};
+
 export type NotificationSsePayloadT = {
   id: number;
   type: NotificationTypeT;

@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { ENDPOINTS } from '@/consts/api';
 import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
-import type { NotificationSsePayloadT } from '@/types/notification';
+import type { NotificationSsePayloadT, TournamentItemParsedSsePayloadT } from '@/types/notification';
 import { getCookie, setCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
@@ -110,6 +110,16 @@ export const useNotificationSSE = (enabled: boolean) => {
         },
 
         onmessage: event => {
+          if (event.event === 'tournament-item-parsed') {
+            try {
+              const payload = JSON.parse(event.data) as TournamentItemParsedSsePayloadT;
+              queryClient.invalidateQueries({ queryKey: ['tournament', payload.tournamentId] });
+            } catch {
+              // malformed JSON — 무시
+            }
+            return;
+          }
+
           if (event.event === 'notification') {
             try {
               const payload = JSON.parse(event.data) as NotificationSsePayloadT;
