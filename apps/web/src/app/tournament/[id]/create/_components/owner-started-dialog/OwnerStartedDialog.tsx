@@ -11,13 +11,21 @@ type OwnerStartedDialogProps = {
   onStart: () => void;
   /** 담긴 후보 수 — "N강" 표시에 그대로 사용 */
   itemCount: number;
+  /** 시작 mutation 진행 중 여부 — 빠른 연타로 인한 중복 호출을 막기 위해 버튼을 비활성한다. */
+  isPending?: boolean;
 };
 
 /**
  * 주최자가 ROOT 토너먼트를 시작한 사실을 참여자에게 알리는 모달.
  * SSE(TOURNAMENT_STARTED) 또는 폴링으로 `ownerStarted: false → true` 변화를 감지해 자동 노출된다.
  */
-function OwnerStartedDialog({ open, onOpenChange, onStart, itemCount }: OwnerStartedDialogProps) {
+function OwnerStartedDialog({
+  open,
+  onOpenChange,
+  onStart,
+  itemCount,
+  isPending = false,
+}: OwnerStartedDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col items-center gap-5 p-5">
@@ -32,7 +40,13 @@ function OwnerStartedDialog({ open, onOpenChange, onStart, itemCount }: OwnerSta
           </DialogDescription>
         </div>
 
-        <Button variant="primary" size="lg" className="w-full" onClick={onStart}>
+        <Button
+          variant="primary"
+          size="lg"
+          className="w-full"
+          onClick={onStart}
+          disabled={isPending}
+        >
           토너먼트 시작하기
         </Button>
       </DialogContent>

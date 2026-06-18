@@ -11,13 +11,21 @@ type DepositClosedDialogProps = {
   onStart: () => void;
   /** 담긴 후보 수 — "N강" 표시에 그대로 사용 */
   itemCount: number;
+  /** 시작 mutation 진행 중 여부 — 빠른 연타로 인한 중복 호출을 막기 위해 버튼을 비활성한다. */
+  isPending?: boolean;
 };
 
 /**
  * 담기 마감 시각이 지난 직후 주최자에게 노출되는 자동 안내 모달.
  * 시스템이 자동으로 담기를 종료했음을 알리고 토너먼트 시작을 유도한다.
  */
-function DepositClosedDialog({ open, onOpenChange, onStart, itemCount }: DepositClosedDialogProps) {
+function DepositClosedDialog({
+  open,
+  onOpenChange,
+  onStart,
+  itemCount,
+  isPending = false,
+}: DepositClosedDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col items-center gap-5 p-5">
@@ -32,7 +40,13 @@ function DepositClosedDialog({ open, onOpenChange, onStart, itemCount }: Deposit
           </DialogDescription>
         </div>
 
-        <Button variant="primary" size="lg" className="w-full" onClick={onStart}>
+        <Button
+          variant="primary"
+          size="lg"
+          className="w-full"
+          onClick={onStart}
+          disabled={isPending}
+        >
           토너먼트 시작하기
         </Button>
       </DialogContent>

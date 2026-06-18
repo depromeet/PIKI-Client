@@ -97,10 +97,12 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   if (shouldShowDepositClosedDialog && !isDepositClosedDialogOpen) {
     setIsDepositClosedDialogOpen(true);
   }
-  const { postTournamentStartMutation } = usePostTournamentStart(tournamentId);
+  const { postTournamentStartMutation, isPostTournamentStartPending } =
+    usePostTournamentStart(tournamentId);
   const itemCount = pending?.items.length ?? 0;
 
   const handleStartFromDepositClosed = () => {
+    if (isPostTournamentStartPending) return;
     setIsDepositClosedDialogOpen(false);
     setHasDismissedDepositClosed(true);
     postTournamentStartMutation();
@@ -126,6 +128,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   }
 
   const handleStartFromOwnerStarted = () => {
+    if (isPostTournamentStartPending) return;
     setIsOwnerStartedDialogOpen(false);
     setHasDismissedOwnerStarted(true);
     postTournamentStartMutation();
@@ -190,6 +193,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         onOpenChange={handleDepositClosedOpenChange}
         onStart={handleStartFromDepositClosed}
         itemCount={itemCount}
+        isPending={isPostTournamentStartPending}
       />
 
       <OwnerStartedDialog
@@ -197,6 +201,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         onOpenChange={handleOwnerStartedOpenChange}
         onStart={handleStartFromOwnerStarted}
         itemCount={itemCount}
+        isPending={isPostTournamentStartPending}
       />
 
       {isWelcomeOpen && (
