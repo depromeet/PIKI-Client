@@ -6,11 +6,11 @@ export const formatTimeKo = (dateString: string) =>
   });
 
 /**
- * 서버가 LocalDateTime (시간대 없는 시각) 을 응답에 `Z` 접미사를 붙여 내려보내는 경우가 있다.
- * `Z` 가 있으면 `new Date()` 가 UTC 로 해석해 9시간(KST 기준) 어긋난다.
- * Z 를 떼고 로컬 시각으로 파싱한다.
+ * 서버 응답의 ISO 8601 시각 문자열을 Date 로 파싱한다.
+ *
+ * 백엔드가 `Z`(UTC) 접미사 포함한 정상 ISO 형식으로 보내므로 `new Date()` 가 올바르게 로컬 시각으로 변환한다.
+ *
+ * NOTE: 과거 백엔드 변형 시 LocalDateTime 을 시간대 없이 Z 만 붙여 보내 9시간 어긋나던 시기가 있어
+ * Z 를 떼는 처리가 들어갔었으나, 현재는 정상 UTC 형식으로 통일됐다.
  */
-export const parseServerLocalDateTime = (raw: string) => {
-  const stripped = raw.endsWith('Z') ? raw.slice(0, -1) : raw;
-  return new Date(stripped);
-};
+export const parseServerLocalDateTime = (raw: string) => new Date(raw);
