@@ -11,7 +11,7 @@ export const getAuthUrl = async (provider: SocialProviderT, redirect: string | n
   // Apple은 BE 브릿지 URL을 redirect_uri로 사용하므로 FE에서 override하지 않음
   const redirectUri =
     provider === 'apple'
-      ? undefined
+      ? null
       : `${window.location.origin}${ROUTES.SOCIAL_LOGIN_CALLBACK(provider)}`;
 
   const { data } = await clientApi.get<ApiResponseT<GetAuthUrlResponseT>>(
