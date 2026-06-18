@@ -15,7 +15,7 @@ const toUsers = (imageUrls: string[]): UserT[] =>
   }));
 
 function TorunamentList() {
-  const { tournamentListData } = useGetTournamentList();
+  const { tournamentListData } = useGetTournamentList(['PENDING', 'IN_PROGRESS']);
 
   if (tournamentListData.length === 0) return null;
 
