@@ -60,7 +60,7 @@ function ItemImageSection({ imageUrl, onImageSelect, disabled = false }: Props) 
   );
 
   const containerClassName = cn(
-    'relative mx-auto mt-6 block size-[200px] overflow-hidden rounded-xl bg-gray-100',
+    'relative mx-auto mt-8 block size-[200px] overflow-hidden rounded-xl bg-gray-100',
     !displayUrl && 'flex flex-col items-center justify-center gap-3'
   );
 

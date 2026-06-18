@@ -12,7 +12,6 @@ import formatPrice from '@/utils/formatPrice';
 import { useDeleteWish } from '../_hooks/useDeleteWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
 import ItemImageSection from './ItemImageSection';
-import UrlEditDrawer from './UrlEditDrawer';
 
 type ItemEditFormProps = {
   wishId: number;
@@ -113,7 +112,15 @@ function ItemEditForm({
             삭제하기
           </Button>
 
-          {itemStatus === 'READY' && <UrlEditDrawer />}
+          <Button
+            variant="primary"
+            size="lg"
+            className="flex-1"
+            isLoading={isDeleteWishPending}
+            onClick={handleDelete}
+          >
+            다시 불러오기
+          </Button>
         </BottomCta>
       )}
 
