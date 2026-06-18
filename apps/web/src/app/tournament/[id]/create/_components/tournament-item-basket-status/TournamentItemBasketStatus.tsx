@@ -3,14 +3,9 @@ import { cn } from '@/utils/cn';
 type TournamentItemBasketStatusProps = {
   isProcessing: boolean;
   count: number;
-  isDepositClosed?: boolean;
 };
 
-function TournamentItemBasketStatus({
-  isProcessing,
-  count,
-  isDepositClosed = false,
-}: TournamentItemBasketStatusProps) {
+function TournamentItemBasketStatus({ isProcessing, count }: TournamentItemBasketStatusProps) {
   const label = (() => {
     if (isProcessing) return '담는 중...';
     if (count === 0) return '후보를 장바구니에 담아보세요';
@@ -18,16 +13,15 @@ function TournamentItemBasketStatus({
     return `${count}/32`;
   })();
 
-  const isBlue = !isDepositClosed && count < 2;
+  const isBlue = count < 2;
 
   return (
     <div className="flex items-center justify-center">
       <span
         className={cn(
           'inline-flex h-10 items-center rounded-3xl border px-3 body-2-regular',
-          isDepositClosed && 'border-transparent bg-transparent text-text-accent',
           isBlue && 'border-blue-100 bg-blue-50 text-text-accent',
-          !isDepositClosed && !isBlue && 'border-gray-100 bg-gray-75 text-gray-600'
+          !isBlue && 'border-gray-100 bg-gray-75 text-gray-600'
         )}
       >
         {label}
