@@ -31,7 +31,14 @@ export async function POST(request: NextRequest) {
     const redirect = NextResponse.redirect(new URL('/home', request.url), { status: 302 });
 
     const cookies = apiResponse.headers.getSetCookie?.() ?? [];
-    cookies.forEach(cookie => redirect.headers.append('set-cookie', cookie));
+    cookies.forEach(cookie => {
+      /**
+       * Apple OAuth는 cross-site 리다이렉트로 시작되므로 SameSite=Strict 쿠키가
+       * 콜백 이후 첫 번째 same-domain 요청에 포함되지 않는다.
+       * SameSite=Lax로 변경하면 top-level 리다이렉트 체인에서도 쿠키가 전송된다.
+       */
+      redirect.headers.append('set-cookie', cookie.replace(/SameSite=Strict/gi, 'SameSite=Lax'));
+    });
 
     return redirect;
   } catch (e) {
