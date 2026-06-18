@@ -166,7 +166,6 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         <TournamentItemBasketStatus
           isProcessing={hasPendingItem}
           count={pending?.items.length ?? 0}
-          isDepositClosed={isDepositClosed}
         />
       </div>
 
