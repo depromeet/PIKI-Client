@@ -4,8 +4,10 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { postWishOCR } from '@/apis/postWishOCR';
+import { ANALYTICS_EVENT } from '@/consts/analytics';
 import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
+import { logAnalyticsEvent } from '@/utils/analytics';
 import { getLoginPath } from '@/utils/loginRedirect';
 
 export const usePostWishOCR = () => {
@@ -19,6 +21,7 @@ export const usePostWishOCR = () => {
   } = useMutation({
     mutationFn: (formData: FormData) => postWishOCR(formData),
     onSuccess: () => {
+      logAnalyticsEvent(ANALYTICS_EVENT.WISH_ADD, { source: 'ocr' });
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
       router.push(ROUTES.ARCHIVE('wish'));
     },

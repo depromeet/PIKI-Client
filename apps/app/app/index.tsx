@@ -15,6 +15,7 @@ import { useSplashScreenController } from '@/hooks/useSplashScreenController';
 import { useWebBridgeMessage } from '@/hooks/useWebBridgeMessage';
 import { useWebDeepLink } from '@/hooks/useWebDeepLink';
 import { useWebviewCookieSync } from '@/hooks/useWebviewCookieSync';
+import { logAnalyticsEvent, logAppOpenEvent } from '@/utils/analytics';
 import { handleOpenImagePicker } from '@/utils/handleImage';
 import { handleRequestPushPermission, syncPushStatusToWeb } from '@/utils/pushNotification';
 import { TokenStorage } from '@/utils/tokenStorage';
@@ -34,6 +35,11 @@ function Page() {
   useEffect(() => {
     WebBridge.setRef(webviewRef);
     return () => WebBridge.clearRef(webviewRef);
+  }, []);
+
+  // 앱 진입 시 GA4(Firebase Analytics) 세션 시작.
+  useEffect(() => {
+    void logAppOpenEvent();
   }, []);
 
   const { sendShareIntent } = useShareIntent({
@@ -71,6 +77,10 @@ function Page() {
 
         case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOGOUT:
           await TokenStorage.clearTokens();
+          return;
+
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOG_ANALYTICS_EVENT:
+          await logAnalyticsEvent(message.payload.name, message.payload.params);
           return;
 
         default:

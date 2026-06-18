@@ -15,6 +15,7 @@
     "@expo/vector-icons": "^15.0.3",
     "@piki/core": "workspace:*",
     "@react-native-cookies/cookies": "^6.2.1",
+    "@react-native-firebase/analytics": "^24.1.1",
     "@react-native-firebase/app": "^24.1.0",
     "@react-native-firebase/messaging": "^24.1.0",
     "@react-native-google-signin/google-signin": "^15.0.0",
