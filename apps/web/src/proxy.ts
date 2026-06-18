@@ -69,6 +69,19 @@ const handleTokenRefresh = async (request: NextRequest) => {
 };
 
 export const proxy = async (request: NextRequest) => {
+  /**
+   * Apple OAuth 콜백은 form POST로 전송되며, 백엔드 설정에 따라 /home 등 다른 경로로 들어올 수 있다.
+   * appleid.apple.com origin의 POST 요청을 /auth/callback/apple로 rewrite한다.
+   */
+  if (
+    request.method === 'POST' &&
+    request.headers.get('origin')?.includes('appleid.apple.com')
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth/callback/apple';
+    return NextResponse.rewrite(url);
+  }
+
   const { pathname, search } = request.nextUrl;
 
   const routeType = getRouteType(pathname);
