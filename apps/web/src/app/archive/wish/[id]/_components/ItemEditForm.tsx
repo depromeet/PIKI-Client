@@ -45,19 +45,19 @@ function ItemEditForm({
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
 
-  const isValid = trimmedName.length > 0 && parsedPrice > 0;
+  const isValid = trimmedName.length > 0 && parsedPrice > 0 && selectedImage !== null;
 
   const handleSave = () => {
     const isChanged =
       trimmedName !== initialName.trim() ||
       formatPrice(price) !== initialPriceFormatted ||
       selectedImage !== null;
-    if (!isChanged || isPatchWishPending) return;
+    if (!isChanged || isPatchWishPending || !selectedImage) return;
 
     patchWishMutation({
       name: trimmedName,
       currentPrice: parsedPrice,
-      ...(selectedImage ? { image: selectedImage } : {}),
+      image: selectedImage,
     });
   };
 

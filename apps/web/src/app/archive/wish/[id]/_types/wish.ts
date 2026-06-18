@@ -24,10 +24,10 @@ export type GetWishResponseT = {
 };
 
 export type PatchWishRequestT = {
-  name?: string;
-  currentPrice?: number;
-  image?: File;
-  currency?: string;
+  name: string;
+  currentPrice: number;
+  image: File;
+  currency: string;
 };
 
 export type PatchWishResponseT = GetWishResponseT;
