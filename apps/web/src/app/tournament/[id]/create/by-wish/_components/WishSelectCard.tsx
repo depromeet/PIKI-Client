@@ -19,13 +19,14 @@ function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSel
       className="relative h-full w-full text-left"
     >
       <WishCard name={name} price={price} imageUrl={imageUrl} />
-      <div className="absolute top-2 left-2 z-10">
+      <span className="pointer-events-none absolute top-3 left-3 z-10 size-6">
+        <span className="absolute inset-[3px] rounded-[3px] bg-white" />
         {isSelected ? (
-          <CheckboxSelectedIconFill width={30.317} height={30.317} className="text-uac-light" />
+          <CheckboxSelectedIconFill className="relative size-6 text-uac-light" />
         ) : (
-          <CheckboxEmptyIconFill width={30.317} height={30.317} className="text-[#636366]" />
+          <CheckboxEmptyIconFill className="relative size-6 text-[#636366]" />
         )}
-      </div>
+      </span>
     </button>
   );
 }
