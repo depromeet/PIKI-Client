@@ -1,5 +1,8 @@
+import Link from 'next/link';
+
 import StatusChip from '@/components/status-chip';
 import UserProfileGroup from '@/components/user-profile-group';
+import { ROUTES } from '@/consts/route';
 import type { TournamentStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
@@ -27,6 +30,12 @@ function TournamentCard({
   participantCount,
   className,
 }: TournamentCardProps) {
+  const HREF = {
+    PENDING: ROUTES.TOURNAMENT_CREATE(tournamentId),
+    IN_PROGRESS: ROUTES.TOURNAMENT_MATCH(tournamentId),
+    COMPLETED: ROUTES.TOURNAMENT_RESULT(tournamentId),
+  } as const;
+
   return (
     <article
       className={cn(
@@ -37,7 +46,9 @@ function TournamentCard({
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
           <StatusChip status={status} />
-          <h3 className="heading-1 text-text-neutral-primary">{name}</h3>
+          <Link href={HREF[status]} className="heading-1 text-text-neutral-primary hover:underline">
+            {name}
+          </Link>
         </div>
         <MorePopover
           status={status}
