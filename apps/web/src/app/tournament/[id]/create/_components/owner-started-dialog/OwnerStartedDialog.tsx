@@ -17,12 +17,7 @@ type OwnerStartedDialogProps = {
  * 주최자가 ROOT 토너먼트를 시작한 사실을 참여자에게 알리는 모달.
  * SSE(TOURNAMENT_STARTED) 또는 폴링으로 `ownerStarted: false → true` 변화를 감지해 자동 노출된다.
  */
-function OwnerStartedDialog({
-  open,
-  onOpenChange,
-  onStart,
-  itemCount,
-}: OwnerStartedDialogProps) {
+function OwnerStartedDialog({ open, onOpenChange, onStart, itemCount }: OwnerStartedDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton={false} className="flex flex-col items-center gap-5 p-5">

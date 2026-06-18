@@ -178,7 +178,7 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
             <div
               key={`${item}-${index}`}
               onClick={event => handleItemMouseClick(event, index)}
-              className="flex w-full select-none items-center justify-center body-1-bold text-text-neutral-primary"
+              className="flex w-full items-center justify-center body-1-bold text-text-neutral-primary select-none"
               style={{ height: itemHeight, opacity: getOpacity(distance) }}
             >
               {item}

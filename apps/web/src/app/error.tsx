@@ -26,13 +26,13 @@ function Error({ reset }: Props) {
         <button
           type="button"
           onClick={reset}
-          className="body-1-semibold inline-flex cursor-pointer items-center justify-center rounded-[12px] border-[1.2px] border-gray-200 bg-bg-layer-floating px-[18px] py-[10px] text-text-neutral-primary"
+          className="inline-flex cursor-pointer items-center justify-center rounded-[12px] border-[1.2px] border-gray-200 bg-bg-layer-floating px-[18px] py-[10px] body-1-semibold text-text-neutral-primary"
         >
           다시 시도
         </button>
         <Link
           href={ROUTES.HOME}
-          className="body-1-semibold inline-flex cursor-pointer items-center justify-center rounded-[12px] border border-bg-neutral-primary bg-bg-neutral-primary px-[18px] py-[10px] text-text-neutral-inverse"
+          className="inline-flex cursor-pointer items-center justify-center rounded-[12px] border border-bg-neutral-primary bg-bg-neutral-primary px-[18px] py-[10px] body-1-semibold text-text-neutral-inverse"
         >
           홈으로 가기
         </Link>

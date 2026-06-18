@@ -5,7 +5,7 @@ import { ROUTES } from '@/consts/route';
 
 function NotFound() {
   return (
-    <div className="flex h-full flex-col items-center bg-bg-layer-basement pt-40 gap-6">
+    <div className="flex h-full flex-col items-center gap-6 bg-bg-layer-basement pt-40">
       <div className="flex flex-col items-center gap-4">
         <CloseCircularIconFill className="size-20 text-icon-neutral-secondary" />
         <div className="flex flex-col items-center gap-2">
@@ -17,7 +17,7 @@ function NotFound() {
       </div>
       <Link
         href={ROUTES.HOME}
-        className="body-1-semibold inline-flex cursor-pointer items-center justify-center rounded-[12px] border-[1.2px] border-gray-200 bg-bg-layer-floating px-[18px] py-[10px] text-text-neutral-primary"
+        className="inline-flex cursor-pointer items-center justify-center rounded-[12px] border-[1.2px] border-gray-200 bg-bg-layer-floating px-[18px] py-[10px] body-1-semibold text-text-neutral-primary"
       >
         홈으로 가기
       </Link>
