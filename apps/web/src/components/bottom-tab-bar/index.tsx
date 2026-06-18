@@ -1,6 +1,9 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
+
 import { usePathname, useRouter } from 'next/navigation';
+import { createPortal } from 'react-dom';
 
 import HeartIconFill from '@/assets/icons/fill/heart.svg';
 import HomeIconFill from '@/assets/icons/fill/home.svg';
@@ -14,9 +17,24 @@ const TABS = [
 function BottomTabBar() {
   const router = useRouter();
   const pathname = usePathname();
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   return (
-    <div className="inline-flex items-center rounded-[100px] bg-white p-1 shadow-[0_0_8px_0_rgba(0,0,0,0.04)]">
+    <>
+      {isClient && createPortal(
+        <div
+          className="fixed bottom-0 left-1/2 z-10 h-[240px] w-full max-w-120 -translate-x-1/2 pointer-events-none"
+          style={{
+            background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.20) 100%)',
+          }}
+        />,
+        document.body
+      )}
+      <div className="inline-flex items-center rounded-[100px] bg-white p-1 shadow-[0_0_8px_0_rgba(0,0,0,0.04)]">
       {TABS.map(({ label, icon: Icon, href }) => {
         const isActive =
           label === '보관'
@@ -42,6 +60,7 @@ function BottomTabBar() {
         );
       })}
     </div>
+    </>
   );
 }
 
