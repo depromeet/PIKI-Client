@@ -147,7 +147,7 @@ function TournamentBracketAnimation() {
           >
             <div
               className="flex size-full items-center justify-center rounded-2xl border-2 border-white bg-gray-50 text-gray-300"
-              style={{ filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.16))' }}
+              style={{ boxShadow: '0 0 8px rgba(0,0,0,0.16)' }}
             >
               <Icon width={iw} height={ih} aria-hidden />
             </div>
