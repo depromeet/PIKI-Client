@@ -2,7 +2,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { postTokenRefreshServer } from './apis/postTokenRefresh';
 import { postGuestLoginServer } from './app/login/_apis/postGuestLogin';
-import { ROUTES } from './consts/route';
 import { isTokenValid } from './utils/auth';
 import { getRouteType } from './utils/getRouteType';
 import { getLoginPath } from './utils/loginRedirect';
@@ -92,16 +91,7 @@ export const proxy = async (request: NextRequest) => {
   if (!routeType) return NextResponse.next();
 
   /** 퍼블릭 영역 */
-  if (routeType === 'PUBLIC') {
-    /** 로그인 페이지: 유효한 access token이 있으면 홈으로 리다이렉트 */
-    if (pathname === ROUTES.LOGIN) {
-      const accessToken = request.cookies.get('access_token');
-      if (accessToken && isTokenValid(accessToken.value)) {
-        return NextResponse.redirect(new URL(ROUTES.HOME, request.url));
-      }
-    }
-    return NextResponse.next();
-  }
+  if (routeType === 'PUBLIC') return NextResponse.next();
 
   /** 멤버 및 게스트 공통 영역 */
   const accessToken = request.cookies.get('access_token');
