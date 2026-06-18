@@ -61,7 +61,10 @@ export const shareReceiptImage = async (element: HTMLElement): Promise<boolean> 
   const pixelRatio = typeof window !== 'undefined' ? Math.max(window.devicePixelRatio || 2, 2) : 2;
   const blob = await toBlob(element, {
     pixelRatio,
-    cacheBust: true,
+    // cacheBust:true 는 URL 에 query 를 붙여 새 요청을 만드는데, S3 가 CORS 헤더를 일관되게
+    // 안 주면 preflight 가 매번 일어나 차단 위험이 커진다. 브라우저 캐시를 활용해 CORS 검증을 줄인다.
+    cacheBust: false,
+    fetchRequestInit: { cache: 'force-cache', mode: 'cors' },
     backgroundColor: '#ffffff',
   });
   if (!blob) throw new Error('영수증 이미지 변환 실패');

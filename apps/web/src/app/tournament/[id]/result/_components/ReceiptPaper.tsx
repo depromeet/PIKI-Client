@@ -1,5 +1,4 @@
 import { Kode_Mono } from 'next/font/google';
-import Image from 'next/image';
 import { forwardRef } from 'react';
 
 import PikiReceiptLogo from '@/assets/images/piki-receipt-logo.svg';
@@ -138,19 +137,28 @@ type ProductCardProps = {
   highlight?: boolean;
 };
 
+/**
+ * 외부 쇼핑몰 이미지 URL 을 Next.js 의 이미지 proxy(`/_next/image`) 경유 URL 로 변환.
+ * 영수증 캡처 시 html-to-image 는 cross-origin 이미지를 캔버스에 그리지 못해 상품 사진만 빠진다.
+ * 동일 origin 으로 가져오면 캔버스 tainted 문제가 해소된다.
+ */
+const toSameOriginImageUrl = (originalUrl: string, width = 120) =>
+  `/_next/image?url=${encodeURIComponent(originalUrl)}&w=${width}&q=75`;
+
 function ProductCard({ product, highlight = false }: ProductCardProps) {
   return (
     <div className="flex items-center gap-3 px-5">
       <div className="relative size-15 shrink-0">
         <div className="size-full overflow-hidden rounded-md bg-gray-50">
           {product.imageUrl && (
-            <Image
-              src={product.imageUrl}
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={toSameOriginImageUrl(product.imageUrl)}
               alt={product.name}
               width={60}
               height={60}
               className="size-full object-cover"
-              unoptimized
+              crossOrigin="anonymous"
             />
           )}
         </div>
