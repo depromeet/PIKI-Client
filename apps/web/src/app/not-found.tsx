@@ -17,7 +17,7 @@ function NotFound() {
       </div>
       <Link
         href={ROUTES.HOME}
-        className="inline-flex cursor-pointer items-center justify-center rounded-[12px] border-[1.2px] border-gray-200 bg-bg-layer-floating px-[18px] py-[10px] body-1-semibold text-text-neutral-primary"
+        className="inline-flex items-center justify-center rounded-xl border-[1.2px] border-gray-200 bg-bg-layer-floating px-4.5 py-2.5 body-1-semibold text-text-neutral-primary"
       >
         홈으로 가기
       </Link>
