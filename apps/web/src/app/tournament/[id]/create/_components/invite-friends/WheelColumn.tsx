@@ -96,6 +96,9 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
   const dragStateRef = useRef<{ startY: number; startScrollTop: number; moved: boolean } | null>(
     null
   );
+  // pointerup 후 발생하는 click 을 차단하기 위한 플래그 — pointerEnd 에서 true,
+  // 그 직후의 click 핸들러에서 한 번 소비하면 false 로 되돌린다.
+  const suppressNextClickRef = useRef(false);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === 'touch') return; // touch 는 native 처리
@@ -126,8 +129,11 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
     if (!state || !el) return;
     if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId);
     const finalScrollTop = el.scrollTop;
+    const wasMoved = state.moved;
     dragStateRef.current = null;
     setIsDragging(false);
+    // 드래그였다면 뒤이어 발생할 click 이벤트를 한 번만 차단해 의도치 않은 점프를 막는다.
+    if (wasMoved) suppressNextClickRef.current = true;
     // 드래그 후 가장 가까운 항목으로 스냅 + 즉시 onChange 호출 (디바운스 의존 X).
     const nextIndex = Math.round(finalScrollTop / itemHeight);
     const clamped = Math.max(0, Math.min(items.length - 1, nextIndex));
@@ -138,10 +144,10 @@ const WheelColumn = forwardRef<WheelColumnHandleT, WheelColumnProps>(function Wh
     }
   };
 
-  /** 드래그 직후 발생하는 click 이벤트 차단 (드래그 종료를 click 으로 오해하지 않도록). */
+  /** 드래그 직후 발생하는 click 이벤트 차단 (pointerup 의 suppress 플래그를 한 번만 소비). */
   const handleItemMouseClick = (event: React.MouseEvent<HTMLDivElement>, index: number) => {
-    const state = dragStateRef.current;
-    if (state?.moved) {
+    if (suppressNextClickRef.current) {
+      suppressNextClickRef.current = false;
       event.preventDefault();
       return;
     }
