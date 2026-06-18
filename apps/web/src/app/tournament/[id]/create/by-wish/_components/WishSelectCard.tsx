@@ -16,7 +16,7 @@ function WishSelectCard({ name, price, imageUrl, isSelected, onSelect }: WishSel
       type="button"
       onClick={onSelect}
       aria-pressed={isSelected}
-      className="relative h-full w-full text-left"
+      className="relative h-full w-full cursor-pointer text-left"
     >
       <WishCard name={name} price={price} imageUrl={imageUrl} />
       <span className="pointer-events-none absolute top-3 left-3 z-10 size-6">

@@ -32,7 +32,7 @@ function WishGrid({ items, isDeleteMode = false, selectedIds, onToggleSelect }: 
               type="button"
               onClick={() => onToggleSelect?.(item.id)}
               aria-pressed={isSelected}
-              className="relative text-left transition-opacity active:opacity-80"
+              className="relative cursor-pointer text-left transition-opacity active:opacity-80"
             >
               <WishCard name={item.name} price={item.price} imageUrl={item.imageUrl} />
               <span className="pointer-events-none absolute top-3 left-3 z-10 size-6">
