@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Dialog } from '@/components/dialog';
 import GetItemDialogContent from '@/components/get-item-dialog';
@@ -17,6 +17,7 @@ import { useCountdown } from '../_hooks/useCountdown';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
 import DepositClosedDialog from './deposit-closed-dialog/DepositClosedDialog';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
+import OwnerStartedDialog from './owner-started-dialog/OwnerStartedDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
 import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
@@ -110,6 +111,33 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
     if (!open) setHasDismissedDepositClosed(true);
   };
 
+  // 참여자에게 노출되는 "주최자가 토너먼트를 시작했어요!" 모달.
+  // SSE(TOURNAMENT_STARTED) 또는 폴링으로 ownerStarted 가 false→true 로 바뀌는 순간 자동 오픈.
+  // 사용자가 닫거나 시작하면 다시 띄우지 않는다.
+  const [isOwnerStartedDialogOpen, setIsOwnerStartedDialogOpen] = useState(false);
+  const [hasDismissedOwnerStarted, setHasDismissedOwnerStarted] = useState(false);
+  const prevOwnerStartedRef = useRef(ownerStarted);
+
+  useEffect(() => {
+    const wasNotStarted = !prevOwnerStartedRef.current;
+    prevOwnerStartedRef.current = ownerStarted;
+    if (!isParticipant) return;
+    if (wasNotStarted && ownerStarted && !hasDismissedOwnerStarted) {
+      setIsOwnerStartedDialogOpen(true);
+    }
+  }, [ownerStarted, isParticipant, hasDismissedOwnerStarted]);
+
+  const handleStartFromOwnerStarted = () => {
+    setIsOwnerStartedDialogOpen(false);
+    setHasDismissedOwnerStarted(true);
+    postTournamentStartMutation();
+  };
+
+  const handleOwnerStartedOpenChange = (open: boolean) => {
+    setIsOwnerStartedDialogOpen(open);
+    if (!open) setHasDismissedOwnerStarted(true);
+  };
+
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
@@ -163,6 +191,13 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         open={isDepositClosedDialogOpen}
         onOpenChange={handleDepositClosedOpenChange}
         onStart={handleStartFromDepositClosed}
+        itemCount={itemCount}
+      />
+
+      <OwnerStartedDialog
+        open={isOwnerStartedDialogOpen}
+        onOpenChange={handleOwnerStartedOpenChange}
+        onStart={handleStartFromOwnerStarted}
         itemCount={itemCount}
       />
 
