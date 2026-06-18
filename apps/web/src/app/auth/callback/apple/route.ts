@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.redirect(loginUrl, { status: 302 });
     }
 
-    const redirect = NextResponse.redirect(new URL('/home', request.url));
+    const redirect = NextResponse.redirect(new URL('/home', request.url), { status: 302 });
 
     const cookies = apiResponse.headers.getSetCookie?.() ?? [];
     cookies.forEach(cookie => redirect.headers.append('set-cookie', cookie));
