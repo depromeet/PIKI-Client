@@ -74,7 +74,7 @@ async function RootLayout({
       <body className="h-full overflow-hidden">
         <Providers>
           {/** TEMP: max width 임시 값 */}
-          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto pb-[max(env(safe-area-inset-bottom),0px)] [scrollbar-gutter:stable]">
+          <div className="mx-auto hide-scrollbar h-full max-w-120 overflow-y-auto [scrollbar-gutter:stable]">
             {children}
           </div>
         </Providers>
