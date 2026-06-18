@@ -2,16 +2,15 @@
 
 import { useState } from 'react';
 
-import { EditIconFill } from '@/assets/icons';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Input from '@/components/input';
 import Spacing from '@/components/spacing';
 import type { ItemStatusT } from '@/types/item';
-import { cn } from '@/utils/cn';
 import formatPrice from '@/utils/formatPrice';
 
 import { useDeleteTournamentItem } from '../../../_common/_hooks/useDeleteTournamentItem';
+import { usePatchTournamentItem } from '../_hooks/usePatchTournamentItem';
 import ItemImageSection from './ItemImageSection';
 
 type ItemEditFormProps = {
@@ -42,6 +41,10 @@ function ItemEditForm({
   const [price, setPrice] = useState(initialPriceFormatted);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
+  const { patchTournamentItemMutation, isPatchTournamentItemPending } = usePatchTournamentItem(
+    tournamentId,
+    tournamentItemId
+  );
   const { deleteTournamentItemMutation, isDeleteTournamentItemPending } = useDeleteTournamentItem(
     tournamentId,
     tournamentItemId
@@ -50,16 +53,20 @@ function ItemEditForm({
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
 
-  const isValid = trimmedName.length > 0 && parsedPrice > 0;
+  const isValid = trimmedName.length > 0 && parsedPrice > 0 && selectedImage !== null;
 
   const handleSave = () => {
     const isChanged =
       trimmedName !== initialName.trim() ||
       formatPrice(price) !== initialPriceFormatted ||
       selectedImage !== null;
-    if (!isChanged) return;
+    if (!isChanged || isPatchTournamentItemPending || !selectedImage) return;
 
-    // onSubmit({ name: trimmedName, price: parsedPrice });
+    patchTournamentItemMutation({
+      name: trimmedName,
+      currentPrice: parsedPrice,
+      image: selectedImage,
+    });
   };
 
   const handleDelete = () => {
@@ -70,7 +77,11 @@ function ItemEditForm({
 
   return (
     <>
-      <ItemImageSection imageUrl={initialImageUrl} onImageSelect={setSelectedImage} />
+      <ItemImageSection
+        imageUrl={initialImageUrl}
+        onImageSelect={setSelectedImage}
+        disabled={itemStatus === 'READY'}
+      />
 
       <Spacing size={24} />
 
@@ -82,7 +93,7 @@ function ItemEditForm({
           onChange={event => setName(event.target.value)}
           maxLength={50}
           autoCorrect="off"
-          right={itemStatus === 'READY' ? <EditIconFill className="size-5" /> : null}
+          disabled={itemStatus === 'READY'}
         />
         <Input
           label="가격"
@@ -93,17 +104,12 @@ function ItemEditForm({
           onBlur={() => setPrice(prev => formatPrice(prev))}
           inputMode="numeric"
           autoCorrect="off"
-          right={itemStatus === 'READY' ? <EditIconFill className="size-5" /> : null}
+          disabled={itemStatus === 'READY'}
         />
       </div>
 
-      <BottomCta
-        className={cn(
-          'py-3',
-          itemStatus === 'FAILED' ? 'bg-bg-layer-basement' : 'bg-bg-layer-default'
-        )}
-      >
-        {itemStatus === 'READY' && (
+      {itemStatus === 'FAILED' && (
+        <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="secondary"
             size="lg"
@@ -113,17 +119,18 @@ function ItemEditForm({
           >
             삭제하기
           </Button>
-        )}
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={handleSave}
-          disabled={isDeleteTournamentItemPending || !isValid}
-          className="flex-1"
-        >
-          {itemStatus === 'FAILED' ? '저장하기' : '확인'}
-        </Button>
-      </BottomCta>
+          <Button
+            variant="primary"
+            size="lg"
+            isLoading={isPatchTournamentItemPending}
+            disabled={isDeleteTournamentItemPending || !isValid}
+            className="flex-1"
+            onClick={handleSave}
+          >
+            저장하기
+          </Button>
+        </BottomCta>
+      )}
     </>
   );
 }

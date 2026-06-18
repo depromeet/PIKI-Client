@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { EditIconFill } from '@/assets/icons';
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
 import Input from '@/components/input';
@@ -12,6 +11,7 @@ import formatPrice from '@/utils/formatPrice';
 
 import { useDeleteWish } from '../_hooks/useDeleteWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
+import { usePostWishRefresh } from '../_hooks/usePostWishRefresh';
 import ItemImageSection from './ItemImageSection';
 
 type ItemEditFormProps = {
@@ -42,35 +42,48 @@ function ItemEditForm({
 
   const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId);
   const { deleteWishMutation, isDeleteWishPending } = useDeleteWish(wishId);
+  const { postWishRefreshMutation, isPostWishRefreshPending } = usePostWishRefresh(wishId);
+
+  const isReadyActionPending = isDeleteWishPending || isPostWishRefreshPending;
 
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
 
-  const isValid = trimmedName.length > 0 && parsedPrice > 0;
+  const isValid = trimmedName.length > 0 && parsedPrice > 0 && selectedImage !== null;
 
   const handleSave = () => {
     const isChanged =
       trimmedName !== initialName.trim() ||
       formatPrice(price) !== initialPriceFormatted ||
       selectedImage !== null;
-    if (!isChanged || isPatchWishPending) return;
+    if (!isChanged || isPatchWishPending || !selectedImage) return;
 
     patchWishMutation({
       name: trimmedName,
       currentPrice: parsedPrice,
-      ...(selectedImage ? { image: selectedImage } : {}), // TODO: url로 보내야함
+      image: selectedImage,
     });
   };
 
   const handleDelete = () => {
-    if (isDeleteWishPending) return;
+    if (isReadyActionPending) return;
 
     deleteWishMutation();
   };
 
+  const handleRefresh = () => {
+    if (isReadyActionPending) return;
+
+    postWishRefreshMutation();
+  };
+
   return (
     <>
-      <ItemImageSection imageUrl={initialImageUrl} onImageSelect={setSelectedImage} />
+      <ItemImageSection
+        imageUrl={initialImageUrl}
+        onImageSelect={setSelectedImage}
+        disabled={itemStatus === 'READY'}
+      />
 
       <Spacing size={24} />
 
@@ -82,7 +95,7 @@ function ItemEditForm({
           onChange={event => setName(event.target.value)}
           maxLength={50}
           autoCorrect="off"
-          right={itemStatus === 'READY' ? <EditIconFill className="size-5" /> : null}
+          disabled={itemStatus === 'READY'}
         />
         <Input
           label="가격"
@@ -93,33 +106,50 @@ function ItemEditForm({
           onBlur={() => setPrice(prev => formatPrice(prev))}
           inputMode="numeric"
           autoCorrect="off"
-          right={itemStatus === 'READY' ? <EditIconFill className="size-5" /> : null}
+          disabled={itemStatus === 'READY'}
         />
       </div>
 
-      <BottomCta className="bg-bg-layer-basement py-3">
-        {itemStatus === 'READY' && (
+      {itemStatus === 'READY' && (
+        <BottomCta className="bg-bg-layer-basement py-3">
           <Button
             variant="secondary"
             size="lg"
             className="flex-1"
             isLoading={isDeleteWishPending}
+            disabled={isPostWishRefreshPending}
             onClick={handleDelete}
           >
             삭제하기
           </Button>
-        )}
-        <Button
-          variant="primary"
-          size="lg"
-          isLoading={isPatchWishPending}
-          disabled={isDeleteWishPending || !isValid}
-          className="flex-1"
-          onClick={handleSave}
-        >
-          저장하기
-        </Button>
-      </BottomCta>
+
+          <Button
+            variant="primary"
+            size="lg"
+            className="flex-1"
+            isLoading={isPostWishRefreshPending}
+            disabled={isDeleteWishPending}
+            onClick={handleRefresh}
+          >
+            다시 불러오기
+          </Button>
+        </BottomCta>
+      )}
+
+      {itemStatus === 'FAILED' && (
+        <BottomCta className="bg-bg-layer-basement py-3">
+          <Button
+            variant="primary"
+            size="lg"
+            isLoading={isPatchWishPending}
+            disabled={isDeleteWishPending || !isValid}
+            className="flex-1"
+            onClick={handleSave}
+          >
+            저장하기
+          </Button>
+        </BottomCta>
+      )}
     </>
   );
 }

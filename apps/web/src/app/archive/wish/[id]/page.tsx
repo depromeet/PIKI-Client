@@ -33,19 +33,16 @@ async function WishEditPage({ params }: WishEditPageProps) {
     if (isAxiosError<ApiErrorResponseT>(state.error) && state.error.response) {
       const { status } = state.error.response;
 
-      /** 토너먼트 권한 없는 경우 */
+      /** 게스트인 경우 */
       if (status === 403) redirect(ROUTES.HOME);
-      /** 토너먼트 or 토너먼트 아이템이 존재하지 않는 경우 */ else if (status === 404)
-        redirect(ROUTES.ARCHIVE('wish'));
+      /** 위시가 존재하지 않는 경우 */ else if (status === 404) redirect(ROUTES.ARCHIVE('wish'));
     }
   }
 
   /** 아직 PROCESSING 상태인 경우에는 접근 불가 */
   const wishData = queryClient.getQueryData<GetWishResponseT>(GET_WISH_QUERY_KEY);
-  if (wishData?.item.status === 'PROCESSING') {
-    // TEMP: 아직 PROCESSING 일 때 어떻게 처리해야하는지 정해지지 않았음
+  if (wishData?.item.status === 'PROCESSING' || wishData?.item.status === 'PENDING')
     redirect(ROUTES.ARCHIVE());
-  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
