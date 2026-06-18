@@ -58,11 +58,11 @@ function TournamentItemBasketCarousel({
 
   /** 초기 이미지 위치 틀어짐 방지 */
   useLayoutEffect(() => {
-    if (!carouselApi) return;
+    if (!carouselApi || !isCarouselEnabled) return;
 
     carouselApi.reInit();
     carouselApi.scrollTo(carouselApi.selectedScrollSnap(), true);
-  }, [carouselApi, activeBasketCount]);
+  }, [carouselApi, activeBasketCount, isCarouselEnabled]);
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -90,7 +90,9 @@ function TournamentItemBasketCarousel({
   const gap = isCarouselEnabled ? 16 : 0;
   let basketMaxHeight: number | undefined;
   if (containerHeight) {
-    basketMaxHeight = containerHeight - (indicatorHeight ?? 0) - gap;
+    basketMaxHeight = isCarouselEnabled
+      ? containerHeight - (indicatorHeight ?? 0) - gap
+      : containerHeight;
   }
 
   if (!isCarouselEnabled) {
