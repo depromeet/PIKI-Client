@@ -5,13 +5,18 @@ export async function POST(request: NextRequest) {
   const code = formData.get('code') as string | null;
   const state = formData.get('state') as string | null;
 
+  console.error('[Apple Callback] formData', { hasCode: !!code, hasState: !!state });
+
   const loginUrl = new URL('/login', request.url);
 
   if (!code || !state) {
+    console.error('[Apple Callback] missing code or state');
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 
   const redirectUri = `${request.nextUrl.origin}/auth/callback/apple`;
+
+  console.error('[Apple Callback] redirectUri', redirectUri);
 
   try {
     const apiResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login/apple`, {
@@ -21,6 +26,8 @@ export async function POST(request: NextRequest) {
     });
 
     if (!apiResponse.ok) {
+      const errorText = await apiResponse.text();
+      console.error('[Apple Callback] backend failed', { status: apiResponse.status, body: errorText });
       return NextResponse.redirect(loginUrl, { status: 302 });
     }
 
@@ -30,7 +37,8 @@ export async function POST(request: NextRequest) {
     cookies.forEach(cookie => redirect.headers.append('set-cookie', cookie));
 
     return redirect;
-  } catch {
+  } catch (e) {
+    console.error('[Apple Callback] exception', e);
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 }
