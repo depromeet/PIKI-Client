@@ -82,7 +82,12 @@ function TournamentItemBasket({
                     key={item.tournamentItemId}
                     href={ROUTES.TOURNAMENT_ITEM_EDIT(tournamentId, item.tournamentItemId)}
                   >
-                    <TournamentBasketItem key={item.tournamentItemId} item={item} index={index} />
+                    <TournamentBasketItem
+                      key={item.tournamentItemId}
+                      item={item}
+                      index={index}
+                      participantImageMap={participantImageMap}
+                    />
                   </Link>
                 );
               }
@@ -93,6 +98,7 @@ function TournamentItemBasket({
                   item={item}
                   index={index}
                   onClick={() => handleItemClick(item)}
+                  participantImageMap={participantImageMap}
                 />
               );
             })}
