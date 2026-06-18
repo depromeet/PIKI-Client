@@ -11,7 +11,7 @@ type WishlistLayoutProps = {
 function WishlistLayout({ children }: WishlistLayoutProps) {
   return (
     <div className="flex min-h-dvh flex-col bg-bg-layer-basement px-5">
-      <div className="sticky top-0 z-10 inline-flex w-full flex-col items-start gap-5 bg-bg-layer-basement pt-padding-top pb-6">
+      <div className="sticky top-0 z-20 inline-flex w-full flex-col items-start gap-5 bg-bg-layer-basement pt-padding-top pb-6">
         <div className="flex w-full flex-col gap-[5px]">
           <Header
             right={
