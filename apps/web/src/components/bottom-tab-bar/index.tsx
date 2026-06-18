@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 import { usePathname, useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
@@ -17,15 +17,15 @@ const TABS = [
 function BottomTabBar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   return (
     <>
-      {mounted && createPortal(
+      {isClient && createPortal(
         <div
           className="fixed bottom-0 left-1/2 z-10 h-[240px] w-full max-w-120 -translate-x-1/2 pointer-events-none"
           style={{
