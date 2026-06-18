@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   WISHLISTS: '/api/v1/wishlists',
   WISHLIST: (id: number) => `/api/v1/wishlists/${id}`,
   WISH_OCR: '/api/v1/wishlists/images',
+  WISHLIST_REFRESH: (id: number) => `/api/v1/wishlists/${id}/refresh`,
 
   /** 토너먼트 */
   TOURNAMENTS: '/api/v1/tournaments',

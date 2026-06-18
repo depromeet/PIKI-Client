@@ -11,6 +11,7 @@ import formatPrice from '@/utils/formatPrice';
 
 import { useDeleteWish } from '../_hooks/useDeleteWish';
 import { usePatchWish } from '../_hooks/usePatchWish';
+import { usePostWishRefresh } from '../_hooks/usePostWishRefresh';
 import ItemImageSection from './ItemImageSection';
 
 type ItemEditFormProps = {
@@ -41,6 +42,7 @@ function ItemEditForm({
 
   const { patchWishMutation, isPatchWishPending } = usePatchWish(wishId);
   const { deleteWishMutation, isDeleteWishPending } = useDeleteWish(wishId);
+  const { postWishRefreshMutation, isPostWishRefreshPending } = usePostWishRefresh(wishId);
 
   const trimmedName = name.trim();
   const parsedPrice = parsePriceToNumber(price);
@@ -65,6 +67,12 @@ function ItemEditForm({
     if (isDeleteWishPending) return;
 
     deleteWishMutation();
+  };
+
+  const handleRefresh = () => {
+    if (isPostWishRefreshPending) return;
+
+    postWishRefreshMutation();
   };
 
   return (
@@ -116,8 +124,8 @@ function ItemEditForm({
             variant="primary"
             size="lg"
             className="flex-1"
-            isLoading={isDeleteWishPending}
-            onClick={handleDelete}
+            isLoading={isPostWishRefreshPending}
+            onClick={handleRefresh}
           >
             다시 불러오기
           </Button>
