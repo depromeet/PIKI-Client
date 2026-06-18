@@ -6,7 +6,6 @@ import { toast } from 'sonner';
 import { postWishLink } from '@/apis/postWishLink';
 import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
-import { getLoginPath } from '@/utils/loginRedirect';
 
 export const usePostWishLink = () => {
   const router = useRouter();
@@ -26,15 +25,18 @@ export const usePostWishLink = () => {
     onError: error => {
       if (!isAxiosError<ApiErrorResponseT>(error) || !error.response) return;
 
-      /**
-       * 400: 이미지 개수/형식/크기 초과
-       * 403: 게스트인 경우
-       */
-      if (error.response.status === 400) toast.error(error.response.data.detail);
-      else if (error.response.status === 403) {
-        toast.error(error.response.data.detail);
-        router.replace(getLoginPath(`${window.location.pathname}${window.location.search}`));
+      const {
+        status,
+        data: { detail },
+      } = error.response;
+
+      if (status < 500) {
+        const clientErrorMessage = detail ?? '요청을 처리하지 못했습니다.';
+        toast.error(clientErrorMessage);
+        return;
       }
+
+      throw error;
     },
   });
 

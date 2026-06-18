@@ -26,7 +26,10 @@ export const usePostTournamentItemLink = (tournamentId: number) => {
         if (status < 500) {
           const clientErrorMessage = detail ?? '요청을 처리하지 못했습니다.';
           toast.error(clientErrorMessage);
+          return;
         }
+
+        throw error;
       },
     });
 
