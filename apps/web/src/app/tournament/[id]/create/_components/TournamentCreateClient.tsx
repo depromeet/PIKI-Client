@@ -13,8 +13,11 @@ import { hasParsingItems } from '@/utils/item';
 import { type JoinConfirmPayloadT, consumeJoinConfirmFor } from '../../../join/_utils/joinSession';
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
 import { useCountdown } from '../_hooks/useCountdown';
+import { usePostTournamentStart } from '../_hooks/usePostTournamentStart';
 import { useScrollToLast } from '../_hooks/useScrollToLast';
+import DepositClosedDialog from './deposit-closed-dialog/DepositClosedDialog';
 import MemberJoinConfirmDialog from './member-join-confirm-dialog/MemberJoinConfirmDialog';
+import OwnerStartedDialog from './owner-started-dialog/OwnerStartedDialog';
 import ParticipantPanel from './participant-panel/ParticipantPanel';
 import TournamentHeader from './tournament-header/TournamentHeader';
 import TournamentItemBasketStatus from './tournament-item-basket-status/TournamentItemBasketStatus';
@@ -85,6 +88,57 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
     action: QUERY_ACTION.VALUE.WELCOME_JOIN,
   });
 
+  // 담기 마감 직후 주최자에게 노출되는 자동 안내 모달.
+  // 만료 시점에 자동 오픈, 사용자가 닫으면 다시 띄우지 않는다.
+  const [isDepositClosedDialogOpen, setIsDepositClosedDialogOpen] = useState(false);
+  const [hasDismissedDepositClosed, setHasDismissedDepositClosed] = useState(false);
+  const shouldShowDepositClosedDialog =
+    tournamentData.isOwner && !ownerStarted && isExpired && !hasDismissedDepositClosed;
+  if (shouldShowDepositClosedDialog && !isDepositClosedDialogOpen) {
+    setIsDepositClosedDialogOpen(true);
+  }
+  const { postTournamentStartMutation, isPostTournamentStartPending } =
+    usePostTournamentStart(tournamentId);
+  const itemCount = pending?.items.length ?? 0;
+
+  const handleStartFromDepositClosed = () => {
+    if (isPostTournamentStartPending) return;
+    setIsDepositClosedDialogOpen(false);
+    setHasDismissedDepositClosed(true);
+    postTournamentStartMutation();
+  };
+
+  const handleDepositClosedOpenChange = (open: boolean) => {
+    setIsDepositClosedDialogOpen(open);
+    if (!open) setHasDismissedDepositClosed(true);
+  };
+
+  // 참여자에게 노출되는 "주최자가 토너먼트를 시작했어요!" 모달.
+  // SSE(TOURNAMENT_STARTED) 또는 폴링으로 ownerStarted 가 false→true 로 바뀌는 순간 자동 오픈.
+  // 사용자가 닫거나 시작하면 다시 띄우지 않는다.
+  // React 공식 권장: 이전 값을 state 로 보관해 렌더 중 비교 → effect 불필요.
+  const [isOwnerStartedDialogOpen, setIsOwnerStartedDialogOpen] = useState(false);
+  const [hasDismissedOwnerStarted, setHasDismissedOwnerStarted] = useState(false);
+  const [prevOwnerStarted, setPrevOwnerStarted] = useState(ownerStarted);
+  if (prevOwnerStarted !== ownerStarted) {
+    setPrevOwnerStarted(ownerStarted);
+    if (isParticipant && !prevOwnerStarted && ownerStarted && !hasDismissedOwnerStarted) {
+      setIsOwnerStartedDialogOpen(true);
+    }
+  }
+
+  const handleStartFromOwnerStarted = () => {
+    if (isPostTournamentStartPending) return;
+    setIsOwnerStartedDialogOpen(false);
+    setHasDismissedOwnerStarted(true);
+    postTournamentStartMutation();
+  };
+
+  const handleOwnerStartedOpenChange = (open: boolean) => {
+    setIsOwnerStartedDialogOpen(open);
+    if (!open) setHasDismissedOwnerStarted(true);
+  };
+
   const handleCloseConfirm = () => setConfirmPayload(null);
 
   return (
@@ -133,6 +187,22 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
       <Dialog open={isGetItemDialogOpen} onOpenChange={setIsGetItemDialogOpen}>
         <GetItemDialogContent type="tournament" />
       </Dialog>
+
+      <DepositClosedDialog
+        open={isDepositClosedDialogOpen}
+        onOpenChange={handleDepositClosedOpenChange}
+        onStart={handleStartFromDepositClosed}
+        itemCount={itemCount}
+        isPending={isPostTournamentStartPending}
+      />
+
+      <OwnerStartedDialog
+        open={isOwnerStartedDialogOpen}
+        onOpenChange={handleOwnerStartedOpenChange}
+        onStart={handleStartFromOwnerStarted}
+        itemCount={itemCount}
+        isPending={isPostTournamentStartPending}
+      />
 
       {isWelcomeOpen && (
         <WelcomeJoinDialog

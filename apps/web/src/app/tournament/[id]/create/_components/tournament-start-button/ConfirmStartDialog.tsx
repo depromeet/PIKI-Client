@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
 
 import ConfirmStartFace from '../../_assets/confirm-start-face.svg';
@@ -30,20 +31,12 @@ function ConfirmStartDialog({ open, onOpenChange, onConfirm }: ConfirmStartDialo
         </div>
 
         <div className="flex w-full gap-2">
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="flex h-13 flex-1 cursor-pointer items-center justify-center rounded-xl border border-border-neutral-muted bg-bg-layer-default body-1-semibold text-text-neutral-primary"
-          >
+          <Button variant="secondary" size="lg" onClick={handleCancel}>
             돌아가기
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className="flex h-13 flex-1 cursor-pointer items-center justify-center rounded-xl bg-bg-neutral-primary body-1-semibold text-text-neutral-inverse"
-          >
+          </Button>
+          <Button variant="primary" size="lg" onClick={onConfirm}>
             바로 시작할래요
-          </button>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
