@@ -23,7 +23,7 @@ function TournamentLoadingPage() {
   }, [router, tournamentId]);
 
   return (
-    <main className="flex min-h-dvh flex-col pt-6 pb-6">
+    <main className="flex min-h-dvh flex-col justify-center px-5 pt-padding-top pb-6">
       <header className="flex flex-col gap-2 text-center tracking-[-0.6px]">
         <h1 className="text-[24px] leading-8 font-bold text-text-neutral-primary">
           대진표 만드는 중...
@@ -33,7 +33,7 @@ function TournamentLoadingPage() {
         </p>
       </header>
 
-      <div className="mt-15">
+      <div className="mt-11">
         <LoadingBar />
       </div>
 
