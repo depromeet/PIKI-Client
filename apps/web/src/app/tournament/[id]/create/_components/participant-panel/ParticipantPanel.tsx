@@ -45,7 +45,9 @@ function ParticipantPanel({
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 
   const hasFriends = participants.length > 1;
-  const users = participants.map(p => p.user);
+  const profileImageUrls = participants.flatMap(({ user }) =>
+    user.imageUrl ? [user.imageUrl] : []
+  );
   const inviteUrl = inviteCode ? buildInviteUrl(tournamentId, inviteCode) : '';
 
   const handleToggleExpand = () => setIsExpanded(prev => !prev);
@@ -72,7 +74,7 @@ function ParticipantPanel({
                     <DepositCountdown deadline={depositDeadline} showLabel={false} />
                   </div>
                 ) : (
-                  <UserProfileGroup users={users} max={3} />
+                  <UserProfileGroup profileImageUrls={profileImageUrls} max={3} />
                 )}
                 <p className="truncate body-1-semibold text-text-neutral-secondary">
                   {participants.length}명이 함께 담는 중
@@ -112,12 +114,13 @@ function ParticipantPanel({
         >
           <div className="flex min-w-0 items-center gap-4">
             <div className="flex items-center">
-              <UserProfileGroup users={users} max={1} />
+              <UserProfileGroup profileImageUrls={profileImageUrls} max={1} />
               {Array.from({ length: PLACEHOLDER_AVATAR_COUNT }).map((_, index) => (
                 <span
                   key={index}
                   aria-hidden
-                  className="-ml-2 inline-flex size-6.75 items-center justify-center rounded-full border-[1.6px] border-white bg-gray-50 body-2-semibold text-text-neutral-tertiary"
+                  className="-ml-2 inline-flex size-6.75 items-center justify-center rounded-full border-[1.6px] border-white bg-gray-50 body-2-semibold text-text-neutral-tertiary relative"
+                  style={{ zIndex: index + 1 }}
                 >
                   ?
                 </span>

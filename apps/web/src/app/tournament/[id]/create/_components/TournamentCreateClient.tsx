@@ -56,15 +56,11 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
   // 단, 주최자는 만료 영향 없이 본인 토너먼트에 후보를 담을 수 있다.
   // ownerStarted 면 어차피 시작 흐름으로 넘어가야 하므로 마감 처리하지 않는다.
   const isDepositClosed = !tournamentData.isOwner && !ownerStarted && isExpired;
-  // 비회원(GUEST) 은 서버가 dicebear 자동 아바타를 내려주는데,
-  // 우리 디자인상 비회원은 기본 SVG 프로필을 노출해야 하므로 무시한다.
-  const isGeneratedAvatar = (url: string) => url.includes('api.dicebear.com');
   const participants = (pending?.participants ?? []).map(p => ({
     user: {
       id: p.userId,
       name: p.nickname,
-      profileType: 'blue' as const,
-      ...(isGeneratedAvatar(p.profileImage) ? {} : { imageUrl: p.profileImage }),
+      imageUrl: p.profileImage,
     },
     itemCount: p.itemCount,
   }));
@@ -155,7 +151,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         </div>
       </div>
 
-      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col gap-5">
+      <div className="mt-[3dvh] flex min-h-0 flex-1 flex-col">
         <TournamentItemBasketCarousel
           items={pending?.items}
           scrollToLast={scrollToLast}
@@ -169,7 +165,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(6dvh)]">
+      <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(3dvh)]">
         <TournamentStartButton
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
