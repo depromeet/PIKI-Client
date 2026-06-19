@@ -22,9 +22,7 @@ export const logAnalyticsEvent = async (name: string, params?: AnalyticsEventPar
 
 /** 앱 진입 시 한 번 호출 — Firebase 가 활성 사용자 / 세션을 집계할 때 사용한다. */
 export const logAppOpenEvent = async () => {
-  try {
-    await analytics().logAppOpen();
-  } catch (error) {
-    console.warn('[analytics] logAppOpen 실패', error);
-  }
+  // v22+ 에서 logAppOpen() namespaced API 가 deprecated 되어 modular logEvent 로 호출.
+  // GA4 권장 reserved event 명 'app_open' 을 그대로 쓰면 Firebase 가 동일하게 집계.
+  await logAnalyticsEvent('app_open');
 };
