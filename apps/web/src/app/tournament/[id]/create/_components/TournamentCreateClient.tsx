@@ -155,7 +155,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         </div>
       </div>
 
-      <div className="mt-[5.9dvh] flex min-h-0 flex-1 flex-col gap-5">
+      <div className="mt-[3dvh] flex min-h-0 flex-1 flex-col">
         <TournamentItemBasketCarousel
           items={pending?.items}
           scrollToLast={scrollToLast}
@@ -169,7 +169,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         />
       </div>
 
-      <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(6dvh)]">
+      <div className="flex shrink-0 flex-col gap-3 px-5 pt-[max(3dvh)]">
         <TournamentStartButton
           count={pending?.items.length ?? 0}
           tournamentId={tournamentId}
