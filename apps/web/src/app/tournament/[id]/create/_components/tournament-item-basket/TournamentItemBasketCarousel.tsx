@@ -1,6 +1,7 @@
 'use client';
 
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem } from '@/components/carousel';
 import useContainerHeight from '@/hooks/useContainerHeight';
@@ -34,6 +35,14 @@ function TournamentItemBasketCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const activeBasketCount = useMemo(() => getActiveBasketCount(items.length), [items.length]);
+
+  const prevBasketCountRef = useRef(activeBasketCount);
+  useEffect(() => {
+    if (activeBasketCount > prevBasketCountRef.current) {
+      toast.info('카트가 꽉 찼어요! 새 카트를 만들었어요.');
+    }
+    prevBasketCountRef.current = activeBasketCount;
+  }, [activeBasketCount]);
 
   const prevItemCountRef = useRef(scrollToLast ? 0 : items.length);
 
