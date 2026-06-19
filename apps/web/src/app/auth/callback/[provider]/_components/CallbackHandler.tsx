@@ -61,11 +61,17 @@ function CallbackHandler() {
       return;
     }
 
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (provider === 'apple' && !apiBaseUrl) {
+      router.replace(loginPath);
+      return;
+    }
+
     hasCalled.current = true;
     const redirectUri =
       provider === 'apple'
-        ? `${process.env.NEXT_PUBLIC_API_URL}${ENDPOINTS.AUTH_APPLE_CALLBACK}`
-        : `${window.location.origin}${ROUTES.SOCIAL_LOGIN_CALLBACK(provider)}`;
+        ? new URL(ENDPOINTS.AUTH_APPLE_CALLBACK, `${apiBaseUrl}/`).toString()
+        : new URL(ROUTES.SOCIAL_LOGIN_CALLBACK(provider), window.location.origin).toString();
     postSocialLoginMutation({
       code,
       redirect: loginRedirect,
