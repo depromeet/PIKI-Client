@@ -10,7 +10,7 @@ type UserProfileProps = {
 };
 
 function UserProfile({ user, className }: UserProfileProps) {
-  const SvgComponent = PROFILE_SVG[user.profileType];
+  const SvgComponent = PROFILE_SVG[user.profileType ?? 'blue'];
 
   if (user.imageUrl) {
     return (

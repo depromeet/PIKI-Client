@@ -9,8 +9,7 @@ import { ROUTES } from '@/consts/route';
 import './splash.css';
 
 type LogoTransformT = {
-  x: number;
-  y: number;
+  top: number | string;
   scale: number;
   transition: string;
 };
@@ -29,16 +28,19 @@ const SPLASH_HOLD_MS = 400;
 const SPLASH_FADE_IN_MS = 1500;
 const SPLASH_SHRINK_MS = 700;
 
-const SHRINK_TRANSITION = `left ${SPLASH_SHRINK_MS}ms ease-in-out, top ${SPLASH_SHRINK_MS}ms ease-in-out, transform ${SPLASH_SHRINK_MS}ms ease-in-out`;
+const SHRINK_TRANSITION = `top ${SPLASH_SHRINK_MS}ms ease-in-out, transform ${SPLASH_SHRINK_MS}ms ease-in-out`;
 
 function SplashClient() {
   const router = useRouter();
-  const mainRef = useRef<HTMLElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);
   const hasNavigatedRef = useRef(false);
   const shrinkTimeoutRef = useRef(0);
   const [isBackgroundShifted, setIsBackgroundShifted] = useState(false);
-  const [logoTransform, setLogoTransform] = useState<LogoTransformT | null>(null);
+  const [logoTransform, setLogoTransform] = useState<LogoTransformT>({
+    top: '50%',
+    scale: SPLASH_SCALE,
+    transition: 'none',
+  });
 
   const navigateToLogin = useCallback(() => {
     if (hasNavigatedRef.current) return;
@@ -56,33 +58,9 @@ function SplashClient() {
       return;
     }
 
-    const getSplashCenter = () => {
-      const mainElement = mainRef.current;
-      if (!mainElement) return null;
-
-      const mainRect = mainElement.getBoundingClientRect();
-
-      return {
-        x: mainRect.left + mainRect.width / 2,
-        y: mainRect.top + mainRect.height / 2,
-      };
-    };
-
-    const splashCenter = getSplashCenter();
-    if (splashCenter) {
-      setLogoTransform({
-        x: splashCenter.x,
-        y: splashCenter.y,
-        scale: SPLASH_SCALE,
-        transition: 'none',
-      });
-    }
-
     const startShrink = () => {
       const targetElement = targetRef.current;
-      const currentCenter = getSplashCenter();
-
-      if (!targetElement || !currentCenter) {
+      if (!targetElement) {
         navigateToLogin();
         return;
       }
@@ -91,8 +69,7 @@ function SplashClient() {
 
       /** 축소 시작 전 현재 위치에 스냅 — transition 재적용 시 점프 방지 */
       setLogoTransform({
-        x: currentCenter.x,
-        y: currentCenter.y,
+        top: '50%',
         scale: SPLASH_SCALE,
         transition: 'none',
       });
@@ -101,8 +78,7 @@ function SplashClient() {
         requestAnimationFrame(() => {
           setIsBackgroundShifted(true);
           setLogoTransform({
-            x: targetRect.left + targetRect.width / 2,
-            y: targetRect.top + targetRect.height / 2,
+            top: targetRect.top + targetRect.height / 2,
             scale: 1,
             transition: SHRINK_TRANSITION,
           });
@@ -126,7 +102,6 @@ function SplashClient() {
 
   return (
     <main
-      ref={mainRef}
       className={`relative h-dvh w-full ${isBackgroundShifted ? 'splash-bg-shift bg-gray-50' : 'bg-[#A2DEFF]'}`}
     >
       {/**
@@ -141,19 +116,16 @@ function SplashClient() {
         </div>
       </div>
 
-      {logoTransform ? (
-        <div
-          className="splash-logo fixed z-10"
-          style={{
-            left: logoTransform.x,
-            top: logoTransform.y,
-            transform: `translate(-50%, -50%) scale(${logoTransform.scale})`,
-            transition: logoTransform.transition,
-          }}
-        >
-          <PikiLogo aria-label="PIKI" className="block" />
-        </div>
-      ) : null}
+      <div
+        className="splash-logo fixed left-1/2 z-10"
+        style={{
+          top: logoTransform.top,
+          transform: `translate(-50%, -50%) scale(${logoTransform.scale})`,
+          transition: logoTransform.transition,
+        }}
+      >
+        <PikiLogo aria-label="PIKI" className="block" />
+      </div>
     </main>
   );
 }
