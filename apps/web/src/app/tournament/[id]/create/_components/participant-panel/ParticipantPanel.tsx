@@ -117,7 +117,8 @@ function ParticipantPanel({
                 <span
                   key={index}
                   aria-hidden
-                  className="-ml-2 inline-flex size-6.75 items-center justify-center rounded-full border-[1.6px] border-white bg-gray-50 body-2-semibold text-text-neutral-tertiary"
+                  className="-ml-2 inline-flex size-6.75 items-center justify-center rounded-full border-[1.6px] border-white bg-gray-50 body-2-semibold text-text-neutral-tertiary relative"
+                  style={{ zIndex: index + 1 }}
                 >
                   ?
                 </span>
