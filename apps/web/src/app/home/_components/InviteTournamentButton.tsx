@@ -3,13 +3,18 @@
 import { useState } from 'react';
 
 import { LoginIconOutline } from '@/assets/icons';
+import { ANALYTICS_EVENT } from '@/consts/analytics';
+import { logAnalyticsEvent } from '@/utils/analytics';
 
 import InviteCodeDialog from './invite-code-dialog/InviteCodeDialog';
 
 function InviteTournamentButton() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleOpen = () => setIsOpen(true);
+  const handleOpen = () => {
+    logAnalyticsEvent(ANALYTICS_EVENT.SOCIAL_INVITE_CLICK);
+    setIsOpen(true);
+  };
 
   return (
     <>
