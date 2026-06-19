@@ -6,6 +6,8 @@ import { CheckIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
 import Spinner from '@/components/spinner';
+import { ANALYTICS_EVENT } from '@/consts/analytics';
+import { logAnalyticsEvent } from '@/utils/analytics';
 import { share } from '@/utils/share';
 
 import { usePostPlayLink } from '../../_hooks/usePostPlayLink';
@@ -51,6 +53,10 @@ function PlateShareDialog({
     });
 
     if (result === 'shared' || result === 'copied') {
+      logAnalyticsEvent(ANALYTICS_EVENT.PLAY_LINK_SHARE, {
+        tournament_id: tournamentId,
+        method: result,
+      });
       toast.success('링크를 성공적으로 공유했어요.');
       onOpenChange(false);
       return;

@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+import { ANALYTICS_EVENT } from '@/consts/analytics';
 import { ROUTES } from '@/consts/route';
+import { logAnalyticsEvent } from '@/utils/analytics';
 
 import { postCreateTournament } from '../_apis/postCreateTournament';
 
@@ -13,6 +15,7 @@ export const usePostCreateTournament = () => {
     useMutation({
       mutationFn: postCreateTournament,
       onSuccess: ({ tournamentId }) => {
+        logAnalyticsEvent(ANALYTICS_EVENT.TOURNAMENT_CREATE, { tournament_id: tournamentId });
         // 홈의 진행 중인 토너먼트 리스트 갱신
         queryClient.invalidateQueries({ queryKey: ['tournamentList'] });
         router.push(ROUTES.TOURNAMENT_CREATE(tournamentId));
