@@ -69,13 +69,13 @@ importers:
         version: 6.2.1(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))
       '@react-native-firebase/analytics':
         specifier: ^24.1.1
-        version: 24.1.1(@react-native-firebase/app@24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)
+        version: 24.1.1(@react-native-firebase/app@24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)
       '@react-native-firebase/app':
-        specifier: ^24.1.0
-        version: 24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: ^24.1.1
+        version: 24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@react-native-firebase/messaging':
-        specifier: ^24.1.0
-        version: 24.1.0(@react-native-firebase/app@24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)
+        specifier: ^24.1.1
+        version: 24.1.1(@react-native-firebase/app@24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)
       '@react-native-google-signin/google-signin':
         specifier: ^15.0.0
         version: 15.0.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -2615,8 +2615,8 @@ packages:
       expo:
         optional: true
 
-  '@react-native-firebase/app@24.1.0':
-    resolution: {integrity: sha512-KNzf9MYzyWaog//h0zCJfJwLdd/khP+fb+ZS9xIM6jCnlGLU8RUr9U4j1L2lkrhcVQ24TuZxkKP/Q8bE5ieamA==}
+  '@react-native-firebase/app@24.1.1':
+    resolution: {integrity: sha512-NKCUgBeilQvchHQeKwB6RuE3Ne2AZMlClXjJBVySkCAF2FNO73ML2brqrAyegRkuVswtqHsB6wAgypmP82WnnA==}
     peerDependencies:
       expo: '>=47.0.0'
       react: 19.1.0
@@ -2625,10 +2625,10 @@ packages:
       expo:
         optional: true
 
-  '@react-native-firebase/messaging@24.1.0':
-    resolution: {integrity: sha512-fwE+KF4T6UeMgwqsN1Qi1q1q0Bus2ppknhMgbRX1WpG+XYhIHFLGD1M9Z29p0eVWwrz4cQR6f5I0zCnMXwIItQ==}
+  '@react-native-firebase/messaging@24.1.1':
+    resolution: {integrity: sha512-tMb75+4ehbQshlH+PifbxKbP+pyDgK/dfBIvlFJeDVEAbdaM2nVpMkVyV6s5WJ3WRPUt6v+hyU1P3krQPYhkig==}
     peerDependencies:
-      '@react-native-firebase/app': 24.1.0
+      '@react-native-firebase/app': 24.1.1
       expo: '>=47.0.0'
     peerDependenciesMeta:
       expo:
@@ -10155,14 +10155,14 @@ snapshots:
       invariant: 2.2.4
       react-native: 0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0)
 
-  '@react-native-firebase/analytics@24.1.1(@react-native-firebase/app@24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)':
+  '@react-native-firebase/analytics@24.1.1(@react-native-firebase/app@24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)':
     dependencies:
-      '@react-native-firebase/app': 24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-native-firebase/app': 24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       superstruct: 2.0.2
     optionalDependencies:
       expo: 54.0.33(@babel/core@7.29.0)(@expo/metro-runtime@6.1.2)(expo-router@6.0.23)(graphql@16.14.0)(react-native-webview@13.16.1(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
 
-  '@react-native-firebase/app@24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@react-native-firebase/app@24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       firebase: 12.14.0
       react: 19.1.0
@@ -10172,9 +10172,9 @@ snapshots:
     transitivePeerDependencies:
       - '@react-native-async-storage/async-storage'
 
-  '@react-native-firebase/messaging@24.1.0(@react-native-firebase/app@24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)':
+  '@react-native-firebase/messaging@24.1.1(@react-native-firebase/app@24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(expo@54.0.33)':
     dependencies:
-      '@react-native-firebase/app': 24.1.0(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-native-firebase/app': 24.1.1(expo@54.0.33)(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
     optionalDependencies:
       expo: 54.0.33(@babel/core@7.29.0)(@expo/metro-runtime@6.1.2)(expo-router@6.0.23)(graphql@16.14.0)(react-native-webview@13.16.1(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
 
