@@ -7,7 +7,10 @@ import { toast } from 'sonner';
 import { ENDPOINTS } from '@/consts/api';
 import { ROUTES } from '@/consts/route';
 import { CLIENT_TYPE } from '@/consts/webBridge';
-import type { NotificationSsePayloadT, TournamentItemParsedSsePayloadT } from '@/types/notification';
+import type {
+  NotificationSsePayloadT,
+  TournamentItemParsedSsePayloadT,
+} from '@/types/notification';
 import { getCookie, setCookie } from '@/utils/cookie';
 import { isWebview } from '@/utils/webBridge';
 
@@ -90,8 +93,7 @@ export const useNotificationSSE = (enabled: boolean) => {
               }
               if (isWebview()) {
                 const body = await refreshRes.json();
-                const { access_token: newAccessToken, refresh_token: newRefreshToken } =
-                  body.data;
+                const { access_token: newAccessToken, refresh_token: newRefreshToken } = body.data;
                 if (newAccessToken && newRefreshToken) {
                   setCookie('access_token', newAccessToken, { hours: 1 });
                   setCookie('refresh_token', newRefreshToken, { days: 14 });

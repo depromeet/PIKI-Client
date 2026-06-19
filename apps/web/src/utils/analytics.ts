@@ -26,10 +26,7 @@ type GtagT = (command: 'event', name: string, params?: AnalyticsEventParamsT) =>
  * logAnalyticsEvent(ANALYTICS_EVENT.TOURNAMENT_CREATE, { tournament_id: id });
  * ```
  */
-export const logAnalyticsEvent = (
-  name: AnalyticsEventNameT,
-  params?: AnalyticsEventParamsT
-) => {
+export const logAnalyticsEvent = (name: AnalyticsEventNameT, params?: AnalyticsEventParamsT) => {
   if (isWebview()) {
     WebBridge.postMessage({
       type: WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOG_ANALYTICS_EVENT,
