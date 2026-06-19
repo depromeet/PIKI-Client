@@ -8,9 +8,11 @@ import ReceiptIcon from '@/assets/images/tournament/result/receipt-icon.svg';
 import SmileIcon from '@/assets/images/tournament/result/smile-icon.svg';
 import Button from '@/components/button';
 import { Header, HeaderIcon } from '@/components/header';
+import { ANALYTICS_EVENT } from '@/consts/analytics';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
 import { useQueryAction } from '@/hooks/useQueryAction';
+import { logAnalyticsEvent } from '@/utils/analytics';
 import { cn } from '@/utils/cn';
 
 import { useGetTournament } from '../../_common/_hooks/useGetTournament';
@@ -41,6 +43,16 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     router.replace(ROUTES.TOURNAMENT_MATCH(tournamentId));
   }, [tournamentData.status, router, tournamentId]);
 
+  // COMPLETED 진입 시 GA4 funnel 완료 이벤트.
+  // 같은 인스턴스가 다른 tournamentId 로 재사용되더라도 ID 별로 정확히 1회만 로깅한다.
+  const loggedCompleteForRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (tournamentData.status !== 'COMPLETED') return;
+    if (loggedCompleteForRef.current === tournamentId) return;
+    loggedCompleteForRef.current = tournamentId;
+    logAnalyticsEvent(ANALYTICS_EVENT.TOURNAMENT_COMPLETE, { tournament_id: tournamentId });
+  }, [tournamentData.status, tournamentId]);
+
   const handleShareReceiptImage = useCallback(async () => {
     const element = receiptMachineRef.current?.getReceiptPaperElement();
     if (!element || isCapturingRef.current) return;
@@ -49,6 +61,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     setIsCapturing(true);
     try {
       await shareReceiptImage(element);
+      logAnalyticsEvent(ANALYTICS_EVENT.RECEIPT_SHARE, { tournament_id: tournamentId });
     } catch (error) {
       console.error('[shareReceiptImage]', error);
       toast.error('영수증 이미지를 만들지 못했어요');
@@ -56,7 +69,7 @@ function ResultClient({ tournamentId }: ResultClientProps) {
       isCapturingRef.current = false;
       setIsCapturing(false);
     }
-  }, []);
+  }, [tournamentId]);
 
   // 보관함의 "결과 공유하기" 메뉴에서 진입 시 자동으로 영수증 이미지 공유 시트를 띄운다.
   // 영수증 슬라이드 애니메이션(~2초) 이 끝난 뒤 캡처해야 정상이라 약간 지연.

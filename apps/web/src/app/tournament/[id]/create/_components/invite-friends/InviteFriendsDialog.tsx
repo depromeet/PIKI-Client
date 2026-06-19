@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { CheckIconFill, StopwatchIconFill } from '@/assets/icons/fill';
 import Button from '@/components/button';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/drawer';
+import { ANALYTICS_EVENT } from '@/consts/analytics';
+import { logAnalyticsEvent } from '@/utils/analytics';
 import { parseServerLocalDateTime } from '@/utils/formatDate';
 import { share } from '@/utils/share';
 
@@ -98,6 +100,10 @@ function InviteFriendsDialog({
     });
 
     if (result === 'shared' || result === 'copied') {
+      logAnalyticsEvent(ANALYTICS_EVENT.FRIEND_INVITE_SEND, {
+        tournament_id: tournamentId,
+        method: result,
+      });
       toast.success('링크를 성공적으로 공유했어요.');
     }
     if (result === 'failed') toast.warning('공유에 실패했어요. 다시 시도해주세요.');
