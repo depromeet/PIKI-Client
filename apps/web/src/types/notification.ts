@@ -1,11 +1,18 @@
 export type NotificationTypeT =
   | 'TOURNAMENT_JOINED'
   | 'TOURNAMENT_ITEM_ADDED'
+  | 'TOURNAMENT_ITEM_DELETED'
   | 'TOURNAMENT_STARTED'
   | 'ITEM_PARSING_COMPLETED'
   | 'ITEM_PARSING_FAILED';
 
 export type NotificationKindT = 'WISH' | 'TOURNAMENT';
+
+export type TournamentItemParsedSsePayloadT = {
+  tournamentId: number;
+  tournamentItemId: number;
+  status: 'READY' | 'FAILED';
+};
 
 export type NotificationSsePayloadT = {
   id: number;
