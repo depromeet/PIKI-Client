@@ -12,19 +12,45 @@ const ENV_KEY = 'NEXT_PUBLIC_WEB_VERSION';
 const WEB_APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ENV_PATH = resolve(WEB_APP_ROOT, '.env.local');
 
+/** web-v* 태그 문자열에서 버전 추출 */
+const resolveWebVersion = tag => {
+  if (!tag?.startsWith(WEB_VERSION_TAG_PREFIX)) return null;
+
+  const webVersion = tag.slice(WEB_VERSION_TAG_PREFIX.length);
+  console.log('[WEB VERSION] ', webVersion);
+  return webVersion;
+};
+
 /** 최신 web-v* git 태그에서 버전 문자열 추출. 없으면 null */
 const getWebVersion = () => {
+  if (process.env.VERCEL) {
+    try {
+      execSync('git fetch --tags --force', { stdio: ['pipe', 'pipe', 'ignore'] });
+    } catch {
+      /** remote unavailable */
+    }
+  }
+
   try {
     const tag = execSync(`git describe --tags --match "${WEB_VERSION_TAG_PREFIX}*" --abbrev=0`, {
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'ignore'],
     }).trim();
 
-    if (!tag.startsWith(WEB_VERSION_TAG_PREFIX)) return null;
+    return resolveWebVersion(tag);
+  } catch {
+    /** Vercel shallow clone 등에서 describe 실패 시 tag 목록으로 fallback */
+  }
 
-    const webVersion = tag.slice(WEB_VERSION_TAG_PREFIX.length);
-    console.log('[WEB VERSION] ', webVersion);
-    return webVersion;
+  try {
+    const tag = execSync(`git tag -l "${WEB_VERSION_TAG_PREFIX}*" --sort=-version:refname`, {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'ignore'],
+    })
+      .trim()
+      .split('\n')[0];
+
+    return resolveWebVersion(tag);
   } catch {
     /** git unavailable or no matching tag */
   }
