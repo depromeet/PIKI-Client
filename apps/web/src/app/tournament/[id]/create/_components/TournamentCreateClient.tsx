@@ -187,6 +187,7 @@ function TournamentCreateClient({ tournamentId }: TournamentCreateClientProps) {
         open={isDepositClosedDialogOpen}
         onOpenChange={handleDepositClosedOpenChange}
         onStart={handleStartFromDepositClosed}
+        onContinue={() => handleDepositClosedOpenChange(false)}
         itemCount={itemCount}
         isPending={isPostTournamentStartPending}
       />
