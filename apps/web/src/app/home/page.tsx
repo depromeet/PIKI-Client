@@ -15,8 +15,8 @@ async function HomePage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['tournamentList', []],
-    queryFn: () => getTournamentList(),
+    queryKey: ['tournamentList', ['PENDING', 'IN_PROGRESS']],
+    queryFn: () => getTournamentList(['PENDING', 'IN_PROGRESS']),
   });
 
   return (

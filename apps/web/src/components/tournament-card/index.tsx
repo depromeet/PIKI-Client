@@ -1,6 +1,8 @@
+import Link from 'next/link';
+
 import StatusChip from '@/components/status-chip';
 import UserProfileGroup from '@/components/user-profile-group';
-import type { UserT } from '@/components/user-profile-group/userProfile.const';
+import { ROUTES } from '@/consts/route';
 import type { TournamentStatusT } from '@/types/tournament';
 import { cn } from '@/utils/cn';
 
@@ -11,7 +13,7 @@ type TournamentCardProps = {
   status: TournamentStatusT;
   name: string;
   date: string;
-  users: UserT[];
+  profileImageUrls: string[];
   maxProfiles?: number;
   /** 본인 포함 참여자 수. 2명 이상이면 더보기에 '친구 목록 보기' 메뉴 노출. */
   participantCount?: number;
@@ -23,11 +25,17 @@ function TournamentCard({
   status,
   name,
   date,
-  users,
+  profileImageUrls,
   maxProfiles = 3,
   participantCount,
   className,
 }: TournamentCardProps) {
+  const HREF = {
+    PENDING: ROUTES.TOURNAMENT_CREATE(tournamentId),
+    IN_PROGRESS: ROUTES.TOURNAMENT_MATCH(tournamentId),
+    COMPLETED: ROUTES.TOURNAMENT_RESULT(tournamentId),
+  } as const;
+
   return (
     <article
       className={cn(
@@ -38,7 +46,9 @@ function TournamentCard({
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
           <StatusChip status={status} />
-          <h3 className="heading-1 text-text-neutral-primary">{name}</h3>
+          <Link href={HREF[status]} className="heading-1 text-text-neutral-primary hover:underline">
+            {name}
+          </Link>
         </div>
         <MorePopover
           status={status}
@@ -48,7 +58,7 @@ function TournamentCard({
       </div>
       <div className="flex items-end justify-between">
         <span className="body-2-medium text-text-neutral-tertiary">{date}</span>
-        <UserProfileGroup users={users} max={maxProfiles} />
+        <UserProfileGroup profileImageUrls={profileImageUrls} max={maxProfiles} />
       </div>
     </article>
   );
