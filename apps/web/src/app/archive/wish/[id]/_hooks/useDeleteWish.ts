@@ -16,7 +16,7 @@ export const useDeleteWish = (wishId: number) => {
     mutationFn: () => deleteWish(wishId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlists'] });
-      queryClient.invalidateQueries({ queryKey: ['wish', wishId] });
+      toast.success('위시 상품이 삭제되었습니다.');
       router.replace(ROUTES.ARCHIVE());
     },
     onError: error => {
