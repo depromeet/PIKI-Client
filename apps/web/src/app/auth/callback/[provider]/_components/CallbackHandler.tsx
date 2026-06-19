@@ -5,6 +5,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import Spinner from '@/components/spinner';
+import { ENDPOINTS } from '@/consts/api';
 import { ROUTES } from '@/consts/route';
 import {
   clearLoginRedirectPath,
@@ -60,11 +61,21 @@ function CallbackHandler() {
       return;
     }
 
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (provider === 'apple' && !apiBaseUrl) {
+      router.replace(loginPath);
+      return;
+    }
+
     hasCalled.current = true;
+    const redirectUri =
+      provider === 'apple'
+        ? new URL(ENDPOINTS.AUTH_APPLE_CALLBACK, `${apiBaseUrl}/`).toString()
+        : new URL(ROUTES.SOCIAL_LOGIN_CALLBACK(provider), window.location.origin).toString();
     postSocialLoginMutation({
       code,
       redirect: loginRedirect,
-      redirectUri: `${window.location.origin}${ROUTES.SOCIAL_LOGIN_CALLBACK(provider)}`,
+      redirectUri,
       state,
     });
   }, [isValidProvider, postSocialLoginMutation, provider, router, searchParams]);

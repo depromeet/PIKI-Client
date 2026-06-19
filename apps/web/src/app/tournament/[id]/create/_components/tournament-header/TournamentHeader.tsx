@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Header, HeaderIcon } from '@/components/header';
+import { ROUTES } from '@/consts/route';
 
 import ConfirmExitDialog from './ConfirmExitDialog';
 import TournamentGuidePopover from './TournamentGuidePopover';
@@ -22,7 +23,7 @@ function TournamentHeader({ name, hasFriends }: TournamentHeaderProps) {
       setIsExitConfirmOpen(true);
       return;
     }
-    router.back();
+    router.push(ROUTES.HOME);
   };
 
   const handleConfirmExit = () => {
