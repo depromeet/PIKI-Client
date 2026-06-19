@@ -43,13 +43,15 @@ function ResultClient({ tournamentId }: ResultClientProps) {
     router.replace(ROUTES.TOURNAMENT_MATCH(tournamentId));
   }, [tournamentData.status, router, tournamentId]);
 
-  // 결과 페이지 첫 진입 시 한 번 — GA4 funnel 완료 이벤트.
+  // COMPLETED 진입 시 GA4 funnel 완료 이벤트.
+  // 같은 인스턴스가 다른 tournamentId 로 재사용되더라도 ID 별로 정확히 1회만 로깅한다.
+  const loggedCompleteForRef = useRef<number | null>(null);
   useEffect(() => {
     if (tournamentData.status !== 'COMPLETED') return;
+    if (loggedCompleteForRef.current === tournamentId) return;
+    loggedCompleteForRef.current = tournamentId;
     logAnalyticsEvent(ANALYTICS_EVENT.TOURNAMENT_COMPLETE, { tournament_id: tournamentId });
-    // 의존성에 status 포함 — COMPLETED 로 진입했을 때만 한 번 호출되면 충분.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tournamentData.status]);
+  }, [tournamentData.status, tournamentId]);
 
   const handleShareReceiptImage = useCallback(async () => {
     const element = receiptMachineRef.current?.getReceiptPaperElement();
