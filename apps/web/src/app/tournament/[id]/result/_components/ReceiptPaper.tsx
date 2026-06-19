@@ -141,8 +141,11 @@ type ProductCardProps = {
  * 외부 쇼핑몰 이미지 URL 을 Next.js 의 이미지 proxy(`/_next/image`) 경유 URL 로 변환.
  * 영수증 캡처 시 html-to-image 는 cross-origin 이미지를 캔버스에 그리지 못해 상품 사진만 빠진다.
  * 동일 origin 으로 가져오면 캔버스 tainted 문제가 해소된다.
+ *
+ * `w` 값은 next.config 의 `imageSizes` 에 포함된 값만 허용된다 (기본: 16/32/48/64/96/128/256/384).
+ * 영수증 썸네일은 60x60 표시라 그 두 배인 128 이 적정.
  */
-const toSameOriginImageUrl = (originalUrl: string, width = 120) =>
+const toSameOriginImageUrl = (originalUrl: string, width = 128) =>
   `/_next/image?url=${encodeURIComponent(originalUrl)}&w=${width}&q=75`;
 
 function ProductCard({ product, highlight = false }: ProductCardProps) {
@@ -158,7 +161,6 @@ function ProductCard({ product, highlight = false }: ProductCardProps) {
               width={60}
               height={60}
               className="size-full object-cover"
-              crossOrigin="anonymous"
             />
           )}
         </div>
@@ -170,7 +172,9 @@ function ProductCard({ product, highlight = false }: ProductCardProps) {
         )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        <p className="body-2-regular break-keep text-text-neutral-primary">{product.name}</p>
+        <p className="body-2-regular break-keep wrap-break-word text-text-neutral-primary">
+          {product.name}
+        </p>
         <p className="body-2-semibold text-text-neutral-primary">{formatPrice(product.price)}</p>
       </div>
       <span className="sr-only">{product.rank}위</span>
