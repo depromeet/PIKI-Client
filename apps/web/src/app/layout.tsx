@@ -2,6 +2,7 @@ import { WEBVIEW_UA_TOKEN } from '@piki/core';
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { headers } from 'next/headers';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import React from 'react';
 
 import Providers from '../components/Providers';
@@ -78,6 +79,13 @@ async function RootLayout({
             {children}
           </div>
         </Providers>
+        {/**
+         * GA4 web stream — 일반 브라우저 사용자 추적용.
+         * 웹뷰(앱) 안에서는 native Firebase Analytics 가 따로 작동하므로 이중 집계를 피하려고 마운트 X.
+         */}
+        {!isWebview && process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );
