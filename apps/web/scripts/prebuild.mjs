@@ -13,22 +13,61 @@ const WEB_APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ENV_PATH = resolve(WEB_APP_ROOT, '.env.local');
 
 /** web-v* 태그 문자열에서 버전 추출 */
-const resolveWebVersion = tag => {
+const resolveWebVersion = (tag, source = '') => {
   if (!tag?.startsWith(WEB_VERSION_TAG_PREFIX)) return null;
 
   const webVersion = tag.slice(WEB_VERSION_TAG_PREFIX.length);
-  console.log('[WEB VERSION] ', webVersion);
+  console.log(`[WEB VERSION] ${webVersion}${source ? ` (source: ${source})` : ''}`);
   return webVersion;
+};
+
+/** Vercel shallow clone에서 원격 태그 목록으로 최신 web-v* 조회 */
+const getWebVersionFromRemoteTags = () => {
+  try {
+    const output = execSync('git ls-remote --tags origin', {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'ignore'],
+    });
+
+    const tags = [
+      ...new Set(
+        output
+          .split('\n')
+          .map(line => line.split('\t')[1])
+          .filter(ref => !!ref && ref.startsWith(`refs/tags/${WEB_VERSION_TAG_PREFIX}`))
+          .map(ref => ref.replace(/^refs\/tags\//, '').replace(/\^{}$/, ''))
+          .filter(tag => tag.startsWith(WEB_VERSION_TAG_PREFIX))
+      ),
+    ];
+
+    if (!tags.length) {
+      console.log('[WEB VERSION] git ls-remote: web-v* 태그 없음');
+      return null;
+    }
+
+    const latestTag = tags.sort((tagA, tagB) =>
+      tagA.localeCompare(tagB, undefined, { numeric: true })
+    ).at(-1);
+
+    return resolveWebVersion(latestTag, 'git-ls-remote');
+  } catch {
+    console.log('[WEB VERSION] git ls-remote 실패');
+    return null;
+  }
 };
 
 /** 최신 web-v* git 태그에서 버전 문자열 추출. 없으면 null */
 const getWebVersion = () => {
   if (process.env.VERCEL) {
-    try {
-      execSync('git fetch --tags --force', { stdio: ['pipe', 'pipe', 'ignore'] });
-    } catch {
-      /** remote unavailable */
-    }
+    const vercelRef = process.env.VERCEL_GIT_COMMIT_REF;
+
+    if (vercelRef?.startsWith(WEB_VERSION_TAG_PREFIX))
+      return resolveWebVersion(vercelRef, 'vercel-git-commit-ref');
+
+    console.log('[WEB VERSION] Vercel 환경이지만 태그 정보를 찾지 못함. Fallback 진행.');
+
+    const fromRemote = getWebVersionFromRemoteTags();
+    if (fromRemote) return fromRemote;
   }
 
   try {
@@ -37,9 +76,10 @@ const getWebVersion = () => {
       stdio: ['pipe', 'pipe', 'ignore'],
     }).trim();
 
-    return resolveWebVersion(tag);
+    const version = resolveWebVersion(tag, 'git-describe');
+    if (version) return version;
   } catch {
-    /** Vercel shallow clone 등에서 describe 실패 시 tag 목록으로 fallback */
+    console.log('[WEB VERSION] git describe 실패');
   }
 
   try {
@@ -50,11 +90,15 @@ const getWebVersion = () => {
       .trim()
       .split('\n')[0];
 
-    return resolveWebVersion(tag);
+    const version = resolveWebVersion(tag, 'git-tag-list');
+    if (version) return version;
+
+    console.log('[WEB VERSION] git tag -l: web-v* 태그 없음');
   } catch {
-    /** git unavailable or no matching tag */
+    console.log('[WEB VERSION] git tag -l 실패');
   }
 
+  console.log('[WEB VERSION] 최종 실패: null 반환');
   return null;
 };
 
