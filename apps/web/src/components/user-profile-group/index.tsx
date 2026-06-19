@@ -1,27 +1,30 @@
+import Image from 'next/image';
+
 import { cn } from '@/utils/cn';
 
-import UserProfile from './UserProfile';
-import type { UserT } from './userProfile.const';
-
 type UserProfileGroupProps = {
-  users: UserT[];
+  profileImageUrls: string[];
   /** 보여줄 최대 프로필 수. 초과 시 +N 뱃지로 표시 */
   max?: number;
   className?: string;
 };
 
-function UserProfileGroup({ users, max = 3, className }: UserProfileGroupProps) {
-  const visibleUsers = users.slice(0, max);
-  const overflowCount = users.length - max;
+function UserProfileGroup({ profileImageUrls, max = 3, className }: UserProfileGroupProps) {
+  const visibleProfileImageUrls = profileImageUrls.slice(0, max);
+  const overflowCount = profileImageUrls.length - max;
 
   return (
     <div className={cn('flex items-center', className)}>
-      {visibleUsers.map((user, index) => (
-        <UserProfile
-          key={user.id}
-          user={user}
-          className={index === visibleUsers.length - 1 && overflowCount === 0 ? '' : '-mr-2'}
-        />
+      {visibleProfileImageUrls.map((url, index) => (
+        <span
+          key={`${url}-${index}`}
+          className={cn(
+            'relative block size-6.75 shrink-0 overflow-hidden rounded-full border-[1.6px] border-white',
+            index === visibleProfileImageUrls.length - 1 && overflowCount <= 0 ? '' : '-mr-2'
+          )}
+        >
+          <Image src={url} alt="참여자 프로필" fill sizes="27px" className="object-cover" />
+        </span>
       ))}
       {overflowCount > 0 && (
         <span
