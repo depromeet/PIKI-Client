@@ -128,12 +128,13 @@
       "expo-secure-store",
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
+      "@react-native-firebase/analytics",
       [
         "expo-build-properties",
         {
           "ios": {
             "useFrameworks": "static",
-            "forceStaticLinking": ["RNFBApp", "RNFBMessaging"]
+            "forceStaticLinking": ["RNFBApp", "RNFBMessaging", "RNFBAnalytics"]
           },
           "android": {
             "extraMavenRepos": ["https://devrepo.kakao.com/nexus/content/groups/public/"]

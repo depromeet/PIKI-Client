@@ -9,7 +9,9 @@ import { postGuestLogin } from '@/app/login/_apis/postGuestLogin';
 import { getTournament } from '@/app/tournament/[id]/_common/_apis/getTournament';
 import Button from '@/components/button';
 import Spinner from '@/components/spinner';
+import { ANALYTICS_EVENT } from '@/consts/analytics';
 import { ROUTES } from '@/consts/route';
+import { logAnalyticsEvent } from '@/utils/analytics';
 
 import { postFromPlayLink } from '../_apis/postFromPlayLink';
 
@@ -28,6 +30,9 @@ function PlayClient({ sourceTournamentId }: PlayClientProps) {
     // StrictMode/dev double-invoke 방지
     if (hasRunRef.current) return;
     hasRunRef.current = true;
+
+    // 게스트가 공유받은 링크로 진입한 시점 — 외부 유입률 측정용.
+    logAnalyticsEvent(ANALYTICS_EVENT.GUEST_VISIT, { source_tournament_id: sourceTournamentId });
 
     // CLONE 의 status 에 따라 적절한 화면으로 라우팅한다.
     // - PENDING: 아직 본인 매치를 시작 안 한 상태 → create (바구니 미리보기 + 시작 버튼)
