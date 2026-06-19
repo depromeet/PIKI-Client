@@ -1,4 +1,5 @@
 import type { WEBBRIDGE_MESSAGE_TYPE, WEB_REQ_READY_PAYLOAD_TYPE } from '../consts/webBridge';
+import type { WebReqLogAnalyticsEventMessageT } from './analytics';
 import type {
   AppResImagePickerCancelMessageT,
   AppResImagePickerErrorMessageT,
@@ -37,7 +38,8 @@ export type WebBridgeMessageT =
   | AppResPushPermissionStatusMessageT
   | AppResFcmTokenMessageT
   | AppReqDeepLinkMessageT
-  | WebReqLogoutMessageT;
+  | WebReqLogoutMessageT
+  | WebReqLogAnalyticsEventMessageT;
 
 /** 웹이 페이지 hydrate 완료 후 RN에게 메시지 수신 준비됨을 알리는 메시지 */
 export type WebReqReadyMessageT = {

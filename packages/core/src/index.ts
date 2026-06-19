@@ -9,6 +9,12 @@ export {
 
 /** 타입 */
 export type {
+  AnalyticsEventParamT,
+  AnalyticsEventParamsT,
+  LogAnalyticsEventPayloadT,
+  WebReqLogAnalyticsEventMessageT,
+} from './types/analytics';
+export type {
   AppResImagePickerCancelMessageT,
   AppResImagePickerErrorMessageT,
   AppResImagePickerSuccessMessageT,
