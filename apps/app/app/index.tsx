@@ -79,6 +79,10 @@ function Page() {
           await TokenStorage.clearTokens();
           return;
 
+        case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_TOKEN_REFRESHED:
+          await TokenStorage.setTokens(message.payload.accessToken, message.payload.refreshToken);
+          return;
+
         case WEBBRIDGE_MESSAGE_TYPE.WEB_REQ_LOG_ANALYTICS_EVENT:
           await logAnalyticsEvent(message.payload.name, message.payload.params);
           return;
