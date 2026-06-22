@@ -1,10 +1,13 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import { getMe } from '@/apis/getMe';
+import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
+import { getLoginPath } from '@/utils/loginRedirect';
 import { getQueryClient } from '@/utils/queryClient';
 
 async function MyPageMemberOnlyLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +26,8 @@ async function MyPageMemberOnlyLayout({ children }: { children: React.ReactNode 
   } catch (error) {
     if (!isAxiosError<ApiErrorResponseT>(error)) throw error;
 
-    if (error.response?.status === 404) notFound(); // TODO: 아직 미정
+    if (error.response?.status === 404)
+      redirect(getLoginPath(redirectPath, QUERY_ACTION.VALUE.SESSION_EXPIRED));
   }
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;

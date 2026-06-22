@@ -28,6 +28,8 @@ async function ArchiveLayout({ children }: ArchiveLayoutProps) {
   } catch (error) {
     if (!isAxiosError<ApiErrorResponseT>(error)) throw error;
 
+    if (error.response?.status === 404)
+      redirect(getLoginPath(redirectPath, QUERY_ACTION.VALUE.SESSION_EXPIRED));
   }
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
