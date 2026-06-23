@@ -145,11 +145,15 @@ type SheetContainerProps = {
 };
 
 function SheetContainer({ children, onDimPress }: SheetContainerProps) {
-  const { bottom } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
 
   return (
     <View style={styles.wrapper}>
-      {onDimPress && <Pressable style={StyleSheet.absoluteFill} onPress={onDimPress} />}
+      <Pressable
+        style={[styles.dim, { top: -top }]}
+        onPress={onDimPress}
+        disabled={!onDimPress}
+      />
       <View style={[styles.sheet, { paddingBottom: bottom }]}>{children}</View>
     </View>
   );
@@ -192,6 +196,12 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  dim: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: '#00000066',
   },
   sheet: {
