@@ -1,6 +1,6 @@
-import Image from 'next/image';
-
 import ImageIconOutline from '@/assets/icons/outline/image.svg';
+import BaseImage from '@/components/base-image';
+import Skeleton from '@/components/skeleton';
 
 type WishCardProps = {
   name: string;
@@ -14,7 +14,17 @@ function WishCard({ name, price, imageUrl }: WishCardProps) {
       {/* 이미지 */}
       <div className="relative flex flex-1 items-center justify-center self-stretch bg-white">
         {imageUrl ? (
-          <Image src={imageUrl} alt={name} fill className="object-cover" />
+          <BaseImage
+            src={imageUrl}
+            alt={name}
+            loadingFallback={<Skeleton className="absolute inset-0 rounded-t-2xl rounded-b-none" />}
+            errorFallback={
+              <div className="absolute inset-0 flex items-center justify-center text-gray-200">
+                <ImageIconOutline width={40} height={40} />
+              </div>
+            }
+            className="object-cover"
+          />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-gray-200">
             <ImageIconOutline width={40} height={40} />
