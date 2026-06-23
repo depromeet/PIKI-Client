@@ -2,8 +2,8 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { Suspense } from 'react';
 
 import { getTournamentList } from '@/apis/getTournamentList';
-import { getWishlist } from '@/apis/getWishlist';
 import type { WishlistPageT } from '@/apis/getWishlist';
+import { getWishlist } from '@/apis/getWishlist';
 import { getQueryClient } from '@/utils/queryClient';
 
 import TournamentHistoryContent from './_components/TournamentHistoryContent';
@@ -12,7 +12,7 @@ import WishlistLayout from './_components/WishlistLayout';
 import WishlistSkeleton from './_components/WishlistSkeleton';
 import type { WishTabT } from './_types/wish';
 
-type WishlistPageProps = {
+type ArchivePageProps = {
   searchParams: Promise<{ tab?: string }>;
 };
 
@@ -21,7 +21,7 @@ const getActiveWishTab = (tab?: string): WishTabT => {
   return '저장한 위시템';
 };
 
-async function WishlistPage({ searchParams }: WishlistPageProps) {
+async function ArchivePage({ searchParams }: ArchivePageProps) {
   const { tab } = await searchParams;
   const activeTab = getActiveWishTab(tab);
   const queryClient = getQueryClient();
@@ -57,4 +57,4 @@ async function WishlistPage({ searchParams }: WishlistPageProps) {
   );
 }
 
-export default WishlistPage;
+export default ArchivePage;
