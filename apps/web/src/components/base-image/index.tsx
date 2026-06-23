@@ -3,7 +3,7 @@
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -14,6 +14,18 @@ type BaseImageProps = Omit<ImageProps, 'src' | 'fill'> & {
   src: ImageProps['src'];
   loadingFallback?: ReactNode;
   errorFallback?: ReactNode;
+};
+
+const getImageSrcKey = (src: ImageProps['src']) => {
+  if (typeof src === 'string') return src;
+  if (src && 'src' in src) return src.src;
+  return '';
+};
+
+const getImageStateFromElement = (img: HTMLImageElement): ImageState => {
+  if (!img.complete) return 'loading';
+  if (img.naturalWidth === 0) return 'error';
+  return 'success';
 };
 
 function BaseImage({
@@ -28,39 +40,46 @@ function BaseImage({
 }: BaseImageProps) {
   const [state, setState] = useState<ImageState>('loading');
   const imgRef = useRef<HTMLImageElement>(null);
+  const srcKey = getImageSrcKey(src);
 
-  useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
-      const isError = imgRef.current.naturalWidth === 0;
+  useLayoutEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+    setState(getImageStateFromElement(img));
+  }, [srcKey]);
 
-      const timer = setTimeout(() => {
-        setState(isError ? 'error' : 'success');
-      }, 0);
-
-      return () => clearTimeout(timer);
-    }
-  }, [src]);
-
-  const handleLoad = (e: ImgEvent) => {
+  const handleLoad = (event: ImgEvent) => {
     setState('success');
-    onLoad?.(e);
+    onLoad?.(event);
   };
 
-  const handleError = (e: ImgEvent) => {
+  const handleError = (event: ImgEvent) => {
     setState('error');
-    onError?.(e);
+    onError?.(event);
   };
 
-  let fragmentKey = '';
-  if (typeof src === 'string') fragmentKey = src;
-  else if (src && 'src' in src) fragmentKey = src.src;
+  const isImageVisible = state === 'success';
+  const showLoadingFallback = loadingFallback != null && state !== 'error';
 
   return (
-    <React.Fragment key={fragmentKey}>
-      {state === 'loading' && loadingFallback}
-      {state === 'error' && errorFallback}
+    <>
+      {showLoadingFallback && (
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-0 z-0 transition-opacity duration-200',
+            isImageVisible ? 'opacity-0' : 'opacity-100'
+          )}
+          aria-hidden={isImageVisible}
+        >
+          {loadingFallback}
+        </div>
+      )}
+      {state === 'error' && errorFallback && (
+        <div className="pointer-events-none absolute inset-0 z-0">{errorFallback}</div>
+      )}
       <Image
         {...imageProps}
+        key={srcKey}
         ref={imgRef}
         src={src}
         alt={alt}
@@ -69,12 +88,12 @@ function BaseImage({
         onLoad={handleLoad}
         onError={handleError}
         className={cn(
-          'transition-opacity duration-200',
-          state === 'success' ? 'opacity-100' : 'opacity-0',
+          'z-10 transition-opacity duration-200',
+          isImageVisible ? 'opacity-100' : 'opacity-0',
           className
         )}
       />
-    </React.Fragment>
+    </>
   );
 }
 
