@@ -13,6 +13,7 @@ import {
   requestPermission,
 } from '@react-native-firebase/messaging';
 import * as Application from 'expo-application';
+import * as Notifications from 'expo-notifications';
 import { Linking, PermissionsAndroid, Platform } from 'react-native';
 
 import { WebBridge } from '@/utils/webBridge';
@@ -105,6 +106,11 @@ export const handleRequestPushPermission = async () => {
   await syncPushStatusToWeb();
 };
 
+/** OS 레벨 앱 아이콘 뱃지 수 설정 */
+export const setAppBadgeCount = async (count: number) => {
+  await Notifications.setBadgeCountAsync(count);
+};
+
 /** 앱 시작 시 FCM 권한 요청·토큰 로그 및 메시지 리스너 등록 */
 export const initializePushNotification = async () => {
   const isEnabled = await checkPushPermission();
@@ -118,6 +124,10 @@ export const initializePushNotification = async () => {
 export const setupMessagingListeners = () => {
   const unsubscribeOnMessage = onMessage(messaging, async remoteMessage => {
     console.log('[FCM] Foreground message:', remoteMessage.messageId);
+    const unreadCount = remoteMessage.data?.unreadCount;
+    if (unreadCount !== undefined) {
+      await setAppBadgeCount(Number(unreadCount));
+    }
     // 💡 나중에 Notifee가 들어오면 바로 여기에 Notifee.displayNotification() 코드를 넣으면 됩니다!
   });
 
