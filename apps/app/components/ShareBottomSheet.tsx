@@ -23,7 +23,6 @@ function ShareBottomSheetContent({ url, text }: ShareExtensionProps) {
   };
 
   useEffect(() => {
-    /** Safari는 url, 쇼핑앱 등은 text로 링크가 오는 경우가 많음 */
     /**
      * NOTE: 웹은 url, 앱은 text로 링크와 상품 설명이 함께 오는 경우가 많음
      *
@@ -149,11 +148,7 @@ function SheetContainer({ children, onDimPress }: SheetContainerProps) {
 
   return (
     <View style={styles.wrapper}>
-      <Pressable
-        style={[styles.dim, { top: -top }]}
-        onPress={onDimPress}
-        disabled={!onDimPress}
-      />
+      <Pressable style={[styles.dim, { top: -top }]} onPress={onDimPress} disabled={!onDimPress} />
       <View style={[styles.sheet, { paddingBottom: bottom }]}>{children}</View>
     </View>
   );
