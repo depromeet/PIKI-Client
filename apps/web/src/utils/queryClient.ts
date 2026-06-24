@@ -17,8 +17,10 @@ const makeQueryClient = () => {
 
 let browserQueryClient: QueryClient | undefined;
 
+const getServerQueryClient = cache(makeQueryClient);
+
 export const getQueryClient = () => {
-  if (environmentManager.isServer()) return cache(makeQueryClient)();
+  if (environmentManager.isServer()) return getServerQueryClient();
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
 
   return browserQueryClient;
