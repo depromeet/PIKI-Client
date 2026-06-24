@@ -2,7 +2,7 @@
 
 import BottomTabBar from '@/components/bottom-tab-bar';
 
-import TournamentHistoryList from './TournamentHistoryList';
+import TournamentHistoryList from '../TournamentHistoryList';
 
 function TournamentHistoryContentClient() {
   return (
