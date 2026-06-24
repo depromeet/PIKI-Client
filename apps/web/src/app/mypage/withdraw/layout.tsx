@@ -26,8 +26,10 @@ async function MyPageMemberOnlyLayout({ children }: { children: React.ReactNode 
   } catch (error) {
     if (!isAxiosError<ApiErrorResponseT>(error)) throw error;
 
-    if (error.response?.status === 404)
+    if (error.response?.status === 401 || error.response?.status === 404)
       redirect(getLoginPath(redirectPath, QUERY_ACTION.VALUE.SESSION_EXPIRED));
+
+    throw error;
   }
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
