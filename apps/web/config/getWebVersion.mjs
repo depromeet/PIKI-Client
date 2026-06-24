@@ -30,7 +30,7 @@ const getWebVersionFromGitHubApi = async () => {
 
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/tags?per_page=100`,
-      { headers }
+      { headers, signal: AbortSignal.timeout(10_000) }
     );
 
     if (!response.ok) {
