@@ -6,9 +6,10 @@ type WishCardProps = {
   name: string;
   price: number;
   imageUrl: string | null;
+  preload?: boolean;
 };
 
-function WishCard({ name, price, imageUrl }: WishCardProps) {
+function WishCard({ name, price, imageUrl, preload = false }: WishCardProps) {
   return (
     <div className="flex aspect-[0.765] flex-col overflow-hidden rounded-2xl bg-white">
       {/* 이미지 */}
@@ -17,6 +18,8 @@ function WishCard({ name, price, imageUrl }: WishCardProps) {
           <BaseImage
             src={imageUrl}
             alt={name}
+            sizes="(max-width: 480px) calc(100vw - 40px - 8px), 216px"
+            preload={preload}
             loadingFallback={<Skeleton className="absolute inset-0 rounded-t-2xl rounded-b-none" />}
             errorFallback={
               <div className="absolute inset-0 flex items-center justify-center text-gray-200">

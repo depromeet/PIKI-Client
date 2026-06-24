@@ -36,6 +36,8 @@ function BaseImage({
   onLoad,
   onError,
   className,
+  preload = false,
+  unoptimized = false,
   ...imageProps
 }: BaseImageProps) {
   const [state, setState] = useState<ImageState>('loading');
@@ -84,12 +86,13 @@ function BaseImage({
         src={src}
         alt={alt}
         fill
-        unoptimized
+        preload={preload}
+        unoptimized={unoptimized}
         onLoad={handleLoad}
         onError={handleError}
         className={cn(
           'z-10 transition-opacity duration-200',
-          isImageVisible ? 'opacity-100' : 'opacity-0',
+          preload || isImageVisible ? 'opacity-100' : 'opacity-0',
           className
         )}
       />

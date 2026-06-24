@@ -22,7 +22,7 @@ function FinalProductCard({ imageUrl, name, price, isPicked, onClick }: FinalPro
               src={imageUrl}
               alt={name}
               sizes="(max-width: 480px) 45vw, 200px"
-              priority
+              preload
               className="object-cover"
             />
           )}
