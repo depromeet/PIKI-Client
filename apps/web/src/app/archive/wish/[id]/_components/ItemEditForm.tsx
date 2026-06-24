@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 import BottomCta from '@/components/bottom-cta';
 import Button from '@/components/button';
@@ -69,11 +68,7 @@ function ItemEditForm({
   const handleDelete = () => {
     if (isReadyActionPending) return;
 
-    deleteWishMutation(void 0, {
-      onSuccess: () => {
-        toast.success('선택한 위시를 삭제했어요');
-      },
-    });
+    deleteWishMutation();
   };
 
   const handleRefresh = () => {
