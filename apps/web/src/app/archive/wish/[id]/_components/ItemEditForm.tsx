@@ -139,6 +139,17 @@ function ItemEditForm({
       {itemStatus === 'FAILED' && (
         <BottomCta className="bg-bg-layer-basement py-3">
           <Button
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            isLoading={isDeleteWishPending}
+            disabled={isPostWishRefreshPending}
+            onClick={handleDelete}
+          >
+            삭제하기
+          </Button>
+
+          <Button
             variant="primary"
             size="lg"
             isLoading={isPatchWishPending}
