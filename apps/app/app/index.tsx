@@ -3,8 +3,9 @@ import {
   WEB_REQ_READY_PAYLOAD_TYPE,
   type WebBridgeMessageT,
 } from '@piki/core';
+import CookieManager from '@react-native-cookies/cookies';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Linking, Platform } from 'react-native';
+import { AppState, KeyboardAvoidingView, Linking, Platform } from 'react-native';
 import type { WebView } from 'react-native-webview';
 import Webview from 'react-native-webview';
 
@@ -40,6 +41,22 @@ function Page() {
   // 앱 진입 시 GA4(Firebase Analytics) 세션 시작.
   useEffect(() => {
     void logAppOpenEvent();
+  }, []);
+
+  // 포그라운드 복귀 시 WKHTTPCookieStore → SecureStore 동기화
+  // proxy.ts(서버)에서 토큰 갱신 시 WebBridge 호출 불가 → AppState로 커버
+  useEffect(() => {
+    const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000';
+    const subscription = AppState.addEventListener('change', async nextState => {
+      if (nextState !== 'active') return;
+      const cookies = await CookieManager.get(WEB_URL, Platform.OS === 'ios');
+      const accessToken = cookies['access_token']?.value;
+      const refreshToken = cookies['refresh_token']?.value;
+      if (accessToken && refreshToken) {
+        await TokenStorage.setTokens(accessToken, refreshToken);
+      }
+    });
+    return () => subscription.remove();
   }, []);
 
   const { sendShareIntent } = useShareIntent({
