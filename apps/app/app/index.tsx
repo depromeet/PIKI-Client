@@ -47,15 +47,23 @@ function Page() {
   // proxy.ts(서버)에서 토큰 갱신 시 WebBridge 호출 불가 → AppState로 커버
   useEffect(() => {
     const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:3000';
-    const subscription = AppState.addEventListener('change', async nextState => {
-      if (nextState !== 'active') return;
+
+    const syncCookies = async () => {
       const cookies = await CookieManager.get(WEB_URL, Platform.OS === 'ios');
       const accessToken = cookies['access_token']?.value;
       const refreshToken = cookies['refresh_token']?.value;
       if (accessToken && refreshToken) {
         await TokenStorage.setTokens(accessToken, refreshToken);
       }
+    };
+
+    syncCookies();
+
+    const subscription = AppState.addEventListener('change', async nextState => {
+      if (nextState !== 'active') return;
+      syncCookies();
     });
+
     return () => subscription.remove();
   }, []);
 
