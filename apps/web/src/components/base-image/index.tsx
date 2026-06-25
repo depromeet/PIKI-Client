@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { ReactNode, SyntheticEvent } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
 
+import { Z_INDEX } from '@/consts/zIndex';
 import { cn } from '@/utils/cn';
 
 type ImgEvent = SyntheticEvent<HTMLImageElement>;
@@ -90,8 +91,9 @@ function BaseImage({
         unoptimized={unoptimized}
         onLoad={handleLoad}
         onError={handleError}
+        style={{ zIndex: Z_INDEX.BASE_IMAGE }}
         className={cn(
-          'z-10 transition-opacity duration-200',
+          'transition-opacity duration-200',
           preload || isImageVisible ? 'opacity-100' : 'opacity-0',
           className
         )}
