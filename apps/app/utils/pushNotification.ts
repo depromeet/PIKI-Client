@@ -20,6 +20,18 @@ import { WebBridge } from '@/utils/webBridge';
 
 const messaging = getMessaging();
 
+// expo-notifications가 UNUserNotificationCenter delegate를 점유할 때,
+// 포그라운드에서 APNs aps.badge 업데이트가 무시되는 것을 방지
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: false,
+    shouldShowBanner: false,
+    shouldShowList: false,
+    shouldPlaySound: false,
+    shouldSetBadge: true,
+  }),
+});
+
 /** 푸시 알림 권한 체크 */
 export const checkPushPermission = async (): Promise<boolean> => {
   if (Platform.OS === 'android') {
