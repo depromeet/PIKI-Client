@@ -28,28 +28,42 @@ const getWebVersionFromGitHubApi = async () => {
 
     if (token) headers.Authorization = `Bearer ${token}`;
 
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/tags?per_page=100`,
-      { headers, signal: AbortSignal.timeout(10_000) }
-    );
+    const perPage = 100;
+    let page = 1;
+    let latestTag = null;
 
-    if (!response.ok) {
-      console.log(`[WEB VERSION] GitHub API 실패: ${response.status}`);
-      return null;
+    while (true) {
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/tags?per_page=${perPage}&page=${page}`,
+        { headers, signal: AbortSignal.timeout(10_000) }
+      );
+
+      if (!response.ok) {
+        console.log(`[WEB VERSION] GitHub API 실패: ${response.status}`);
+        return null;
+      }
+
+      const tags = await response.json();
+
+      if (!Array.isArray(tags)) {
+        console.log('[WEB VERSION] GitHub API: 예상치 못한 응답');
+        return null;
+      }
+
+      for (const tag of tags) {
+        const tagName = tag.name;
+        if (!tagName?.startsWith(WEB_VERSION_TAG_PREFIX)) continue;
+
+        if (
+          !latestTag ||
+          tagName.localeCompare(latestTag, undefined, { numeric: true }) > 0
+        )
+          latestTag = tagName;
+      }
+
+      if (tags.length < perPage) break;
+      page += 1;
     }
-
-    const tags = await response.json();
-
-    if (!Array.isArray(tags)) {
-      console.log('[WEB VERSION] GitHub API: 예상치 못한 응답');
-      return null;
-    }
-
-    const latestTag = tags
-      .map(tag => tag.name)
-      .filter(name => name.startsWith(WEB_VERSION_TAG_PREFIX))
-      .sort((tagA, tagB) => tagA.localeCompare(tagB, undefined, { numeric: true }))
-      .at(-1);
 
     const webVersion = parseWebVersionFromTag(latestTag);
     if (!webVersion) {
