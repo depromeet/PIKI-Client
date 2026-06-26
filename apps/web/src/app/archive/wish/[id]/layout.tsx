@@ -1,11 +1,9 @@
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
 import { ROUTES } from '@/consts/route';
 import type { ApiErrorResponseT } from '@/types/api';
-import { getLoginPath } from '@/utils/loginRedirect';
 import { parseIdParam } from '@/utils/parseIdParam';
 import { getQueryClient } from '@/utils/queryClient';
 
@@ -17,9 +15,6 @@ type WishEditLayoutProps = {
 };
 
 async function WishEditLayout({ children, params }: WishEditLayoutProps) {
-  const headerStore = await headers();
-  const redirectPath = headerStore.get('x-redirect-path');
-
   const { id } = await params;
   const wishId = parseIdParam(id);
   if (!wishId) notFound();
@@ -37,9 +32,8 @@ async function WishEditLayout({ children, params }: WishEditLayoutProps) {
   } catch (error) {
     if (!isAxiosError<ApiErrorResponseT>(error)) throw error;
 
-    /** 게스트 등 접근 권한 없는 경우 */
-    if (error.response?.status === 403) redirect(getLoginPath(redirectPath));
-    /** 위시가 존재하지 않는 경우 */ else if (error.response?.status === 404)
+    /** 위시가 존재하지 않는 경우 */
+    if (error.response?.status === 404)
       redirect(ROUTES.ARCHIVE('wish'));
 
     throw error;
