@@ -35,8 +35,8 @@ function TournamentHeader({ name, hasFriends }: TournamentHeaderProps) {
     <>
       <Header
         left={<HeaderIcon name="BACK" onClick={handleBackClick} />}
-        center={name}
-        centerClassName="title-1 w-[calc(100%-40px-30px-30px)] line-clamp-1 text-center"
+        center={<span className="block w-full truncate">{name}</span>}
+        centerClassName="title-1 w-[calc(100%-40px-30px-30px)] text-center"
         right={<TournamentGuidePopover />}
       />
 
