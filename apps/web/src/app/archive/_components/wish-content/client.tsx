@@ -24,13 +24,13 @@ function WishContentClient() {
 
   return (
     <>
-      <main className="flex flex-1 flex-col pb-24">
+      <div className="flex flex-1 flex-col pb-24">
         <WishlistList
           isDeleteMode={isDeleteMode}
           selectedIds={selectedIds}
           onToggleSelect={handleToggleSelect}
         />
-      </main>
+      </div>
 
       <WishlistBottomBar isDeleteMode={isDeleteMode} selectedCount={selectedIds.size} />
 
