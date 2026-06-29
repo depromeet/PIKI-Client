@@ -12,6 +12,11 @@
       "usesAppleSignIn": true,
       "supportsTablet": false,
       "bundleIdentifier": "day.no30s.piki",
+      "associatedDomains": [
+        "applinks:piki.day",
+        "applinks:staging.piki.day",
+        "applinks:dev.piki.day"
+      ],
       "entitlements": {
         "aps-environment": "development", // NOTE: 배포할때 'production'으로 변경
         "com.apple.security.application-groups": ["group.day.no30s.piki"],
