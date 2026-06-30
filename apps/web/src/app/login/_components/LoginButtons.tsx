@@ -2,7 +2,6 @@
 
 import type { SocialProviderT } from '@piki/core';
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -14,11 +13,14 @@ import Spinner from '@/components/spinner';
 import { QUERY_ACTION } from '@/consts/queryAction';
 import { ROUTES } from '@/consts/route';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
+import { getRouteType } from '@/utils/getRouteType';
 import {
   getLoginPath,
+  getLoginRedirectPath,
   isValidLoginRedirectPath,
   setLoginRedirectPath,
 } from '@/utils/loginRedirect';
+import { refreshClientToken } from '@/utils/refreshClientToken';
 import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
@@ -28,12 +30,15 @@ import SocialLoginButton from './SocialLoginButton';
 type LoginButtonsProps = {
   redirect: string | null;
   action: string | null;
+  /** 살아있는 게스트 세션 보유 여부 — 서버에서 httpOnly 쿠키 확인 후 전달 */
+  canReuseGuestSession: boolean;
 };
 
-function LoginButtons({ redirect, action }: LoginButtonsProps) {
+function LoginButtons({ redirect, action, canReuseGuestSession }: LoginButtonsProps) {
   const router = useRouter();
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
 
+  const [isGuestRefreshing, setIsGuestRefreshing] = useState(false);
   const [nativePendingProvider, setNativePendingProvider] = useState<SocialProviderT | null>(null);
 
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
@@ -62,7 +67,8 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
     handleLoginError();
   }, [action, validRedirect, router]);
 
-  const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
+  const isGuestPending = isPostGuestLoginPending || isGuestRefreshing;
+  const isAnyPending = isGuestPending || nativePendingProvider !== null;
 
   const postNativeMessage = (provider: SocialProviderT) => {
     if (!isWebview()) return false;
@@ -101,8 +107,31 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
     window.location.href = url;
   };
 
-  const handleGuestLogin = () => {
+  const handleGuestLogin = async () => {
     setLoginRedirectPath(validRedirect);
+
+    /** 살아있는 게스트 세션이면 토큰만 갱신 */
+    if (canReuseGuestSession) {
+      setIsGuestRefreshing(true);
+      try {
+        await refreshClientToken();
+        /** 회원 전용 경로면 홈으로 보내고 도착 시 안내 토스트 노출 */
+        const redirectPath = getLoginRedirectPath();
+        const isMemberOnly =
+          getRouteType(redirectPath.split('?')[0] ?? redirectPath) === 'MEMBER_ONLY';
+        router.replace(
+          isMemberOnly
+            ? `${ROUTES.HOME}?${QUERY_ACTION.KEY}=${QUERY_ACTION.VALUE.MEMBER_ONLY}`
+            : redirectPath
+        );
+        return;
+      } catch {
+        /** 갱신 실패 시 새 게스트 발급 */
+      } finally {
+        setIsGuestRefreshing(false);
+      }
+    }
+
     postGuestLoginMutation();
   };
 
@@ -139,27 +168,9 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
         onClick={handleGuestLogin}
         className="mt-7 flex cursor-pointer items-center gap-1.5 body-2-medium text-text-neutral-secondary underline underline-offset-2 disabled:opacity-50"
       >
-        {isPostGuestLoginPending ? <Spinner size={16} /> : null}
+        {isGuestPending ? <Spinner size={16} /> : null}
         비회원으로 시작하기
       </button>
-
-      <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
-        가입 시{' '}
-        <Link
-          href="/terms"
-          className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
-        >
-          이용약관
-        </Link>
-        {' 및 '}
-        <Link
-          href={ROUTES.POLICY}
-          className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
-        >
-          개인정보 처리방침
-        </Link>
-        에 동의하게 됩니다.
-      </p>
     </div>
   );
 }
