@@ -29,6 +29,3 @@ export const isTokenValid = (token: string) => {
 
   return currentTime < expiryTime;
 };
-
-/** access token 이 회원(MEMBER) 토큰인지 — 게스트와 구분 */
-export const isMemberToken = (token: string) => decodeJwt(token)?.role === 'MEMBER';

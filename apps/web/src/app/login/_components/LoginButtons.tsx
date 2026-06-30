@@ -14,9 +14,11 @@ import { QUERY_ACTION } from '@/consts/queryAction';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
 import {
   getLoginPath,
+  getLoginRedirectPath,
   isValidLoginRedirectPath,
   setLoginRedirectPath,
 } from '@/utils/loginRedirect';
+import { refreshClientToken } from '@/utils/refreshClientToken';
 import { WebBridge, isWebview } from '@/utils/webBridge';
 
 import { getAuthUrl } from '../_apis/getAuthUrl';
@@ -26,12 +28,15 @@ import SocialLoginButton from './SocialLoginButton';
 type LoginButtonsProps = {
   redirect: string | null;
   action: string | null;
+  /** 살아있는 게스트 세션 보유 여부 — 서버에서 httpOnly 쿠키 확인 후 전달 */
+  canReuseGuestSession: boolean;
 };
 
-function LoginButtons({ redirect, action }: LoginButtonsProps) {
+function LoginButtons({ redirect, action, canReuseGuestSession }: LoginButtonsProps) {
   const router = useRouter();
   const validRedirect = isValidLoginRedirectPath(redirect) ? redirect : null;
 
+  const [isGuestRefreshing, setIsGuestRefreshing] = useState(false);
   const [nativePendingProvider, setNativePendingProvider] = useState<SocialProviderT | null>(null);
 
   const { postGuestLoginMutation, isPostGuestLoginPending } = usePostGuestLogin();
@@ -60,7 +65,8 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
     handleLoginError();
   }, [action, validRedirect, router]);
 
-  const isAnyPending = isPostGuestLoginPending || nativePendingProvider !== null;
+  const isGuestPending = isPostGuestLoginPending || isGuestRefreshing;
+  const isAnyPending = isGuestPending || nativePendingProvider !== null;
 
   const postNativeMessage = (provider: SocialProviderT) => {
     if (!isWebview()) return false;
@@ -99,8 +105,23 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
     window.location.href = url;
   };
 
-  const handleGuestLogin = () => {
+  const handleGuestLogin = async () => {
     setLoginRedirectPath(validRedirect);
+
+    /** 살아있는 게스트 세션이면 토큰만 갱신 */
+    if (canReuseGuestSession) {
+      setIsGuestRefreshing(true);
+      try {
+        await refreshClientToken();
+        router.replace(getLoginRedirectPath());
+        return;
+      } catch {
+        /** 갱신 실패 시 새 게스트 발급 */
+      } finally {
+        setIsGuestRefreshing(false);
+      }
+    }
+
     postGuestLoginMutation();
   };
 
@@ -137,7 +158,7 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
         onClick={handleGuestLogin}
         className="mt-7 flex cursor-pointer items-center gap-1.5 body-2-medium text-text-neutral-secondary underline underline-offset-2 disabled:opacity-50"
       >
-        {isPostGuestLoginPending ? <Spinner size={16} /> : null}
+        {isGuestPending ? <Spinner size={16} /> : null}
         비회원으로 시작하기
       </button>
     </div>

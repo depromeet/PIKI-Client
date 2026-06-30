@@ -1,11 +1,9 @@
-import { cookies } from 'next/headers';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
+import { getMe } from '@/apis/getMe';
 import PikiLogo from '@/assets/images/piki-logo.svg';
 import { ROUTES } from '@/consts/route';
-import { isMemberToken, isTokenValid } from '@/utils/auth';
-import { isValidLoginRedirectPath } from '@/utils/loginRedirect';
+import { getQueryClient } from '@/utils/queryClient';
 
 import LoginButtons from './_components/LoginButtons';
 
@@ -16,16 +14,11 @@ type LoginPageProps = {
 async function LoginPage({ searchParams }: LoginPageProps) {
   const { redirect: redirectParam, action } = await searchParams;
 
-  // 회원(MEMBER) 세션이 있을 때만 로그인 페이지를 건너뜀
-  // 게스트는 그대로 로그인에 남겨야 함 (MEMBER_ONLY ↔ /login 무한 루프 방지)
-  // action이 있으면 세션 만료/소셜 오류 등 명시적 케이스 → 건너뛰지 않음
-  if (!action) {
-    const cookieStore = await cookies();
-    const accessToken = cookieStore.get('access_token')?.value;
-    if (accessToken && isTokenValid(accessToken) && isMemberToken(accessToken)) {
-      redirect(isValidLoginRedirectPath(redirectParam) ? redirectParam : ROUTES.HOME);
-    }
-  }
+  /** 게스트 세션 재활용 가능 여부 판단 */
+  const user = await getQueryClient()
+    .fetchQuery({ queryKey: ['me'], queryFn: getMe })
+    .catch(() => null);
+  const canReuseGuestSession = user?.identityType === 'GUEST';
 
   return (
     <div className="flex min-h-dvh flex-col items-center bg-gray-50 px-4 pt-padding-top pb-10">
@@ -37,7 +30,11 @@ async function LoginPage({ searchParams }: LoginPageProps) {
       </div>
 
       <div className="mt-[90px] w-full">
-        <LoginButtons redirect={redirectParam ?? null} action={action ?? null} />
+        <LoginButtons
+          redirect={redirectParam ?? null}
+          action={action ?? null}
+          canReuseGuestSession={canReuseGuestSession}
+        />
 
         <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
           가입 시{' '}
