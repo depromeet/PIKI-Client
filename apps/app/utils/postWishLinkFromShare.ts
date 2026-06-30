@@ -1,3 +1,5 @@
+import { postTokenRefresh } from '@/apis/postTokenRefresh';
+
 import { TokenStorage } from './tokenStorage';
 
 type PostWishLinkFromShareResultT = { ok: true } | { ok: false; message: string };
@@ -11,16 +13,6 @@ const postWishLink = async (productUrl: string, accessToken: string) =>
       Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({ url: productUrl }),
-  });
-
-const postTokenRefresh = async (refreshToken: string) =>
-  fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/token/refresh`, {
-    method: 'POST',
-    headers: {
-      'X-Client-Type': 'app',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ refreshToken }),
   });
 
 /** Share Extension에서 링크로 위시 등록 */
