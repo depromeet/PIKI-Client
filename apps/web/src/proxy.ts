@@ -6,12 +6,35 @@ import { isTokenValid } from './utils/auth';
 import { getRouteType } from './utils/getRouteType';
 import { getLoginPath } from './utils/loginRedirect';
 
-const handleGuestLogin = async () => {
+const handleGuestLogin = async (request: NextRequest) => {
   const response = await postGuestLoginServer();
-  const nextResponse = NextResponse.next();
+  const setCookieHeaders = response.headers['set-cookie'] ?? [];
 
-  const setCookieHeader = response.headers['set-cookie'];
-  setCookieHeader?.forEach(cookie => nextResponse.headers.append('set-cookie', cookie));
+  /** 발급된 게스트 토큰을 현재 요청에도 주입 */
+  const cookieMap = new Map(
+    request.cookies.getAll().map(cookie => [cookie.name, cookie.value] as const)
+  );
+  setCookieHeaders.forEach(setCookie => {
+    const nameValue = setCookie.split(';')[0] ?? '';
+    const separatorIndex = nameValue.indexOf('=');
+    if (separatorIndex === -1) return;
+
+    const name = nameValue.slice(0, separatorIndex).trim();
+    const value = nameValue.slice(separatorIndex + 1).trim();
+    cookieMap.set(name, value);
+  });
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(
+    'cookie',
+    [...cookieMap.entries()].map(([name, value]) => `${name}=${value}`).join('; ')
+  );
+
+  /** 갱신된 쿠키 페이지 요청에 전달 */
+  const nextResponse = NextResponse.next({ request: { headers: requestHeaders } });
+
+  /** 서버에서 받아온 쿠키 브라우저에 저장 */
+  setCookieHeaders.forEach(cookie => nextResponse.headers.append('set-cookie', cookie));
 
   return nextResponse;
 };
@@ -145,7 +168,7 @@ export const proxy = async (request: NextRequest) => {
     if (refreshToken) return await handleTokenRefresh(request);
 
     /** access(X), refresh(X): 자동 게스트 로그인 */
-    return await handleGuestLogin();
+    return await handleGuestLogin(request);
   }
 
   if (routeType === 'MEMBER_ONLY' || routeType === 'AUTHORIZED') {
