@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import PikiLogo from '@/assets/images/piki-logo.svg';
@@ -37,6 +38,24 @@ async function LoginPage({ searchParams }: LoginPageProps) {
 
       <div className="mt-[90px] w-full">
         <LoginButtons redirect={redirectParam ?? null} action={action ?? null} />
+
+        <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
+          가입 시{' '}
+          <Link
+            href={ROUTES.TERMS}
+            className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
+          >
+            이용약관
+          </Link>
+          {' 및 '}
+          <Link
+            href={ROUTES.POLICY}
+            className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
+          >
+            개인정보 처리방침
+          </Link>
+          에 동의하게 됩니다.
+        </p>
       </div>
     </div>
   );

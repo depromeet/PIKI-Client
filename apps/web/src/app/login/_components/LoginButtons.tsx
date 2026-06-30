@@ -2,7 +2,6 @@
 
 import type { SocialProviderT } from '@piki/core';
 import { WEBBRIDGE_MESSAGE_TYPE } from '@piki/core';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -12,7 +11,6 @@ import GoogleIcon from '@/assets/icons/social/google.svg';
 import KakaoIcon from '@/assets/icons/social/kakao.svg';
 import Spinner from '@/components/spinner';
 import { QUERY_ACTION } from '@/consts/queryAction';
-import { ROUTES } from '@/consts/route';
 import { useNativeLoginResult } from '@/hooks/useNativeLoginResult';
 import {
   getLoginPath,
@@ -142,24 +140,6 @@ function LoginButtons({ redirect, action }: LoginButtonsProps) {
         {isPostGuestLoginPending ? <Spinner size={16} /> : null}
         비회원으로 시작하기
       </button>
-
-      <p className="mt-9 text-center font-features-['ss10'_on] text-[11px] leading-[150%] font-medium tracking-[-0.232px] text-text-neutral-tertiary">
-        가입 시{' '}
-        <Link
-          href="/terms"
-          className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
-        >
-          이용약관
-        </Link>
-        {' 및 '}
-        <Link
-          href={ROUTES.POLICY}
-          className="underline decoration-solid [text-decoration-skip-ink:none] [text-underline-position:from-font]"
-        >
-          개인정보 처리방침
-        </Link>
-        에 동의하게 됩니다.
-      </p>
     </div>
   );
 }
